@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-
+# <3 <3 <3
 var_cat <- function(data,#données en format srvyr
                     var_cat,#variable catégorielle
                     facet_var = NULL,
