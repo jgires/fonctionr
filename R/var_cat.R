@@ -1,8 +1,8 @@
 
-#' var_cat : fonction pour réaliser facilement un grpahique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
+#' quali_distrib : fonction pour réaliser facilement un grpahique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
 #'
 #' @param data
-#' @param var_cat
+#' @param quali_var
 #' @param reorder
 #' @param na.rm
 #' @param title
@@ -20,8 +20,8 @@
 #'
 #' @examples
 
-var_cat <- function(data,#données en format srvyr
-                    var_cat,#variable catégorielle
+quali_distrib <- function(data,#données en format srvyr
+                    quali_var,#variable catégorielle
                     facet_var = NULL,
                     filter_exp = NULL,
                     na.rm = T,
@@ -29,8 +29,10 @@ var_cat <- function(data,#données en format srvyr
                     show_n = FALSE,
                     show_prop = TRUE,
                     prop_method = "beta",#possibilité de choisir la methode d'ajustement des IC, car empiriqument, j'ai eu des problèmes avec logit
-                    title = "", # le titre du graphique
-                    xlabel = "", # le nom de l'axe de la variable catégorielle
+                    title = NULL, # le titre du graphique
+                    subtitle = NULL,
+                    ylab = NULL,# le nom de l'axe de la variable catégorielle
+                    labs = TRUE,
                     font ="Arial", #quelle font par défaut?
                     digits = 0,
                     ...
@@ -87,14 +89,14 @@ var_cat <- function(data,#données en format srvyr
 #
        if (na.rm == T){
          data_W<-data_W %>%
-     filter(!is.na({{var_cat}})) %>%
+     filter(!is.na({{quali_var}})) %>%
      mutate(
-       "{{ var_cat }}" := droplevels(as.factor({{ var_cat }}))
+       "{{ quali_var }}" := droplevels(as.factor({{ quali_var }}))
      )
        }
    else {
      data_W<-data_W %>%
-       mutate("{{ var_cat }}" := droplevels(fct_na_value_to_level(as.factor({{ var_cat }}), "NA")))
+       mutate("{{ quali_var }}" := droplevels(fct_na_value_to_level(as.factor({{ quali_var }}), "NA")))
 
    }
 
@@ -111,12 +113,12 @@ var_cat <- function(data,#données en format srvyr
 
   if (quo_is_null(quo_facet)) {
     table<-data_W %>%
-  group_by({{var_cat}}) %>%
-    srvyr::summarize(prop = survey_prop(vartype="ci", proportion = T, prop_method = {{prop_method}}),n_weighted=survey_total(vartype="ci"),n=n()) # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
+  group_by({{quali_var}}) %>%
+    srvyr::summarize(prop = survey_prop(vartype="ci", proportion = T, prop_method = prop_method),n_weighted=survey_total(vartype="ci"),n=n()) # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
   }
   if(!quo_is_null(quo_facet)) {table<-data_W %>%
-    group_by({{facet_var}},{{var_cat}}) %>%
-    srvyr::summarize(prop = survey_prop(vartype="ci", proportion = T, prop_method = {{prop_method}}),n_weighted=survey_total(vartype="ci"),n=n()) # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
+    group_by({{facet_var}},{{quali_var}}) %>%
+    srvyr::summarize(prop = survey_prop(vartype="ci", proportion = T, prop_method = prop_method),n_weighted=survey_total(vartype="ci"),n=n()) # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
 
     }
 
@@ -130,16 +132,14 @@ var_cat <- function(data,#données en format srvyr
 
 # On crée la palette
 
-  palette <-{{fill}}
-
   #le graphique proprement dit
 
   graph<-table %>%
-    ggplot( aes(x={{var_cat}},
+    ggplot( aes(x={{quali_var}},
                 y=prop,
     )) +
     geom_bar(stat="identity",
-             fill = palette) +
+             fill = fill) +
     geom_errorbar(aes(ymin=prop_low, ymax=prop_upp),
                   width=.2,                    # Width of the error bars
                   position=position_dodge(.5))+
@@ -154,14 +154,27 @@ var_cat <- function(data,#données en format srvyr
        axis.line = element_line(color = "black"),
        axis.ticks= element_line(color = "black"),
        legend.position = "none",
-       text=element_text(family={{font}}),
+       text=element_text(family=font),
        axis.text=element_text(color="black"))+
-    ggtitle({{title}})+
-    xlab({{xlabel}})+
-    ylab("")+
-
-
     coord_flip()
+
+
+#ajouter les axes au besoins
+
+  if(labs == TRUE){
+    graph<-graph+
+    labs(title = title,
+         subtitle = subtitle,
+         x = NULL,
+         y = ifelse(is.null(ylab),
+                    paste("Distribution :",deparse(substitute (quali_var))),
+                    ylab))
+}
+  if(labs == FALSE){
+    graph<-graph+
+      labs(x = NULL,
+           y = NULL)
+  }
 
 #ajouter les prop au besoin
 if (show_prop == TRUE){
@@ -170,12 +183,12 @@ if (show_prop == TRUE){
                   label = paste(round(prop*100,
                                       digits = {{digits}}),
                                 "%"),
-                  family = {{font}}),
+                  family = font),
               color = "black")
 }
 
 
-#ajouter les factets au besoin
+#ajouter les facets au besoin
 
 
 if (!quo_is_null(quo_facet)) {
@@ -191,7 +204,7 @@ if (!quo_is_null(quo_facet)) {
           aes(
             y = 0 + (0.0001 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
             label = paste0("n=", n),
-            family = {{font}}
+            family = font
           ),
           alpha = 0.7,
           hjust = 0 # Justifié à droite
