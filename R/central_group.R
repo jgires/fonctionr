@@ -3,7 +3,7 @@
 #'
 #' @param data
 #' @param group
-#' @param var_quanti
+#' @param quanti_exp
 #' @param facet_var
 #' @param filter_exp
 #' @param ...
@@ -19,7 +19,7 @@
 #' @param na.rm.group
 #' @param total_name
 #' @param wrap_width
-#' @param file_path
+#' @param export_path
 #'
 #' @return
 #' @import rlang
@@ -37,7 +37,7 @@
 #' @examples
 central_group <- function(data,
                           group,
-                          var_quanti,
+                          quanti_exp,
                           facet_var = NULL,
                           filter_exp = NULL,
                           ...,
@@ -45,7 +45,6 @@ central_group <- function(data,
                           caption = NULL,
                           digits = 1,
                           show_n = FALSE,
-                          show_ind = TRUE,#j'ai ajouté une option pour montrer ou non les valeurs moyenne ou médiane. A vvoir comment on l'appele.-------
                           dodge = 0.9,
                           reorder = F,
                           error_bar = T,
@@ -54,7 +53,7 @@ central_group <- function(data,
                           na.rm.group = T,
                           total_name = "Total",
                           wrap_width = 25,
-                          file_path = NULL) {
+                          export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
@@ -115,11 +114,11 @@ central_group <- function(data,
   }
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On détecte les variables entrées dans var_quanti pour calculer la proportion
+  # On détecte les variables entrées dans quanti_exp pour calculer la proportion
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
-  vars_quanti_expression <- all.vars(substitute(var_quanti))
+  vars_quanti_expression <- all.vars(substitute(quanti_exp))
   # On les affiche via message (pour vérification)
-  message("Variable(s) détectée(s) dans var_quanti : ", paste(vars_quanti_expression, collapse = ", "))
+  message("Variable(s) détectée(s) dans quanti_exp : ", paste(vars_quanti_expression, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W %>%
     summarise(n=unweighted(n()))
@@ -132,13 +131,13 @@ central_group <- function(data,
   after <- data_W %>%
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de var_quanti")
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W %>%
     mutate(
       "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
-      var_quanti_flattened = {{ var_quanti }} # On recalcule var_quanti dans une variable unique si c'est une expression à la base => nécessaire pour les tests stat ci-dessous
+      quanti_exp_flattened = {{ quanti_exp }} # On recalcule quanti_exp dans une variable unique si c'est une expression à la base => nécessaire pour les tests stat ci-dessous
       )
 
   # On convertit également la variable de facet en facteur si facet non-NULL
@@ -169,16 +168,16 @@ central_group <- function(data,
   # https://stackoverflow.com/questions/72384740/passing-data-variables-to-r-formulas
   # https://stackoverflow.com/questions/52856711/use-function-arguments-in-lm-formula-within-function-environment
   # Pour regTermTest => expliqué par Lumley himself : https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r
-  var_quanti_fmla <- "var_quanti_flattened" # Un string car on a créé la variable "en dur" dans la fonction
+  quanti_exp_fmla <- "quanti_exp_flattened" # Un string car on a créé la variable "en dur" dans la fonction
   if(quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(group))
-    fmla <- as.formula(paste(var_quanti_fmla, "~", group_fmla))
+    fmla <- as.formula(paste(quanti_exp_fmla, "~", group_fmla))
     fmla2 <- as.formula(paste("~", group_fmla))
   }
   # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(facet_var))
-    fmla <- as.formula(paste(var_quanti_fmla, "~", group_fmla))
+    fmla <- as.formula(paste(quanti_exp_fmla, "~", group_fmla))
     fmla2 <- as.formula(paste("~", group_fmla))
   }
 
@@ -186,21 +185,21 @@ central_group <- function(data,
     if(na.rm.group == T & type == "mean"){
       model <- svyglm(fmla, design = data_W)
       test.stat <- regTermTest(model, fmla2)
-      test.stat[["call"]] <- paste(var_quanti_fmla, " ~ ", group_fmla)
+      test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
     }
     if(na.rm.group == F & type == "mean"){
       model <- svyglm(fmla, design = data_W_NA)
       test.stat <- regTermTest(model, fmla2)
-      test.stat[["call"]] <- paste(var_quanti_fmla, " ~ ", group_fmla)
+      test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
     }
   }
   # /!\ NOTE : ça fonctionne mais j'ai peur d'utiliser eval => solution précédente choisie, qui a tout de même le pb de ne pas garder la formule dans le call
   # if(type == "median"){
   #   if(na.rm.group == T){
-  #     eval(substitute(test.stat <- svyranktest(var_quanti ~ group, design = data_W, test = "KruskalWallis")))
+  #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W, test = "KruskalWallis")))
   #   }
   #   if(na.rm.group == F){
-  #     eval(substitute(test.stat <- svyranktest(var_quanti ~ group, design = data_W_NA, test = "KruskalWallis")))
+  #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W_NA, test = "KruskalWallis")))
   #   }
   # }
   if(type == "median"){
@@ -218,7 +217,7 @@ central_group <- function(data,
       tab <- data_W %>%
         group_by({{ group }}) %>%
         cascade(
-          indice = survey_mean({{ var_quanti }}, na.rm = T, vartype = "ci"),
+          indice = survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_tot_sample = unweighted(n()),
           n_tot_weighted = survey_total(),
           .fill = total_name, # Le total
@@ -228,7 +227,7 @@ central_group <- function(data,
       tab <- data_W %>%
         group_by({{ group }}) %>%
         cascade(
-          indice = survey_median({{ var_quanti }}, na.rm = T, vartype = "ci"),
+          indice = survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_tot_sample = unweighted(n()),
           n_tot_weighted = survey_total(),
           .fill = total_name, # Le total
@@ -240,7 +239,7 @@ central_group <- function(data,
       tab <- data_W %>%
         group_by({{ facet_var }}, {{ group }}) %>%
         cascade(
-          indice = survey_mean({{ var_quanti }}, na.rm = T, vartype = "ci"),
+          indice = survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_tot_sample = unweighted(n()),
           n_tot_weighted = survey_total(),
           .fill = total_name, # Le total
@@ -251,7 +250,7 @@ central_group <- function(data,
       tab <- data_W %>%
         group_by({{ facet_var }}, {{ group }}) %>%
         cascade(
-          indice = survey_median({{ var_quanti }}, na.rm = T, vartype = "ci"),
+          indice = survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_tot_sample = unweighted(n()),
           n_tot_weighted = survey_total(),
           .fill = total_name, # Le total
@@ -348,12 +347,12 @@ central_group <- function(data,
 
   if (type == "mean") {
     graph <- graph +
-      labs(y = paste0("mean : ", deparse(substitute(var_quanti))))
+      labs(y = paste0("mean : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "median") {
     graph <- graph +
-      labs(y = paste0("median : ", deparse(substitute(var_quanti))))
+      labs(y = paste0("median : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "mean") {
@@ -389,37 +388,20 @@ central_group <- function(data,
       )
   }
 
-  #ici, comme pour prop_group, j'ai changé pour faire apparaitre ou non l'indicateur et qu'il soit en noir.-------------
-
-  if (show_ind == TRUE){
-    graph<-graph  +
-      geom_text(aes(
-        y = (indice_upp)+(.1 * max_ggplot),#empiriquement, j'ai l'impression que le 1,5 c'est bien mais c'est peut-être à changer
-        label = paste(round(indice,
-                            digits = digits),
-                      unit)),
-        vjust = 0.4,
-        hjust = 1,
-        color = "black",
-        alpha = 0.9,
-        position = position_dodge(width = dodge))
-  }
-
-  #
-  # graph <- graph +
-  #   geom_text(
-  #     aes(
-  #       y = indice - (0.01 * max_ggplot),
-  #       label = paste0(round(indice,
-  #                            digits = digits
-  #       ), unit)
-  #     ),
-  #     vjust = 0.4,
-  #     hjust = 1,
-  #     color = "white",
-  #     alpha = 0.9,
-  #     position = position_dodge(width = dodge)
-  #   )
+  graph <- graph +
+    geom_text(
+      aes(
+        y = indice - (0.01 * max_ggplot),
+        label = paste0(round(indice,
+                             digits = digits
+        ), unit)
+      ),
+      vjust = 0.4,
+      hjust = 1,
+      color = "white",
+      alpha = 0.9,
+      position = position_dodge(width = dodge)
+    )
 
   if (show_n == TRUE) {
     graph <- graph +
@@ -454,8 +436,8 @@ central_group <- function(data,
   res$graph <- graph
   res$test.stat <- test.stat
 
-  if (!is.null(file_path)) {
-    write.xlsx(tab, file_path)
+  if (!is.null(export_path)) {
+    write.xlsx(tab, export_path)
   }
 
   return(res)

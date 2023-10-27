@@ -2,7 +2,7 @@
 #'
 #' @param data
 #' @param group
-#' @param expression
+#' @param prop_exp
 #' @param facet_var
 #' @param filter_exp
 #' @param ...
@@ -18,7 +18,7 @@
 #' @param na.rm.group
 #' @param total_name
 #' @param wrap_width
-#' @param file_path
+#' @param export_path
 #'
 #' @return
 #' @import rlang
@@ -37,17 +37,17 @@
 #' @examples
 prop_group <- function(data,
                        group,
-                       expression,
+                       prop_exp,
                        facet_var = NULL,
                        filter_exp = NULL,
-                       prop_method = "beta",#possibilité de choisir la methode d'ajustement des IC, car empiriqument, j'ai eu des problèmes avec logit
+                       prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        ...,
                        unit = "%",
                        caption = NULL,
                        scale = 100,
-                       digits = 1,
+                       digits = 0,
                        show_n = FALSE,
-                       show_prop = TRUE, #possibilité de ne pas vouloir avoir les valeurs sur le graphique--------
+                       show_prop = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                        dodge = 0.9,
                        reorder = F,
                        error_bar = T,
@@ -55,7 +55,7 @@ prop_group <- function(data,
                        na.rm.group = T,
                        total_name = "Total",
                        wrap_width = 25,
-                       file_path = NULL) {
+                       export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
@@ -65,8 +65,31 @@ prop_group <- function(data,
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
 
+  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
+  # On détecte d'abord les variables entrées dans l'expression pour calculer la proportion
+  # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
+  vars_expression <- all.vars(substitute(prop_exp))
+  # On crée ensuite un vecteur string qui contient toutes les variables entrées (prop_exp, group, et facet si présente)
+  vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
+  # On ajoute facet si non-NULL
+  if(!quo_is_null(quo_facet)){
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+  }
+  # Ici la contition et le stop à proprement parler
+  if(all(vars_input_char %in% names(data)) == FALSE){
+    stop("Au moins une des variables introduites dans group, prop_exp ou facet n'est pas présente dans data")
+  }
+
+  # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
+  # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
+  names_expression <- all.names(substitute(prop_exp))
+  if("is.na" %in% names_expression){
+    stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
+  }
+
+
   # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(express_bin))")
-  # express_check <- str_extract_all((deparse(substitute(expression))), "[\\&\\|]+")[[1]]
+  # express_check <- str_extract_all((deparse(substitute(prop_exp))), "[\\&\\|]+")[[1]]
   # if(length(express_check) > 0){
   #   if(express_check %in% c("&", "&&", "|", "||")){
   #    stop("L'expression ne peut pas comprendre de conditions multiples")
@@ -107,7 +130,7 @@ prop_group <- function(data,
 
   # /!\ NOTE : méthode de filtrage pas sure ! Remplacée par version avec filtre sur "express_bin" /!\
   # # On choppe la colonne sur laquelle on calcule la proportion dans l'expression => devient un vecteur string
-  # var_prop <- str_extract((deparse(substitute(expression))), "\\w+\\b")
+  # var_prop <- str_extract((deparse(substitute(prop_exp))), "\\w+\\b")
   # # Et on filtre le data.frame pour enlever les valeurs manquantes sur cette variable => sinon ambigu : de cette façon les n par groupe sont toujours les effectifs pour lesquels la variable var_prop est non missing (et pas tout le groupe : ça on s'en fout)
   # data <- data %>%
   #   filter(!is.na(var_prop))
@@ -124,10 +147,7 @@ prop_group <- function(data,
   }
 
   # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On détecte les variables entrées dans l'expression pour calculer la proportion
-  # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
-  vars_expression <- all.vars(substitute(expression))
-  # On les affiche via message (pour vérification)
+  # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vars_expression créé au début
   message("Variable(s) détectée(s) dans l'expression : ", paste(vars_expression, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W %>%
@@ -148,7 +168,7 @@ prop_group <- function(data,
   data_W <- data_W %>%
     mutate(
       "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-      express_bin = {{ expression }}
+      express_bin = {{ prop_exp }}
     )
   # On convertit également la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
@@ -203,9 +223,9 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ group }}) %>%
       cascade(
-        prop = survey_mean({{ expression }}, na.rm = T, proportion = T,prop_method ={{prop_method}}, vartype = "ci"),###ajouter parametre indiquant le type de méthode d'estimation des CI-------------
+        prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_tot_sample = unweighted(n()),
-        n_true_weighted = survey_total({{ expression }}, na.rm = T, vartype = NULL),
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = NULL),
         n_tot_weighted = survey_total(),
         .fill = total_name, # Le total = colonne "Total"
       )
@@ -215,9 +235,9 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ facet_var }}, {{ group }}) %>%
       cascade(
-        prop = survey_mean({{ expression }}, na.rm = T, proportion = T,prop_method ={{prop_method}}, vartype = "ci"),## ajouté un parametre permettant de préciser la méthode d'estimation des intervalle de confiance-----------
+        prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_tot_sample = unweighted(n()),
-        n_true_weighted = survey_total({{ expression }}, na.rm = T, vartype = NULL),
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = NULL),
         n_tot_weighted = survey_total(),
         .fill = total_name, # Le total = colonne "Total"
       ) %>%
@@ -302,7 +322,7 @@ prop_group <- function(data,
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     coord_flip() +
-    labs(y = paste0("proportion : ", deparse(substitute(expression))),
+    labs(y = paste0("proportion : ", deparse(substitute(prop_exp))),
          caption = paste0(
            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
            "\n",
@@ -326,39 +346,19 @@ prop_group <- function(data,
       )
   }
 
-  ##ci-dessous j'ai remplacé le geomtext qui montrait le % par un autre, optionnel qui montre le % au delà de la barre.------------
-
-
-    if (show_prop == TRUE){
-    graph<-graph  +
+  if (show_prop == TRUE){
+    graph <- graph  +
       geom_text(aes(
-                    y = (prop_upp * scale)+(.2 * max_ggplot),#empiriquement, j'ai l'impression que le 1,5 c'est bien mais c'est peut-être à changer
-                    label = paste(round(prop*scale,
-                                        digits = digits),
-                                  unit)),
-                vjust = 0.4,
-                hjust = 1,
-                color = "black",
-                alpha = 0.9,
-                position = position_dodge(width = dodge))
-  }
-
-
-
-  # graph <- graph +
-  #   geom_text(
-  #     aes(
-  #       y = (prop * scale) - (0.01 * max_ggplot),
-  #       label = paste0(round(prop * scale,
-  #                            digits = digits
-  #       ), unit)
-  #     ),
-  #     vjust = 0.4,
-  #     hjust = 1,
-  #     color = "white",
-  #     alpha = 0.9,
-  #     position = position_dodge(width = dodge)
-  #   )
+        y = (prop * scale) - (0.01 * max_ggplot),
+        label = paste(round(prop*scale,
+                            digits = digits),
+                      unit)),
+        vjust = 0.4,
+        hjust = 1,
+        color = "black",
+        alpha = 0.9,
+        position = position_dodge(width = dodge))
+    }
 
   if (show_n == TRUE) {
     graph <- graph +
@@ -378,7 +378,7 @@ prop_group <- function(data,
   res$graph <- graph
   res$test.stat <- test.stat
 
-  if (!is.null(file_path)) {
+  if (!is.null(export_path)) {
     # L'export en excel
 
     # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
@@ -436,7 +436,7 @@ prop_group <- function(data,
     addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
     addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
 
-    saveWorkbook(wb, file_path, overwrite = TRUE)
+    saveWorkbook(wb, export_path, overwrite = TRUE)
   }
 
   return(res)

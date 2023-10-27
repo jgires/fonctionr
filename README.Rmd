@@ -25,6 +25,7 @@ Description à venir !
 
 ## Question du filtrage
 
+[***V C'EST FAIT***]{.underline}\
 Il semble qu'il faille absolument filtrer APRES la déclaration du design. Si on le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage.
 
 Voir :
@@ -44,7 +45,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Ajouter des checks pour les inputs :
 
-    1.  Existence des colonnes dans le dataframe ;
+    1.  Existence des colonnes dans le dataframe =\> fait pour prop_group ;
     2.  Pas mettre les mêmes colonnes dans les différents arguments (`group`, `var_distrib`, `facet_var`, etc.) ;
     3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
     4.  Autres ? =\> tester
@@ -63,6 +64,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 -   Bypasser l'erreur du test stat avec `tryCatch()` =\> déjà fait pour `crosstable()`
 -   L'argument `expression` est sans doute mal nommé. Il vaudrait mieux le nommer `prop_expr` ?
 -   Une expression qui contient `is.na(x)` ne fonctionne pas, car je supprime les `NA` sur les variables de l'expression ! =\> Exclure la possibilité d'entrer la fonction `is.na()` dans l'expression ?
+-   Néanmoins (par rapport au point précédent), ajouter la possibilité de calculer une proportion avec les NA au dénominateur (avec un argument).
 
 ## crosstable
 

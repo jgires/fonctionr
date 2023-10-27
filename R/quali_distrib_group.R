@@ -1,8 +1,8 @@
-#' crosstable : fonction pour calculer facilement des profils lignes par groupe
+#' quali_distrib_group : fonction pour calculer facilement des profils lignes par groupe
 #'
 #' @param data
 #' @param group
-#' @param var_distrib
+#' @param quali_var
 #' @param facet_var
 #' @param filter_exp
 #' @param ...
@@ -31,12 +31,11 @@
 #' @export
 #'
 #' @examples
-crosstable <- function(data,
+quali_distrib_group <- function(data,
                        group,
-                       var_distrib,
+                       quali_var,
                        facet_var = NULL,
                        filter_exp = NULL,
-                       prop_method = "beta",#possibilité de choisir la methode d'ajustement des IC, car empiriqument, j'ai eu des problèmes avec logit-----
                        ...,
                        caption = NULL,
                        show_prop = TRUE,
@@ -46,7 +45,6 @@ crosstable <- function(data,
                        pretty_pal = "Hokusai1",
                        direction = 1,
                        wrap_width = 25,
-                       legend_nmax_mod_row = 4,#j'ai ajouté une variable indiquant le nombre de modalités maximale par ligne dans la légende, mais ce n'est pas le nom idéal -------
                        na.rm = T) {
 
   # Petite fonction utile
@@ -92,7 +90,7 @@ crosstable <- function(data,
   # On supprime les NA des 2 variables si na.rm == T
   if(na.rm == T){
     data_W <- data_W %>%
-      filter(!is.na({{ group }}) & !is.na({{ var_distrib }}))
+      filter(!is.na({{ group }}) & !is.na({{ quali_var }}))
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
@@ -103,7 +101,7 @@ crosstable <- function(data,
   # On convertit en facteurs si pas facteurs
   data_W <- data_W %>%
     mutate(
-      "{{ var_distrib }}" := droplevels(as.factor({{ var_distrib }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+      "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
       "{{ group }}" := droplevels(as.factor({{ group }}))
     )
   # On convertit également la variable de facet en facteur si facet non-NULL
@@ -120,7 +118,7 @@ crosstable <- function(data,
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(fct_na_value_to_level({{ group }}, "NA")),
-             "{{ var_distrib }}" := droplevels(fct_na_value_to_level({{ var_distrib }}, "NA"))
+             "{{ quali_var }}" := droplevels(fct_na_value_to_level({{ quali_var }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
@@ -132,9 +130,9 @@ crosstable <- function(data,
   # On réalise les tests statistiques
   # NOTE : pour l'instant uniquement lorsque pas de facet => pour facet mon idée c'est une analyse loglinéaire => pas bien pigé avec survey
   if(quo_is_null(quo_facet)){
-    var_distrib_fmla <- as.character(substitute(var_distrib))
+    quali_var_fmla <- as.character(substitute(quali_var))
     group_fmla <- as.character(substitute(group))
-    fmla <- as.formula(paste("~", group_fmla, "+", var_distrib_fmla))
+    fmla <- as.formula(paste("~", group_fmla, "+", quali_var_fmla))
     if(na.rm == F){
       # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
       test.stat <- tryCatch(
@@ -162,25 +160,25 @@ crosstable <- function(data,
   # On calcule les fréquences relatives par groupe
   if(quo_is_null(quo_facet)){
     tab <- data_W %>%
-      group_by({{ group }}, {{ var_distrib }}) %>%
+      group_by({{ group }}, {{ quali_var }}) %>%
       summarise(
-        prop = survey_prop(proportion = T,prop_method ={{prop_method}}, vartype = c("ci")),#j'ai ajouté la possibilité de choisir la méthode de correstion des IC -------
+        prop = survey_prop(proportion = T, vartype = c("ci")),
         n = unweighted(n()),
         n_weighted = survey_total()
       )
   }
   if(!quo_is_null(quo_facet)){
     tab <- data_W %>%
-      group_by({{ facet_var }}, {{ group }}, {{ var_distrib }}) %>%
+      group_by({{ facet_var }}, {{ group }}, {{ quali_var }}) %>%
       summarise(
-        prop = survey_prop(proportion = T,prop_method ={{prop_method}}, vartype = c("ci")),#j'ai ajouté la possibilité de choisir la méthode de correstion des IC -------
+        prop = survey_prop(proportion = T, vartype = c("ci")),
         n = unweighted(n()),
         n_weighted = survey_total()
       )
   }
 
   # On crée la palette avecle package met.brewer
-  palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(var_distrib))]])), type = "continuous", direction = direction))
+  palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
 
   # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
   levels <- c(
@@ -198,14 +196,12 @@ crosstable <- function(data,
     levels <- levels[!is.na(levels)]
   }
 
-  n_lev<- nlevels(as.factor(tab[[deparse(substitute(var_distrib))]]))###on identifie le nombre de modalités dans la variable
-
   # On crée le graphique
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
       y = prop,
-      fill = {{ var_distrib }}
+      fill = {{ quali_var }}
     )) +
     geom_bar(
       width = dodge,
@@ -220,7 +216,7 @@ crosstable <- function(data,
       panel.grid.major.x = element_line(color = "#dddddd"),
       legend.position = "bottom"
     ) +
-    ylab(paste0("distribution : ", deparse(substitute(var_distrib)))) +
+    ylab(paste0("distribution : ", deparse(substitute(quali_var)))) +
     scale_fill_manual(values = palette,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +
@@ -230,7 +226,6 @@ crosstable <- function(data,
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
-    guides (fill = guide_legend(nrow = ceiling(n_lev/{{legend_nmax_mod_row}}))) + ##ici, j'ai la ligne qui indique le nombre de modalités maximal par ligne dans la légende
     coord_flip()
 
   if (!quo_is_null(quo_facet)) {
