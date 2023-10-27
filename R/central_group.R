@@ -11,6 +11,7 @@
 #' @param caption
 #' @param digits
 #' @param show_n
+#' @param show_value
 #' @param dodge
 #' @param reorder
 #' @param error_bar
@@ -45,6 +46,7 @@ central_group <- function(data,
                           caption = NULL,
                           digits = 1,
                           show_n = FALSE,
+                          show_value = TRUE,
                           dodge = 0.9,
                           reorder = F,
                           error_bar = T,
@@ -62,6 +64,26 @@ central_group <- function(data,
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
+
+  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
+  # On détecte d'abord les variables entrées dans l'expression pour calculer la moyenne/médiane
+  # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
+  vars_expression <- all.vars(substitute(quanti_exp))
+  # On crée ensuite un vecteur string qui contient toutes les variables entrées
+  vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
+  # On ajoute facet si non-NULL
+  if(!quo_is_null(quo_facet)){
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+  }
+  # On ajoute filter si non-NULL
+  if(!quo_is_null(quo_filter)){
+    vars_filter <- all.vars(substitute(filter_exp))
+    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+  }
+  # Ici la contition et le stop à proprement parler
+  if(all(vars_input_char %in% names(data)) == FALSE){
+    stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet n'est pas présente dans data")
+  }
 
   if(type == "mean" & is.null(fill)){
     fill <- "deeppink3"
@@ -347,12 +369,12 @@ central_group <- function(data,
 
   if (type == "mean") {
     graph <- graph +
-      labs(y = paste0("mean : ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("mean: ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "median") {
     graph <- graph +
-      labs(y = paste0("median : ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("median: ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "mean") {
@@ -361,7 +383,7 @@ central_group <- function(data,
         caption = paste0(
           caption,
           "\n",
-          "GLM : ", pvalue(test.stat$p[1], add_p = T)
+          "GLM: ", pvalue(test.stat$p[1], add_p = T)
         )
       )
   }
@@ -369,7 +391,7 @@ central_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Kruskal Wallis : ", pvalue(test.stat$p.value[1], add_p = T),
+          "Kruskal Wallis: ", pvalue(test.stat$p.value[1], add_p = T),
           "\n",
           caption
         )
@@ -388,20 +410,21 @@ central_group <- function(data,
       )
   }
 
-  graph <- graph +
-    geom_text(
-      aes(
-        y = indice - (0.01 * max_ggplot),
-        label = paste0(round(indice,
-                             digits = digits
-        ), unit)
-      ),
-      vjust = 0.4,
-      hjust = 1,
-      color = "white",
-      alpha = 0.9,
-      position = position_dodge(width = dodge)
-    )
+  if (show_value == TRUE){
+    graph<-graph  +
+      geom_text(aes(
+        #y = indice - (0.01 * max_ggplot),
+        label = paste(round(indice,
+                            digits = digits),
+                      unit)),
+        vjust = 0.4,
+        #hjust = 0,
+        size = 4,
+        color = "white",
+        alpha = 0.9,
+        position = position_stack(vjust = .5))
+        #position = position_dodge(width = dodge))
+    }
 
   if (show_n == TRUE) {
     graph <- graph +
@@ -411,8 +434,10 @@ central_group <- function(data,
           label = paste0("n=", n_tot_sample)
         ),
         alpha = 0.7,
-        hjust = 0
-      ) # Justifié à droite
+        size = 3,
+        hjust = 0, # Justifié à droite
+        vjust = 2
+      )
   }
 
   # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée

@@ -17,6 +17,7 @@ central_group(
   caption = NULL,
   digits = 1,
   show_n = FALSE,
+  show_value = TRUE,
   dodge = 0.9,
   reorder = F,
   error_bar = T,

@@ -2,30 +2,35 @@
 % Please edit documentation in R/quali_distrib.R
 \name{quali_distrib}
 \alias{quali_distrib}
-\title{quali_distrib : fonction pour réaliser facilement un grpahique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe}
+\title{quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe}
 \usage{
 quali_distrib(
   data,
   quali_var,
   facet_var = NULL,
   filter_exp = NULL,
+  ...,
   na.rm = T,
   fill = "deepskyblue3",
   show_n = FALSE,
   show_prop = TRUE,
+  scale = 100,
+  dodge = 0.9,
   prop_method = "beta",
+  unit = "\%",
+  error_bar = T,
   title = NULL,
   subtitle = NULL,
   ylab = NULL,
-  labs = TRUE,
+  show_labs = TRUE,
   font = "Arial",
   digits = 0,
-  ...
+  wrap_width = 25
 )
 }
 \arguments{
-\item{...}{}
+\item{wrap_width}{}
 }
 \description{
-quali_distrib : fonction pour réaliser facilement un grpahique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
+quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
 }

@@ -25,7 +25,7 @@ Description à venir !
 
 ## Question du filtrage
 
-[***V C'EST FAIT***]{.underline}\
+[***X C'EST FAIT***]{.underline}\
 Il semble qu'il faille absolument filtrer APRES la déclaration du design. Si on le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage.
 
 Voir :
@@ -34,8 +34,7 @@ Voir :
 
 -   <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
 
-De ce fait, j'ai inclu une option de filtre (`filter_exp`) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design.\
-=\> Vérifier que c'est bien OK !
+    -   De ce fait, j'ai inclu une option de filtre (`filter_exp`) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK !
 
 ## Question de la suppression des valeurs manquantes
 
@@ -45,7 +44,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Ajouter des checks pour les inputs :
 
-    1.  Existence des colonnes dans le dataframe =\> fait pour prop_group ;
+    1.  [***X C'EST FAIT***]{.underline} Existence des colonnes dans le dataframe ;
     2.  Pas mettre les mêmes colonnes dans les différents arguments (`group`, `var_distrib`, `facet_var`, etc.) ;
     3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
     4.  Autres ? =\> tester
@@ -54,43 +53,66 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Les cluster \| strates \| weights n'apparaissent pas dans le message de la console avec les replicates =\> trouver la cause ? Ou changer de méthode =\> faire un print de l'objet survey affiche les caractéristiques du design =\> bcp mieux, mais je ne saisis pas comment c'est fait.
 
--   ajouter n_weight_upp et n_weight_low
+-   Ajouter `n_weight_upp` et `n_weight_low`
 
--   harmoniser les thèmes (axes, etc.)
+-   Harmoniser les thèmes (axes, etc.)
 
 -   Ajouter des polices (dont Montserrat)
 
--   Ajouter l'argument show_labs + les argument de labels
+-   Ajouter l'argument `show_labs` + les argument de labels
 
--   Où mettre le % dans les différents fonctions (dans la barre mais avec un if pour quand la barre est trop petite)
+-   Où mettre le % dans les différentes fonctions (dans la barre mais avec un if pour quand la barre est trop petite)
 
--   bien mettre le n = (en dessous de la barre)
+-   Bien mettre le n = (en dessous de la barre)
 
--   Ajouter les trucs que François avait modifié dans les fonctions de Joël
+    -   tentative mais marche pas à tous les coups
+
+-   [***X C'EST FAIT***]{.underline} Ajouter les trucs que François avait modifié dans les fonctions de Joël
 
 ## central_group
 
--   Bypasser l'erreur du test stat avec `tryCatch()` =\> déjà fait pour `crosstable()`
+-   Bypasser l'erreur du test stat avec `tryCatch()`
+    -   déjà fait pour `crosstable()`, à faire pour les autres
 -   Implémenter l'export excel comme pour `prop_group` =\> pas oublier d'ajouter `broom` dans les dépendances
 
 ## prop_group
 
--   Bypasser l'erreur du test stat avec `tryCatch()` =\> déjà fait pour `crosstable()`
--   L'argument `expression` est sans doute mal nommé. Il vaudrait mieux le nommer `prop_expr` ?
--   Une expression qui contient `is.na(x)` ne fonctionne pas, car je supprime les `NA` sur les variables de l'expression ! =\> Exclure la possibilité d'entrer la fonction `is.na()` dans l'expression ?
--   Néanmoins (par rapport au point précédent), ajouter la possibilité de calculer une proportion avec les NA au dénominateur (avec un argument).
+-   Bypasser l'erreur du test stat avec `tryCatch()`
+    -   déjà fait pour `crosstable()`, à faire pour les autres
+-   [***X C'EST FAIT***]{.underline} Une expression qui contient `is.na(x)` ne fonctionne pas, car je supprime les `NA` sur les variables de l'expression ! =\> Exclure la possibilité d'entrer la fonction `is.na()` dans l'expression
+    -   Tentative pour que ça marche : est-ce que le code est safe ?
 
-## crosstable
+## quali_distrib_group
 
 -   Implémenter un test stat lorsqu'il y a des facet =\> via modélisation loglinéaire, mais j'ai un peu de mal avec `survey` (erreurs fréquentes).
 
 -   Implémenter l'export excel comme pour `prop_group` =\> pas oublier d'ajouter `broom` dans les dépendances
 
+## quali_distrib
+
+-   Ajouter un test
+
+-   Ajouter un filtre
+
+    -   C'est fait, mais il faut ajouter des conditions d'arret si certain caractères ne fontionnent pas <!--# J'ai ajouté un stop si les variables de filtre n'existent pas dans data, c'est ce que tu voulais dire ? -->
+
+-   Quid des NA ? couleur distincte? Si oui à faire <!--# Je l'ai fait, comme pour les autres fonctions : NA en gris clair -->
+
+-   Quid des NA dans les facets? Les supprimer? faire une catégorie à part? Actuellement, il en fait une catégorie à part. <!--# J'ai ajouté : si on met na.rm = T alors ça supprime aussi sur les facet, car laisser le NA sur facet et pas sur quali_var est étrange -->
+
+-   Concernant le réordonne ment des modalités, le choix a été fait de ne pas laisser la possibilité de réordonner. <!--# J'ai ajouté l'option. Il fallait bouger le NA en bas, ce qui demandait la même chose que pour réordonner les catégories => autant le faire aussi -->
+
+-   Exporter en excel
+
+-   Mettre les n et positionner à gauche
+
+    -   C'est fait, mais comment représenter quand la part est trop faible. et, est-ce pertinent? Faut-il ne pas plutôt mettre la totalité du n
+
 # Améliorations
 
 ## En général
 
--   Créer une fonction pour transformer les données en objet srvyr (redondance entre les 3 fonctions)
+-   Créer une fonction pour transformer les données en objet srvyr (redondance entre les 4 fonctions)
 
 ## central_group
 
@@ -111,26 +133,6 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 -   possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institition
 
 -   ajuster la légende (nombre de lignes?) pour éviter de masquer une partie de celle-ci <!--# J'ai souvent eu le cas. Même si c'est un détail, cela rend impossible l'utilisation du grpahique propre dans un rapport -->
-
-## quali_distrib
-
--   ajouter un test
-
--   ajouter un filtre
-
-    -   c'est fait, mais il faut ajouter des conditions d'arret si certain caractères ne fontionnent pas
-
--   quid des NA ? couleur distincte? Si oui à faire
-
--   quid des NA dans les facets? Les supprimer? faire une catégorie à part? Actuellement, il en fait une catégorie à part.
-
--   Concernant le réordonne ment des modalités, le choix a été fait de ne pas laisser la possibilité de réordonner.
-
--   Exporter
-
--   mettre les n et positionner à gauche
-
-    -   C'est fait, mais comment représenter quand la part est trop faible. et, est-ce pertinent? Faut-il ne pas plutôt mettre la totalité du n
 
 # Fonctions à créer
 

@@ -5,6 +5,7 @@
 #' @param quali_var
 #' @param facet_var
 #' @param filter_exp
+#' @param prop_method
 #' @param ...
 #' @param caption
 #' @param show_prop
@@ -14,6 +15,7 @@
 #' @param pretty_pal
 #' @param direction
 #' @param wrap_width
+#' @param legend_ncol
 #' @param na.rm
 #'
 #' @return
@@ -32,20 +34,22 @@
 #'
 #' @examples
 quali_distrib_group <- function(data,
-                       group,
-                       quali_var,
-                       facet_var = NULL,
-                       filter_exp = NULL,
-                       ...,
-                       caption = NULL,
-                       show_prop = TRUE,
-                       unit = "",
-                       digits = 0,
-                       dodge = 0.9,
-                       pretty_pal = "Hokusai1",
-                       direction = 1,
-                       wrap_width = 25,
-                       na.rm = T) {
+                                group,
+                                quali_var,
+                                facet_var = NULL,
+                                filter_exp = NULL,
+                                prop_method = "beta",
+                                ...,
+                                caption = NULL,
+                                show_prop = TRUE,
+                                unit = "",
+                                digits = 0,
+                                dodge = 0.9,
+                                pretty_pal = "Hokusai1",
+                                direction = 1,
+                                wrap_width = 25,
+                                legend_ncol = 4,
+                                na.rm = T) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
@@ -54,6 +58,30 @@ quali_distrib_group <- function(data,
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
+
+  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
+  # On crée un vecteur string qui contient toutes les variables entrées
+  vars_input_char <- c(as.character(substitute(quali_var)), as.character(substitute(group)))
+  # On ajoute facet si non-NULL
+  if(!quo_is_null(quo_facet)){
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+  }
+  # On ajoute filter si non-NULL
+  if(!quo_is_null(quo_filter)){
+    vars_filter <- all.vars(substitute(filter_exp))
+    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+  }
+  # Ici la contition et le stop à proprement parler
+  if(all(vars_input_char %in% names(data)) == FALSE){
+    stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet n'est pas présente dans data")
+  }
+
+  # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
+  # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
+  names_expression <- all.names(substitute(prop_exp))
+  if("is.na" %in% names_expression){
+    stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
+  }
 
   # On convertit d'abord en objet srvyr
   # Si objet survey (avec replicates ou non)
@@ -162,7 +190,7 @@ quali_distrib_group <- function(data,
     tab <- data_W %>%
       group_by({{ group }}, {{ quali_var }}) %>%
       summarise(
-        prop = survey_prop(proportion = T, vartype = c("ci")),
+        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
         n = unweighted(n()),
         n_weighted = survey_total()
       )
@@ -171,7 +199,7 @@ quali_distrib_group <- function(data,
     tab <- data_W %>%
       group_by({{ facet_var }}, {{ group }}, {{ quali_var }}) %>%
       summarise(
-        prop = survey_prop(proportion = T, vartype = c("ci")),
+        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
         n = unweighted(n()),
         n_weighted = survey_total()
       )
@@ -216,7 +244,7 @@ quali_distrib_group <- function(data,
       panel.grid.major.x = element_line(color = "#dddddd"),
       legend.position = "bottom"
     ) +
-    ylab(paste0("distribution : ", deparse(substitute(quali_var)))) +
+    ylab(paste0("distribution: ", deparse(substitute(quali_var)))) +
     scale_fill_manual(values = palette,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +
@@ -226,6 +254,7 @@ quali_distrib_group <- function(data,
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
+    guides(fill = guide_legend(ncol = legend_ncol)) +
     coord_flip()
 
   if (!quo_is_null(quo_facet)) {
@@ -237,7 +266,7 @@ quali_distrib_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
+          "Chi2: ", pvalue(test.stat$p.value, add_p = T),
           "\n",
           caption
         )
@@ -247,7 +276,7 @@ quali_distrib_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Khi2 d'indépendance : conditions non remplies",
+          "Chi2: conditions not met",
           "\n",
           caption
         )

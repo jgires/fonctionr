@@ -10,6 +10,7 @@ quali_distrib_group(
   quali_var,
   facet_var = NULL,
   filter_exp = NULL,
+  prop_method = "beta",
   ...,
   caption = NULL,
   show_prop = TRUE,
@@ -19,6 +20,7 @@ quali_distrib_group(
   pretty_pal = "Hokusai1",
   direction = 1,
   wrap_width = 25,
+  legend_ncol = 4,
   na.rm = T
 )
 }

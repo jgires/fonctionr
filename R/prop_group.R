@@ -5,12 +5,14 @@
 #' @param prop_exp
 #' @param facet_var
 #' @param filter_exp
+#' @param prop_method
 #' @param ...
 #' @param unit
 #' @param caption
 #' @param scale
 #' @param digits
 #' @param show_n
+#' @param show_prop
 #' @param dodge
 #' @param reorder
 #' @param error_bar
@@ -69,15 +71,20 @@ prop_group <- function(data,
   # On détecte d'abord les variables entrées dans l'expression pour calculer la proportion
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
   vars_expression <- all.vars(substitute(prop_exp))
-  # On crée ensuite un vecteur string qui contient toutes les variables entrées (prop_exp, group, et facet si présente)
+  # On crée ensuite un vecteur string qui contient toutes les variables entrées
   vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
     vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
   }
+  # On ajoute filter si non-NULL
+  if(!quo_is_null(quo_filter)){
+    vars_filter <- all.vars(substitute(filter_exp))
+    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+  }
   # Ici la contition et le stop à proprement parler
   if(all(vars_input_char %in% names(data)) == FALSE){
-    stop("Au moins une des variables introduites dans group, prop_exp ou facet n'est pas présente dans data")
+    stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet n'est pas présente dans data")
   }
 
   # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
@@ -245,10 +252,10 @@ prop_group <- function(data,
   }
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey20")
+  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey50")
 
   # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(tab$prop*100, na.rm = TRUE)
+  max_ggplot <- max(tab$prop, na.rm = TRUE)
 
   if (reorder == T & quo_is_null(quo_facet)) {
     # On crée un vecteur pour ordonner les levels de group selon prop, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
@@ -292,7 +299,7 @@ prop_group <- function(data,
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
-      y = prop * scale,
+      y = prop,
       fill = {{ group }}
     )) +
     geom_bar(
@@ -313,7 +320,7 @@ prop_group <- function(data,
       na.value = "grey"
     ) +
     scale_y_continuous(
-      labels = scales::label_percent(scale = 100 / scale),
+      labels = scales::label_percent(scale = 100),
       limits = function(x) {
         c(min(x), max(x))
       },
@@ -322,9 +329,9 @@ prop_group <- function(data,
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     coord_flip() +
-    labs(y = paste0("proportion : ", deparse(substitute(prop_exp))),
+    labs(y = paste0("proportion: ", deparse(substitute(prop_exp))),
          caption = paste0(
-           "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
+           "Chi2: ", pvalue(test.stat$p.value, add_p = T),
            "\n",
            caption
            )
@@ -337,7 +344,7 @@ prop_group <- function(data,
 
   if (error_bar == T) {
     graph <- graph +
-      geom_errorbar(aes(ymin = prop_low * scale, ymax = prop_upp * scale),
+      geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
                     width = dodge * 0.25,
                     colour = "black",
                     alpha = 0.5,
@@ -349,15 +356,17 @@ prop_group <- function(data,
   if (show_prop == TRUE){
     graph <- graph  +
       geom_text(aes(
-        y = (prop * scale) - (0.01 * max_ggplot),
-        label = paste(round(prop*scale,
+        #y = (prop) + (0.01 * max_ggplot),
+        label = paste0(round(prop * scale,
                             digits = digits),
                       unit)),
         vjust = 0.4,
-        hjust = 1,
-        color = "black",
+        #hjust = 0,
+        size = 4,
+        color = "white",
         alpha = 0.9,
-        position = position_dodge(width = dodge))
+        position = position_stack(vjust = .5))
+        # position = position_dodge(width = dodge))
     }
 
   if (show_n == TRUE) {
@@ -368,7 +377,9 @@ prop_group <- function(data,
           label = paste0("n=", n_tot_sample)
         ),
         alpha = 0.7,
-        hjust = 0 # Justifié à droite
+        size = 3,
+        hjust = 0, # Justifié à droite
+        vjust = 2
       )
   }
 
