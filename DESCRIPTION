@@ -2,7 +2,9 @@ Package: fonctionr
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Authors@R: person("Joël", "Girès", email = "jgires@ccc.brussels", role = c("aut", "cre"))
+Authors@R: 
+    c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
+    person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
 Description: Package pour faire des analyses facile sur base de données d'enquête.
 License: GPL-3
 Encoding: UTF-8
