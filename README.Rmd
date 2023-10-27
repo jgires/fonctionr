@@ -54,6 +54,20 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Les cluster \| strates \| weights n'apparaissent pas dans le message de la console avec les replicates =\> trouver la cause ? Ou changer de méthode =\> faire un print de l'objet survey affiche les caractéristiques du design =\> bcp mieux, mais je ne saisis pas comment c'est fait.
 
+-   ajouter n_weight_upp et n_weight_low
+
+-   harmoniser les thèmes (axes, etc.)
+
+-   Ajouter des polices (dont Montserrat)
+
+-   Ajouter l'argument show_labs + les argument de labels
+
+-   Où mettre le % dans les différents fonctions (dans la barre mais avec un if pour quand la barre est trop petite)
+
+-   bien mettre le n = (en dessous de la barre)
+
+-   Ajouter les trucs que François avait modifié dans les fonctions de Joël
+
 ## central_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()` =\> déjà fait pour `crosstable()`
@@ -76,8 +90,6 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 ## En général
 
--   Ajouter la possibilité de créer des replicates sur base d'un data.frame ? <!--# FR : Franchement, je ne crois pas que ce soit utile, car cela n'arrive pas si souvent et si c'est le cas, il faut bien réfléchir avant à comment créer les replicates (ex SILC) et donc je pense qu'alors c'est en amont qu'il faut créer les replicates. En plus comme créer les replicate prend du temps, c'est un beu bête de le faire à chaque fois -->
-
 -   Créer une fonction pour transformer les données en objet srvyr (redondance entre les 3 fonctions)
 
 ## central_group
@@ -88,7 +100,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
 
-## crosstable
+## quali_distrib_group
 
 -   Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\> comment faire vu qu'il y a la palette de couleur des modalités ? <!--# FR : idée : utiliser des textures? hachures?  -->
 
@@ -100,7 +112,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   ajuster la légende (nombre de lignes?) pour éviter de masquer une partie de celle-ci <!--# J'ai souvent eu le cas. Même si c'est un détail, cela rend impossible l'utilisation du grpahique propre dans un rapport -->
 
-## var_cat
+## quali_distrib
 
 -   ajouter un test
 
