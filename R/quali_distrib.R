@@ -1,12 +1,20 @@
 
-#' quali_distrib : fonction pour réaliser facilement un grpahique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
+#' quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
 #'
 #' @param data
 #' @param quali_var
-#' @param reorder
+#' @param facet_var
+#' @param filter_exp
 #' @param na.rm
+#' @param fill
+#' @param show_n
+#' @param show_prop
 #' @param title
-#' @param xlabel
+#' @param subtitle
+#' @param ylab
+#' @param show_labs
+#' @param font
+#' @param digits
 #' @param ...
 #'
 #' @return
@@ -32,7 +40,7 @@ quali_distrib <- function(data,#données en format srvyr
                     title = NULL, # le titre du graphique
                     subtitle = NULL,
                     ylab = NULL,# le nom de l'axe de la variable catégorielle
-                    labs = TRUE,
+                    show_labs = TRUE,
                     font ="Arial", #quelle font par défaut?
                     digits = 0,
                     ...
@@ -161,7 +169,7 @@ quali_distrib <- function(data,#données en format srvyr
 
 #ajouter les axes au besoins
 
-  if(labs == TRUE){
+  if(show_labs == TRUE){
     graph<-graph+
     labs(title = title,
          subtitle = subtitle,
@@ -170,7 +178,7 @@ quali_distrib <- function(data,#données en format srvyr
                     paste("Distribution :",deparse(substitute (quali_var))),
                     ylab))
 }
-  if(labs == FALSE){
+  if(show_labs == FALSE){
     graph<-graph+
       labs(x = NULL,
            y = NULL)
