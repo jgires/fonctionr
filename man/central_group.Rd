@@ -9,7 +9,7 @@
 central_group(
   data,
   group,
-  var_quanti,
+  quanti_exp,
   facet_var = NULL,
   filter_exp = NULL,
   ...,
@@ -25,7 +25,7 @@ central_group(
   na.rm.group = T,
   total_name = "Total",
   wrap_width = 25,
-  file_path = NULL
+  export_path = NULL
 )
 
 median_group(..., type = "median")
@@ -33,7 +33,7 @@ median_group(..., type = "median")
 mean_group(..., type = "mean")
 }
 \arguments{
-\item{file_path}{}
+\item{export_path}{}
 }
 \description{
 central_group : fonction pour calculer facilement des tendances centrales par groupe

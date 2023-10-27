@@ -7,15 +7,17 @@
 prop_group(
   data,
   group,
-  expression,
+  prop_exp,
   facet_var = NULL,
   filter_exp = NULL,
+  prop_method = "beta",
   ...,
   unit = "\%",
   caption = NULL,
   scale = 100,
-  digits = 1,
+  digits = 0,
   show_n = FALSE,
+  show_prop = TRUE,
   dodge = 0.9,
   reorder = F,
   error_bar = T,
@@ -23,11 +25,11 @@ prop_group(
   na.rm.group = T,
   total_name = "Total",
   wrap_width = 25,
-  file_path = NULL
+  export_path = NULL
 )
 }
 \arguments{
-\item{file_path}{}
+\item{export_path}{}
 }
 \description{
 prop_group : fonction pour calculer facilement des pourcentages par groupe
