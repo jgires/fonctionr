@@ -1,0 +1,24 @@
+Package: fonctionr
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Authors@R: person("Joël", "Girès", email = "jgires@ccc.brussels", role = c("aut", "cre"))
+Description: Package pour faire des analyses facile sur base de données d'enquête.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    forcats,
+    ggplot2,
+    MetBrewer,
+    openxlsx,
+    rlang,
+    scales,
+    srvyr,
+    stats,
+    stringr,
+    survey,
+    tidyr,
+    broom
+RoxygenNote: 7.2.3
