@@ -30,6 +30,7 @@
 #' @import forcats
 #' @import stringr
 #' @import openxlsx
+#' @import broom
 #' @export
 #'
 #' @examples
