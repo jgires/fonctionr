@@ -12,7 +12,7 @@
 #' @param scale
 #' @param digits
 #' @param show_n
-#' @param show_prop
+#' @param show_value
 #' @param dodge
 #' @param reorder
 #' @param error_bar
@@ -34,6 +34,8 @@
 #' @import stringr
 #' @import openxlsx
 #' @import broom
+#' @import showtext
+#' @import sysfonts
 #' @export
 #'
 #' @examples
@@ -49,18 +51,23 @@ prop_group <- function(data,
                        scale = 100,
                        digits = 0,
                        show_n = FALSE,
-                       show_prop = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                        dodge = 0.9,
                        reorder = F,
                        error_bar = T,
                        fill = "deepskyblue3",
                        na.rm.group = T,
                        total_name = "Total",
+                       font ="Montserrat",
                        wrap_width = 25,
                        export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
+
+  # On ajoute les polices contenues dans le package et on les active
+  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -252,9 +259,9 @@ prop_group <- function(data,
   }
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey50")
+  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
 
-  # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
+  # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
   if (reorder == T & quo_is_null(quo_facet)) {
@@ -313,6 +320,7 @@ prop_group <- function(data,
       panel.grid.minor.x = element_line(color = "#dddddd"),
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
+      text = element_text(family = font),
       legend.position = "none"
     ) +
     scale_fill_manual(
@@ -321,17 +329,15 @@ prop_group <- function(data,
     ) +
     scale_y_continuous(
       labels = scales::label_percent(scale = 100),
-      limits = function(x) {
-        c(min(x), max(x))
-      },
+      limits = function(x) { c(min(x), max(x)) },
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     coord_flip() +
-    labs(y = paste0("proportion: ", deparse(substitute(prop_exp))),
+    labs(y = paste0("proportion : ", deparse(substitute(prop_exp))),
          caption = paste0(
-           "Chi2: ", pvalue(test.stat$p.value, add_p = T),
+           "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
            "\n",
            caption
            )
@@ -345,7 +351,7 @@ prop_group <- function(data,
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
-                    width = dodge * 0.25,
+                    width = dodge * 0.05,
                     colour = "black",
                     alpha = 0.5,
                     linewidth = 0.5,
@@ -353,33 +359,37 @@ prop_group <- function(data,
       )
   }
 
-  if (show_prop == TRUE){
-    graph <- graph  +
-      geom_text(aes(
-        #y = (prop) + (0.01 * max_ggplot),
-        label = paste0(round(prop * scale,
-                            digits = digits),
-                      unit)),
-        vjust = 0.4,
-        #hjust = 0,
-        size = 4,
-        color = "white",
+  if (show_value == TRUE) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = (prop) + (0.01 * max_ggplot),
+          label = paste0(round(prop * scale,
+                               digits = digits),
+                         unit),
+          family = font),
+        vjust = ifelse(error_bar == T,
+                       -0.3,
+                       0.5),
+        hjust = 0,
+        color = "black",
         alpha = 0.9,
-        position = position_stack(vjust = .5))
-        # position = position_dodge(width = dodge))
-    }
+        # position = position_stack(vjust = .5))
+        position = position_dodge(width = dodge)
+      )
+  }
 
   if (show_n == TRUE) {
     graph <- graph +
       geom_text(
         aes(
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n_tot_sample)
-        ),
-        alpha = 0.7,
+          label = paste0("n=", n_tot_sample),
+          family = font),
         size = 3,
+        alpha = 0.7,
         hjust = 0, # Justifié à droite
-        vjust = 2
+        vjust = 0.4
       )
   }
 

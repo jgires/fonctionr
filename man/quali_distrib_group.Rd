@@ -13,7 +13,7 @@ quali_distrib_group(
   prop_method = "beta",
   ...,
   caption = NULL,
-  show_prop = TRUE,
+  show_value = TRUE,
   unit = "",
   digits = 0,
   dodge = 0.9,

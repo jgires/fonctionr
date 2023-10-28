@@ -13,7 +13,8 @@ quali_distrib(
   na.rm = T,
   fill = "deepskyblue3",
   show_n = FALSE,
-  show_prop = TRUE,
+  show_value = TRUE,
+  reorder = FALSE,
   scale = 100,
   dodge = 0.9,
   prop_method = "beta",
@@ -23,7 +24,7 @@ quali_distrib(
   subtitle = NULL,
   ylab = NULL,
   show_labs = TRUE,
-  font = "Arial",
+  font = "Montserrat",
   digits = 0,
   wrap_width = 25
 )

@@ -25,6 +25,7 @@ central_group(
   fill = NULL,
   na.rm.group = T,
   total_name = "Total",
+  font = "Montserrat",
   wrap_width = 25,
   export_path = NULL
 )

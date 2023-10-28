@@ -17,13 +17,14 @@ prop_group(
   scale = 100,
   digits = 0,
   show_n = FALSE,
-  show_prop = TRUE,
+  show_value = TRUE,
   dodge = 0.9,
   reorder = F,
   error_bar = T,
   fill = "deepskyblue3",
   na.rm.group = T,
   total_name = "Total",
+  font = "Montserrat",
   wrap_width = 25,
   export_path = NULL
 )

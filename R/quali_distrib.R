@@ -9,7 +9,7 @@
 #' @param na.rm
 #' @param fill
 #' @param show_n
-#' @param show_prop
+#' @param show_value
 #' @param reorder
 #' @param scale
 #' @param dodge
@@ -25,45 +25,51 @@
 #' @param wrap_width
 #'
 #' @return
+#' @import rlang
 #' @import ggplot2
+#' @import stringr
 #' @import survey
 #' @import srvyr
+#' @import scales
 #' @import dplyr
-#' @import forcats
-#'
+#' @import showtext
+#' @import sysfonts
 #' @export
 #'
 #' @examples
 
-quali_distrib <- function(data, # données en format srvyr
-                          quali_var, # variable catégorielle
+quali_distrib <- function(data, # Données en format srvyr
+                          quali_var, # Variable catégorielle
                           facet_var = NULL,
                           filter_exp = NULL,
                           ...,
                           na.rm = T,
                           fill = "deepskyblue3",
                           show_n = FALSE,
-                          show_prop = TRUE,
+                          show_value = TRUE,
                           reorder = FALSE,
                           scale = 100,
                           dodge = 0.9,
-                          prop_method = "beta", # possibilité de choisir la methode d'ajustement des IC, car empiriqument, j'ai eu des problèmes avec logit
+                          prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                           unit = "%",
                           error_bar = T,
-                          title = NULL, # le titre du graphique
+                          title = NULL, # Le titre du graphique
                           subtitle = NULL,
-                          ylab = NULL, # le nom de l'axe de la variable catégorielle
+                          ylab = NULL, # Le nom de l'axe de la variable catégorielle
                           show_labs = TRUE,
-                          font ="Arial", # quelle font par défaut?
+                          font ="Montserrat", # Quelle font par défaut?
                           digits = 0,
                           wrap_width = 25) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
 
-  extrafont::loadfonts(quiet = TRUE) # charger les fonts. Peut-être ajouter extrafont dans les package nécessaires si ce n'est déjà fait -------
+  # On ajoute les polices contenues dans le package et on les active
+  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
 
@@ -110,7 +116,7 @@ quali_distrib <- function(data, # données en format srvyr
 
   message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
 
-  # Appliquer l'éventuel filtre
+  # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
     data_W <- data_W %>%
       filter({{ filter_exp }})
@@ -141,6 +147,7 @@ quali_distrib <- function(data, # données en format srvyr
 
   # Faire la table ------------------
 
+  # On calcule les fréquences relatives
   if (quo_is_null(quo_facet)) {
     table <- data_W %>%
       group_by({{ quali_var }}) %>%
@@ -158,10 +165,10 @@ quali_distrib <- function(data, # données en format srvyr
 
   # Faire le graphique ---------------
 
-  # On crée la palette : x fois le bleu selon le nombre de levels
+  # On crée la palette : x fois la couleur selon le nombre de levels
   palette <- c(rep(fill, nlevels(table[[deparse(substitute(quali_var))]])))
 
-  # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
+  # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(table$prop, na.rm = TRUE)
 
   if (reorder == T & quo_is_null(quo_facet)) {
@@ -195,10 +202,10 @@ quali_distrib <- function(data, # données en format srvyr
 
   # Le graphique proprement dit
   graph <- table %>%
-    ggplot(
-      aes(x = {{ quali_var }},
-          y = prop,
-          fill = {{ quali_var }})
+    ggplot(aes(
+      x = {{ quali_var }},
+      y = prop,
+      fill = {{ quali_var }})
       ) +
     geom_bar(
       width = dodge,
@@ -210,9 +217,7 @@ quali_distrib <- function(data, # données en format srvyr
       ) +
     scale_y_continuous(
       labels = scales::label_percent(scale = 100),
-      limits = function(x) {
-        c(min(x), max(x))
-      },
+      limits = function(x) { c(min(x), max(x)) },
       expand = expansion(mult = c(.01, .05))
       ) +
     scale_x_discrete(
@@ -252,7 +257,7 @@ quali_distrib <- function(data, # données en format srvyr
     }
 
   # Ajouter les IC si error_bar == T
-  if (error_bar == T) {
+  if(error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low,
                         ymax = prop_upp),
@@ -265,7 +270,7 @@ quali_distrib <- function(data, # données en format srvyr
     }
 
   # Ajouter les prop au besoin
-  if(show_prop == TRUE){
+  if(show_value == TRUE){
     graph <- graph +
       geom_text(
         aes(y = prop_upp + (0.1 * max_ggplot), ###j'ai l'impression que le 1, c'est bon, mais c'est à vérifier

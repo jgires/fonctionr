@@ -8,7 +8,7 @@
 #' @param prop_method
 #' @param ...
 #' @param caption
-#' @param show_prop
+#' @param show_value
 #' @param unit
 #' @param digits
 #' @param dodge
@@ -41,7 +41,7 @@ quali_distrib_group <- function(data,
                                 prop_method = "beta",
                                 ...,
                                 caption = NULL,
-                                show_prop = TRUE,
+                                show_value = TRUE,
                                 unit = "",
                                 digits = 0,
                                 dodge = 0.9,
@@ -266,7 +266,7 @@ quali_distrib_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Chi2: ", pvalue(test.stat$p.value, add_p = T),
+          "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
           "\n",
           caption
         )
@@ -276,13 +276,13 @@ quali_distrib_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Chi2: conditions not met",
+          "Khi2 d'indépendance : conditions non remplies",
           "\n",
           caption
         )
       )
   }
-  # Ce n'est un khi2 s'il y a des facettes
+  # Ce n'est pas un khi2 s'il y a des facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
       labs(
@@ -290,7 +290,7 @@ quali_distrib_group <- function(data,
       )
   }
 
-  if (show_prop == TRUE) {
+  if (show_value == TRUE) {
     graph <- graph +
       geom_text(
         aes(label = ifelse(prop > 0.02,

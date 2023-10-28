@@ -33,6 +33,9 @@
 #' @import forcats
 #' @import stringr
 #' @import openxlsx
+#' @import broom
+#' @import showtext
+#' @import sysfonts
 #' @export
 #'
 #' @examples
@@ -54,11 +57,16 @@ central_group <- function(data,
                           fill = NULL,
                           na.rm.group = T,
                           total_name = "Total",
+                          font ="Montserrat",
                           wrap_width = 25,
                           export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
+
+  # On ajoute les polices contenues dans le package et on les active
+  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -282,7 +290,7 @@ central_group <- function(data,
   }
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey20")
+  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
 
   # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
@@ -343,6 +351,7 @@ central_group <- function(data,
       panel.grid.minor.x = element_line(color = "#dddddd"),
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
+      text = element_text(family = font),
       legend.position = "none"
     ) +
     scale_fill_manual(
@@ -369,12 +378,12 @@ central_group <- function(data,
 
   if (type == "mean") {
     graph <- graph +
-      labs(y = paste0("mean: ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("moyenne : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "median") {
     graph <- graph +
-      labs(y = paste0("median: ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("médiane : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "mean") {
@@ -391,7 +400,7 @@ central_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Kruskal Wallis: ", pvalue(test.stat$p.value[1], add_p = T),
+          "Kruskal Wallis : ", pvalue(test.stat$p.value[1], add_p = T),
           "\n",
           caption
         )
@@ -402,7 +411,7 @@ central_group <- function(data,
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low,
                         ymax = indice_upp),
-                    width = dodge * 0.25,
+                    width = dodge * 0.2,
                     colour = "black",
                     alpha = 0.5,
                     linewidth = 0.5,
@@ -412,11 +421,13 @@ central_group <- function(data,
 
   if (show_value == TRUE){
     graph<-graph  +
-      geom_text(aes(
-        #y = indice - (0.01 * max_ggplot),
-        label = paste(round(indice,
-                            digits = digits),
-                      unit)),
+      geom_text(
+        aes(
+          #y = indice - (0.01 * max_ggplot),
+          label = paste0(round(indice,
+                              digits = digits),
+                        unit),
+          family = font),
         vjust = 0.4,
         #hjust = 0,
         size = 4,
@@ -431,12 +442,12 @@ central_group <- function(data,
       geom_text(
         aes(
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n_tot_sample)
-        ),
-        alpha = 0.7,
+          label = paste0("n=", n_tot_sample),
+          family = font),
         size = 3,
+        alpha = 0.7,
         hjust = 0, # Justifié à droite
-        vjust = 2
+        vjust = 0.4
       )
   }
 
@@ -462,7 +473,61 @@ central_group <- function(data,
   res$test.stat <- test.stat
 
   if (!is.null(export_path)) {
-    write.xlsx(tab, export_path)
+    # L'export en excel
+
+    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # On simplifie le tableau à exporter
+    tab_excel <- tab %>% select(-n_tot_weighted_se)
+    # test_stat_excel <- test.stat %>%
+    #   broom::tidy() %>%
+    #   t() %>%
+    #   as.data.frame()
+    # test_stat_excel$names <- rownames(test_stat_excel)
+    # test_stat_excel <- test_stat_excel[, c(2,1)]
+    # names(test_stat_excel)[1] <- "Parameter"
+    # names(test_stat_excel)[2] <- "Value"
+
+    wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
+    addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
+    addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
+    # addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
+
+    writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
+    insertPlot(wb,"Graphique")
+    #writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
+
+    setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
+    hs <- createStyle(fontColour = "#ffffff", fgFill = "mediumorchid2",  # Style de la première ligne
+                      halign = "center", textDecoration = "Bold",
+                      fontName = "Arial Narrow")
+    firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la première colonne
+                           fontName = "Arial Narrow")
+    body <- createStyle (halign = "center", # Style des cellules du tableau
+                         fontName = "Arial Narrow")
+
+    addStyle(wb, "Résultats", hs, cols = 1:ncol(tab_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Résultats", body, cols = 2:ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+    # Des if statements dans le cas où le résultat est démultiplié par modalité de facet_var => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
+    if (!quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1:2, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    }
+    if (quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    }
+
+    # setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
+    # hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
+    #                    halign = "center", textDecoration = "Bold",
+    #                    fontName = "Arial Narrow")
+    # body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
+    #
+    # addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
+    # addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    # addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+
+    saveWorkbook(wb, export_path, overwrite = TRUE)
   }
 
   return(res)

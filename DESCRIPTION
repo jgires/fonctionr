@@ -22,5 +22,7 @@ Imports:
     stringr,
     survey,
     tidyr,
-    broom
+    broom,
+    showtext,
+    sysfonts
 RoxygenNote: 7.2.3
