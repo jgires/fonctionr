@@ -47,7 +47,7 @@ central_group <- function(data,
                           ...,
                           unit = "",
                           caption = NULL,
-                          digits = 1,
+                          digits = 0,
                           show_n = FALSE,
                           show_value = TRUE,
                           dodge = 0.9,
@@ -359,13 +359,9 @@ central_group <- function(data,
       na.value = "grey"
     ) +
     scale_y_continuous(
-      limits = function(x) {
-        c(min(x), max(x))
-      },
+      limits = function(x) { c(min(x), max(x)) },
       expand = expansion(mult = c(.01, .05)),
-      labels = function(x) {
-        paste0(x, unit)
-      }
+      labels = function(x) { paste0(x, unit) }
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
@@ -480,26 +476,38 @@ central_group <- function(data,
 
     # On simplifie le tableau à exporter
     tab_excel <- tab %>% select(-n_tot_weighted_se)
-    # test_stat_excel <- test.stat %>%
-    #   broom::tidy() %>%
-    #   t() %>%
-    #   as.data.frame()
-    # test_stat_excel$names <- rownames(test_stat_excel)
-    # test_stat_excel <- test_stat_excel[, c(2,1)]
-    # names(test_stat_excel)[1] <- "Parameter"
-    # names(test_stat_excel)[2] <- "Value"
+
+    # On transforme le test stat en dataframe
+    if (type == "median") {
+      test_stat_excel <- test.stat %>%
+        broom::tidy() %>%
+        t() %>%
+        as.data.frame()
+      test_stat_excel$names <- rownames(test_stat_excel)
+      test_stat_excel <- test_stat_excel[, c(2,1)]
+      names(test_stat_excel)[1] <- "Parameter"
+      names(test_stat_excel)[2] <- "Value"
+    }
+    # broom::tidy() ne fonctionne pas sur regTermTest => je le fais à la main
+    if (type == "mean") {
+      test_stat_excel <- data.frame(Parameter = c("df", "ddf", "statistic", "p.value", "method"),
+                                    Value = c(test.stat$df, test.stat$ddf, test.stat$Ftest, test.stat$p, "Wald test"),
+                                    row.names = NULL)
+    }
+
+    # Je formate un fichier Excel dans lequel j'exporte les résultats
 
     wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
     addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
     addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
-    # addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
+    addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
 
     writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
-    insertPlot(wb,"Graphique")
-    #writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
+    insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
+    writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
 
     setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
-    hs <- createStyle(fontColour = "#ffffff", fgFill = "mediumorchid2",  # Style de la première ligne
+    hs <- createStyle(fontColour = "#ffffff", fgFill = "mediumorchid3",  # Style de la première ligne
                       halign = "center", textDecoration = "Bold",
                       fontName = "Arial Narrow")
     firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la première colonne
@@ -517,15 +525,15 @@ central_group <- function(data,
       addStyle(wb, "Résultats", firstC, cols = 1, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
     }
 
-    # setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
-    # hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
-    #                    halign = "center", textDecoration = "Bold",
-    #                    fontName = "Arial Narrow")
-    # body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
-    #
-    # addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
-    # addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
-    # addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+    setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
+    hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
+                       halign = "center", textDecoration = "Bold",
+                       fontName = "Arial Narrow")
+    body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
+
+    addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
 
     saveWorkbook(wb, export_path, overwrite = TRUE)
   }

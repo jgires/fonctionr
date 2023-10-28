@@ -328,7 +328,7 @@ prop_group <- function(data,
       na.value = "grey"
     ) +
     scale_y_continuous(
-      labels = scales::label_percent(scale = 100),
+      labels = function(x) { paste0(x * scale, unit) },
       limits = function(x) { c(min(x), max(x)) },
       expand = expansion(mult = c(.01, .05))
     ) +
@@ -339,8 +339,7 @@ prop_group <- function(data,
          caption = paste0(
            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
            "\n",
-           caption
-           )
+           caption)
          )
 
   if (!quo_is_null(quo_facet)) {
@@ -407,6 +406,8 @@ prop_group <- function(data,
 
     # On simplifie le tableau à exporter
     tab_excel <- tab %>% select(-n_tot_weighted_se)
+
+    # On transforme le test stat en dataframe
     test_stat_excel <- test.stat %>%
       broom::tidy() %>%
       t() %>%
@@ -416,13 +417,15 @@ prop_group <- function(data,
     names(test_stat_excel)[1] <- "Parameter"
     names(test_stat_excel)[2] <- "Value"
 
+    # Je formate un fichier Excel dans lequel j'exporte les résultats
+
     wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
     addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
     addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
     addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
 
     writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
-    insertPlot(wb,"Graphique")
+    insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
     writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
 
     setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes

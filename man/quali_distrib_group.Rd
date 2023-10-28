@@ -19,9 +19,11 @@ quali_distrib_group(
   dodge = 0.9,
   pretty_pal = "Hokusai1",
   direction = 1,
+  scale = 100,
   wrap_width = 25,
   legend_ncol = 4,
-  na.rm = T
+  na.rm = T,
+  export_path = NULL
 )
 }
 \arguments{

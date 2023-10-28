@@ -29,8 +29,8 @@
 #' @import ggplot2
 #' @import stringr
 #' @import survey
-#' @import srvyr
 #' @import scales
+#' @import srvyr
 #' @import dplyr
 #' @import showtext
 #' @import sysfonts
@@ -216,7 +216,7 @@ quali_distrib <- function(data, # Données en format srvyr
       na.value = "grey"
       ) +
     scale_y_continuous(
-      labels = scales::label_percent(scale = 100),
+      labels = function(x) { paste0(x * scale, unit) },
       limits = function(x) { c(min(x), max(x)) },
       expand = expansion(mult = c(.01, .05))
       ) +

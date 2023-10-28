@@ -23,9 +23,9 @@
 #' @import survey
 #' @import srvyr
 #' @import dplyr
+#' @import scales
 #' @import MetBrewer
 #' @import ggplot2
-#' @import scales
 #' @importFrom stats as.formula
 #' @import forcats
 #' @import stringr
@@ -47,12 +47,19 @@ quali_distrib_group <- function(data,
                                 dodge = 0.9,
                                 pretty_pal = "Hokusai1",
                                 direction = 1,
+                                scale = 100,
                                 wrap_width = 25,
                                 legend_ncol = 4,
-                                na.rm = T) {
+                                font ="Montserrat",
+                                na.rm = T,
+                                export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
+
+  # On ajoute les polices contenues dans le package et on les active
+  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -242,6 +249,7 @@ quali_distrib_group <- function(data,
       panel.grid.minor.x = element_line(color = "#dddddd"),
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
+      text = element_text(family = font),
       legend.position = "bottom"
     ) +
     ylab(paste0("distribution: ", deparse(substitute(quali_var)))) +
@@ -249,7 +257,7 @@ quali_distrib_group <- function(data,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +
     scale_y_continuous(
-      labels = scales::percent,
+      labels = function(x) { paste0(x * scale, unit) },
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
@@ -262,25 +270,29 @@ quali_distrib_group <- function(data,
       facet_wrap(vars({{ facet_var }}))
   }
 
-  if (quo_is_null(quo_facet) & inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
-    graph <- graph +
-      labs(
-        caption = paste0(
-          "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
-          "\n",
-          caption
+  if (quo_is_null(quo_facet)) {
+    if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+      graph <- graph +
+        labs(
+          caption = paste0(
+            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
+            "\n",
+            caption
+          )
         )
-      )
+    }
   }
-  if (quo_is_null(quo_facet) & inherits(test.stat,"character")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
-    graph <- graph +
-      labs(
-        caption = paste0(
-          "Khi2 d'indépendance : conditions non remplies",
-          "\n",
-          caption
+  if (quo_is_null(quo_facet)) {
+    if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+      graph <- graph +
+        labs(
+          caption = paste0(
+            "Khi2 d'indépendance : conditions non remplies",
+            "\n",
+            caption
+          )
         )
-      )
+    }
   }
   # Ce n'est pas un khi2 s'il y a des facet
   if (!quo_is_null(quo_facet)) {
@@ -293,12 +305,13 @@ quali_distrib_group <- function(data,
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
-        aes(label = ifelse(prop > 0.02,
-                           paste0(round(prop * 100,
-                                        digits = digits
-                           ), unit),
-                           NA
-        )),
+        aes(
+          label = ifelse(prop > 0.02,
+                         paste0(round(prop * scale,
+                                      digits = digits),
+                                unit),
+                         NA),
+          family = font),
         color = "white",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)
@@ -312,6 +325,85 @@ quali_distrib_group <- function(data,
   # Pour l'instant, test uniquement si pas de facet
   if (quo_is_null(quo_facet)) {
     res$test.stat <- test.stat
+  }
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # On simplifie le tableau à exporter
+    tab_excel <- tab %>% select(-n_weighted_se)
+
+    # On transforme le test stat en dataframe
+    if (quo_is_null(quo_facet)) { # Pour l'instant, test uniquement si pas de facet
+      if(all(test.stat != "Conditions non remplies")){
+      test_stat_excel <- test.stat %>%
+        broom::tidy() %>%
+        t() %>%
+        as.data.frame()
+      test_stat_excel$names <- rownames(test_stat_excel)
+      test_stat_excel <- test_stat_excel[, c(2,1)]
+      names(test_stat_excel)[1] <- "Parameter"
+      names(test_stat_excel)[2] <- "Value"
+      }
+      if(all(test.stat == "Conditions non remplies")){
+          test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                        Value = test.stat,
+                                        row.names = NULL)
+      }
+    }
+    if (!quo_is_null(quo_facet)) {
+      test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                    Value = "Test pas encore implémenté avec le faceting",
+                                    row.names = NULL)
+    }
+
+    # Je formate un fichier Excel dans lequel j'exporte les résultats
+
+    wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
+    addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
+    addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
+    addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
+
+    writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
+    insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
+    writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
+
+    setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
+    hs <- createStyle(fontColour = "#ffffff", fgFill = "mediumseagreen",  # Style de la première ligne
+                      halign = "center", textDecoration = "Bold",
+                      fontName = "Arial Narrow")
+    firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la première colonne
+                           fontName = "Arial Narrow")
+    body <- createStyle (halign = "center", # Style des cellules du tableau
+                         fontName = "Arial Narrow")
+    percent <- createStyle(numFmt = "percentage")
+
+    addStyle(wb, "Résultats", hs, cols = 1:ncol(tab_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Résultats", body, cols = 2:ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+    # Des if statements dans le cas où le résultat est démultiplié par modalité de facet_var => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
+    if (!quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1:3, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+      addStyle(wb, "Résultats", percent, cols = 4:6, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
+    }
+    if (quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1:2, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+      addStyle(wb, "Résultats", percent, cols = 3:5, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
+    }
+
+    setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
+    hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
+                       halign = "center", textDecoration = "Bold",
+                       fontName = "Arial Narrow")
+    body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
+
+    addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+
+    saveWorkbook(wb, export_path, overwrite = TRUE)
   }
 
   return(res)
