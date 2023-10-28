@@ -60,6 +60,8 @@ quali_distrib_group <- function(data,
 
   # On ajoute les polices contenues dans le package et on les active
   font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
   showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
@@ -253,7 +255,7 @@ quali_distrib_group <- function(data,
       text = element_text(family = font),
       legend.position = "bottom"
     ) +
-    ylab(paste0("distribution: ", deparse(substitute(quali_var)))) +
+    ylab(paste0("Distribution : ", deparse(substitute(quali_var)))) +
     scale_fill_manual(values = palette,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +

@@ -25,7 +25,9 @@ Description à venir !
 
 ## Question du filtrage
 
-<!--# JO : C'EST FAIT -->Il semble qu'il faille absolument filtrer APRES la déclaration du design. Si on le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage.
+<!--# JO : C'EST FAIT -->
+
+Il semble qu'il faille absolument filtrer APRES la déclaration du design. Si on le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage.
 
 Voir :
 
@@ -43,7 +45,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Ajouter des checks pour les inputs :
 
-    1.  Existence des colonnes dans le dataframe ;<!--# JO : C'est fait sauf pour les variables de pondération ? Est-ce testable, du fait que j'ai mis l'argument ... ? Je pense, regarder -->
+    1.  Existence des colonnes dans le dataframe ;<!--# JO : C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument "..." ? Je pense, regarder -->
 
     2.  Pas mettre les mêmes colonnes dans les différents arguments (`group`, `var_distrib`, `facet_var`, etc.) ;
 
@@ -53,17 +55,17 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Mettre des conditions sur les tests (n min, distribution, variances égales...).
 
--   Les cluster \| strates \| weights n'apparaissent pas dans le message de la console avec les replicates =\> trouver la cause ? Ou changer de méthode =\> faire un print de l'objet survey affiche les caractéristiques du design =\> bcp mieux, mais je ne comprends pas comment Thomas Lumley arrive à ce résultat dans `survey`.
+-   Les cluster \| strates \| weights n'apparaissent pas dans le message de la console avec les replicates =\> trouver la cause ? Ou changer de méthode =\> faire un print de l'objet survey affiche les caractéristiques du design =\> bcp mieux, mais je ne comprends pas comment Thomas Lumley arrive à ce résultat.
 
 -   Ajouter `n_weight_upp` et `n_weight_low`.
 
 -   Harmoniser les thèmes (axes, etc.).
 
--   Ajouter des polices (dont Montserrat)<!--# JO : C'EST FAIT : Montserrat est désormais intégrée dans le package. A tester sur d'autres PC, sur Linux, etc. -->
+-   Ajouter des polices (dont Montserrat)<!--# JO : C'EST FAIT : 3 polices sont désormais intégrées dans le package. A tester sur d'autres PC, sur Linux, etc. -->
 
 -   Ajouter l'argument `show_labs` + les argument de labels.
 
--   Où afficher la valeur dans les différentes fonctions ? (dans la barre mais avec un if pour quand la barre est trop petite ?)<!--# JO : Ne pose pas de pb si c'est à l'extérieur de la barre => option à privilégier pour moi (voir prop_group) -->
+-   Où afficher la valeur dans les différentes fonctions ? (dans la barre mais avec un if pour quand la barre est trop petite ?)<!--# JO : Ne pose pas de pb si c'est à l'extérieur de la barre => option à privilégier pour moi (implémenté temporairement) -->
 
 -   ~~Bien mettre le n = (en dessous de la barre).~~<!--# JO : En fait les n en dessous c'est moche. J'ai remis au milieu. Ce n'est pas possible que ça marche à tous les coups, et n c'est pour la verif, pas grave si parfois ça dépasse de la barre -->
 
@@ -92,7 +94,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Ajouter un filtre.
 
-    -   C'est fait, mais il faut ajouter des conditions d'arrêt si certain caractères ne fonctionnent pas <!--# JO : J'ai ajouté un stop si les variables de filtre n'existent pas dans data, c'est ce que tu voulais dire ? -->
+    -   *=\> C'est fait, mais il faut ajouter des conditions d'arrêt si certain caractères ne fonctionnent pas* <!--# JO : J'ai ajouté un stop si les variables de filtre n'existent pas dans data, c'est ce que tu voulais dire ? -->
 
 -   Quid des `NA` ? couleur distincte? Si oui à faire <!--# JO : Je l'ai fait, comme pour les autres fonctions : NA en gris clair -->
 

@@ -66,6 +66,8 @@ central_group <- function(data,
 
   # On ajoute les polices contenues dans le package et on les active
   font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
   showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
@@ -374,12 +376,12 @@ central_group <- function(data,
 
   if (type == "mean") {
     graph <- graph +
-      labs(y = paste0("moyenne : ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("Moyenne : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "median") {
     graph <- graph +
-      labs(y = paste0("médiane : ", deparse(substitute(quanti_exp))))
+      labs(y = paste0("Médiane : ", deparse(substitute(quanti_exp))))
   }
 
   if (type == "mean") {

@@ -67,6 +67,8 @@ prop_group <- function(data,
 
   # On ajoute les polices contenues dans le package et on les active
   font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
   showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
@@ -335,7 +337,7 @@ prop_group <- function(data,
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     coord_flip() +
-    labs(y = paste0("proportion : ", deparse(substitute(prop_exp))),
+    labs(y = paste0("Proportion : ", deparse(substitute(prop_exp))),
          caption = paste0(
            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
            "\n",
@@ -368,7 +370,7 @@ prop_group <- function(data,
                          unit),
           family = font),
         vjust = ifelse(error_bar == T,
-                       -0.3,
+                       -0.5,
                        0.5),
         hjust = 0,
         color = "black",

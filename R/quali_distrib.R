@@ -66,6 +66,8 @@ quali_distrib <- function(data, # Données en format srvyr
 
   # On ajoute les polices contenues dans le package et on les active
   font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
   showtext_auto()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
@@ -257,27 +259,63 @@ quali_distrib <- function(data, # Données en format srvyr
     }
 
   # Ajouter les IC si error_bar == T
-  if(error_bar == T) {
+  if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low,
                         ymax = prop_upp),
-                    width = dodge * 0.25,
+                    width = dodge * 0.05,
                     colour = "black",
                     alpha = 0.5,
                     linewidth = 0.5,
                     position = position_dodge(width = dodge)
       )
-    }
+  }
 
   # Ajouter les prop au besoin
-  if(show_value == TRUE){
+
+  # if(show_value == TRUE){
+  #   graph <- graph +
+  #     geom_text(
+  #       aes(y = prop_upp + (0.1 * max_ggplot), ###j'ai l'impression que le 1, c'est bon, mais c'est à vérifier
+  #           label = paste(round(prop * scale, digits = digits),
+  #                         unit),
+  #           family = font),
+  #       color = "black")
+  # }
+
+  if (show_value == TRUE) {
     graph <- graph +
       geom_text(
-        aes(y = prop_upp + (0.1 * max_ggplot), ###j'ai l'impression que le 1, c'est bon, mais c'est à vérifier
-            label = paste(round(prop * scale, digits = digits),
-                          unit),
-            family = font),
-        color = "black")
+        aes(
+          y = (prop) + (0.01 * max_ggplot),
+          label = paste0(round(prop * scale,
+                               digits = digits),
+                         unit),
+          family = font),
+        vjust = ifelse(error_bar == T,
+                       -0.5,
+                       0.5),
+        hjust = 0,
+        color = "black",
+        alpha = 0.9,
+        # position = position_stack(vjust = .5))
+        position = position_dodge(width = dodge)
+      )
+  }
+
+  # Ajouter le nombre d'individus au besoin
+  if (show_n == TRUE) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
+          label = paste0("n=", n),
+          family = font),
+        size = 3,
+        alpha = 0.7,
+        hjust = 0, # Justifié à droite
+        vjust = 0.4
+      )
   }
 
   # Ajouter les facets au besoin
@@ -285,19 +323,6 @@ quali_distrib <- function(data, # Données en format srvyr
     graph <- graph +
       facet_wrap(vars({{ facet_var }}))
   }
-
-  # Ajouter le nombre d'individus au besoin
-  if (show_n == TRUE) {
-    graph <- graph +
-      geom_text(
-        aes(y = 0 + (0.0001 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-            label = paste0("n=", n),
-            family = font
-            ),
-        alpha = 0.7,
-        hjust = 0 # Justifié à droite
-      )
-    }
 
   # Retourner les résultat
   res <- list()
