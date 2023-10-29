@@ -23,6 +23,7 @@
 #' @param font
 #' @param digits
 #' @param wrap_width
+#' @param export_path
 #'
 #' @return
 #' @import rlang
