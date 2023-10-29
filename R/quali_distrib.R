@@ -1,4 +1,3 @@
-
 #' quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
 #'
 #' @param data
