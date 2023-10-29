@@ -44,7 +44,7 @@ quali_distrib <- function(data, # Données en format srvyr
                           filter_exp = NULL,
                           ...,
                           na.rm = T,
-                          fill = "deepskyblue3",
+                          fill = "sienna2",
                           show_n = FALSE,
                           show_value = TRUE,
                           reorder = FALSE,
@@ -57,9 +57,10 @@ quali_distrib <- function(data, # Données en format srvyr
                           subtitle = NULL,
                           ylab = NULL, # Le nom de l'axe de la variable catégorielle
                           show_labs = TRUE,
-                          font ="Montserrat", # Quelle font par défaut?
+                          font ="Roboto", # Quelle font par défaut?
                           digits = 0,
-                          wrap_width = 25) {
+                          wrap_width = 25,
+                          export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` = Negate(`%in%`)
@@ -283,7 +284,7 @@ quali_distrib <- function(data, # Données en format srvyr
   #       color = "black")
   # }
 
-  if (show_value == TRUE) {
+  if (show_value == TRUE) { # MODIF DE JOEL ----------------------
     graph <- graph +
       geom_text(
         aes(
@@ -328,6 +329,66 @@ quali_distrib <- function(data, # Données en format srvyr
   res <- list()
   res$tab <- table
   res$graph <- graph
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # On simplifie le tableau à exporter
+    tab_excel <- table %>% select(-n_weighted_low, -n_weighted_upp)
+
+    # On crée ici manuellement le dataframe pour le test, celui-ci n'étant pas encore implémenté
+    test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                  Value = "Test pas encore implémenté pour quali_distrib()",
+                                  row.names = NULL)
+
+    # Je formate un fichier Excel dans lequel j'exporte les résultats
+
+    wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
+    addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
+    addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
+    addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
+
+    writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
+    insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
+    writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
+
+    setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
+    hs <- createStyle(fontColour = "#ffffff", fgFill = "sienna3",  # Style de la première ligne
+                      halign = "center", textDecoration = "Bold",
+                      fontName = "Arial Narrow")
+    firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la première colonne
+                           fontName = "Arial Narrow")
+    body <- createStyle (halign = "center", # Style des cellules du tableau
+                         fontName = "Arial Narrow")
+    percent <- createStyle(numFmt = "percentage")
+
+    addStyle(wb, "Résultats", hs, cols = 1:ncol(tab_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Résultats", body, cols = 2:ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+    # Des if statements dans le cas où le résultat est démultiplié par modalité de facet_var => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
+    if (!quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1:2, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+      addStyle(wb, "Résultats", percent, cols = 3:5, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
+    }
+    if (quo_is_null(quo_facet)) {
+      addStyle(wb, "Résultats", firstC, cols = 1, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+      addStyle(wb, "Résultats", percent, cols = 2:4, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
+    }
+
+    setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
+    hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
+                       halign = "center", textDecoration = "Bold",
+                       fontName = "Arial Narrow")
+    body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
+
+    addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
+    addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
+    addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+
+    saveWorkbook(wb, export_path, overwrite = TRUE)
+  }
 
   return(res)
 }

@@ -61,6 +61,8 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Harmoniser les thèmes (axes, etc.).
 
+-   Harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`)
+
 -   Ajouter des polices (dont Montserrat)<!--# JO : C'EST FAIT : 3 polices sont désormais intégrées dans le package. A tester sur d'autres PC, sur Linux, etc. -->
 
 -   Ajouter l'argument `show_labs` + les argument de labels.
@@ -100,9 +102,9 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Quid des `NA` dans les facets? Les supprimer? Faire une catégorie à part? Actuellement, il en fait une catégorie à part. <!--# JO : J'ai modifié pour faire comme pour les autres fonctions : si on met na.rm = T alors ça supprime aussi sur les facet, car laisser le NA sur facet et pas sur quali_var n'est pas cohérent. Si na.rm = F, alors le NA des facets est laissé. Mettre des na.rm pour chacune des variables n'est pas du tout ergonomique : si la personne veut faire un truc plus fin, elle peut le faire directement avec survey, ce n'est pas le but du package -->
 
--   Concernant le ré-ordonnancement des modalités, le choix a été fait de ne pas laisser la possibilité de réordonner. <!--# J'ai finalement ajouté l'option. Il fallait bouger le NA en bas, ce qui demandait la même chose que pour réordonner les catégories => autant le faire. Par ailleurs en réalité ce peut être utile, si tu as bcp de modalités -->
+-   Concernant le ré-ordonnancement des modalités, le choix a été fait de ne pas laisser la possibilité de réordonner. <!--# J'ai finalement ajouté l'option. Il fallait bouger la cat NA en bas, ce qui demandait la même chose que pour réordonner les catégories => autant le faire. Par ailleurs en réalité ce peut être utile, en fonction de ce que tu cherches -->
 
--   Exporter en excel.
+-   Exporter en excel.<!--# JO : C'est fait -->
 
 -   Mettre les n et positionner à gauche.
 

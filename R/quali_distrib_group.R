@@ -51,7 +51,7 @@ quali_distrib_group <- function(data,
                                 scale = 100,
                                 wrap_width = 25,
                                 legend_ncol = 4,
-                                font ="Montserrat",
+                                font ="Roboto",
                                 na.rm = T,
                                 export_path = NULL) {
 

@@ -57,7 +57,7 @@ central_group <- function(data,
                           fill = NULL,
                           na.rm.group = T,
                           total_name = "Total",
-                          font ="Montserrat",
+                          font ="Roboto",
                           wrap_width = 25,
                           export_path = NULL) {
 
@@ -146,7 +146,7 @@ central_group <- function(data,
   }
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On détecte les variables entrées dans quanti_exp pour calculer la proportion
+  # On détecte les variables entrées dans quanti_exp pour calculer la moyenne/médiane
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
   vars_quanti_expression <- all.vars(substitute(quanti_exp))
   # On les affiche via message (pour vérification)
