@@ -7,7 +7,12 @@
 #' @param filter_exp
 #' @param prop_method
 #' @param ...
+#' @param title
+#' @param subtitle
+#' @param ylab
+#' @param xlab
 #' @param caption
+#' @param show_labs
 #' @param show_value
 #' @param unit
 #' @param digits
@@ -41,7 +46,12 @@ quali_distrib_group <- function(data,
                                 filter_exp = NULL,
                                 prop_method = "beta",
                                 ...,
+                                title = NULL, # Le titre du graphique
+                                subtitle = NULL,
+                                ylab = NULL, # Le nom de l'axe de la variable catégorielle
+                                xlab = NULL,
                                 caption = NULL,
+                                show_labs = TRUE,
                                 show_value = TRUE,
                                 unit = "",
                                 digits = 0,
@@ -255,7 +265,6 @@ quali_distrib_group <- function(data,
       text = element_text(family = font),
       legend.position = "bottom"
     ) +
-    ylab(paste0("Distribution : ", deparse(substitute(quali_var)))) +
     scale_fill_manual(values = palette,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +
@@ -266,13 +275,11 @@ quali_distrib_group <- function(data,
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     guides(fill = guide_legend(ncol = legend_ncol)) +
+    labs(title = title,
+         subtitle = subtitle) +
     coord_flip()
 
-  if (!quo_is_null(quo_facet)) {
-    graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
-  }
-
+  # Pour caption
   if (quo_is_null(quo_facet)) {
     if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
       graph <- graph +
@@ -297,12 +304,36 @@ quali_distrib_group <- function(data,
         )
     }
   }
-  # Ce n'est pas un khi2 s'il y a des facet
+  # Ce n'est pas un khi2 s'il y a des facets
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
       labs(
         caption = caption
       )
+  }
+
+  # Ajouter les axes
+  if(show_labs == TRUE){
+    graph <- graph +
+      labs(y = ifelse(is.null(ylab),
+                      paste0("Distribution : ", deparse(substitute(quali_var))),
+                      ylab))
+    if(!is.null(xlab)){
+      graph <- graph +
+        labs(x = xlab)
+    }
+  }
+
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
+    graph <- graph +
+      labs(x = NULL,
+           y = NULL)
+  }
+
+  if (!quo_is_null(quo_facet)) {
+    graph <- graph +
+      facet_wrap(vars({{ facet_var }}))
   }
 
   if (show_value == TRUE) {

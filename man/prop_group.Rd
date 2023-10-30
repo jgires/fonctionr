@@ -14,8 +14,13 @@ prop_group(
   ...,
   unit = "\%",
   caption = NULL,
+  title = NULL,
+  subtitle = NULL,
+  ylab = NULL,
+  xlab = NULL,
   scale = 100,
   digits = 0,
+  show_labs = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   dodge = 0.9,
@@ -24,7 +29,7 @@ prop_group(
   fill = "deepskyblue3",
   na.rm.group = T,
   total_name = "Total",
-  font = "Montserrat",
+  font = "Roboto",
   wrap_width = 25,
   export_path = NULL
 )

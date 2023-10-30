@@ -11,7 +11,7 @@ quali_distrib(
   filter_exp = NULL,
   ...,
   na.rm = T,
-  fill = "deepskyblue3",
+  fill = "sienna2",
   show_n = FALSE,
   show_value = TRUE,
   reorder = FALSE,
@@ -20,17 +20,19 @@ quali_distrib(
   prop_method = "beta",
   unit = "\%",
   error_bar = T,
+  caption = NULL,
   title = NULL,
   subtitle = NULL,
   ylab = NULL,
   show_labs = TRUE,
-  font = "Montserrat",
+  font = "Roboto",
   digits = 0,
-  wrap_width = 25
+  wrap_width = 25,
+  export_path = NULL
 )
 }
 \arguments{
-\item{wrap_width}{}
+\item{export_path}{}
 }
 \description{
 quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe

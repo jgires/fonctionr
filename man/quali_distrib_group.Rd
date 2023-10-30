@@ -12,7 +12,12 @@ quali_distrib_group(
   filter_exp = NULL,
   prop_method = "beta",
   ...,
+  title = NULL,
+  subtitle = NULL,
+  ylab = NULL,
+  xlab = NULL,
   caption = NULL,
+  show_labs = TRUE,
   show_value = TRUE,
   unit = "",
   digits = 0,
@@ -22,6 +27,7 @@ quali_distrib_group(
   scale = 100,
   wrap_width = 25,
   legend_ncol = 4,
+  font = "Roboto",
   na.rm = T,
   export_path = NULL
 )

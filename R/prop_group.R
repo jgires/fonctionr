@@ -9,8 +9,13 @@
 #' @param ...
 #' @param unit
 #' @param caption
+#' @param title
+#' @param subtitle
+#' @param ylab
+#' @param xlab
 #' @param scale
 #' @param digits
+#' @param show_labs
 #' @param show_n
 #' @param show_value
 #' @param dodge
@@ -48,8 +53,13 @@ prop_group <- function(data,
                        ...,
                        unit = "%",
                        caption = NULL,
+                       title = NULL, # Le titre du graphique
+                       subtitle = NULL,
+                       ylab = NULL, # Le nom de l'axe de la variable catégorielle
+                       xlab = NULL,
                        scale = 100,
                        digits = 0,
+                       show_labs = TRUE,
                        show_n = FALSE,
                        show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                        dodge = 0.9,
@@ -335,14 +345,34 @@ prop_group <- function(data,
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
-                     limits = levels) +
-    coord_flip() +
-    labs(y = paste0("Proportion : ", deparse(substitute(prop_exp))),
+                     limits = levels)+
+    labs(title = title,
+         subtitle = subtitle,
          caption = paste0(
            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
            "\n",
            caption)
-         )
+         ) +
+    coord_flip()
+
+  # Ajouter les axes
+  if(show_labs == TRUE){
+    graph <- graph +
+      labs(y = ifelse(is.null(ylab),
+                      paste0("Proportion : ", deparse(substitute(prop_exp))),
+                      ylab))
+    if(!is.null(xlab)){
+      graph <- graph +
+        labs(x = xlab)
+    }
+  }
+
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
+    graph <- graph +
+      labs(x = NULL,
+           y = NULL)
+  }
 
   if (!quo_is_null(quo_facet)) {
     graph <- graph +

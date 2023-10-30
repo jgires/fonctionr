@@ -8,8 +8,13 @@
 #' @param filter_exp
 #' @param ...
 #' @param unit
+#' @param title
+#' @param subtitle
+#' @param xlab
+#' @param ylab
 #' @param caption
 #' @param digits
+#' @param show_labs
 #' @param show_n
 #' @param show_value
 #' @param dodge
@@ -46,8 +51,13 @@ central_group <- function(data,
                           filter_exp = NULL,
                           ...,
                           unit = "",
+                          title = NULL,
+                          subtitle = NULL,
+                          xlab = NULL,
+                          ylab = NULL,
                           caption = NULL,
                           digits = 0,
+                          show_labs = TRUE,
                           show_n = FALSE,
                           show_value = TRUE,
                           dodge = 0.9,
@@ -367,30 +377,18 @@ central_group <- function(data,
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
+    labs(title = title,
+         subtitle = subtitle
+    ) +
     coord_flip()
-
-  if (!quo_is_null(quo_facet)) {
-    graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
-  }
-
-  if (type == "mean") {
-    graph <- graph +
-      labs(y = paste0("Moyenne : ", deparse(substitute(quanti_exp))))
-  }
-
-  if (type == "median") {
-    graph <- graph +
-      labs(y = paste0("Médiane : ", deparse(substitute(quanti_exp))))
-  }
 
   if (type == "mean") {
     graph <- graph +
       labs(
         caption = paste0(
-          caption,
+          "GLM: ", pvalue(test.stat$p[1], add_p = T),
           "\n",
-          "GLM: ", pvalue(test.stat$p[1], add_p = T)
+          caption
         )
       )
   }
@@ -403,6 +401,38 @@ central_group <- function(data,
           caption
         )
       )
+  }
+
+  # Ajouter les axes
+  if(show_labs == TRUE){
+    if (type == "mean") {
+      graph <- graph +
+        labs(y = ifelse(is.null(ylab),
+                        paste0("Moyenne : ", deparse(substitute(quanti_exp))),
+                        ylab))
+    }
+    if (type == "median") {
+      graph <- graph +
+        labs(y = ifelse(is.null(ylab),
+                        paste0("Médiane : ", deparse(substitute(quanti_exp))),
+                        ylab))
+    }
+    if(!is.null(xlab)){
+      graph <- graph +
+        labs(x = xlab)
+    }
+  }
+
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
+    graph <- graph +
+      labs(x = NULL,
+           y = NULL)
+  }
+
+  if (!quo_is_null(quo_facet)) {
+    graph <- graph +
+      facet_wrap(vars({{ facet_var }}))
   }
 
   if (error_bar == T) {

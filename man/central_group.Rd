@@ -14,8 +14,13 @@ central_group(
   filter_exp = NULL,
   ...,
   unit = "",
+  title = NULL,
+  subtitle = NULL,
+  xlab = NULL,
+  ylab = NULL,
   caption = NULL,
   digits = 0,
+  show_labs = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   dodge = 0.9,
@@ -25,7 +30,7 @@ central_group(
   fill = NULL,
   na.rm.group = T,
   total_name = "Total",
-  font = "Montserrat",
+  font = "Roboto",
   wrap_width = 25,
   export_path = NULL
 )

@@ -15,6 +15,7 @@
 #' @param prop_method
 #' @param unit
 #' @param error_bar
+#' @param caption
 #' @param title
 #' @param subtitle
 #' @param ylab
@@ -53,6 +54,7 @@ quali_distrib <- function(data, # Données en format srvyr
                           prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                           unit = "%",
                           error_bar = T,
+                          caption = NULL,
                           title = NULL, # Le titre du graphique
                           subtitle = NULL,
                           ylab = NULL, # Le nom de l'axe de la variable catégorielle
@@ -239,16 +241,17 @@ quali_distrib <- function(data, # Données en format srvyr
        text = element_text(family = font),
        axis.text = element_text(color = "black")
        )+
-    coord_flip()
+    coord_flip() +
+    labs(title = title,
+         subtitle = subtitle,
+         caption = caption)
 
   # Ajouter les axes au besoins
   if(show_labs == TRUE){
     graph <- graph +
-      labs(title = title,
-           subtitle = subtitle,
-           x = NULL,
+      labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
            y = ifelse(is.null(ylab),
-                      paste("Distribution :", deparse(substitute(quali_var))),
+                      paste0("Distribution : ", deparse(substitute(quali_var))),
                       ylab))
   }
 
