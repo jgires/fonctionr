@@ -42,8 +42,8 @@ d’emprunt).
 
 - Ajouter des checks pour les inputs :
 
-  1.  <!--# JO : C'EST FAIT -->
-      Existence des colonnes dans le dataframe ;
+  1.  Existence des colonnes dans le dataframe
+      ;<!--# JO : C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument "..." ? Je pense, regarder -->
 
   2.  Pas mettre les mêmes colonnes dans les différents arguments
       (`group`, `var_distrib`, `facet_var`, etc.) ;
@@ -58,54 +58,55 @@ d’emprunt).
 - Les cluster \| strates \| weights n’apparaissent pas dans le message
   de la console avec les replicates =\> trouver la cause ? Ou changer de
   méthode =\> faire un print de l’objet survey affiche les
-  caractéristiques du design =\> bcp mieux, mais je ne saisis pas
-  comment c’est fait.
+  caractéristiques du design =\> bcp mieux, mais je ne comprends pas
+  comment Thomas Lumley arrive à ce résultat.
 
 - Ajouter `n_weight_upp` et `n_weight_low`.
 
 - Harmoniser les thèmes (axes, etc.).
 
-- <!--# JO : C'EST FAIT : Montserrat est désormais intégrée dans le package. A tester sur d'autres PC, sur Linux, etc. -->
+- Harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`,
+  `n_weighted` vs `n_tot_weighted`)
 
-  Ajouter des polices (dont Montserrat).
+- Ajouter des polices (dont
+  Montserrat)<!--# JO : C'EST FAIT : 3 polices sont désormais intégrées dans le package. A tester sur d'autres PC, sur Linux, etc. -->
 
-- Ajouter l’argument `show_labs` + les argument de labels.
+- Ajouter l’argument `show_labs` + les argument de
+  labels.<!--# JO : C'EST FAIT ; j'ai du coup aussi ajoute l'argument caption à quali_distrib(). Par contre les arguments xlab et ylab ne sont pas adaptés => ylab pour l'axe des x, du fait du coord_flip(), c'est étrange -->
 
 - Où afficher la valeur dans les différentes fonctions ? (dans la barre
-  mais avec un if pour quand la barre est trop petite ?)
+  mais avec un if pour quand la barre est trop petite
+  ?)<!--# JO : Ne pose pas de pb si c'est à l'extérieur de la barre => option à privilégier pour moi (implémenté temporairement) -->
 
 - ~~Bien mettre le n = (en dessous de la
-  barre).~~<!--# JO : En fait en dessous c'est moche. J'ai remis au milieu. Ce n'est pas possible que ça marche à tous les coups, et n c'est pour la verif, pas grave si parfois ça dépasse de la barre -->
+  barre).~~<!--# JO : En fait les n en dessous c'est moche. J'ai remis au milieu. Ce n'est pas possible que ça marche à tous les coups, et n c'est pour la verif, pas grave si parfois ça dépasse de la barre -->
 
-- <!--# JO : C'EST FAIT -->
-
-  Ajouter les trucs que François avait modifié dans les fonctions de
-  Joël.
+- Ajouter les trucs que François avait modifié dans les fonctions de
+  Joël. <!--# JO : C'EST FAIT -->
 
 ## central_group
 
 - Bypasser l’erreur du test stat avec `tryCatch()`.
 - Implémenter l’export excel comme pour `prop_group` =\> pas oublier
-  d’ajouter `broom` dans les dépendances.
+  d’ajouter `broom` dans les dépendances.<!--# JO : C'EST FAIT -->
 
 ## prop_group
 
 - Bypasser l’erreur du test stat avec `tryCatch()`.
-
-- <!--# JO : C'EST FAIT -->
-  Une expression qui contient `is.na(x)` ne fonctionne pas, car je
+- Une expression qui contient `is.na(x)` ne fonctionne pas, car je
   supprime les `NA` sur les variables de l’expression ! =\> Exclure la
-  possibilité d’entrer la fonction `is.na()` dans l’expression
+  possibilité d’entrer la fonction `is.na()` dans
+  l’expression<!--# JO : C'EST FAIT -->
   - *=\> Tentative pour que ça marche : est-ce que le code est safe ?*
 
 ## quali_distrib_group
 
 - Implémenter un test stat lorsqu’il y a des facet =\> via modélisation
-  loglinéaire, mais j’ai un peu de mal avec `survey` (erreurs
-  fréquentes).
+  loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de
+  `survey` (erreurs fréquentes).
 
 - Implémenter l’export excel comme pour `prop_group` =\> pas oublier
-  d’ajouter `broom` dans les dépendances.
+  d’ajouter `broom` dans les dépendances.<!--# JO : C'EST FAIT -->
 
 ## quali_distrib
 
@@ -113,8 +114,8 @@ d’emprunt).
 
 - Ajouter un filtre.
 
-  - C’est fait, mais il faut ajouter des conditions d'arrêt si certain
-    caractères ne fonctionnent pas
+  - *=\> C’est fait, mais il faut ajouter des conditions d’arrêt si
+    certain caractères ne fonctionnent pas*
     <!--# JO : J'ai ajouté un stop si les variables de filtre n'existent pas dans data, c'est ce que tu voulais dire ? -->
 
 - Quid des `NA` ? couleur distincte? Si oui à faire
@@ -122,13 +123,13 @@ d’emprunt).
 
 - Quid des `NA` dans les facets? Les supprimer? Faire une catégorie à
   part? Actuellement, il en fait une catégorie à part.
-  <!--# JO : J'ai modifié pour faire commùe pour les autres fonctions : si on met na.rm = T alors ça supprime aussi sur les facet, car laisser le NA sur facet et pas sur quali_var n'est pas cohérent. Si na.rm = F, alors le NA des facets est laissé. Mettre des na.rm pour chacune des variables n'est pas du tout ergonomique : si la personne veut faire un truc plus fin, elle peut le faire directement avec survey, ce n'est pas le but du package -->
+  <!--# JO : J'ai modifié pour faire comme pour les autres fonctions : si on met na.rm = T alors ça supprime aussi sur les facet, car laisser le NA sur facet et pas sur quali_var n'est pas cohérent. Si na.rm = F, alors le NA des facets est laissé. Mettre des na.rm pour chacune des variables n'est pas du tout ergonomique : si la personne veut faire un truc plus fin, elle peut le faire directement avec survey, ce n'est pas le but du package -->
 
 - Concernant le ré-ordonnancement des modalités, le choix a été fait de
   ne pas laisser la possibilité de réordonner.
-  <!--# J'ai finalement ajouté l'option. Il fallait bouger le NA en bas, ce qui demandait la même chose que pour réordonner les catégories => autant le faire -->
+  <!--# J'ai finalement ajouté l'option. Il fallait bouger la cat NA en bas, ce qui demandait la même chose que pour réordonner les catégories => autant le faire. Par ailleurs en réalité ce peut être utile, en fonction de ce que tu cherches -->
 
-- Exporter en excel.
+- Exporter en excel.<!--# JO : C'est fait -->
 
 - Mettre les n et positionner à gauche.
 
@@ -156,24 +157,25 @@ d’emprunt).
 ## quali_distrib_group
 
 - Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\>
-  comment faire vu qu’il y a la palette de couleur des modalités ?
-  <!--# FR : idée : utiliser des textures? hachures?  -->
+  comment faire vu qu’il y a la palette de couleur des modalités
+  ?<!--# FR : idée : utiliser des textures? hachures?  -->
 
 - Réordonner les levels sur la variable `group` ? Mais selon quelle
   valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la
-  variable `var_distrib` ?
-  <!--# FR : cela peut me sembler une bonne idée. -->
+  variable `var_distrib`
+  ?<!--# FR : cela peut me sembler une bonne idée. -->
 
-- Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-  <!--# FR : Cela me semble une bonne idée -->
+- Ajouter les effectifs totaux par groupe ? (dans le nom du groupe
+  ?)<!--# FR : Cela me semble une bonne idée -->
 
 - Possibilité d’indiquer un vecteur avec une palette de couleur pour
-  coller avec le code couleur de notre institution.
+  coller avec le code couleur de notre
+  institution.<!--# JO : Bonne idée -->
 
 - Ajuster la légende (nombre de lignes?) pour éviter de masquer une
   partie de celle-ci. J’ai souvent eu le cas. Même si c’est un détail,
-  cela rend impossible l’utilisation du graphique propre dans un rapport
-  <!--# JO : j'ai simplifié le code -->.
+  cela rend impossible l’utilisation du graphique propre dans un
+  rapport<!--# JO : j'ai simplifié le code -->.
 
 # Fonctions à créer
 

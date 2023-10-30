@@ -65,7 +65,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Ajouter des polices (dont Montserrat)<!--# JO : C'EST FAIT : 3 polices sont désormais intégrées dans le package. A tester sur d'autres PC, sur Linux, etc. -->
 
--   Ajouter l'argument `show_labs` + les argument de labels.<!--# JO : C'EST FAIT ; j'ai du coup aussi ajoute l'argument caption à quali_distrib() -->
+-   Ajouter l'argument `show_labs` + les argument de labels.<!--# JO : C'EST FAIT ; j'ai du coup aussi ajoute l'argument caption à quali_distrib(). Par contre les arguments xlab et ylab ne sont pas adaptés => ylab pour l'axe des x, du fait du coord_flip(), c'est étrange -->
 
 -   Où afficher la valeur dans les différentes fonctions ? (dans la barre mais avec un if pour quand la barre est trop petite ?)<!--# JO : Ne pose pas de pb si c'est à l'extérieur de la barre => option à privilégier pour moi (implémenté temporairement) -->
 
