@@ -225,7 +225,7 @@ quali_distrib <- function(data, # Données en format srvyr
     graph <- graph +
       labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
            y = ifelse(is.null(ylab),
-                      paste0("Distribution : ", deparse(substitute(quali_var))),
+                      paste0("Distribution : ", deparse(substitute(quali_var)), " (total=100%)"),
                       ylab))
   }
 
