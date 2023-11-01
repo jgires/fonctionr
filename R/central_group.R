@@ -41,7 +41,6 @@
 #' @import broom
 #' @import showtext
 #' @import sysfonts
-#' @export
 #'
 #' @examples
 central_group <- function(data,
@@ -72,13 +71,10 @@ central_group <- function(data,
                           export_path = NULL) {
 
   # Petite fonction utile
-  `%ni%` = Negate(`%in%`)
+  `%ni%` <- Negate(`%in%`)
 
-  # On ajoute les polices contenues dans le package et on les active
-  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
-  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
-  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
-  showtext_auto()
+  # On charge et active les polices
+  load_and_active_fonts()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -113,30 +109,7 @@ central_group <- function(data,
   }
 
   # On convertit d'abord en objet srvyr
-  # Si objet survey (avec replicates ou non)
-  if(any(class(data) %in% c("survey.design2","survey.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input : objet survey")
-    data_W <- data %>%
-      as_survey_design()
-  }
-  if(any(class(data) %in% c("svyrep.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input : objet survey")
-    data_W <- data %>%
-      as_survey_rep()
-  }
-  # Si objet srvyr (avec replicates ou non)
-  if(any(class(data) %in% c("tbl_svy"))){
-    message("Input : objet srvyr")
-    data_W <- data
-  }
-  # Si data.frame (pas de replicate prévu => A FAIRE A TERME)
-  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
-    message("Input : data.frame")
-    data_W <- data %>%
-      as_survey_design(...)
-  }
-
-  message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
+  data_W <- convert_to_srvyr(data, ...)
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
