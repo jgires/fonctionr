@@ -114,6 +114,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 ## En général
 
+-   Enlever le paramètre `dodge` =\> ne sert à rien.
 -   Créer une fonction pour transformer les données en objet srvyr (redondance entre les 4 fonctions)
     -   *=\> C'est fait dans le fichier `utils.R`. Créer des fonctions à chaque fois pour des opérations redondantes entre fonctions =\> Check que les variables sont bien dans le DF, etc. ?*
 
