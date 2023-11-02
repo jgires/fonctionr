@@ -108,7 +108,6 @@ prop_group <- function(data,
     stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
   }
 
-
   # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(express_bin))")
   # express_check <- str_extract_all((deparse(substitute(prop_exp))), "[\\&\\|]+")[[1]]
   # if(length(express_check) > 0){
@@ -405,8 +404,8 @@ prop_group <- function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
-    print(graph)
+    # # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    # print(graph)
 
     # On simplifie le tableau à exporter
     tab_excel <- tab %>% select(-n_tot_weighted_se)
@@ -421,50 +420,15 @@ prop_group <- function(data,
     names(test_stat_excel)[1] <- "Parameter"
     names(test_stat_excel)[2] <- "Value"
 
-    # Je formate un fichier Excel dans lequel j'exporte les résultats
-
-    wb <- createWorkbook() # On crée l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
-    addWorksheet(wb, "Résultats") # On ajoute une feuille pour les résultats
-    addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
-    addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
-
-    writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
-    insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
-    writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
-
-    setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
-    hs <- createStyle(fontColour = "#ffffff", fgFill = "skyblue3",  # Style de la première ligne
-                      halign = "center", textDecoration = "Bold",
-                      fontName = "Arial Narrow")
-    firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la première colonne
-                           fontName = "Arial Narrow")
-    body <- createStyle (halign = "center", # Style des cellules du tableau
-                         fontName = "Arial Narrow")
-    percent <- createStyle(numFmt = "percentage")
-
-    addStyle(wb, "Résultats", hs, cols = 1:ncol(tab_excel), rows = 1) # On applique le style à la première ligne
-    addStyle(wb, "Résultats", body, cols = 2:ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
-    # Des if statements dans le cas où le résultat est démultiplié par modalité de facet_var => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
-    if (!quo_is_null(quo_facet)) {
-      addStyle(wb, "Résultats", firstC, cols = 1:2, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
-      addStyle(wb, "Résultats", percent, cols = 3:5, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
-    }
-    if (quo_is_null(quo_facet)) {
-      addStyle(wb, "Résultats", firstC, cols = 1, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
-      addStyle(wb, "Résultats", percent, cols = 2:4, rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
-    }
-
-    setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
-    hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la première ligne
-                      halign = "center", textDecoration = "Bold",
-                      fontName = "Arial Narrow")
-    body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
-
-    addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style à la première ligne
-    addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
-    addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
-
-    saveWorkbook(wb, export_path, overwrite = TRUE)
+    # J'exporte les résultats en Excel
+    export_excel(tab_excel = tab_excel,
+                 graph = graph,
+                 test_stat_excel = test_stat_excel,
+                 facet_null = quo_is_null(quo_facet),
+                 export_path = export_path,
+                 percent_fm = TRUE,
+                 fgFill = "skyblue3",
+                 bivariate = FALSE)
   }
 
   return(res)

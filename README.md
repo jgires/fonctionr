@@ -72,7 +72,7 @@ d’emprunt).
   Montserrat)<!--# JO : C'EST FAIT : 3 polices sont désormais intégrées dans le package. A tester sur d'autres PC, sur Linux, etc. -->
 
 - Ajouter l’argument `show_labs` + les argument de
-  labels.<!--# JO : C'EST FAIT ; j'ai du coup aussi ajoute l'argument caption à quali_distrib(). Par contre les arguments xlab et ylab ne sont pas adaptés => ylab pour l'axe des x, du fait du coord_flip(), c'est étrange -->
+  labels.<!--# JO : C'EST FAIT ; j'ai du coup aussi ajoute l'argument caption à quali_distrib(). Par contre les arguments xlab et ylab ne sont pas adaptés => ylab pour l'axe des x, du fait du coord_flip(), c'est étrange... -->
 
 - Où afficher la valeur dans les différentes fonctions ? (dans la barre
   mais avec un if pour quand la barre est trop petite
@@ -110,7 +110,9 @@ d’emprunt).
 
 ## quali_distrib
 
-- Ajouter un test khi2 d’adéquation.
+- Ajouter un test khi2 d’adéquation =\> **Pour rappel, l’import de
+  `survey` dans les dépendances ne sert à rien tant que le test n’est
+  pas implémenté !**
 
 - Ajouter un filtre.
 
@@ -143,6 +145,9 @@ d’emprunt).
 
 - Créer une fonction pour transformer les données en objet srvyr
   (redondance entre les 4 fonctions)
+  - *=\> C’est fait dans le fichier `utils.R`. Créer des fonctions à
+    chaque fois pour des opérations redondantes entre fonctions =\>
+    Check que les variables sont bien dans le DF, etc. ?*
 
 ## central_group
 
