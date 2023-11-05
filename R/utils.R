@@ -96,7 +96,7 @@ export_excel <- function(tab_excel = tab_excel,
   addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le résultat du test stat
 
   writeData(wb, "Résultats", tab_excel, keepNA = TRUE, na.string = "NA") # On écrit les résultats en gardant les NA
-  insertPlot(wb,"Graphique", dpi = 80, width = 12, height = 8)
+  insertPlot(wb,"Graphique", dpi = 90, width = 12, height = 7)
   writeData(wb, "Test statistique", test_stat_excel) # On écrit le résultat du test stat
 
   setColWidths(wb, "Résultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
