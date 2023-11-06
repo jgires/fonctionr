@@ -313,6 +313,9 @@ prop_group <- function(data,
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
       text = element_text(family = font),
+      axis.line = element_line(color = "black"),
+      axis.ticks = element_line(color = "black"),
+      axis.text = element_text(color = "black"),
       legend.position = "none"
     ) +
     scale_fill_manual(
