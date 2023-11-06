@@ -97,8 +97,17 @@ central_group <- function(data,
     vars_input_char <- c(vars_input_char, as.character(vars_filter))
   }
   # Ici la contition et le stop à proprement parler
-  if(all(vars_input_char %in% names(data)) == FALSE){
-    stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet n'est pas présente dans data")
+  # Si data.frame
+  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
+    if(all(vars_input_char %in% names(data)) == FALSE){
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+    }
+  }
+  # Si objet sondage
+  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
+    if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+    }
   }
 
   if(type == "mean" & is.null(fill)){
