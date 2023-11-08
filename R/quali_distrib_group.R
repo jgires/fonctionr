@@ -50,6 +50,7 @@ quali_distrib_group <- function(data,
                                 subtitle = NULL,
                                 ylab = NULL, # Le nom de l'axe de la variable catégorielle
                                 xlab = NULL,
+                                legendlab = NULL,
                                 caption = NULL,
                                 show_labs = TRUE,
                                 show_value = TRUE,
@@ -308,13 +309,18 @@ quali_distrib_group <- function(data,
       graph <- graph +
         labs(x = xlab)
     }
+    if(!is.null(legendlab)){
+      graph <- graph +
+        labs(fill = legendlab)
+    }
   }
 
   # Masquer les axes si show_labs == FALSE
   if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
-           y = NULL)
+           y = NULL,
+           fill = NULL)
   }
 
   if (!quo_is_null(quo_facet)) {
