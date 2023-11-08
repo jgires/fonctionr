@@ -342,7 +342,7 @@ central_group <- function(data,
     theme_minimal() +
     theme(
       panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_line(color = "#dddddd"),
+      panel.grid.minor.x = element_blank(),
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
       text = element_text(family = font),
