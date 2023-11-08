@@ -50,6 +50,7 @@ quali_distrib_group <- function(data,
                                 subtitle = NULL,
                                 ylab = NULL, # Le nom de l'axe de la variable catégorielle
                                 xlab = NULL,
+                                legendlab = NULL,
                                 caption = NULL,
                                 show_labs = TRUE,
                                 show_value = TRUE,
@@ -242,7 +243,7 @@ quali_distrib_group <- function(data,
     theme_minimal() +
     theme(
       panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_line(color = "#dddddd"),
+      panel.grid.minor.x = element_blank(),
       panel.grid.major.y = element_blank(),
       panel.grid.major.x = element_line(color = "#dddddd"),
       text = element_text(family = font),
@@ -305,13 +306,18 @@ quali_distrib_group <- function(data,
       graph <- graph +
         labs(x = xlab)
     }
+    if(!is.null(legendlab)){
+      graph <- graph +
+        labs(fill = legendlab)
+    }
   }
 
   # Masquer les axes si show_labs == FALSE
   if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
-           y = NULL)
+           y = NULL,
+           fill = NULL)
   }
 
   if (!quo_is_null(quo_facet)) {
