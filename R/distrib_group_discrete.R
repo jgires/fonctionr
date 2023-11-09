@@ -9,8 +9,8 @@
 #' @param ...
 #' @param title
 #' @param subtitle
-#' @param ylab
 #' @param xlab
+#' @param ylab
 #' @param legend_lab
 #' @param caption
 #' @param show_labs
@@ -49,8 +49,8 @@ distrib_group_discrete <- function(data,
                                    ...,
                                    title = NULL, # Le titre du graphique
                                    subtitle = NULL,
-                                   ylab = NULL, # Le nom de l'axe de la variable catégorielle
-                                   xlab = NULL,
+                                   xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                                   ylab = NULL,
                                    legend_lab = NULL,
                                    caption = NULL,
                                    show_labs = TRUE,
@@ -303,12 +303,12 @@ distrib_group_discrete <- function(data,
   # Ajouter les axes
   if(show_labs == TRUE){
     graph <- graph +
-      labs(y = ifelse(is.null(ylab),
+      labs(y = ifelse(is.null(xlab),
                       paste0("Distribution : ", deparse(substitute(quali_var))),
-                      ylab))
-    if(!is.null(xlab)){
+                      xlab))
+    if(!is.null(ylab)){
       graph <- graph +
-        labs(x = xlab)
+        labs(x = ylab)
     }
     if(!is.null(legend_lab)){
       graph <- graph +

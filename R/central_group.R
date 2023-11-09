@@ -10,8 +10,8 @@
 #' @param unit
 #' @param title
 #' @param subtitle
-#' @param xlab
 #' @param ylab
+#' @param xlab
 #' @param caption
 #' @param digits
 #' @param show_labs
@@ -52,8 +52,8 @@ central_group <- function(data,
                           unit = "",
                           title = NULL,
                           subtitle = NULL,
-                          xlab = NULL,
                           ylab = NULL,
+                          xlab = NULL,
                           caption = NULL,
                           digits = 0,
                           show_labs = TRUE,
@@ -392,19 +392,19 @@ central_group <- function(data,
   if(show_labs == TRUE){
     if (type == "mean") {
       graph <- graph +
-        labs(y = ifelse(is.null(ylab),
+        labs(y = ifelse(is.null(xlab),
                         paste0("Moyenne : ", deparse(substitute(quanti_exp))),
-                        ylab))
+                        xlab))
     }
     if (type == "median") {
       graph <- graph +
-        labs(y = ifelse(is.null(ylab),
+        labs(y = ifelse(is.null(xlab),
                         paste0("Médiane : ", deparse(substitute(quanti_exp))),
-                        ylab))
+                        xlab))
     }
-    if(!is.null(xlab)){
+    if(!is.null(ylab)){
       graph <- graph +
-        labs(x = xlab)
+        labs(x = ylab)
     }
   }
 

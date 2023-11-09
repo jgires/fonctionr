@@ -11,8 +11,8 @@
 #' @param caption
 #' @param title
 #' @param subtitle
-#' @param ylab
 #' @param xlab
+#' @param ylab
 #' @param scale
 #' @param digits
 #' @param show_labs
@@ -53,8 +53,8 @@ prop_group <- function(data,
                        caption = NULL,
                        title = NULL, # Le titre du graphique
                        subtitle = NULL,
-                       ylab = NULL, # Le nom de l'axe de la variable catégorielle
-                       xlab = NULL,
+                       xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                       ylab = NULL,
                        scale = 100,
                        digits = 0,
                        show_labs = TRUE,
@@ -341,12 +341,12 @@ prop_group <- function(data,
   # Ajouter les axes
   if(show_labs == TRUE){
     graph <- graph +
-      labs(y = ifelse(is.null(ylab),
+      labs(y = ifelse(is.null(xlab),
                       paste0("Proportion : ", deparse(substitute(prop_exp))),
-                      ylab))
-    if(!is.null(xlab)){
+                      xlab))
+    if(!is.null(ylab)){
       graph <- graph +
-        labs(x = xlab)
+        labs(x = ylab)
     }
   }
 

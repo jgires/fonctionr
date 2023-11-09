@@ -18,7 +18,7 @@
 #' @param caption
 #' @param title
 #' @param subtitle
-#' @param ylab
+#' @param xlab
 #' @param show_labs
 #' @param font
 #' @param digits
@@ -57,7 +57,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                              caption = NULL,
                              title = NULL, # Le titre du graphique
                              subtitle = NULL,
-                             ylab = NULL, # Le nom de l'axe de la variable catégorielle
+                             xlab = NULL, # Le nom de l'axe de la variable catégorielle
                              show_labs = TRUE,
                              font ="Roboto", # Quelle font par défaut?
                              digits = 0,
@@ -233,9 +233,9 @@ distrib_discrete <- function(data, # Données en format srvyr
   if(show_labs == TRUE){
     graph <- graph +
       labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
-           y = ifelse(is.null(ylab),
+           y = ifelse(is.null(xlab),
                       paste0("Distribution : ", deparse(substitute(quali_var)), " (total=100%)"),
-                      ylab))
+                      xlab))
   }
 
   # Masquer les axes si show_labs == FALSE
