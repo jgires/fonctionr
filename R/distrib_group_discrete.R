@@ -1,4 +1,4 @@
-#' quali_distrib_group : fonction pour calculer facilement des profils lignes par groupe
+#' distrib_group_discrete : fonction pour calculer facilement des profils lignes par groupe
 #'
 #' @param data
 #' @param group
@@ -11,6 +11,7 @@
 #' @param subtitle
 #' @param ylab
 #' @param xlab
+#' @param legend_lab
 #' @param caption
 #' @param show_labs
 #' @param show_value
@@ -39,32 +40,32 @@
 #' @export
 #'
 #' @examples
-quali_distrib_group <- function(data,
-                                group,
-                                quali_var,
-                                facet_var = NULL,
-                                filter_exp = NULL,
-                                prop_method = "beta",
-                                ...,
-                                title = NULL, # Le titre du graphique
-                                subtitle = NULL,
-                                ylab = NULL, # Le nom de l'axe de la variable catégorielle
-                                xlab = NULL,
-                                legendlab = NULL,
-                                caption = NULL,
-                                show_labs = TRUE,
-                                show_value = TRUE,
-                                unit = "",
-                                digits = 0,
-                                dodge = 0.9,
-                                pretty_pal = "Hokusai1",
-                                direction = 1,
-                                scale = 100,
-                                wrap_width = 25,
-                                legend_ncol = 4,
-                                font ="Roboto",
-                                na.rm = T,
-                                export_path = NULL) {
+distrib_group_discrete <- function(data,
+                                   group,
+                                   quali_var,
+                                   facet_var = NULL,
+                                   filter_exp = NULL,
+                                   prop_method = "beta",
+                                   ...,
+                                   title = NULL, # Le titre du graphique
+                                   subtitle = NULL,
+                                   ylab = NULL, # Le nom de l'axe de la variable catégorielle
+                                   xlab = NULL,
+                                   legend_lab = NULL,
+                                   caption = NULL,
+                                   show_labs = TRUE,
+                                   show_value = TRUE,
+                                   unit = "",
+                                   digits = 0,
+                                   dodge = 0.9,
+                                   pretty_pal = "Hokusai1",
+                                   direction = 1,
+                                   scale = 100,
+                                   wrap_width = 25,
+                                   legend_ncol = 4,
+                                   font ="Roboto",
+                                   na.rm = T,
+                                   export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -309,9 +310,9 @@ quali_distrib_group <- function(data,
       graph <- graph +
         labs(x = xlab)
     }
-    if(!is.null(legendlab)){
+    if(!is.null(legend_lab)){
       graph <- graph +
-        labs(fill = legendlab)
+        labs(fill = legend_lab)
     }
   }
 
@@ -398,4 +399,11 @@ quali_distrib_group <- function(data,
   }
 
   return(res)
+}
+
+
+#' @rdname distrib_group_discrete
+#' @export
+distrib_group_d <- function(...) {
+  distrib_group_discrete(...)
 }

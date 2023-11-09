@@ -1,4 +1,4 @@
-#' quali_distrib : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
+#' distrib_discrete : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
 #'
 #' @param data
 #' @param quali_var
@@ -39,30 +39,30 @@
 #'
 #' @examples
 
-quali_distrib <- function(data, # Données en format srvyr
-                          quali_var, # Variable catégorielle
-                          facet_var = NULL,
-                          filter_exp = NULL,
-                          ...,
-                          na.rm = T,
-                          fill = "sienna2",
-                          show_n = FALSE,
-                          show_value = TRUE,
-                          reorder = FALSE,
-                          scale = 100,
-                          dodge = 0.9,
-                          prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
-                          unit = "%",
-                          error_bar = T,
-                          caption = NULL,
-                          title = NULL, # Le titre du graphique
-                          subtitle = NULL,
-                          ylab = NULL, # Le nom de l'axe de la variable catégorielle
-                          show_labs = TRUE,
-                          font ="Roboto", # Quelle font par défaut?
-                          digits = 0,
-                          wrap_width = 25,
-                          export_path = NULL) {
+distrib_discrete <- function(data, # Données en format srvyr
+                             quali_var, # Variable catégorielle
+                             facet_var = NULL,
+                             filter_exp = NULL,
+                             ...,
+                             na.rm = T,
+                             fill = "sienna2",
+                             show_n = FALSE,
+                             show_value = TRUE,
+                             reorder = FALSE,
+                             scale = 100,
+                             dodge = 0.9,
+                             prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                             unit = "%",
+                             error_bar = T,
+                             caption = NULL,
+                             title = NULL, # Le titre du graphique
+                             subtitle = NULL,
+                             ylab = NULL, # Le nom de l'axe de la variable catégorielle
+                             show_labs = TRUE,
+                             font ="Roboto", # Quelle font par défaut?
+                             digits = 0,
+                             wrap_width = 25,
+                             export_path = NULL) {
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -344,3 +344,9 @@ quali_distrib <- function(data, # Données en format srvyr
   return(res)
 }
 
+
+#' @rdname distrib_discrete
+#' @export
+distrib_d <- function(...) {
+  distrib_discrete(...)
+}

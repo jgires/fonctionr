@@ -526,11 +526,13 @@ central_group <- function(data,
   return(res)
 }
 
+
 #' @rdname central_group
 #' @export
 median_group <- function(..., type = "median") {
   central_group(..., type = type)
 }
+
 
 #' @rdname central_group
 #' @export
