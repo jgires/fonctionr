@@ -1,6 +1,8 @@
-#' distrib_discrete : Function describe the distribution of a discrete variable from complex survey data. It produces a table and a graphic.
+#' distrib_discrete
 #'
-#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' Function describe the distribution of a discrete variable from complex survey data. It produces a table and a graphic.
+#'
+#' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param quali_var The discrete variable that is studied.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
@@ -13,7 +15,7 @@
 #' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm = FALSE, is not included in the reorder.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param dodge Width of the bar, between 0 and 1.
-#' @param unit Unit showed in the graphic. Default is %.
+#' @param unit Unit showed in the graphic. Default is percent.
 #' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param caption Caption in the graphic.
 #' @param title Title of the graphic.
@@ -22,10 +24,10 @@
 #' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the catégories. Default is 25.
+#' @param wrap_width Number of characters before going to the line. Applies to the labels of the categories. Default is 25.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import ggplot2
 #' @import stringr

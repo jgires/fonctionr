@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: 
     c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
-Description: Package pour faire des analyses facile sur base de données d'enquête.
+Description: Package pour faire des analyses faciles sur base de données d'enquête avec design complexe.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -14,6 +14,7 @@ Imports:
     forcats,
     ggplot2,
     MetBrewer,
+    PrettyCols,
     openxlsx,
     rlang,
     scales,

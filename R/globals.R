@@ -1,6 +1,8 @@
 # run checkhelper::print_globals() to get the globalVariables
 
 globalVariables(unique(c(
+  # pivot_longer_survey
+  "type",
   # central_group:
   "indice", "indice_low", "indice_upp", "n_tot_sample",
   # distrib_group_discrete:

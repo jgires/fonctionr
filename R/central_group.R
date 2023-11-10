@@ -1,33 +1,37 @@
-#' central_group : fonction pour calculer facilement des tendances centrales par groupe
+#' central_group
+#'
+#' Function to compare means or medians in different groups from complex survey data. It produces a table, a graphic and a statistical test.
+#'
 #' @name central_group
 #'
-#' @param data
-#' @param group
-#' @param quanti_exp
-#' @param facet_var
-#' @param filter_exp
-#' @param ...
-#' @param unit
-#' @param title
-#' @param subtitle
-#' @param ylab
-#' @param xlab
-#' @param caption
-#' @param digits
-#' @param show_labs
-#' @param show_n
-#' @param show_value
-#' @param dodge
-#' @param reorder
-#' @param error_bar
-#' @param type
-#' @param fill
-#' @param na.rm.group
-#' @param total_name
-#' @param wrap_width
-#' @param export_path
+#' @param data A dataframe or an object from the survey package or an object from the srvyr package.
+#' @param group A variable defining groups be compared.
+#' @param quanti_exp An expression that define the mean/mediam to be computed.
+#' @param facet_var A variable defining the faceting group.
+#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
+#' @param unit Unit showed in the graphic. Default is no unit.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param caption Caption of the graphic.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param type "mean" to compute means by group ; "median" to compute medians by group.
+#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
+#' @param total_name Name of the total bar on the graphic. Default is Total.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import survey
 #' @import srvyr

@@ -3,7 +3,7 @@
 \name{distrib_group_discrete}
 \alias{distrib_group_discrete}
 \alias{distrib_group_d}
-\title{distrib_group_discrete : fonction pour calculer facilement des profils lignes par groupe}
+\title{distrib_group_discrete}
 \usage{
 distrib_group_discrete(
   data,
@@ -26,7 +26,6 @@ distrib_group_discrete(
   dodge = 0.9,
   pretty_pal = "Hokusai1",
   direction = 1,
-  scale = 100,
   wrap_width = 25,
   legend_ncol = 4,
   font = "Roboto",
@@ -37,8 +36,59 @@ distrib_group_discrete(
 distrib_group_d(...)
 }
 \arguments{
-\item{na.rm}{}
+\item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
+
+\item{group}{A variable defining groups be compared.}
+
+\item{quali_var}{The discrete variable that is studied.}
+
+\item{facet_var}{A variable defining the faceting group.}
+
+\item{filter_exp}{An expression that filters the data, preserving the design.}
+
+\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+
+\item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{title}{Title of the graphic.}
+
+\item{subtitle}{Subtitle of the graphic.}
+
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{legend_lab}{Legend (fill) label on the graphic.}
+
+\item{caption}{Caption of the graphic.}
+
+\item{show_labs}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
+
+\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.}
+
+\item{unit}{Unit showed in the graphic. Default is percent.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{wrap_width}{Number of characters before going to the line. Applies to the labels of the groups and of the categories. Default is 25.}
+
+\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{na.rm}{TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.}
+
+\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+}
+\value{
+A list that contains a table, a graphic and a statistical test
 }
 \description{
-distrib_group_discrete : fonction pour calculer facilement des profils lignes par groupe
+Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
 }

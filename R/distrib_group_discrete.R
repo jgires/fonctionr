@@ -1,6 +1,8 @@
-#' distrib_group_discrete : Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
+#' distrib_group_discrete
 #'
-#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
+#'
+#' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param quali_var The discrete variable that is studied.
 #' @param facet_var A variable defining the faceting group.
@@ -15,24 +17,24 @@
 #' @param caption Caption of the graphic.
 #' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param unit Unit showed in the graphic. Default is %.
+#' @param unit Unit showed in the graphic. Default is percent.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the groups and of the catégories. Default is 25.
+#' @param wrap_width Number of characters before going to the line. Applies to the labels of the groups and of the categories. Default is 25.
 #' @param legend_ncol Number of colomns in the legend. Default is 4.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param na.rm TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import survey
 #' @import srvyr
 #' @import dplyr
 #' @import scales
 #' @import MetBrewer
-#' @import MoMAColors
 #' @import PrettyCols
 #' @import ggplot2
 #' @importFrom stats as.formula
@@ -224,14 +226,14 @@ distrib_group_discrete <- function(data,
   palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
-  #ou la crée avec le package MoMAColors
-  if(pretty_pal %in% c("Abbott","Alkalay1","Alkalay2","Althoff","Andri","Avedon","Budnitz",
-                       "Clay","Connors","Dali","Doughton","Ernst","Exter","Flash",
-                       "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
-                       "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
-                       "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
-    palette <- as.character(moma.colors(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
-  }
+  # #ou la crée avec le package MoMAColors
+  # if(pretty_pal %in% c("Abbott","Alkalay1","Alkalay2","Althoff","Andri","Avedon","Budnitz",
+  #                      "Clay","Connors","Dali","Doughton","Ernst","Exter","Flash",
+  #                      "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
+  #                      "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
+  #                      "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
+  #   palette <- as.character(moma.colors(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  # }
 
   # On crée la palette avecle package PrettyCols
   if(pretty_pal %in% c("Blues","Purples","Tangerines","Greens","Pinks","Teals",

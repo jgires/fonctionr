@@ -2,13 +2,18 @@
 % Please edit documentation in R/pivot_longer_survey.R
 \name{pivot_longer_survey}
 \alias{pivot_longer_survey}
-\title{pivot_longer_survey : fonction pour transformer les sorties de srvyr}
+\title{pivot_longer_survey}
 \usage{
 pivot_longer_survey(data, n_groups)
 }
 \arguments{
-\item{n_groups}{}
+\item{data}{A dataframe with Agregated data to pivot}
+
+\item{n_groups}{Number of groups by which data have been agregated}
+}
+\value{
+A dataframe
 }
 \description{
-pivot_longer_survey : fonction pour transformer les sorties de srvyr
+Function to pivot from wide to long agregated data by group produced with srvyr::summarise
 }

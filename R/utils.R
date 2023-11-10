@@ -1,11 +1,13 @@
-#' Fonction pour convertir en objet srvyr
+#' convert_to_srvyr
 #'
-#' @param data un dataframe, un objet srvyr ou survey
-#' @param ...
+#' Internal function to convert data into srvyr object
+#'
+#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' @param ... All options possible in as_survey_design() in srvyr package.
 #'
 #' @import srvyr
 #'
-#' @NoRd
+#' @noRd
 #'
 convert_to_srvyr <- function(data, ...) {
 
@@ -36,7 +38,21 @@ convert_to_srvyr <- function(data, ...) {
   }
 
   # message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
-  message(attr(data_W, "survey_vars"))
+
+  # On extrait les variables du design
+  attr_design <- attr(data_W, "survey_vars") %>%
+    as.character() %>%
+    unlist(use.names = TRUE)
+
+  vec_design <- character(0)
+  for(i in 1:length(attr_design)){
+    vec_name_i <- names(attr_design)[i]
+    vec_var_i <- attr_design[[i]]
+    vec_design <- c(vec_design, vec_name_i, vec_var_i)
+  }
+
+  # On affiche les variables du design dans un message
+  message("Sampling design: ", paste(vec_design, collapse = " "))
 
   return(data_W)
 
@@ -48,7 +64,7 @@ convert_to_srvyr <- function(data, ...) {
 #' @import showtext
 #' @import sysfonts
 #'
-#' @NoRd
+#' @noRd
 #'
 load_and_active_fonts <- function(){
 
@@ -61,28 +77,31 @@ load_and_active_fonts <- function(){
 }
 
 
-#' Fonction pour exporter en excel les résultats des fonctions de fonctionr
+#' export_excel
 #'
-#' @param tab_excel
-#' @param graph
-#' @param test_stat_excel
-#' @param facet_null
-#' @param export_path
-#' @param percent_fm
-#' @param fgFill
+#' Internal function to export results of fonctionr's functions into an excel file.
+#'
+#' @param tab_excel A dataframe with the results calculated by fonctionr's functions.
+#' @param graph ggplot object showing results of fonctionr's functions.
+#' @param test_stat_excel A dataframe with results of a statistical test on the data.
+#' @param facet_null A logical vector. TRUE if no facet.
+#' @param export_path Path to export the results in an xlsx file.
+#' @param percent_fm A logical vector. TRUE if results are percentages.
+#' @param fgFill Color of first row in exported excel file.
+#' @param bivariate A logical vector. TRUE if results are bivariate.
 #'
 #' @import openxlsx
 #' @import broom
 #'
-#' @NoRd
+#' @noRd
 #'
-export_excel <- function(tab_excel = tab_excel,
-                         graph = graph,
-                         test_stat_excel = test_stat_excel,
+export_excel <- function(tab_excel,
+                         graph,
+                         test_stat_excel,
                          facet_null = NULL,
-                         export_path = export_path,
+                         export_path,
                          percent_fm = NULL,
-                         fgFill = fgFill,
+                         fgFill,
                          bivariate = NULL) {
 
   # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html

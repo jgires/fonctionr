@@ -1,13 +1,15 @@
-#' prop_group : Function to compare a proportion in different groups from complex survey data. It produces a table, a graphic and a statistical test.
+#' prop_group
 #'
-#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' Function to compare proportions in different groups from complex survey data. It produces a table, a graphic and a statistical test.
+#'
+#' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param prop_exp An expression that define the proportion to be computed.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param unit Unit showed in the graphic. Default is %.
+#' @param unit Unit showed in the graphic. Default is percent.
 #' @param caption Caption of the graphic.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
@@ -25,10 +27,10 @@
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -323,11 +325,6 @@ prop_group <- function(data,
       values = palette,
       na.value = "grey"
     ) +
-    scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
-      limits = function(x) { c(min(x), max(x)) },
-      expand = expansion(mult = c(.01, .05))
-    ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels)+
     labs(title = title,
@@ -358,9 +355,26 @@ prop_group <- function(data,
            y = NULL)
   }
 
+  # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
+      facet_wrap(vars({{ facet_var }})) +
+      theme(panel.spacing.x = unit(1, "lines")) +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .2))
+      )
+  }
+
+  # scale_y si pas de facet
+  if (quo_is_null(quo_facet)) {
+    graph <- graph +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .05))
+      )
   }
 
   if (error_bar == T) {
@@ -383,6 +397,7 @@ prop_group <- function(data,
                                digits = digits),
                          unit),
           family = font),
+        size = 3.5,
         vjust = ifelse(error_bar == T,
                        -0.5,
                        0.5),
