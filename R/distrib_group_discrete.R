@@ -226,6 +226,7 @@ distrib_group_discrete <- function(data,
   palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
+<<<<<<< HEAD
   # #ou la crée avec le package MoMAColors
   # if(pretty_pal %in% c("Abbott","Alkalay1","Alkalay2","Althoff","Andri","Avedon","Budnitz",
   #                      "Clay","Connors","Dali","Doughton","Ernst","Exter","Flash",
@@ -234,6 +235,16 @@ distrib_group_discrete <- function(data,
   #                      "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
   #   palette <- as.character(moma.colors(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   # }
+=======
+  #ou la crée avec le package MoMAColors
+  if(pretty_pal %in% c("Abbott","Alkalay1","Alkalay2","Althoff","Andri","Avedon","Budnitz",
+                       "Clay","Connors","Dali","Doughton","Ernst","Exter","Flash",
+                       "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
+                       "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
+                       "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
+    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  }
+>>>>>>> 68798794fd032b7ae1f28f6e8e2f653c36cb2410
 
   # On crée la palette avecle package PrettyCols
   if(pretty_pal %in% c("Blues","Purples","Tangerines","Greens","Pinks","Teals",
