@@ -203,11 +203,6 @@ distrib_discrete <- function(data, # Données en format srvyr
       values = palette,
       na.value = "grey"
       ) +
-    scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
-      limits = function(x) { c(min(x), max(x)) },
-      expand = expansion(mult = c(.01, .05))
-      ) +
     scale_x_discrete(
       labels = function(x) str_wrap(x, width = wrap_width),
       limits = levels
@@ -279,6 +274,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                                digits = digits),
                          unit),
           family = font),
+        size = 3.5,
         vjust = ifelse(error_bar == T,
                        -0.5,
                        0.5),
@@ -305,10 +301,26 @@ distrib_discrete <- function(data, # Données en format srvyr
       )
   }
 
-  # Ajouter les facets au besoin
+  # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
+      facet_wrap(vars({{ facet_var }})) +
+      theme(panel.spacing.x = unit(1, "lines")) +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .2))
+      )
+  }
+
+  # scale_y si pas de facet
+  if (quo_is_null(quo_facet)) {
+    graph <- graph +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .05))
+      )
   }
 
   # Retourner les résultat
