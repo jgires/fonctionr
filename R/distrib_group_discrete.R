@@ -1,28 +1,29 @@
-#' distrib_group_discrete : fonction pour calculer facilement des profils lignes par groupe
+#' distrib_group_discrete : Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
 #'
-#' @param data
-#' @param group
-#' @param quali_var
-#' @param facet_var
-#' @param filter_exp
-#' @param prop_method
-#' @param ...
-#' @param title
-#' @param subtitle
-#' @param xlab
-#' @param ylab
-#' @param legend_lab
-#' @param caption
-#' @param show_labs
-#' @param show_value
-#' @param unit
-#' @param digits
-#' @param dodge
-#' @param pretty_pal
-#' @param direction
-#' @param wrap_width
-#' @param legend_ncol
-#' @param na.rm
+#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' @param group A variable defining groups be compared.
+#' @param quali_var The discrete variable that is studied.
+#' @param facet_var A variable defining the faceting group.
+#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param ... All options possible in as_survey_design in srvyr package.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param legend_lab Legend (fill) label on the graphic.
+#' @param caption Caption of the graphic.
+#' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
+#' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param unit Unit showed in the graphic. Default is %.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the groups and of the catégories. Default is 25.
+#' @param legend_ncol Number of colomns in the legend. Default is 4.
+#' @param na.rm TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return
 #' @import rlang
@@ -257,7 +258,7 @@ distrib_group_discrete <- function(data,
       legend.position = "bottom"
     ) +
     scale_fill_manual(values = palette,
-                      labels = function(x) str_wrap(x, width = 25),
+                      labels = function(x) str_wrap(x, width = wrap_width),
                       na.value = "grey") +
     scale_y_continuous(
       labels = function(x) { paste0(x * scale, "%") },

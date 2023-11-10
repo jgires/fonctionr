@@ -1,29 +1,29 @@
-#' distrib_discrete : fonction pour réaliser facilement un graphique et une analyse d'une distribution d'une variable qualitative d'un sondage complexe
+#' distrib_discrete : Function describe the distribution of a discrete variable from complex survey data. It produces a table and a graphic.
 #'
-#' @param data
-#' @param quali_var
-#' @param facet_var
-#' @param filter_exp
-#' @param ...
-#' @param na.rm
-#' @param fill
-#' @param show_n
-#' @param show_value
-#' @param reorder
-#' @param scale
-#' @param dodge
-#' @param prop_method
-#' @param unit
-#' @param error_bar
-#' @param caption
-#' @param title
-#' @param subtitle
-#' @param xlab
-#' @param show_labs
-#' @param font
-#' @param digits
-#' @param wrap_width
-#' @param export_path
+#' @param data A data.frame or an object from the survey package or an object from the srvyr package.
+#' @param quali_var The discrete variable that is studied.
+#' @param facet_var A variable defining the faceting group.
+#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.rm TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.
+#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion.
+#' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm = FALSE, is not included in the reorder.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param unit Unit showed in the graphic. Default is %.
+#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param caption Caption in the graphic.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the catégories. Default is 25.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return
 #' @import rlang

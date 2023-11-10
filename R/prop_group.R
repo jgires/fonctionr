@@ -10,7 +10,7 @@
 #' @param unit Unit showed in the graphic. Default is %.
 #' @param caption Caption of the graphic.
 #' @param title Title of the graphic.
-#' @param subtitle Subtitle of the graphic
+#' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
@@ -26,7 +26,7 @@
 #' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param wrap_width Number of characters before number of characters before going to the line. Applies to the labels of the groups. Default is 25.
-#' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test result.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return
 #' @import rlang
