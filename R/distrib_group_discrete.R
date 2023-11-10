@@ -230,7 +230,7 @@ distrib_group_discrete <- function(data,
                        "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
                        "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
                        "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
-    palette <- as.character(moma.colors(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
   # On crée la palette avecle package PrettyCols
