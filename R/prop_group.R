@@ -1,4 +1,4 @@
-#' prop_group : Aunction to compare a proportion in different groups. It produces a table, a graphic and a statistical test.
+#' prop_group : Function to compare a proportion in different groups from complex survey data. It produces a table, a graphic and a statistical test.
 #'
 #' @param data A data.frame or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
