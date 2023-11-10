@@ -36,7 +36,7 @@ convert_to_srvyr <- function(data, ...) {
   }
 
   # message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
-  print(unlist(attr(data_W, "survey_vars")))
+  message(attr(data_W, "survey_vars"))
 
   return(data_W)
 
