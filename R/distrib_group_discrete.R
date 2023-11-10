@@ -60,7 +60,6 @@ distrib_group_discrete <- function(data,
                                    dodge = 0.9,
                                    pretty_pal = "Hokusai1",
                                    direction = 1,
-                                   scale = 100,
                                    wrap_width = 25,
                                    legend_ncol = 4,
                                    font ="Roboto",
@@ -230,6 +229,10 @@ distrib_group_discrete <- function(data,
   }
 
   # On crée le graphique
+
+  # Tout en pourcent
+  scale <- 100
+
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
@@ -257,7 +260,7 @@ distrib_group_discrete <- function(data,
                       labels = function(x) str_wrap(x, width = 25),
                       na.value = "grey") +
     scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
+      labels = function(x) { paste0(x * scale, "%") },
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
@@ -326,7 +329,8 @@ distrib_group_discrete <- function(data,
 
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
+      facet_wrap(vars({{ facet_var }})) +
+      theme(panel.spacing.x = unit(1, "lines"))
   }
 
   if (show_value == TRUE) {
@@ -339,6 +343,7 @@ distrib_group_discrete <- function(data,
                                 unit),
                          NA),
           family = font),
+        size = 3.5,
         color = "white",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)

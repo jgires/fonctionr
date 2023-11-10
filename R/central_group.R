@@ -355,11 +355,6 @@ central_group <- function(data,
       values = palette,
       na.value = "grey"
     ) +
-    scale_y_continuous(
-      limits = function(x) { c(min(x), max(x)) },
-      expand = expansion(mult = c(.01, .05)),
-      labels = function(x) { paste0(x, unit) }
-    ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels) +
     labs(title = title,
@@ -415,16 +410,33 @@ central_group <- function(data,
            y = NULL)
   }
 
+  # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }}))
+      facet_wrap(vars({{ facet_var }})) +
+      theme(panel.spacing.x = unit(1, "lines")) +
+      scale_y_continuous(
+        labels = function(x) { paste0(x, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .2))
+      )
+  }
+
+  # scale_y si pas de facet
+  if (quo_is_null(quo_facet)) {
+    graph <- graph +
+      scale_y_continuous(
+        labels = function(x) { paste0(x, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .1))
+      )
   }
 
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low,
                         ymax = indice_upp),
-                    width = dodge * 0.2,
+                    width = dodge * 0.05,
                     colour = "black",
                     alpha = 0.5,
                     linewidth = 0.5,
@@ -436,18 +448,20 @@ central_group <- function(data,
     graph<-graph  +
       geom_text(
         aes(
-          #y = indice - (0.01 * max_ggplot),
+          y = indice + (0.01 * max_ggplot),
           label = paste0(round(indice,
                               digits = digits),
                         unit),
           family = font),
-        vjust = 0.4,
-        #hjust = 0,
-        size = 4,
-        color = "white",
+        size = 3.5,
+        vjust = ifelse(error_bar == T,
+                       -0.5,
+                       0.5),
+        hjust = 0,
+        color = "black",
         alpha = 0.9,
-        position = position_stack(vjust = .5))
-        #position = position_dodge(width = dodge))
+        # position = position_stack(vjust = .5))
+        position = position_dodge(width = dodge))
     }
 
   if (show_n == TRUE) {
