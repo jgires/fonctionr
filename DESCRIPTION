@@ -14,6 +14,7 @@ Imports:
     forcats,
     ggplot2,
     MetBrewer,
+    MoMAColors,
     PrettyCols,
     openxlsx,
     rlang,
