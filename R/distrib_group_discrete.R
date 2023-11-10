@@ -35,7 +35,6 @@
 #' @import dplyr
 #' @import scales
 #' @import MetBrewer
-#' @import MoMAColors
 #' @import PrettyCols
 #' @import ggplot2
 #' @importFrom stats as.formula
