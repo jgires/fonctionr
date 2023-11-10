@@ -24,7 +24,7 @@ distrib_discrete(
   caption = NULL,
   title = NULL,
   subtitle = NULL,
-  ylab = NULL,
+  xlab = NULL,
   show_labs = TRUE,
   font = "Roboto",
   digits = 0,
