@@ -8,7 +8,7 @@
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param unit Unit showed in the graphic. Default is %.
-#' @param caption Caption in the graphic.
+#' @param caption Caption of the graphic.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
