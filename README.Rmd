@@ -44,7 +44,7 @@ devtools::install_github("jgires/fonctionr")
 
 **François Ghesquière** est sociologue et travaille à l'Institut wallon de l'évaluation, de la prospective et de la statistique.
 
-Nous sommes ouvert à toute remarque afin d'améliorer notre package.
+Nous sommes ouverts à toute remarque afin d'améliorer notre package.
 
 [<img src="man/figures/logo_observatoire_sante_social.png" align="center" height="120/"/>](https://www.ccc-ggc.brussels/fr/observatbru/accueil)[<img src="man/figures/logo_iweps.png" align="center" height="120/"/>](https://www.iweps.be)
 
