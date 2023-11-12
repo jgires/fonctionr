@@ -30,7 +30,7 @@ pivot_longer_survey <- function(data,
     relocate((last_col()-(n_groups-1)):last_col()) %>% # Je la positionne en première place
     # Je pivote avec names_sep = "_"
     pivot_longer(-all_of(1:n_groups), names_to = c("type",".value"), names_sep = "_") %>%
-    mutate(type = str_replace(type, "lWPtZR9Wf2g9RSp", "_")) %>% # Je remets le "_" dans ce qui était au départ les noms des colonnes
+    mutate(type = str_replace_all(type, "lWPtZR9Wf2g9RSp", "_")) %>% # Je remets le "_" dans ce qui était au départ les noms des colonnes
     left_join(n_numbers) # J'ajoute les effectifs
 
   return(data_renamed)
