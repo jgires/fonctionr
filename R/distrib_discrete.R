@@ -216,7 +216,8 @@ distrib_discrete <- function(data, # Données en format srvyr
        panel.grid.major.y = element_blank(),
        panel.grid.major.x = element_line(color = "#dddddd"),
        axis.line = element_line(color = "black"),
-       axis.ticks = element_line(color = "black"),
+       axis.ticks = element_blank(),
+       #axis.ticks = element_line(color = "black"),
        legend.position = "none",
        text = element_text(family = font),
        axis.text = element_text(color = "black")
