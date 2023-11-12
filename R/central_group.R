@@ -74,11 +74,13 @@ central_group <- function(data,
                           wrap_width = 25,
                           export_path = NULL) {
 
+  # Un check impératif
+  if((missing(data) | missing(group) | missing(quanti_exp)) == TRUE){
+    stop("Les arguments data, group et quanti_exp doivent être remplis")
+  }
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -332,6 +334,10 @@ central_group <- function(data,
   }
 
   # On crée le graphique
+
+  # On charge et active les polices
+  load_and_active_fonts()
+
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},

@@ -71,11 +71,13 @@ distrib_group_discrete <- function(data,
                                    na.rm = T,
                                    export_path = NULL) {
 
+  # Un check impératif
+  if((missing(data) | missing(group) | missing(quali_var)) == TRUE){
+    stop("Les arguments data, group et quali_var doivent être remplis")
+  }
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -262,6 +264,9 @@ distrib_group_discrete <- function(data,
   }
 
   # On crée le graphique
+
+  # On charge et active les polices
+  load_and_active_fonts()
 
   # Tout en pourcent
   scale <- 100

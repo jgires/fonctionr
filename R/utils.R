@@ -16,23 +16,23 @@ convert_to_srvyr <- function(data, ...) {
 
   # Si objet survey (avec replicates ou non)
   if(any(class(data) %in% c("survey.design2","survey.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input : objet survey")
+    message("Input: objet survey")
     data_W <- data %>%
       as_survey_design()
   }
   if(any(class(data) %in% c("svyrep.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input : objet survey")
+    message("Input: objet survey")
     data_W <- data %>%
       as_survey_rep()
   }
   # Si objet srvyr (avec replicates ou non)
   if(any(class(data) %in% c("tbl_svy"))){
-    message("Input : objet srvyr")
+    message("Input: objet srvyr")
     data_W <- data
   }
   # Si data.frame (pas de replicate prévu => A FAIRE A TERME)
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
-    message("Input : data.frame")
+    message("Input: data.frame")
     data_W <- data %>%
       as_survey_design(...)
   }
@@ -46,13 +46,18 @@ convert_to_srvyr <- function(data, ...) {
 
   vec_design <- character(0)
   for(i in 1:length(attr_design)){
-    vec_name_i <- names(attr_design)[i]
-    vec_var_i <- attr_design[[i]]
+    vec_name_i <- paste0(names(attr_design)[i], ": ")
+    if(i != length(attr_design)){
+      vec_var_i <- paste0(attr_design[[i]], ",")
+    }
+    if(i == length(attr_design)){
+      vec_var_i <- attr_design[[i]]
+    }
     vec_design <- c(vec_design, vec_name_i, vec_var_i)
   }
 
   # On affiche les variables du design dans un message
-  message("Sampling design: ", paste(vec_design, collapse = " "))
+  message("Sampling design -> ", paste(vec_design, collapse = " "))
 
   return(data_W)
 

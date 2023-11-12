@@ -66,11 +66,13 @@ distrib_discrete <- function(data, # Données en format srvyr
                              wrap_width = 25,
                              export_path = NULL) {
 
+  # Un check impératif
+  if((missing(data) | missing(quali_var)) == TRUE){
+    stop("Les arguments data et quali_var doivent être remplis")
+  }
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -191,6 +193,10 @@ distrib_discrete <- function(data, # Données en format srvyr
   }
 
   # Le graphique proprement dit
+
+  # On charge et active les polices
+  load_and_active_fonts()
+
   graph <- table %>%
     ggplot(aes(
       x = {{ quali_var }},
