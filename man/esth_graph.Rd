@@ -37,7 +37,7 @@ esth_graph(
 
 \item{facet_var}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
-\item{unit}{The unit showd on the plot. Default is "%".}
+\item{unit}{The unit showd on the plot. Default is percent.}
 
 \item{caption}{Caption of the graphic.}
 

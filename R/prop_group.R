@@ -73,10 +73,32 @@ prop_group <- function(data,
                        wrap_width = 25,
                        export_path = NULL) {
 
-  # Un check impératif
+  # Check des arguments nécessaires
   if((missing(data) | missing(group) | missing(prop_exp)) == TRUE){
     stop("Les arguments data, group et prop_exp doivent être remplis")
   }
+
+  # Check des autres arguments
+  check_character <- function(arg) {
+    for(check_i in seq_along(arg)){
+      if(!is.null(arg[[check_i]])){
+        stopifnot(is.character(arg[[check_i]]), length(arg[[check_i]]) == 1)
+        }
+      }
+  }
+  check_logical <- function(arg) {
+    for(check_i in seq_along(arg)){
+      stopifnot(is.logical(arg[[check_i]]), length(arg[[check_i]]) == 1)
+    }
+  }
+  check_numeric <- function(arg) {
+    for(check_i in seq_along(arg)){
+      stopifnot(is.numeric(arg[[check_i]]), length(arg[[check_i]]) == 1)
+    }
+  }
+  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
+  check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)

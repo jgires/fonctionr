@@ -6,7 +6,7 @@
 #' @param ind_var The variable in tab with the indicators to be ploted.
 #' @param cat_var The variable in tab with the labels of the indicators to be ploted.
 #' @param facet_var A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param unit The unit showd on the plot. Default is "%".
+#' @param unit The unit showd on the plot. Default is percent.
 #' @param caption Caption of the graphic.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
