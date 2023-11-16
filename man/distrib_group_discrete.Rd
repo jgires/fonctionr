@@ -27,6 +27,7 @@ distrib_group_discrete(
   pretty_pal = "Hokusai1",
   direction = 1,
   wrap_width = 25,
+  wrap_width_leg = 25,
   legend_ncol = 4,
   font = "Roboto",
   na.rm = T,
@@ -76,7 +77,9 @@ distrib_group_d(...)
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
-\item{wrap_width}{Number of characters before going to the line. Applies to the labels of the groups and of the categories. Default is 25.}
+\item{wrap_width}{Number of characters before going to the line for the labels of the groups. Default is 25.}
+
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories. Default is 25.}
 
 \item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 

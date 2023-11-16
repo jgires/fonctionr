@@ -22,7 +22,8 @@
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param wrap_width Number of characters before going to the line. Applies to the labels of the groups and of the categories. Default is 25.
+#' @param wrap_width Number of characters before going to the line for the labels of the groups. Default is 25.
+#' @param wrap_width_leg Number of characters before going to the line for the labels of the categories. Default is 25.
 #' @param legend_ncol Number of colomns in the legend. Default is 4.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param na.rm TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.
@@ -66,6 +67,7 @@ distrib_group_discrete <- function(data,
                                    pretty_pal = "Hokusai1",
                                    direction = 1,
                                    wrap_width = 25,
+                                   wrap_width_leg = 25,
                                    legend_ncol = 4,
                                    font ="Roboto",
                                    na.rm = T,
@@ -296,7 +298,7 @@ distrib_group_discrete <- function(data,
       legend.position = "bottom"
     ) +
     scale_fill_manual(values = palette,
-                      labels = function(x) str_wrap(x, width = wrap_width),
+                      labels = function(x) str_wrap(x, width = wrap_width_leg),
                       na.value = "grey") +
     scale_y_continuous(
       labels = function(x) { paste0(x * scale, "%") },
