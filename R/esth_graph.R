@@ -108,7 +108,7 @@ graph <- tab2 %>%
     axis.ticks = element_line(color = "black"),
     axis.text = element_text(color = "black"),
     legend.position = "none",
-    plot.margin = margin(10, 10, 10, 10)
+    plot.margin = margin(10, 15, 10, 10)
   ) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                    limits = levels)+

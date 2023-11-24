@@ -164,7 +164,7 @@ n_prop_group = function(data,
       #axis.ticks = element_line(color = "black"),
       axis.text = element_text(color = "black"),
       legend.position = "bottom",
-      plot.margin = margin(10, 10, 10, 10)
+      plot.margin = margin(10, 15, 10, 10)
     ) +
     scale_fill_manual(
       values = palette,

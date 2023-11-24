@@ -227,7 +227,7 @@ distrib_discrete <- function(data, # Données en format srvyr
        legend.position = "none",
        text = element_text(family = font),
        axis.text = element_text(color = "black"),
-       plot.margin = margin(10, 10, 10, 10)
+       plot.margin = margin(10, 15, 10, 10)
        )+
     coord_flip() +
     labs(title = title,
