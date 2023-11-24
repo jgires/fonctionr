@@ -6,9 +6,11 @@ globalVariables(unique(c(
   # central_group:
   "indice", "indice_low", "indice_upp", "n_tot_sample",
   # distrib_group_discrete:
-  "prop", "n_weighted_se",
+  "prop", "n_weighted_se", "moma.colors",
   # prop_group:
   "prop", "prop_low", "prop_upp", "n_tot_sample", "n_tot_weighted_se",
   # distrib_discrete:
-  "n_weighted_low", "n_weighted_upp"
+  "n_weighted_low", "n_weighted_upp",
+  # many_prop_group
+  "moma.colors", "bin_col"
 )))

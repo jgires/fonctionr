@@ -1,9 +1,30 @@
-#' n_prop_group
+#' many_prop_group
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
-#' @param prop_bin_col A vector containing names of the binarized variables on which to compute the proportions
+#' @param bin_vars A vector containing names of the dummy variables on which to compute the proportions
+#' @param facet_var A variable defining the faceting group.
+#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
+#' @param unit Unit showed in the graphic. Default is percent.
+#' @param caption Caption of the graphic.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
 #'
 #' @return
 #' @import rlang
@@ -17,36 +38,35 @@
 #' @export
 #'
 #' @examples
-n_prop_group = function(data,
-                        group,
-                        prop_bin_col,
-                        facet_var = NULL,
-                        filter_exp = NULL,
-                        prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
-                        ...,
-                        unit = "%",
-                        caption = NULL,
-                        title = NULL, # Le titre du graphique
-                        subtitle = NULL,
-                        xlab = NULL, # Le nom de l'axe de la variable catégorielle
-                        ylab = NULL,
-                        scale = 100,
-                        digits = 0,
-                        show_labs = TRUE,
-                        show_n = FALSE,
-                        show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
-                        dodge = 0.9,
-                        pretty_pal = "Hokusai1",
-                        direction = 1,
-                        error_bar = T,
-                        na.rm.group = T,
-                        total_name = "Total",
-                        font ="Roboto",
-                        wrap_width = 25){
+many_prop_group = function(data,
+                           group,
+                           bin_vars,
+                           facet_var = NULL,
+                           filter_exp = NULL,
+                           prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                           ...,
+                           unit = "%",
+                           caption = NULL,
+                           title = NULL, # Le titre du graphique
+                           subtitle = NULL,
+                           xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                           ylab = NULL,
+                           scale = 100,
+                           digits = 0,
+                           show_labs = TRUE,
+                           show_n = FALSE,
+                           show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                           dodge = 0.9,
+                           pretty_pal = "Hokusai1",
+                           direction = 1,
+                           error_bar = T,
+                           na.rm.group = T,
+                           font ="Roboto",
+                           wrap_width = 25){
 
   # On transforme les colonnes binarisée en un vecteur charactère (plus facile pour le code !)
-  vec_prop_bin_col <- all.vars(substitute(prop_bin_col))
-  message(vec_prop_bin_col)
+  vec_bin_vars <- all.vars(substitute(bin_vars))
+  message(vec_bin_vars)
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -88,18 +108,36 @@ n_prop_group = function(data,
         "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
+  # On calcule les proportions par groupe
   tab <- tibble()
-  for(i in vec_prop_bin_col) {
-    tab_i <- data_W %>%
-      group_by({{ group }}) %>%
-      summarise(
-        bin_col = i,
-        prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_tot_sample = unweighted(n()),
-        n_tot_weighted = survey_total()
-      )
+  if(quo_is_null(quo_facet)){
+    for(i in vec_bin_vars) {
+      tab_i <- data_W %>%
+        group_by({{ group }}) %>%
+        summarise(
+          bin_col = i,
+          prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          n_tot_sample = unweighted(n()),
+          n_tot_weighted = survey_total()
+        )
 
-    tab <- rbind(tab, tab_i)
+      tab <- rbind(tab, tab_i)
+    }
+  }
+  # Version avec facet
+  if(!quo_is_null(quo_facet)){
+    for(i in vec_bin_vars) {
+      tab_i <- data_W %>%
+        group_by({{ facet_var }}, {{ group }}) %>%
+        summarise(
+          bin_col = i,
+          prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          n_tot_sample = unweighted(n()),
+          n_tot_weighted = survey_total()
+        )
+
+      tab <- rbind(tab, tab_i)
+    }
   }
 
   # On crée la palette avecle package met.brewer
@@ -181,7 +219,7 @@ n_prop_group = function(data,
   if(show_labs == TRUE){
     graph <- graph +
       labs(y = ifelse(is.null(xlab),
-                      paste0("Proportion : ", paste(vec_prop_bin_col, collapse = ", ")),
+                      paste0("Proportion : ", paste(vec_bin_vars, collapse = ", ")),
                       xlab))
     if(!is.null(ylab)){
       graph <- graph +
