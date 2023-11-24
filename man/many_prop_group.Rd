@@ -37,7 +37,7 @@ many_prop_group(
 
 \item{group}{A variable defining groups be compared.}
 
-\item{bin_vars}{A vector containing names of the binarized variables on which to compute the proportions}
+\item{bin_vars}{A vector containing names of the dummy variables on which to compute the proportions}
 
 \item{facet_var}{A variable defining the faceting group.}
 

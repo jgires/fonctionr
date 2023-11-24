@@ -1,4 +1,4 @@
-#' n_prop_group
+#' many_prop
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
