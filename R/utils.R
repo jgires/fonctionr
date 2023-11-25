@@ -170,3 +170,50 @@ export_excel <- function(tab_excel,
   saveWorkbook(wb, export_path, overwrite = TRUE)
 
 }
+
+
+#' check_character
+#'
+#' Internal function to check if arguments are character vectors of length 1
+#'
+#' @param arg List of arguments to check
+#'
+#' @noRd
+#'
+check_character <- function(arg) {
+  for(check_i in seq_along(arg)){
+    if(!is.null(arg[[check_i]])){
+      stopifnot(is.character(arg[[check_i]]), length(arg[[check_i]]) == 1)
+    }
+  }
+}
+
+
+#' check_logical
+#'
+#' Internal function to check if arguments are logical vectors of length 1
+#'
+#' @param arg List of arguments to check
+#'
+#' @noRd
+#'
+check_logical <- function(arg) {
+  for(check_i in seq_along(arg)){
+    stopifnot(is.logical(arg[[check_i]]), length(arg[[check_i]]) == 1)
+  }
+}
+
+
+#' check_numeric
+#'
+#' Internal function to check if arguments are numeric vectors of length 1
+#'
+#' @param arg List of arguments to check
+#'
+#' @noRd
+#'
+check_numeric <- function(arg) {
+  for(check_i in seq_along(arg)){
+    stopifnot(is.numeric(arg[[check_i]]), length(arg[[check_i]]) == 1)
+  }
+}

@@ -79,23 +79,6 @@ prop_group <- function(data,
   }
 
   # Check des autres arguments
-  check_character <- function(arg) {
-    for(check_i in seq_along(arg)){
-      if(!is.null(arg[[check_i]])){
-        stopifnot(is.character(arg[[check_i]]), length(arg[[check_i]]) == 1)
-        }
-      }
-  }
-  check_logical <- function(arg) {
-    for(check_i in seq_along(arg)){
-      stopifnot(is.logical(arg[[check_i]]), length(arg[[check_i]]) == 1)
-    }
-  }
-  check_numeric <- function(arg) {
-    for(check_i in seq_along(arg)){
-      stopifnot(is.numeric(arg[[check_i]]), length(arg[[check_i]]) == 1)
-    }
-  }
   check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
   check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width))
@@ -123,7 +106,7 @@ prop_group <- function(data,
     vars_filter <- all.vars(substitute(filter_exp))
     vars_input_char <- c(vars_input_char, as.character(vars_filter))
   }
-  # Ici la contition et le stop à proprement parler
+  # Ici la condition et le stop à proprement parler
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){

@@ -64,9 +64,10 @@ many_prop_group = function(data,
                            font ="Roboto",
                            wrap_width = 25){
 
-  # On transforme les colonnes binarisée en un vecteur charactère (plus facile pour le code !)
-  vec_bin_vars <- all.vars(substitute(bin_vars))
-  message(vec_bin_vars)
+  # Check des arguments nécessaires
+  if((missing(data) | missing(group) | missing(bin_vars)) == TRUE){
+    stop("Les arguments data, group et bin_vars doivent être remplis")
+  }
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -75,6 +76,36 @@ many_prop_group = function(data,
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
+
+  # On transforme les colonnes binarisée en un vecteur charactère (plus facile pour le code !)
+  vec_bin_vars <- all.vars(substitute(bin_vars))
+  message("Variable(s) binaires entrées : ", paste(vec_bin_vars, collapse = ", "))
+
+  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
+  # On crée un vecteur string qui contient toutes les variables entrées
+  vars_input_char <- c(vec_bin_vars, as.character(substitute(group)))
+  # On ajoute facet si non-NULL
+  if(!quo_is_null(quo_facet)){
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+  }
+  # On ajoute filter si non-NULL
+  if(!quo_is_null(quo_filter)){
+    vars_filter <- all.vars(substitute(filter_exp))
+    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+  }
+  # Ici la condition et le stop à proprement parler
+  # Si data.frame
+  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
+    if(all(vars_input_char %in% names(data)) == FALSE){
+      stop("Au moins une des variables introduites dans bin_vars, group, filter_exp ou facet n'est pas présente dans data")
+    }
+  }
+  # Si objet sondage
+  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
+    if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
+      stop("Au moins une des variables introduites dans bin_vars, group, filter_exp ou facet n'est pas présente dans data")
+    }
+  }
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -95,6 +126,21 @@ many_prop_group = function(data,
         filter(!is.na({{ facet_var }}))
     }
   }
+
+  # On supprime les NA sur la/les variable(s) binarisées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) binarisées sont non missing (et pas tout le groupe : ça on s'en fout)
+  # On calcule les effectifs avant filtre
+  before <- data_W %>%
+    summarise(n=unweighted(n()))
+  # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+  for (var in vec_bin_vars) {
+    data_W <- data_W %>%
+      filter(!is.na(.data[[var]]))
+  }
+  # On calcule les effectifs après filtre
+  after <- data_W %>%
+    summarise(n=unweighted(n()))
+  # On affiche le nombre de lignes supprimées (pour vérification)
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) binarisées")
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W %>%
@@ -118,6 +164,7 @@ many_prop_group = function(data,
           bin_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
           n_tot_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = NULL),
           n_tot_weighted = survey_total()
         )
 
@@ -133,6 +180,7 @@ many_prop_group = function(data,
           bin_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
           n_tot_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = NULL),
           n_tot_weighted = survey_total()
         )
 
