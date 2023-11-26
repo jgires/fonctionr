@@ -79,7 +79,7 @@ prop_group <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
+  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
   check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width))
 

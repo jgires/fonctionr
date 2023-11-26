@@ -37,12 +37,12 @@ many_prop = function(data,
                      show_n = FALSE,
                      show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                      dodge = 0.9,
-                     fill = "green3",
+                     fill = "mediumseagreen",
                      error_bar = T,
                      font ="Roboto",
                      wrap_width = 25){
 
-  # On transforme les colonnes binarisée en un vecteur charactère (plus facile pour le code !)
+  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
   vec_bin_vars <- all.vars(substitute(bin_vars))
   message(vec_bin_vars)
 
@@ -69,15 +69,15 @@ many_prop = function(data,
         filter(!is.na({{ facet_var }}))
     }
 
-
   # On convertit la variable de facet en facteur si facet non-NULL
-  if(!quo_is_null(quo_facet)){
+  if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       mutate(
-        "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet_var }}" := droplevels(as.factor({{ facet_var }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+      )
 
     tab <- tibble()
-    for(i in vec_bin_vars) {
+    for (i in vec_bin_vars) {
       tab_i <- data_W %>%
         group_by({{ facet_var }}) %>%
         summarise(
@@ -89,50 +89,49 @@ many_prop = function(data,
 
       tab <- rbind(tab, tab_i)
     }
+  }
 
+  # Si pas de facet (= NULL)
+  if (quo_is_null(quo_facet)) {
+    tab <- tibble()
+    for (i in vec_bin_vars) {
+      tab_i <- data_W %>%
+        summarise(
+          bin_col = i,
+          prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          n_tot_sample = unweighted(n()),
+          n_tot_weighted = survey_total()
+        )
+
+      tab <- rbind(tab, tab_i)
     }
-
-
-
-  if(quo_is_null(quo_facet)){
-
-  tab <- tibble()
-  for(i in vec_bin_vars) {
-    tab_i <- data_W %>%
-      summarise(
-        bin_col = i,
-        prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_tot_sample = unweighted(n()),
-        n_tot_weighted = survey_total()
-      )
-
-    tab <- rbind(tab, tab_i)
-  }
   }
 
-  if (!is.null(bin_vars_label)){
+  if (!is.null(bin_vars_label)) {
 
-    if (length(vec_bin_vars)!= length(bin_vars_label)){
-      message("le nombre de labels n'est egal au nombre de variables")
+    # vérifier que bin_vars a une même longueur que bin_vars_label
+    # si non, message avec erreur...
+    if (length(vec_bin_vars) != length(bin_vars_label)) {
+      message("Le nombre de labels n'est pas égal au nombre de variables")
+
+    # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans bin_vars_label
     } else {
-for( i in 1:length(vec_bin_vars)){
-      tab[["bin_col"]][tab[["bin_col"]] == vec_bin_vars[i]]<-bin_vars_label[i]
-}
+
+      for (i in seq_along(vec_bin_vars)) {
+        tab[["bin_col"]][tab[["bin_col"]] == vec_bin_vars[i]] <- bin_vars_label[i]
+      }
     }
-     #vérifier que bin_vars a une même longueur que bin_vars_label
-    #si non, message avec erreur
-    #si oui, on remplace dans tab, bin_col par bin°vars_labe
   }
 
+  # On transforme la variable bin_col en facteur (pour réordonner éventuellement)
+  tab[["bin_col"]] <- as.factor(tab[["bin_col"]])
 
-#on transforme la variable bin_col en facteur (pour réordonner éventuellement)
-  tab[["bin_col"]]<-as.factor( tab[["bin_col"]])
+  if (reorder == T) {
+    tab <- tab %>%
+      arrange(prop) %>%
+      mutate(bin_col = fct_reorder(bin_col, desc(prop)))
+  }
 
-if(reorder == T){
-  tab<-tab %>%
-    arrange (prop)  %>%
-    mutate(bin_col= fct_reorder (bin_col,desc(prop)))
-}
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
@@ -182,7 +181,6 @@ if(reorder == T){
 
       graph <- graph +
         labs(x = ylab)
-
   }
 
   # Masquer les axes si show_labs == FALSE

@@ -69,6 +69,11 @@ many_prop_group = function(data,
     stop("Les arguments data, group et bin_vars doivent être remplis")
   }
 
+  # Check des autres arguments
+  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, pretty_pal, font))
+  check_logical(arg = list(show_labs, show_n, show_value, error_bar, na.rm.group))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -77,7 +82,7 @@ many_prop_group = function(data,
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
 
-  # On transforme les colonnes binarisée en un vecteur charactère (plus facile pour le code !)
+  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
   vec_bin_vars <- all.vars(substitute(bin_vars))
   message("Variable(s) binaires entrées : ", paste(vec_bin_vars, collapse = ", "))
 
