@@ -163,18 +163,19 @@ distrib_discrete <- function(data, # Données en format srvyr
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(table$prop, na.rm = TRUE)
 
-  if (reorder == T & quo_is_null(quo_facet)) {
+  if (reorder == T ) {
     # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,
       levels(reorder(
         table[[deparse(substitute(quali_var))]],
-        table[["prop"]]
+        table[["prop"]],
+        decreasing = T
       ))
     )
   }
 
-  if (reorder == F | !quo_is_null(quo_facet)) {
+  if (reorder == F) {
     # On crée un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,

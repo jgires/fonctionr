@@ -295,22 +295,24 @@ central_group <- function(data,
   # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
 
-  if (reorder == T & quo_is_null(quo_facet)) {
+  if (reorder == T) {
     # On crée un vecteur pour ordonner les levels de group selon mean, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
       NA,
       levels(reorder(
         tab[[deparse(substitute(group))]],
-        tab[["indice"]]
+        tab[["indice"]],
+        decreasing = T
       ))[levels(reorder(
         tab[[deparse(substitute(group))]],
-        tab[["indice"]]
+        tab[["indice"]],
+        decreasing = T
       )) != total_name]
     )
   }
 
-  if (reorder == F | !quo_is_null(quo_facet)) {
+  if (reorder == F) {
     # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
