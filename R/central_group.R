@@ -303,10 +303,12 @@ central_group <- function(data,
       levels(reorder(
         tab[[deparse(substitute(group))]],
         tab[["indice"]],
+        FUN = median,
         decreasing = T
       ))[levels(reorder(
         tab[[deparse(substitute(group))]],
         tab[["indice"]],
+        FUN = median,
         decreasing = T
       )) != total_name]
     )

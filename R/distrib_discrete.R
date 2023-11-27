@@ -170,6 +170,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       levels(reorder(
         table[[deparse(substitute(quali_var))]],
         table[["prop"]],
+        FUN = median,
         decreasing = T
       ))
     )

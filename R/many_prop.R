@@ -124,12 +124,30 @@ many_prop = function(data,
   }
 
   # On transforme la variable bin_col en facteur (pour réordonner éventuellement)
-  tab[["bin_col"]] <- as.factor(tab[["bin_col"]])
+#  tab[["bin_col"]] <- as.factor(tab[["bin_col"]])
 
-  if (reorder == T) {
-    tab <- tab %>%
-      arrange(prop) %>%
-      mutate(bin_col = fct_reorder(bin_col, desc(prop)))
+
+
+  if (reorder == T ) {
+    # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
+    levels <- levels(reorder(
+        tab[[deparse(substitute(bin_col))]],
+        tab[["prop"]],
+        FUN = median,
+        decreasing = T
+      ))
+
+  }
+
+  if (reorder == F) {
+    # On crée un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
+    if(length(vec_bin_vars) == length(bin_vars_label)){
+      levels <-   rev(bin_vars_label)
+    }
+    else{
+      levels <-   rev(vec_bin_vars)
+    }
+
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
@@ -165,7 +183,9 @@ many_prop = function(data,
       legend.position = "bottom",
       plot.margin = margin(10, 15, 10, 10)
     )  +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width))+
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+                     limits = levels
+    )+
     labs(title = title,
          subtitle = subtitle,
          caption = caption

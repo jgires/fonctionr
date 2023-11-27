@@ -25,7 +25,7 @@ many_prop(
   show_n = FALSE,
   show_value = TRUE,
   dodge = 0.9,
-  fill = "green3",
+  fill = "mediumseagreen",
   error_bar = T,
   font = "Roboto",
   wrap_width = 25
