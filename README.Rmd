@@ -83,7 +83,9 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
--   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...)
+-   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...) : je propose l'ordre suivant: les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp
+
+-   ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes
 
 #### central_group
 
@@ -92,6 +94,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 #### prop_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
+-   ajouter la possibilité d'un na.rm.prop = FALSE pour que la proportion soit calculée sur l'ensemble des individus (les NA étant comptabilisés dans le dénominateur)
 
 #### distrib_group_d
 
@@ -104,8 +107,6 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 ### Améliorations
 
 #### En général
-
--   Enlever le paramètre `dodge` ? =\> ne sert à rien.
 
 -   Créer une fonction de check des inputs (car redondance entre les 4 fonctions) *=\> Difficultés du fait de l'usage du tidyverse*
 
