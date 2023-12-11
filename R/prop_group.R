@@ -240,9 +240,9 @@ prop_group <- function(data,
       group_by({{ group }}) %>%
       cascade(
         prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_tot_sample = unweighted(n()),
-        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = NULL),
-        n_tot_weighted = survey_total(),
+        n_sample = unweighted(n()),
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
       )
   }
@@ -252,9 +252,9 @@ prop_group <- function(data,
       group_by({{ facet_var }}, {{ group }}) %>%
       cascade(
         prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_tot_sample = unweighted(n()),
-        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = NULL),
-        n_tot_weighted = survey_total(),
+        n_sample = unweighted(n()),
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
       ) %>%
       filter({{ facet_var }} != total_name | is.na({{ facet_var }}))
@@ -431,7 +431,7 @@ prop_group <- function(data,
       geom_text(
         aes(
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n_tot_sample),
+          label = paste0("n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,
@@ -453,7 +453,7 @@ prop_group <- function(data,
     # print(graph)
 
     # On simplifie le tableau à exporter
-    tab_excel <- tab %>% select(-n_tot_weighted_se)
+    tab_excel <- tab
 
     # On transforme le test stat en dataframe
     test_stat_excel <- test.stat %>%

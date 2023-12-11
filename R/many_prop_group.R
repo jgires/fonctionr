@@ -168,9 +168,9 @@ many_prop_group = function(data,
         summarise(
           bin_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_tot_sample = unweighted(n()),
-          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = NULL),
-          n_tot_weighted = survey_total()
+          n_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+          n_tot_weighted = survey_total(vartype = "ci")
         )
 
       tab <- rbind(tab, tab_i)
@@ -184,9 +184,9 @@ many_prop_group = function(data,
         summarise(
           bin_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_tot_sample = unweighted(n()),
-          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = NULL),
-          n_tot_weighted = survey_total()
+          n_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+          n_tot_weighted = survey_total(vartype = "ci")
         )
 
       tab <- rbind(tab, tab_i)
@@ -346,7 +346,7 @@ many_prop_group = function(data,
       geom_text(
         aes(
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n_tot_sample),
+          label = paste0("n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,

@@ -144,15 +144,17 @@ distrib_discrete <- function(data, # Données en format srvyr
     table <- data_W %>%
       group_by({{ quali_var }}) %>%
       srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
+                       n_sample = unweighted(n()),
                        n_weighted = survey_total(vartype = "ci"), # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
-                       n = unweighted(n()))
+                       )
   }
   if (!quo_is_null(quo_facet)) {
     table <- data_W %>%
       group_by({{ facet_var }}, {{ quali_var }}) %>%
       srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
+                       n_sample = unweighted(n()),
                        n_weighted = survey_total(vartype = "ci"), # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
-                       n = unweighted(n()))
+                       )
   }
 
   # Faire le graphique ---------------
@@ -304,7 +306,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       geom_text(
         aes(
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n),
+          label = paste0("n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,

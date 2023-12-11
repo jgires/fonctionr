@@ -204,8 +204,8 @@ distrib_group_discrete <- function(data,
       group_by({{ group }}, {{ quali_var }}) %>%
       summarise(
         prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
-        n = unweighted(n()),
-        n_weighted = survey_total()
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = c("ci"))
       )
   }
   if(!quo_is_null(quo_facet)){
@@ -213,8 +213,8 @@ distrib_group_discrete <- function(data,
       group_by({{ facet_var }}, {{ group }}, {{ quali_var }}) %>%
       summarise(
         prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
-        n = unweighted(n()),
-        n_weighted = survey_total()
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = c("ci"))
       )
   }
 
