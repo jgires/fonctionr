@@ -9,7 +9,10 @@ Description: Package pour faire des analyses faciles sur base de données d'enqu
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Remotes:
+    github::BlakeRMills/MoMAColors
 Imports: 
+    MoMAColors,
     dplyr,
     forcats,
     ggplot2,

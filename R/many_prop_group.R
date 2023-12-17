@@ -243,19 +243,9 @@ many_prop_group = function(data,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_minimal() +
+    theme_fonctionr(font = font) +
     theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.major.x = element_line(color = "#dddddd"),
-      text = element_text(family = font),
-      axis.line = element_line(color = "black"),
-      axis.ticks = element_blank(),
-      #axis.ticks = element_line(color = "black"),
-      axis.text = element_text(color = "black"),
-      legend.position = "bottom",
-      plot.margin = margin(10, 15, 10, 10)
+      legend.position = "bottom"
     ) +
     scale_fill_manual(
       values = palette,

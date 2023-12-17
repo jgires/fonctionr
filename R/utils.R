@@ -189,6 +189,23 @@ check_character <- function(arg) {
 }
 
 
+#' check_character_long
+#'
+#' Internal function to check if arguments are character vectors of any length
+#'
+#' @param arg List of arguments to check
+#'
+#' @noRd
+#'
+check_character_long <- function(arg) {
+  for(check_i in seq_along(arg)){
+    if(!is.null(arg[[check_i]])){
+      stopifnot(is.character(arg[[check_i]]))
+    }
+  }
+}
+
+
 #' check_logical
 #'
 #' Internal function to check if arguments are logical vectors of length 1
@@ -216,4 +233,28 @@ check_numeric <- function(arg) {
   for(check_i in seq_along(arg)){
     stopifnot(is.numeric(arg[[check_i]]), length(arg[[check_i]]) == 1)
   }
+}
+
+
+#' Thème pour ggplot
+#'
+#' @import ggplot2
+#'
+#' @noRd
+#'
+theme_fonctionr <- function(font = font) {
+  theme_minimal() +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "#dddddd"),
+    text = element_text(family = font),
+    axis.line = element_line(color = "black"),
+    axis.ticks = element_blank(),
+    #axis.ticks = element_line(color = "black"),
+    axis.text = element_text(color = "black"),
+    legend.position = "bottom",
+    plot.margin = margin(10, 15, 10, 10)
+  )
 }

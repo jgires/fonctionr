@@ -71,6 +71,11 @@ distrib_discrete <- function(data, # Données en format srvyr
     stop("Les arguments data et quali_var doivent être remplis")
   }
 
+  # Check des autres arguments
+  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, font, fill, export_path))
+  check_logical(arg = list(show_n, show_labs, show_value, reorder, error_bar, na.rm))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -141,7 +146,7 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # On calcule les fréquences relatives
   if (quo_is_null(quo_facet)) {
-    table <- data_W %>%
+    tab <- data_W %>%
       group_by({{ quali_var }}) %>%
       srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
                        n_sample = unweighted(n()),
@@ -149,7 +154,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                        )
   }
   if (!quo_is_null(quo_facet)) {
-    table <- data_W %>%
+    tab <- data_W %>%
       group_by({{ facet_var }}, {{ quali_var }}) %>%
       srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
                        n_sample = unweighted(n()),
@@ -160,18 +165,18 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Faire le graphique ---------------
 
   # On crée la palette : x fois la couleur selon le nombre de levels
-  palette <- c(rep(fill, nlevels(table[[deparse(substitute(quali_var))]])))
+  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(quali_var))]])))
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(table$prop, na.rm = TRUE)
+  max_ggplot <- max(tab$prop, na.rm = TRUE)
 
   if (reorder == T ) {
     # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,
       levels(reorder(
-        table[[deparse(substitute(quali_var))]],
-        table[["prop"]],
+        tab[[deparse(substitute(quali_var))]],
+        tab[["prop"]],
         FUN = median,
         decreasing = T
       ))
@@ -184,7 +189,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       NA,
       rev(
         levels(
-          table[[deparse(substitute(quali_var))]]
+          tab[[deparse(substitute(quali_var))]]
         )
       )
     )
@@ -192,7 +197,7 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, même si na.rm = F !
   # On les supprime donc ssi na.rm = F et pas de missing sur la variable quali_var **OU** na.rm = T
-  if ((na.rm == F & sum(is.na(table[[deparse(substitute(quali_var))]])) == 0) | na.rm == T)  {
+  if ((na.rm == F & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm == T)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -201,7 +206,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   # On charge et active les polices
   load_and_active_fonts()
 
-  graph <- table %>%
+  graph <- tab %>%
     ggplot(aes(
       x = {{ quali_var }},
       y = prop,
@@ -219,20 +224,10 @@ distrib_discrete <- function(data, # Données en format srvyr
       labels = function(x) str_wrap(x, width = wrap_width),
       limits = levels
       ) +
-    theme_minimal() +
+    theme_fonctionr(font = font) +
     theme(
-       panel.grid.minor.y = element_blank(),
-       panel.grid.minor.x = element_blank(),
-       panel.grid.major.y = element_blank(),
-       panel.grid.major.x = element_line(color = "#dddddd"),
-       axis.line = element_line(color = "black"),
-       axis.ticks = element_blank(),
-       #axis.ticks = element_line(color = "black"),
-       legend.position = "none",
-       text = element_text(family = font),
-       axis.text = element_text(color = "black"),
-       plot.margin = margin(10, 15, 10, 10)
-       )+
+      legend.position = "none"
+    ) +
     coord_flip() +
     labs(title = title,
          subtitle = subtitle,
@@ -339,7 +334,7 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # Retourner les résultat
   res <- list()
-  res$tab <- table
+  res$tab <- tab
   res$graph <- graph
 
   if (!is.null(export_path)) {
@@ -348,16 +343,13 @@ distrib_discrete <- function(data, # Données en format srvyr
     # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
-    # On simplifie le tableau à exporter
-    tab_excel <- table %>% select(-n_weighted_low, -n_weighted_upp)
-
     # On crée ici manuellement le dataframe pour le test, celui-ci n'étant pas encore implémenté
     test_stat_excel <- data.frame(Parameter = c("test.error"),
                                   Value = "Test pas encore implémenté pour quali_distrib()",
                                   row.names = NULL)
 
     # J'exporte les résultats en Excel
-    export_excel(tab_excel = tab_excel,
+    export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,
                  facet_null = quo_is_null(quo_facet),

@@ -79,6 +79,11 @@ central_group <- function(data,
     stop("Les arguments data, group et quanti_exp doivent être remplis")
   }
 
+  # Check des autres arguments
+  check_character(arg = list(unit, title, subtitle, xlab, ylab, caption, type, fill, total_name, font, export_path))
+  check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
+  check_numeric(arg = list(digits, dodge, wrap_width))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -353,19 +358,9 @@ central_group <- function(data,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_minimal() +
+    theme_fonctionr(font = font) +
     theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.major.x = element_line(color = "#dddddd"),
-      text = element_text(family = font),
-      axis.line = element_line(color = "black"),
-      axis.ticks = element_blank(),
-      #axis.ticks = element_line(color = "black"),
-      axis.text = element_text(color = "black"),
-      legend.position = "none",
-      plot.margin = margin(10, 15, 10, 10)
+      legend.position = "none"
     ) +
     scale_fill_manual(
       values = palette,
@@ -521,9 +516,6 @@ central_group <- function(data,
     # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
-    # On simplifie le tableau à exporter
-    tab_excel <- tab
-
     # On transforme le test stat en dataframe
     if (type == "median") {
       test_stat_excel <- test.stat %>%
@@ -543,7 +535,7 @@ central_group <- function(data,
     }
 
     # J'exporte les résultats en Excel
-    export_excel(tab_excel = tab_excel,
+    export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,
                  facet_null = quo_is_null(quo_facet),

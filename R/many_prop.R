@@ -42,6 +42,17 @@ many_prop = function(data,
                      font ="Roboto",
                      wrap_width = 25){
 
+  # Check des arguments nécessaires
+  if((missing(data) | missing(bin_vars)) == TRUE){
+    stop("Les arguments data et bin_vars doivent être remplis")
+  }
+
+  # Check des autres arguments
+  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, font))
+  check_character_long(arg = list(bin_vars_label))
+  check_logical(arg = list(reorder, show_labs, show_n, show_value, error_bar))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+
   # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
   vec_bin_vars <- all.vars(substitute(bin_vars))
   message(vec_bin_vars)
@@ -166,20 +177,7 @@ many_prop = function(data,
       position = "dodge",
       fill = fill
     ) +
-    theme_minimal() +
-    theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.major.x = element_line(color = "#dddddd"),
-      text = element_text(family = font),
-      axis.line = element_line(color = "black"),
-      axis.ticks = element_blank(),
-      #axis.ticks = element_line(color = "black"),
-      axis.text = element_text(color = "black"),
-      legend.position = "bottom",
-      plot.margin = margin(10, 15, 10, 10)
-    )  +
+    theme_fonctionr(font = font) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
                      limits = levels
     )+

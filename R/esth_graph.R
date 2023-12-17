@@ -52,7 +52,6 @@ esth_graph <- function(tab,
                        font ="Roboto",
                        wrap_width = 25) {
 
-
   # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
@@ -60,11 +59,8 @@ esth_graph <- function(tab,
   quo_up <- enquo(error_upp)
   quo_n <- enquo(n_var)
 
-
   #chager les fonts
   load_and_active_fonts()
-
-
 
   #créer max_ggplot
   max_ggplot <- max(tab[[deparse(substitute(ind_var))]])
@@ -76,7 +72,6 @@ esth_graph <- function(tab,
     tab2<-tab
   }
 
-
   if (reorder == T ) {
     levels <- levels(reorder(
       tab[[deparse(substitute(cat_var))]],tab[[deparse(substitute(ind_var))]]
@@ -85,108 +80,98 @@ esth_graph <- function(tab,
   }
 
   #On crée le graphique
-graph <- tab2 %>%
-  ggplot(aes(
-    x = {{ cat_var }},
-    y = {{ind_var}},
-    fill = {{ cat_var }}
-  )) +
-  geom_bar(
-    width = dodge,
-    stat = "identity",
-    position = "dodge",
-    fill = fill
-  ) +
-  theme_minimal() +
-  theme(
-    panel.grid.minor.y = element_blank(),
-    panel.grid.minor.x = element_blank(),
-    panel.grid.major.y = element_blank(),
-    panel.grid.major.x = element_line(color = "#dddddd"),
-    text = element_text(family = font),
-    axis.line = element_line(color = "black"),
-    axis.ticks = element_line(color = "black"),
-    axis.text = element_text(color = "black"),
-    legend.position = "none",
-    plot.margin = margin(10, 15, 10, 10)
-  ) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
-                   limits = levels)+
-  labs(title = title,
-       subtitle = subtitle,
-       caption = caption,
-       y = xlab,
-       x = ylab) +
-  coord_flip()
+  graph <- tab2 %>%
+    ggplot(aes(
+      x = {{ cat_var }},
+      y = {{ind_var}},
+      fill = {{ cat_var }}
+    )) +
+    geom_bar(
+      width = dodge,
+      stat = "identity",
+      position = "dodge",
+      fill = fill
+    ) +
+    theme_fonctionr(font = font) +
+    theme(
+      legend.position = "none"
+    ) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+                     limits = levels)+
+    labs(title = title,
+         subtitle = subtitle,
+         caption = caption,
+         y = xlab,
+         x = ylab) +
+    coord_flip()
 
-
-# Ajouter les facets au besoin + scale_y si facet
-if (!quo_is_null(quo_facet)) {
-  graph <- graph +
-    facet_wrap(vars({{ facet_var }})) +
-    theme(panel.spacing.x = unit(1, "lines")) +
-    scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
-      limits = function(x) { c(min(x), max(x)) },
-      expand = expansion(mult = c(.01, .20))
-    )
-}
-
-# scale_y si pas de facet
-if (quo_is_null(quo_facet)) {
-  graph <- graph +
-    scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
-      limits = function(x) { c(min(x), max(x)) },
-      expand = expansion(mult = c(.01, .05))
-    )
-}
-if (!quo_is_null(quo_low) & !quo_is_null(quo_up)) {
+  # Ajouter les facets au besoin + scale_y si facet
+  if (!quo_is_null(quo_facet)) {
     graph <- graph +
-    geom_errorbar(aes(ymin = {{error_low}}, ymax = {{error_upp}}),
-                  width = dodge * 0.05,
-                  colour = "black",
-                  alpha = 0.5,
-                  linewidth = 0.5,
-                  position = position_dodge(width = dodge)
-    )
-}
+      facet_wrap(vars({{ facet_var }})) +
+      theme(panel.spacing.x = unit(1, "lines")) +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .20))
+      )
+  }
 
-if (show_value == TRUE) {
-  graph <- graph +
-    geom_text(
-      aes(
-        y = ({{ind_var}}) + (0.01 * max_ggplot),
-        label = paste0(round({{ind_var}} * scale,
-                             digits = digits),
-                       unit),
-        family = font),
-      size = 3.5,
-      vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
-                     -0.5,
-                     0.5),
-      hjust = 0,
-      color = "black",
-      alpha = 0.9,
-      # position = position_stack(vjust = .5))
-      position = position_dodge(width = dodge)
-    )
-}
+  # scale_y si pas de facet
+  if (quo_is_null(quo_facet)) {
+    graph <- graph +
+      scale_y_continuous(
+        labels = function(x) { paste0(x * scale, unit) },
+        limits = function(x) { c(min(x), max(x)) },
+        expand = expansion(mult = c(.01, .05))
+      )
+  }
+  if (!quo_is_null(quo_low) & !quo_is_null(quo_up)) {
+      graph <- graph +
+      geom_errorbar(aes(ymin = {{error_low}}, ymax = {{error_upp}}),
+                    width = dodge * 0.05,
+                    colour = "black",
+                    alpha = 0.5,
+                    linewidth = 0.5,
+                    position = position_dodge(width = dodge)
+      )
+  }
 
-if (!quo_is_null(quo_n)) {
-  graph <- graph +
-    geom_text(
-      aes(
-        y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-        label = paste0("n=", {{n_var}}),
-        family = font),
-      size = 3,
-      alpha = 0.7,
-      hjust = 0, # Justifié à droite
-      vjust = 0.4
-    )
-}
+  if (show_value == TRUE) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = ({{ind_var}}) + (0.01 * max_ggplot),
+          label = paste0(round({{ind_var}} * scale,
+                               digits = digits),
+                         unit),
+          family = font),
+        size = 3.5,
+        vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
+                       -0.5,
+                       0.5),
+        hjust = 0,
+        color = "black",
+        alpha = 0.9,
+        # position = position_stack(vjust = .5))
+        position = position_dodge(width = dodge)
+      )
+  }
 
-return(graph)
+  if (!quo_is_null(quo_n)) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
+          label = paste0("n=", {{n_var}}),
+          family = font),
+        size = 3,
+        alpha = 0.7,
+        hjust = 0, # Justifié à droite
+        vjust = 0.4
+      )
+  }
+
+  return(graph)
 
 }

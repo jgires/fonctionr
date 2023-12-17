@@ -85,29 +85,42 @@ d’emprunt).
 
 #### En général
 
+- Ordonner les arguments de la même manière pour chaque fonction =\>
+  après cela, faire pareil pour l’ordre des arguments dans les fonctions
+  de check !
+
 - Ajouter des checks pour les inputs :
 
   1.  Existence des colonnes dans le dataframe *=\> C’est fait sauf pour
       les variables de design + pondération ? Est-ce testable, du fait
       que j’ai mis l’argument `…` ? Investiguer…* ;
 
-  2.  Pas mettre les mêmes colonnes dans les différents arguments
-      (`group`, `var_distrib`, `facet_var`, etc.) ;
+  2.  Le bon type (logical, factor…) et la bonne taille (pas un vecteur
+      \> 1).  
+      *=\> C’est fait. Vérifier + améliorer les messages !*
 
   3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
-  4.  Le bon type (logical, factor…) et la bonne taille (pas un vecteur
-      \> 1).
+  4.  Pas mettre les mêmes colonnes dans les différents arguments
+      (`group`, `var_distrib`, `facet_var`, etc.) ;
 
-- Mettre des conditions sur les tests (n min, distribution, variances
-  égales…).
+- Mettre des conditions pour réaliser les tests (n min, distribution,
+  variances égales…).
 
 - Les cluster / strates / weights n’apparaissent pas dans le message de
   la console avec les replicates =\> pourquoi ?
 
 - Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des
   colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs
-  `n_tot_weighted`…)
+  `n_tot_weighted`…).  
+  *=\> François : je propose l’ordre suivant : les variables de
+  ventilation, l’indicateur, l’indicateur_low, l’indicateur_up,
+  n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp,
+  n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp*
+  <!--# Joël : OK donc c'est fait ? -->*.*
+
+- Ajouter la possibilité de changer le point en virgule pour la décimale
+  dans les étiquettes.
 
 #### central_group
 
@@ -116,12 +129,16 @@ d’emprunt).
 #### prop_group
 
 - Bypasser l’erreur du test stat avec `tryCatch()`.
+- ajouter la possibilité d’un `na.rm.prop = FALSE` pour que la
+  proportion soit calculée sur l’ensemble des individus (les `NA` étant
+  comptabilisés dans le dénominateur)
 
 #### distrib_group_d
 
 - Implémenter un test stat lorsqu’il y a des facets =\> via modélisation
   loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de
   `survey` (erreurs fréquentes).
+- Ajouter les n par “cellule” ?
 
 #### distrib_d
 
@@ -129,14 +146,28 @@ d’emprunt).
   `survey` dans les dépendances ne sert à rien tant que le test n’est
   pas implémenté !**
 
+#### many_prop
+
+- Documenter les arguments !
+
+- Ajouter l’export excel.
+
+#### many_prop_group
+
+- Ajouter l’export excel.
+
 ### Améliorations
 
 #### En général
 
-- Enlever le paramètre `dodge` ? =\> ne sert à rien.
-
-- Créer une fonction de check des inputs (car redondance entre les 4
-  fonctions) *=\> Difficultés du fait de l’usage du tidyverse*
+- Voir si on peut créer une fonction commune à toutes les fonctions du
+  package pour créer le ggplot =\> ce serait une large simplification.
+  Pour l’instant, il y a déjà un thème commun `theme_fonctionr`.
+- Créer une fonction de check des inputs indispensables (car redondance
+  entre les 4 fonctions)  
+  *=\> Pour l’instant c’est fait “en dur” : difficultés de créer une
+  fonction du fait de l’usage du tidyverse =\> il faut sans doute
+  utiliser les fonctions de `rlang`.*
 
 #### central_group
 
@@ -151,8 +182,8 @@ d’emprunt).
 #### distrib_group_d
 
 - Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\>
-  comment faire vu qu’il y a la palette de couleur des modalités ?
-  Tentative en cours d’utiliser des hachures.
+  comment faire vu qu’il y a la palette de couleur des modalités ?  
+  *=\> Tentative en cours d’utiliser des hachures.*
 
 - Réordonner les levels sur la variable `group` ? Mais selon quelle
   valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la
@@ -168,9 +199,6 @@ d’emprunt).
 #### Univarié
 
 - Densité pour le général (pour variable continue)
-
-- Différents indicateurs + IC par groupe (<u>*PAS OK AVEC
-  PIVOT_LONG_SURVEY ?*</u>)
 
 #### Bivarié ou 3 variables+
 

@@ -43,6 +43,7 @@
 #' @import stringr
 #' @import openxlsx
 #' @import broom
+#' @import MoMAColors
 #' @export
 #'
 #' @examples
@@ -77,6 +78,11 @@ distrib_group_discrete <- function(data,
   if((missing(data) | missing(group) | missing(quali_var)) == TRUE){
     stop("Les arguments data, group et quali_var doivent être remplis")
   }
+
+  # Check des autres arguments
+  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, legend_lab, font, pretty_pal, export_path))
+  check_logical(arg = list(show_labs, show_value, na.rm))
+  check_numeric(arg = list(digits, dodge, direction, wrap_width, wrap_width_leg, legend_ncol))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -284,19 +290,9 @@ distrib_group_discrete <- function(data,
       stat = "identity",
       position = position_stack(reverse = TRUE)
     ) +
-    theme_minimal() +
+    theme_fonctionr(font = font) +
     theme(
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.major.x = element_line(color = "#dddddd"),
-      text = element_text(family = font),
-      axis.line = element_line(color = "black"),
-      axis.ticks = element_blank(),
-      #axis.ticks = element_line(color = "black"),
-      axis.text = element_text(color = "black"),
-      legend.position = "bottom",
-      plot.margin = margin(10, 15, 10, 10)
+      legend.position = "bottom"
     ) +
     scale_fill_manual(values = palette,
                       labels = function(x) str_wrap(x, width = wrap_width_leg),
@@ -407,9 +403,6 @@ distrib_group_discrete <- function(data,
     # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
-    # On simplifie le tableau à exporter
-    tab_excel <- tab %>% select(-n_weighted_se)
-
     # On transforme le test stat en dataframe
     if (quo_is_null(quo_facet)) { # Pour l'instant, test uniquement si pas de facet
       if(all(test.stat != "Conditions non remplies")){
@@ -435,7 +428,7 @@ distrib_group_discrete <- function(data,
     }
 
     # J'exporte les résultats en Excel
-    export_excel(tab_excel = tab_excel,
+    export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,
                  facet_null = quo_is_null(quo_facet),
