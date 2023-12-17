@@ -105,18 +105,20 @@
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Ordonner les arguments de la même manière pour chaque fonction =&gt; après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</p></li>
 <li>
 <p>Ajouter des checks pour les inputs :</p>
 <ol style="list-style-type: decimal">
 <li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;</p></li>
-<li><p>Pas mettre les mêmes colonnes dans les différents arguments (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>, etc.) ;</p></li>
+<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Vérifier + améliorer les messages !</em></p></li>
 <li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;</p></li>
-<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).</p></li>
+<li><p>Pas mettre les mêmes colonnes dans les différents arguments (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>, etc.) ;</p></li>
 </ol>
 </li>
-<li><p>Mettre des conditions sur les tests (n min, distribution, variances égales…).</p></li>
+<li><p>Mettre des conditions pour réaliser les tests (n min, distribution, variances égales…).</p></li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le message de la console avec les replicates =&gt; pourquoi ?</p></li>
-<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…)</p></li>
+<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp</em> <!--# Joël : OK donc c'est fait ? --><em>.</em></p></li>
+<li><p>Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -131,6 +133,7 @@
 </h4>
 <ul>
 <li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
+<li>ajouter la possibilité d’un <code>na.rm.prop = FALSE</code> pour que la proportion soit calculée sur l’ensemble des individus (les <code>NA</code> étant comptabilisés dans le dénominateur)</li>
 </ul>
 </div>
 <div class="section level4">
@@ -138,6 +141,7 @@
 </h4>
 <ul>
 <li>Implémenter un test stat lorsqu’il y a des facets =&gt; via modélisation loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de <code>survey</code> (erreurs fréquentes).</li>
+<li>Ajouter les n par “cellule” ?</li>
 </ul>
 </div>
 <div class="section level4">
@@ -148,6 +152,21 @@
 </li>
 </ul>
 </div>
+<div class="section level4">
+<h4 id="many_prop">many_prop<a class="anchor" aria-label="anchor" href="#many_prop"></a>
+</h4>
+<ul>
+<li><p>Documenter les arguments !</p></li>
+<li><p>Ajouter l’export excel.</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="many_prop_group">many_prop_group<a class="anchor" aria-label="anchor" href="#many_prop_group"></a>
+</h4>
+<ul>
+<li>Ajouter l’export excel.</li>
+</ul>
+</div>
 </div>
 <div class="section level3">
 <h3 id="améliorations">Améliorations<a class="anchor" aria-label="anchor" href="#am%C3%A9liorations"></a>
@@ -156,8 +175,9 @@
 <h4 id="en-général-1">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral-1"></a>
 </h4>
 <ul>
-<li><p>Enlever le paramètre <code>dodge</code> ? =&gt; ne sert à rien.</p></li>
-<li><p>Créer une fonction de check des inputs (car redondance entre les 4 fonctions) <em>=&gt; Difficultés du fait de l’usage du tidyverse</em></p></li>
+<li>Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =&gt; ce serait une large simplification. Pour l’instant, il y a déjà un thème commun <code>theme_fonctionr</code>.</li>
+<li>Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)<br><em>=&gt; Pour l’instant c’est fait “en dur” : difficultés de créer une fonction du fait de l’usage du tidyverse =&gt; il faut sans doute utiliser les fonctions de <code>rlang</code>.</em>
+</li>
 </ul>
 </div>
 <div class="section level4">
@@ -180,7 +200,7 @@
 <h4 id="distrib_group_d-1">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d-1"></a>
 </h4>
 <ul>
-<li><p>Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =&gt; comment faire vu qu’il y a la palette de couleur des modalités ? Tentative en cours d’utiliser des hachures.</p></li>
+<li><p>Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =&gt; comment faire vu qu’il y a la palette de couleur des modalités ?<br><em>=&gt; Tentative en cours d’utiliser des hachures.</em></p></li>
 <li><p>Réordonner les levels sur la variable <code>group</code> ? Mais selon quelle valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la variable <code>var_distrib</code> ?</p></li>
 <li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)</p></li>
 <li><p>Possibilité d’indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?</p></li>
@@ -194,8 +214,7 @@
 <h4 id="univarié">Univarié<a class="anchor" aria-label="anchor" href="#univari%C3%A9"></a>
 </h4>
 <ul>
-<li><p>Densité pour le général (pour variable continue)</p></li>
-<li><p>Différents indicateurs + IC par groupe (<u><em>PAS OK AVEC PIVOT_LONG_SURVEY ?</em></u>)</p></li>
+<li>Densité pour le général (pour variable continue)</li>
 </ul>
 </div>
 <div class="section level4">
