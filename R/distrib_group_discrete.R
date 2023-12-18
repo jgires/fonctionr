@@ -47,6 +47,7 @@
 #' @export
 #'
 #' @examples
+#'
 distrib_group_discrete <- function(data,
                                    group,
                                    quali_var,

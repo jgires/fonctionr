@@ -30,7 +30,6 @@
 #'
 #' @examples
 #'
-#'
 esth_graph <- function(tab,
                        ind_var,
                        cat_var,

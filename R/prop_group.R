@@ -45,6 +45,7 @@
 #' @export
 #'
 #' @examples
+#'
 prop_group <- function(data,
                        group,
                        prop_exp,

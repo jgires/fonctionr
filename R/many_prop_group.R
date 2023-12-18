@@ -38,6 +38,7 @@
 #' @export
 #'
 #' @examples
+#'
 many_prop_group = function(data,
                            group,
                            bin_vars,

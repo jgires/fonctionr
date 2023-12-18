@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#'
 pivot_longer_survey <- function(data,
                                 n_groups) {
   # J'isole les effectifs (+ le nom du groupe, pour joindre après)

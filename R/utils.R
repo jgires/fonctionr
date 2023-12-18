@@ -74,6 +74,7 @@ convert_to_srvyr <- function(data, ...) {
 #' @export
 #'
 #' @examples
+#'
 load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
@@ -251,6 +252,7 @@ check_numeric <- function(arg) {
 #' @export
 #'
 #' @examples
+#'
 theme_fonctionr <- function(font = font) {
   theme_minimal() +
   theme(
@@ -263,7 +265,6 @@ theme_fonctionr <- function(font = font) {
     axis.ticks = element_blank(),
     #axis.ticks = element_line(color = "black"),
     axis.text = element_text(color = "black"),
-    legend.position = "bottom",
     plot.margin = margin(10, 15, 10, 10)
   )
 }

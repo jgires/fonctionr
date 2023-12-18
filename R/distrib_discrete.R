@@ -40,7 +40,7 @@
 #' @export
 #'
 #' @examples
-
+#'
 distrib_discrete <- function(data, # Données en format srvyr
                              quali_var, # Variable catégorielle
                              facet_var = NULL,

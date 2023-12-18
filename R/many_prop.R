@@ -17,6 +17,7 @@
 #' @export
 #'
 #' @examples
+#'
 many_prop = function(data,
                      bin_vars,
                      bin_vars_label = NULL,

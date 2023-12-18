@@ -47,6 +47,7 @@
 #' @import sysfonts
 #'
 #' @examples
+#'
 central_group <- function(data,
                           group,
                           quanti_exp,
