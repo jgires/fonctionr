@@ -64,13 +64,16 @@ convert_to_srvyr <- function(data, ...) {
 }
 
 
-#' Fonction pour charger et activer les polices
+#' load_and_active_fonts
 #'
+#' Fonction pour charger et activer les polices de fonctionr
+#'
+#' @return
 #' @import showtext
 #' @import sysfonts
+#' @export
 #'
-#' @noRd
-#'
+#' @examples
 load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
@@ -239,12 +242,15 @@ check_numeric <- function(arg) {
 }
 
 
-#' Thème pour ggplot
+#' theme_fonctionr
 #'
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#'
+#' @return
 #' @import ggplot2
+#' @export
 #'
-#' @noRd
-#'
+#' @examples
 theme_fonctionr <- function(font = font) {
   theme_minimal() +
   theme(

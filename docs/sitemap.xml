@@ -25,6 +25,9 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/load_and_active_fonts.html</loc>
+  </url>
+  <url>
     <loc>/reference/many_prop.html</loc>
   </url>
   <url>
@@ -35,5 +38,8 @@
   </url>
   <url>
     <loc>/reference/prop_group.html</loc>
+  </url>
+  <url>
+    <loc>/reference/theme_fonctionr.html</loc>
   </url>
 </urlset>

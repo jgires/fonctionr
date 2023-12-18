@@ -24,7 +24,7 @@ esth_graph(
   error_low = NULL,
   error_upp = NULL,
   total_name = NULL,
-  fill = "deepskyblue3",
+  fill = "indianred4",
   font = "Roboto",
   wrap_width = 25
 )
