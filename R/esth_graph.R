@@ -20,6 +20,7 @@
 #' @param reorder TRUE if you want to reorder cat_var according to ind_var. FALSE if you do not want to reorder. Default is FALSE.
 #' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
+#' @param total_name Name of the total bar on the graphic.
 #' @param fill Colour of the bars.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param wrap_width Number of characters before before going to the line. Applies to the labels cat_var. Default is 25.
@@ -34,70 +35,162 @@ esth_graph <- function(tab,
                        ind_var,
                        cat_var,
                        facet_var = NULL,
-                       unit = "%",
+                       unit = "",
                        caption = NULL,
                        title = NULL, # Le titre du graphique
                        subtitle = NULL,
                        xlab = NULL, # Le nom de l'axe de la variable catégorielle
                        ylab = NULL,
-                       scale = 100,
-                       digits = 0,
+                       scale = 1,
+                       digits = 2,
                        n_var = NULL,
                        show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                        dodge = 0.9,
                        reorder = F,
                        error_low = NULL,
                        error_upp = NULL,
-                       fill = "deepskyblue3",
+                       total_name = NULL,
+                       fill = "indianred4",
                        font ="Roboto",
                        wrap_width = 25) {
 
-  # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Check des arguments nécessaires
+  if((missing(tab) | missing(ind_var) | missing(cat_var)) == TRUE){
+    stop("Les arguments tab, ind_var et cat_var doivent être remplis")
+  }
+
+  # Check si le total existe dans cat_var
+  if(!total_name %in% tab[[deparse(substitute(cat_var))]]){
+    stop("Le nom indiqué pour le total n'existe pas dans cat_var")
+  }
+
+  # Check des autres arguments
+  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, total_name, fill, font))
+  check_logical(arg = list(show_value, reorder))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+
+  # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_low <- enquo(error_low)
   quo_up <- enquo(error_upp)
   quo_n <- enquo(n_var)
 
-  #chager les fonts
-  load_and_active_fonts()
+  # On convertit la variable catégorielle en facteur si pas facteur
+  tab <- tab %>%
+    mutate(
+      "{{ cat_var }}" := as.factor({{ cat_var }})
+    )
 
-  #créer max_ggplot
+  # On crée la palette
+  if (!is.null(total_name)) {
+    # Avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(cat_var))]]) - 1), "grey40")
+  }
+  if (is.null(total_name)) {
+    # Sans (différencier le) total
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(cat_var))]])))
+  }
+
+  # Créer max_ggplot
   max_ggplot <- max(tab[[deparse(substitute(ind_var))]])
 
-  #On crée l'ordre pour la variable si reorder = TRUE
-  if (reorder == F ) {
-    levels <- levels(tab[[deparse(substitute(cat_var))]]
-    )
-    tab2<-tab
+  if (reorder == T) {
+    if (!is.null(total_name))  {
+      # On crée un vecteur pour ordonner les levels de cat_var selon ind_var, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
+      levels <- c(
+        total_name,
+        NA,
+        levels(reorder(
+          tab[[deparse(substitute(cat_var))]],
+          tab[[deparse(substitute(ind_var))]],
+          FUN = median,
+          decreasing = T
+        ))[levels(reorder(
+          tab[[deparse(substitute(cat_var))]],
+          tab[[deparse(substitute(ind_var))]],
+          FUN = median,
+          decreasing = T
+        )) != total_name]
+      )
+    }
+    if (is.null(total_name))  {
+      # On crée un vecteur pour ordonner les levels de cat_var selon ind_var, en mettant NA en premier (= en dernier sur le graphique ggplot)
+      levels <- c(
+        NA,
+        levels(reorder(
+          tab[[deparse(substitute(cat_var))]],
+          tab[[deparse(substitute(ind_var))]],
+          FUN = median,
+          decreasing = T
+          )
+          )
+      )
+    }
   }
 
-  if (reorder == T ) {
-    levels <- levels(reorder(
-      tab[[deparse(substitute(cat_var))]],tab[[deparse(substitute(ind_var))]]
-    ))
-    tab2<-tab %>% arrange({{ind_var}})
+  if (reorder == F) {
+    if (!is.null(total_name))  {
+      # On crée un vecteur pour ordonner les levels de cat_var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
+      levels <- c(
+        total_name,
+        NA,
+        rev(
+          levels(
+            tab[[deparse(substitute(cat_var))]]
+          )
+        )[rev(
+          levels(
+            tab[[deparse(substitute(cat_var))]]
+          ) != total_name
+        )]
+      )
+    }
+    if (is.null(total_name))  {
+      # On crée un vecteur pour ordonner les levels de cat_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
+      levels <- c(
+        NA,
+        rev(
+          levels(
+            tab[[deparse(substitute(cat_var))]]
+          )
+        )
+      )
+    }
   }
 
-  #On crée le graphique
-  graph <- tab2 %>%
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing
+  # On les supprime donc ssi pas de missing sur la variable de cat_var
+  if (sum(is.na(tab[[deparse(substitute(cat_var))]])) == 0)  {
+    levels <- levels[!is.na(levels)]
+  }
+
+  # On crée le graphique
+
+  # On charge et active les polices
+  load_and_active_fonts()
+
+  graph <- tab %>%
     ggplot(aes(
       x = {{ cat_var }},
-      y = {{ind_var}},
+      y = {{ ind_var }},
       fill = {{ cat_var }}
     )) +
     geom_bar(
       width = dodge,
       stat = "identity",
-      position = "dodge",
-      fill = fill
+      position = "dodge"
     ) +
     theme_fonctionr(font = font) +
     theme(
       legend.position = "none"
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
-                     limits = levels)+
+                     limits = levels) +
+    scale_fill_manual(
+      values = palette,
+      na.value = "grey"
+    ) +
     labs(title = title,
          subtitle = subtitle,
          caption = caption,
@@ -141,8 +234,8 @@ esth_graph <- function(tab,
     graph <- graph +
       geom_text(
         aes(
-          y = ({{ind_var}}) + (0.01 * max_ggplot),
-          label = paste0(round({{ind_var}} * scale,
+          y = ({{ ind_var }}) + (0.01 * max_ggplot),
+          label = paste0(round({{ ind_var }} * scale,
                                digits = digits),
                          unit),
           family = font),

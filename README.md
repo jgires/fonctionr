@@ -75,14 +75,6 @@ potentiellement la distribution d’échantillonnage. Voir :
   de filtrer l’objet avant en dégradant le design. =\> Vérifier que
   c’est bien OK ! **A FAIRE : expliquer dans la doc !***
 
-#### Suppression des valeurs manquantes
-
-Dans `prop_group`, garder la possibilité de calculer une proportion sur
-tout le groupe (y compris les `NA`) =\> utile lorsque le `NA` a une
-signification (exemple : les personnes qui ne peuvent pas avoir
-d’arriérés sur leur loyer ou leur emprunt, car ils n’ont pas de loyer ou
-d’emprunt).
-
 #### En général
 
 - Ordonner les arguments de la même manière pour chaque fonction =\>
@@ -97,7 +89,8 @@ d’emprunt).
 
   2.  Le bon type (logical, factor…) et la bonne taille (pas un vecteur
       \> 1).  
-      *=\> C’est fait. Vérifier + améliorer les messages !*
+      *=\> C’est fait. Améliorer les messages ? (par ex. : indiquer
+      l’argument)*
 
   3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
@@ -116,8 +109,8 @@ d’emprunt).
   *=\> François : je propose l’ordre suivant : les variables de
   ventilation, l’indicateur, l’indicateur_low, l’indicateur_up,
   n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp,
-  n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp*
-  <!--# Joël : OK donc c'est fait ? -->*.*
+  n_tot_weighted, n_tot_weighted_low,
+  n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
 - Ajouter la possibilité de changer le point en virgule pour la décimale
   dans les étiquettes.
@@ -166,8 +159,8 @@ d’emprunt).
 - Créer une fonction de check des inputs indispensables (car redondance
   entre les 4 fonctions)  
   *=\> Pour l’instant c’est fait “en dur” : difficultés de créer une
-  fonction du fait de l’usage du tidyverse =\> il faut sans doute
-  utiliser les fonctions de `rlang`.*
+  fonction du fait de l’usage du tidyverse : il faut sans doute utiliser
+  les fonctions de `rlang`.*
 
 #### central_group
 

@@ -63,10 +63,6 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
     *=\> De ce fait, j'ai inclus une option de filtre (`filter_exp`) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! **A FAIRE : expliquer dans la doc !***
 
-#### Suppression des valeurs manquantes
-
-Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le groupe (y compris les `NA`) =\> utile lorsque le `NA` a une signification (exemple : les personnes qui ne peuvent pas avoir d'arriérés sur leur loyer ou leur emprunt, car ils n'ont pas de loyer ou d'emprunt).
-
 #### En général
 
 -   Ordonner les arguments de la même manière pour chaque fonction =\> après cela, faire pareil pour l'ordre des arguments dans les fonctions de check !
@@ -76,7 +72,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
     1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;
 
     2.  Le bon type (logical, factor...) et la bonne taille (pas un vecteur \> 1).\
-        *=\> C'est fait. Vérifier + améliorer les messages !*
+        *=\> C'est fait. Améliorer les messages ? (par ex. : indiquer l'argument)*
 
     3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
@@ -87,7 +83,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
 -   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...).\
-    *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp* <!--# Joël : OK donc c'est fait ? -->*.*
+    *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
 -   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.
 
@@ -125,7 +121,7 @@ Dans `prop_group`, garder la possibilité de calculer une proportion sur tout le
 
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
-    *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse =\> il faut sans doute utiliser les fonctions de `rlang`.*
+    *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
 
 #### central_group
 

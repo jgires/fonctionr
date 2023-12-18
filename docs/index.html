@@ -97,11 +97,6 @@
 </ul>
 </div>
 <div class="section level4">
-<h4 id="suppression-des-valeurs-manquantes">Suppression des valeurs manquantes<a class="anchor" aria-label="anchor" href="#suppression-des-valeurs-manquantes"></a>
-</h4>
-<p>Dans <code>prop_group</code>, garder la possibilité de calculer une proportion sur tout le groupe (y compris les <code>NA</code>) =&gt; utile lorsque le <code>NA</code> a une signification (exemple : les personnes qui ne peuvent pas avoir d’arriérés sur leur loyer ou leur emprunt, car ils n’ont pas de loyer ou d’emprunt).</p>
-</div>
-<div class="section level4">
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
@@ -110,14 +105,14 @@
 <p>Ajouter des checks pour les inputs :</p>
 <ol style="list-style-type: decimal">
 <li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;</p></li>
-<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Vérifier + améliorer les messages !</em></p></li>
+<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Améliorer les messages ? (par ex. : indiquer l’argument)</em></p></li>
 <li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;</p></li>
 <li><p>Pas mettre les mêmes colonnes dans les différents arguments (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>, etc.) ;</p></li>
 </ol>
 </li>
 <li><p>Mettre des conditions pour réaliser les tests (n min, distribution, variances égales…).</p></li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le message de la console avec les replicates =&gt; pourquoi ?</p></li>
-<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp</em> <!--# Joël : OK donc c'est fait ? --><em>.</em></p></li>
+<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 <li><p>Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.</p></li>
 </ul>
 </div>
@@ -176,7 +171,7 @@
 </h4>
 <ul>
 <li>Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =&gt; ce serait une large simplification. Pour l’instant, il y a déjà un thème commun <code>theme_fonctionr</code>.</li>
-<li>Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)<br><em>=&gt; Pour l’instant c’est fait “en dur” : difficultés de créer une fonction du fait de l’usage du tidyverse =&gt; il faut sans doute utiliser les fonctions de <code>rlang</code>.</em>
+<li>Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)<br><em>=&gt; Pour l’instant c’est fait “en dur” : difficultés de créer une fonction du fait de l’usage du tidyverse : il faut sans doute utiliser les fonctions de <code>rlang</code>.</em>
 </li>
 </ul>
 </div>

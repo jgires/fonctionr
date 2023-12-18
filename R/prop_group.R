@@ -266,7 +266,7 @@ prop_group <- function(data,
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
-  if (reorder == T ) {
+  if (reorder == T) {
     # On crée un vecteur pour ordonner les levels de group selon prop, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
@@ -285,7 +285,7 @@ prop_group <- function(data,
     )
   }
 
-  if (reorder == F ) {
+  if (reorder == F) {
     # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,

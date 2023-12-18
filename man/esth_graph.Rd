@@ -9,20 +9,21 @@ esth_graph(
   ind_var,
   cat_var,
   facet_var = NULL,
-  unit = "\%",
+  unit = "",
   caption = NULL,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  scale = 100,
-  digits = 0,
+  scale = 1,
+  digits = 2,
   n_var = NULL,
   show_value = TRUE,
   dodge = 0.9,
   reorder = F,
   error_low = NULL,
   error_upp = NULL,
+  total_name = NULL,
   fill = "deepskyblue3",
   font = "Roboto",
   wrap_width = 25
@@ -64,6 +65,8 @@ esth_graph(
 \item{error_low}{The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
 \item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
+
+\item{total_name}{Name of the total bar on the graphic.}
 
 \item{fill}{Colour of the bars.}
 
