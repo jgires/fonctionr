@@ -64,6 +64,7 @@ distrib_group_discrete <- function(data,
                                    show_labs = TRUE,
                                    show_value = TRUE,
                                    unit = "",
+                                   scale = 100,
                                    digits = 0,
                                    dodge = 0.9,
                                    pretty_pal = "Hokusai1",
@@ -277,9 +278,6 @@ distrib_group_discrete <- function(data,
   # On charge et active les polices
   load_and_active_fonts()
 
-  # Tout en pourcent
-  scale <- 100
-
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
@@ -299,7 +297,7 @@ distrib_group_discrete <- function(data,
                       labels = function(x) str_wrap(x, width = wrap_width_leg),
                       na.value = "grey") +
     scale_y_continuous(
-      labels = function(x) { paste0(x * scale, "%") },
+      labels = function(x) { paste0(x * scale, unit) },
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
