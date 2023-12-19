@@ -22,6 +22,7 @@ distrib_group_discrete(
   show_labs = TRUE,
   show_value = TRUE,
   unit = "",
+  scale = 100,
   digits = 0,
   dodge = 0.9,
   pretty_pal = "Hokusai1",
@@ -68,6 +69,8 @@ distrib_group_d(...)
 \item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.}
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
+
+\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
 \item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 

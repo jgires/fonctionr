@@ -71,6 +71,104 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jgires/fonctionr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="utilisation">Utilisation<a class="anchor" aria-label="anchor" href="#utilisation"></a>
+</h2>
+<p>Avant toute utilisation, il faut bien entendu charger le package :</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fonctionr</span><span class="op">)</span></span></code></pre></div>
+<p>L’utilisation de <code>fonctionr</code> a pour but d’être simple. Pour nos exemples, nous utilisons les données de l’enquête SILC pour l’Autriche contenues dans le package <code>laeken</code>. Nous recodons d’abord la variable de statut économique pour la lisibilité des résultats :</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Loading of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">eusilc</span>, package <span class="op">=</span> <span class="st">"laeken"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Creation of categories of economic status</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working full time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working part time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"3"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Unemployed"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"4"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Student"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"5"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Retired"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"6"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Permanently disabled"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span></code></pre></div>
+<p><code>fonctionr</code> permet de calculer facilement des moyennes de revenu par groupe grâce à la fonction <code><a href="reference/central_group.html">mean_group()</a></code>. Les groupes, ici de statut économique, sont indiqués dans l’argument <code>group</code>. C’est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l’argument <code>quanti_exp</code> (dans ce cas la variable <code>eqIncome</code> est divisée par 12 à la volée). Le design de l’enquête SILC est pris en considération, puisque l’on peut indiquer les clusters (<code>ids</code>), les strates (<code>strata</code>) et les poids (<code>weight</code>) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>  quanti_exp <span class="op">=</span> <span class="va">eqIncome</span> <span class="op">/</span> <span class="fl">12</span>,</span>
+<span>  strata <span class="op">=</span> <span class="va">db040</span>,</span>
+<span>  ids <span class="op">=</span> <span class="va">db030</span>,</span>
+<span>  weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  reorder <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Mean of equivalised income in household by status of individuals"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span>,</span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
+<span><span class="co">#&gt; Variable(s) détectée(s) dans quanti_exp : eqIncome</span></span>
+<span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp</span></span></code></pre></div>
+<p>La fonction produit un tableau de résultats, le résultat d’un test statistique et un graphique ggplot qui regroupe l’ensemble, prêt à être inséré dans une publication :</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 8</span></span>
+<span><span class="co">#&gt;   pl030_rec            mean mean_low mean_upp n_sample n_weighted n_weighted_low</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;               &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Fulfilling domesti… 1296.    1253.    1338.     1207    640311.        605978.</span></span>
+<span><span class="co">#&gt; 2 Permanently disabl… 1330.    1202.    1458.      178    104930.         85796.</span></span>
+<span><span class="co">#&gt; 3 Retired             1720.    1681.    1758.     3146   1806954.       1746273.</span></span>
+<span><span class="co">#&gt; 4 Student             1355.    1291.    1419.      736    395829.        365532.</span></span>
+<span><span class="co">#&gt; 5 Unemployed          1456.    1380.    1532.      518    303252.        276953.</span></span>
+<span><span class="co">#&gt; 6 Working full time   1895.    1864.    1926.     5162   2869868.       2797833.</span></span>
+<span><span class="co">#&gt; 7 Working part time   1591.    1542.    1639.     1160    636121.        600709.</span></span>
+<span><span class="co">#&gt; 8 Total               1703.    1679.    1726.    12107   6757264.       6683738.</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span>
+<span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">test.stat</span></span>
+<span><span class="co">#&gt; Wald test for pl030_rec</span></span>
+<span><span class="co">#&gt;  in svyglm(formula = fmla, design = data_W)</span></span>
+<span><span class="co">#&gt; F =  141.5453  on  6  and  5985  df: p= &lt; 2.22e-16</span></span>
+<span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p><code>fonctionr</code> comprend plusieurs fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction <code><a href="reference/prop_group.html">prop_group()</a></code>. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l’argument <code>prop_exp</code> : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
+<span>  strata <span class="op">=</span> <span class="va">db040</span>,</span>
+<span>  ids <span class="op">=</span> <span class="va">db030</span>,</span>
+<span>  weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  reorder <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Proportion of individuals receiving income from unemployment in their household"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
+<span><span class="co">#&gt; Variable(s) détectée(s) dans l'expression : py090n</span></span>
+<span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression</span></span>
+<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 11</span></span>
+<span><span class="co">#&gt;   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;                      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;int&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Fulfilling domestic tasks 0.0485   0.0369   0.0624     1207          31048.</span></span>
+<span><span class="co">#&gt; 2 Permanently disabled      0.209    0.148    0.282       178          21975.</span></span>
+<span><span class="co">#&gt; 3 Retired                   0.0177   0.0134   0.0229     3146          31988.</span></span>
+<span><span class="co">#&gt; 4 Student                   0.0194   0.0106   0.0323      736           7666.</span></span>
+<span><span class="co">#&gt; 5 Unemployed                0.732    0.690    0.770       518         221878.</span></span>
+<span><span class="co">#&gt; 6 Working full time         0.0818   0.0741   0.0899     5162         234629.</span></span>
+<span><span class="co">#&gt; 7 Working part time         0.110    0.0921   0.130      1160          69869.</span></span>
+<span><span class="co">#&gt; 8 Total                     0.0916   0.0863   0.0971    12107         619054.</span></span>
+<span><span class="co">#&gt; # ℹ 5 more variables: n_true_weighted_low &lt;dbl&gt;, n_true_weighted_upp &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   n_tot_weighted &lt;dbl&gt;, n_tot_weighted_low &lt;dbl&gt;, n_tot_weighted_upp &lt;dbl&gt;</span></span>
+<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">test.stat</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Pearson's X^2: Rao &amp; Scott adjustment</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; data:  NextMethod()</span></span>
+<span><span class="co">#&gt; F = 475.2, ndf = 5.9608, ddf = 35711.0201, p-value &lt; 2.2e-16</span></span>
+<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+</div>
+<div class="section level2">
 <h2 id="auteurs">Auteurs<a class="anchor" aria-label="anchor" href="#auteurs"></a>
 </h2>
 <p><strong>Joël Girès</strong> est sociologue et travaille à l’Observatoire de la Santé et du Social de la Région de Bruxelles-Capitale.</p>

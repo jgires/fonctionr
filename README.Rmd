@@ -38,6 +38,74 @@ library(devtools)
 devtools::install_github("jgires/fonctionr")
 ```
 
+## Utilisation
+
+Avant toute utilisation, il faut bien entendu charger le package :
+
+```{r, message=FALSE}
+library(fonctionr)
+```
+
+L'utilisation de `fonctionr` a pour but d'être simple. Pour nos exemples, nous utilisons les données de l'enquête SILC pour l'Autriche contenues dans le package `laeken`. Nous recodons d'abord la variable de statut économique pour la lisibilité des résultats :
+
+```{r}
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Creation of categories of economic status
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+```
+
+`fonctionr` permet de calculer facilement des moyennes de revenu par groupe grâce à la fonction `mean_group()`. Les groupes, ici de statut économique, sont indiqués dans l'argument `group`. C'est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l'argument `quanti_exp` (dans ce cas la variable `eqIncome` est divisée par 12 à la volée). Le design de l'enquête SILC est pris en considération, puisque l'on peut indiquer les clusters (`ids`), les strates (`strata`) et les poids (`weight`) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.
+
+```{r}
+eusilc_mean <- mean_group(
+  eusilc,
+  group = pl030_rec,
+  quanti_exp = eqIncome / 12,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  reorder = T,
+  title = "Mean of equivalised income in household by status of individuals",
+  subtitle = "Example with austrian SILC data from 'laeken' package",
+  )
+```
+
+La fonction produit un tableau de résultats, le résultat d'un test statistique et un graphique ggplot qui regroupe l'ensemble, prêt à être inséré dans une publication :
+
+```{r}
+eusilc_mean$tab
+eusilc_mean$test.stat
+eusilc_mean$graph
+```
+
+`fonctionr` comprend plusieurs fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction `prop_group()`. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l'argument `prop_exp` : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).
+
+```{r}
+eusilc_prop <- prop_group(
+  eusilc,
+  group = pl030_rec,
+  prop_exp = py090n > 0,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  reorder = T,
+  title = "Proportion of individuals receiving income from unemployment in their household",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop$tab
+eusilc_prop$test.stat
+eusilc_prop$graph
+```
+
 ## Auteurs
 
 **Joël Girès** est sociologue et travaille à l'Observatoire de la Santé et du Social de la Région de Bruxelles-Capitale.

@@ -45,6 +45,31 @@
 #' @export
 #'
 #' @examples
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Recoding eusilc$pl030 into eusilc$pl030_rec
+#' eusilc$pl030_rec <- NA
+#' eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+#' eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+#' eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+#' eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+#' eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+#' eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+#' eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+#'
+#' # Computation, taking sample design into account
+#' eusilc_prop <- prop_group(
+#' eusilc,
+#' group = pl030_rec,
+#' prop_exp = py090n > 0,
+#' strata = db040,
+#' ids = db030,
+#' weight = rb050,
+#' title = "% of ind. receiving unemployment benefits in their hh",
+#' subtitle = "Example with austrian SILC data from 'laeken' package"
+#' )
+#' eusilc_prop$graph
 #'
 prop_group <- function(data,
                        group,

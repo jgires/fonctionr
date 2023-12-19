@@ -98,3 +98,26 @@ A list that contains a table, a graphic and a statistical test
 \description{
 Function to compare means or medians in different groups from complex survey data. It produces a table, a graphic and a statistical test.
 }
+\examples{
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Creation of age categories
+eusilc$age_cat <- cut(eusilc$age,
+breaks = 6,
+include.lowest = TRUE)
+
+# Calculation of income means by age category with fonctionr, taking sample design into account
+eusilc_mean <- mean_group(
+  eusilc,
+  group = age_cat,
+  quanti_exp = eqIncome / 12,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "Mean of equivalised income in household by age of individuals",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
+  )
+eusilc_mean$graph
+
+}

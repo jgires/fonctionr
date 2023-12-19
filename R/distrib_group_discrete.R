@@ -17,6 +17,7 @@
 #' @param caption Caption of the graphic.
 #' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param dodge Width of the bar, between 0 and 1.
