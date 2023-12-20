@@ -107,6 +107,21 @@ many_prop = function(data,
       filter(!is.na({{ facet_var }}))
   }
 
+  # On supprime les NA sur la/les variable(s) binarisées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) binarisées sont non missing (et pas tout le groupe : ça on s'en fout)
+  # On calcule les effectifs avant filtre
+  before <- data_W %>%
+    summarise(n=unweighted(n()))
+  # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+  for (var in vec_bin_vars) {
+    data_W <- data_W %>%
+      filter(!is.na(.data[[var]]))
+  }
+  # On calcule les effectifs après filtre
+  after <- data_W %>%
+    summarise(n=unweighted(n()))
+  # On affiche le nombre de lignes supprimées (pour vérification)
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) binarisées")
+
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
