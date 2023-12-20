@@ -274,10 +274,10 @@ distrib_group_discrete <- function(data,
     levels <- levels[!is.na(levels)]
   }
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -320,8 +320,6 @@ distrib_group_discrete <- function(data,
           )
         )
     }
-  }
-  if (quo_is_null(quo_facet)) {
     if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
       graph <- graph +
         labs(
@@ -333,6 +331,7 @@ distrib_group_discrete <- function(data,
         )
     }
   }
+
   # Ce n'est pas un khi2 s'il y a des facets
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
@@ -365,12 +364,14 @@ distrib_group_discrete <- function(data,
            fill = NULL)
   }
 
+  # Création des facets si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
       facet_wrap(vars({{ facet_var }})) +
       theme(panel.spacing.x = unit(1, "lines"))
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(

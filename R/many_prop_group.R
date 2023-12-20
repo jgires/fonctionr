@@ -194,7 +194,7 @@ many_prop_group = function(data,
     }
   }
 
-  # On crée la palette avecle package met.brewer
+  # On crée la palette avec le package met.brewer
   if(pretty_pal %in% c("Archambault","Austria","Benedictus","Cassatt1","Cassatt2","Cross","Degas","Demuth",
                        "Derain","Egypt","Gauguin","Greek","Hiroshige","Hokusai1",
                        "Hokusai2","Hokusai3","Homer1","Homer2","Ingres","Isfahan1","Isfahan2",
@@ -215,7 +215,7 @@ many_prop_group = function(data,
     palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[["bin_col"]])), type = "continuous", direction = direction))
   }
 
-  # On crée la palette avecle package PrettyCols
+  # On crée la palette avec le package PrettyCols
   if(pretty_pal %in% c("Blues","Purples","Tangerines","Greens","Pinks","Teals",
                        "Yellows","Reds","PurpleGreens","PinkGreens","TangerineBlues","PurpleTangerines",
                        "PurplePinks","TealGreens","PurpleYellows","RedBlues","Bold","Dark",
@@ -228,10 +228,10 @@ many_prop_group = function(data,
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -300,6 +300,7 @@ many_prop_group = function(data,
       )
   }
 
+  # Ajouter les IC si error_bar == T
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
@@ -311,6 +312,7 @@ many_prop_group = function(data,
       )
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -332,6 +334,7 @@ many_prop_group = function(data,
       )
   }
 
+  # Ajouter le nombre d'individus au besoin
   if (show_n == TRUE) {
     graph <- graph +
       geom_text(

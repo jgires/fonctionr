@@ -94,6 +94,7 @@ esth_graph <- function(tab,
   # Créer max_ggplot
   max_ggplot <- max(tab[[deparse(substitute(ind_var))]])
 
+  # Si reorder == T
   if (reorder == T) {
     if (!is.null(total_name))  {
       # On crée un vecteur pour ordonner les levels de cat_var selon ind_var, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
@@ -128,6 +129,7 @@ esth_graph <- function(tab,
     }
   }
 
+  # Si reorder == F
   if (reorder == F) {
     if (!is.null(total_name))  {
       # On crée un vecteur pour ordonner les levels de cat_var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
@@ -164,10 +166,10 @@ esth_graph <- function(tab,
     levels <- levels[!is.na(levels)]
   }
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -218,6 +220,8 @@ esth_graph <- function(tab,
         expand = expansion(mult = c(.01, .05))
       )
   }
+
+  # Ajouter les IC s'ils sont présents
   if (!quo_is_null(quo_low) & !quo_is_null(quo_up)) {
       graph <- graph +
       geom_errorbar(aes(ymin = {{error_low}}, ymax = {{error_upp}}),
@@ -229,6 +233,7 @@ esth_graph <- function(tab,
       )
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -250,6 +255,7 @@ esth_graph <- function(tab,
       )
   }
 
+  # Ajouter le nombre d'individus au besoin
   if (!quo_is_null(quo_n)) {
     graph <- graph +
       geom_text(

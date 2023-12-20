@@ -334,10 +334,10 @@ prop_group <- function(data,
     levels <- levels[!is.na(levels)]
   }
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -410,6 +410,7 @@ prop_group <- function(data,
       )
   }
 
+  # Ajouter les IC si error_bar == T
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
@@ -421,6 +422,7 @@ prop_group <- function(data,
       )
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -442,6 +444,7 @@ prop_group <- function(data,
       )
   }
 
+  # Ajouter le nombre d'individus au besoin
   if (show_n == TRUE) {
     graph <- graph +
       geom_text(

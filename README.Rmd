@@ -135,6 +135,10 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Ordonner les arguments de la même manière pour chaque fonction =\> après cela, faire pareil pour l'ordre des arguments dans les fonctions de check !
 
+-   Vérifier que `reorder = T` réordonne toujours de la même façon pour les différentes fonctions.
+
+-   Vérifier que le code est bien documenté partout avec des commentaires adaptés.
+
 -   Ajouter des checks pour les inputs :
 
     1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;

@@ -143,6 +143,7 @@ central_group <- function(data,
     }
   }
 
+  # Couleur selon médiane ou moyenne
   if(type == "mean" & is.null(fill)){
     fill <- "deeppink3"
   }
@@ -364,10 +365,10 @@ central_group <- function(data,
     levels <- levels[!is.na(levels)]
   }
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -465,6 +466,7 @@ central_group <- function(data,
       )
   }
 
+  # Ajouter les IC si error_bar == T
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low,
@@ -477,6 +479,7 @@ central_group <- function(data,
       )
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE){
     graph<-graph  +
       geom_text(
@@ -497,6 +500,7 @@ central_group <- function(data,
         position = position_dodge(width = dodge))
     }
 
+  # Ajouter le nombre d'individus au besoin
   if (show_n == TRUE) {
     graph <- graph +
       geom_text(

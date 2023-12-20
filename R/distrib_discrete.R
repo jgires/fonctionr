@@ -201,10 +201,10 @@ distrib_discrete <- function(data, # Données en format srvyr
     levels <- levels[!is.na(levels)]
   }
 
-  # Le graphique proprement dit
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # Le graphique proprement dit
 
   graph <- tab %>%
     ggplot(aes(
@@ -262,19 +262,8 @@ distrib_discrete <- function(data, # Données en format srvyr
       )
   }
 
-  # Ajouter les prop au besoin
-
-  # if(show_value == TRUE){
-  #   graph <- graph +
-  #     geom_text(
-  #       aes(y = prop_upp + (0.1 * max_ggplot), ###j'ai l'impression que le 1, c'est bon, mais c'est à vérifier
-  #           label = paste(round(prop * scale, digits = digits),
-  #                         unit),
-  #           family = font),
-  #       color = "black")
-  # }
-
-  if (show_value == TRUE) { # MODIF DE JOEL ----------------------
+  # Ajouter les valeurs calculées
+  if (show_value == TRUE) {
     graph <- graph +
       geom_text(
         aes(

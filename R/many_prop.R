@@ -54,10 +54,6 @@ many_prop = function(data,
   check_logical(arg = list(reorder, show_labs, show_n, show_value, error_bar))
   check_numeric(arg = list(scale, digits, dodge, wrap_width))
 
-  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
-  vec_bin_vars <- all.vars(substitute(bin_vars))
-  message(vec_bin_vars)
-
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -65,6 +61,36 @@ many_prop = function(data,
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
+
+  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
+  vec_bin_vars <- all.vars(substitute(bin_vars))
+  message("Variable(s) binaires entrées : ", paste(vec_bin_vars, collapse = ", "))
+
+  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
+  # On crée un vecteur string qui contient toutes les variables entrées
+  vars_input_char <- vec_bin_vars
+  # On ajoute facet si non-NULL
+  if(!quo_is_null(quo_facet)){
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+  }
+  # On ajoute filter si non-NULL
+  if(!quo_is_null(quo_filter)){
+    vars_filter <- all.vars(substitute(filter_exp))
+    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+  }
+  # Ici la condition et le stop à proprement parler
+  # Si data.frame
+  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
+    if(all(vars_input_char %in% names(data)) == FALSE){
+      stop("Au moins une des variables introduites dans bin_vars, filter_exp ou facet n'est pas présente dans data")
+    }
+  }
+  # Si objet sondage
+  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
+    if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
+      stop("Au moins une des variables introduites dans bin_vars, filter_exp ou facet n'est pas présente dans data")
+    }
+  }
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -76,18 +102,22 @@ many_prop = function(data,
   }
 
   # On supprime les NA sur la variable de facet si non-NULL
-    if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
-        filter(!is.na({{ facet_var }}))
-    }
+  if(!quo_is_null(quo_facet)){
+    data_W <- data_W %>%
+      filter(!is.na({{ facet_var }}))
+  }
 
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       mutate(
         "{{ facet_var }}" := droplevels(as.factor({{ facet_var }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-      )
+        )
+  }
 
+  # On calcule les proportions
+  # Si facet
+  if (!quo_is_null(quo_facet)) {
     tab <- tibble()
     for (i in vec_bin_vars) {
       tab_i <- data_W %>%
@@ -121,6 +151,7 @@ many_prop = function(data,
     }
   }
 
+  # On remplace bin_vars par les labels bin_vars_label
   if (!is.null(bin_vars_label)) {
 
     # vérifier que bin_vars a une même longueur que bin_vars_label
@@ -137,11 +168,8 @@ many_prop = function(data,
     }
   }
 
-  # # On transforme la variable bin_col en facteur (pour réordonner éventuellement)
-  # tab[["bin_col"]] <- as.factor(tab[["bin_col"]])
-
+  # Si reorder = T, on crée un vecteur pour ordonner les levels
   if (reorder == T) {
-    # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
     levels <- levels(reorder(
       tab[["bin_col"]],
       tab[["prop"]],
@@ -150,8 +178,8 @@ many_prop = function(data,
     ))
   }
 
+  # Si reorder = F, l'ordre = celui rentré en input
   if (reorder == F) {
-    # On crée un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
     if (length(vec_bin_vars) == length(bin_vars_label)) {
       levels <- rev(bin_vars_label)
     } else {
@@ -162,10 +190,10 @@ many_prop = function(data,
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
-  # On crée le graphique
-
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -228,6 +256,7 @@ many_prop = function(data,
       )
   }
 
+  # Ajouter les IC si error_bar == T
   if (error_bar == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
@@ -239,6 +268,7 @@ many_prop = function(data,
       )
   }
 
+  # Ajouter les valeurs calculées
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -260,7 +290,7 @@ many_prop = function(data,
       )
   }
 
-
+  # Ajouter le nombre d'individus au besoin
   if (show_n == TRUE) {
     graph <- graph +
       geom_text(
