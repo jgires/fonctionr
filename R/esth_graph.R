@@ -59,8 +59,10 @@ esth_graph <- function(tab,
   }
 
   # Check si le total existe dans cat_var
-  if(!total_name %in% tab[[deparse(substitute(cat_var))]]){
-    stop("Le nom indiqué pour le total n'existe pas dans cat_var")
+  if (!is.null(total_name)) {
+    if(!total_name %in% tab[[deparse(substitute(cat_var))]]){
+      stop("Le nom indiqué pour le total n'existe pas dans cat_var")
+    }
   }
 
   # Check des autres arguments
