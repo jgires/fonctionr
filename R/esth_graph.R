@@ -58,6 +58,11 @@ esth_graph <- function(tab,
     stop("Les arguments tab, ind_var et cat_var doivent être remplis")
   }
 
+  # Check s'il n'y a pas 2 lignes avec des NA
+  if(sum(is.na(tab[[deparse(substitute(cat_var))]])) > 1){
+    stop("Il y a 2 lignes avec des NA dans la variable de groupe")
+  }
+
   # Check si le total existe dans cat_var
   if (!is.null(total_name)) {
     if(!total_name %in% tab[[deparse(substitute(cat_var))]]){
