@@ -145,6 +145,7 @@
 <span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
 <span><span class="co">#&gt; Variable(s) détectée(s) dans l'expression : py090n</span></span>
 <span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression</span></span>
+<span><span class="co">#&gt; Processing time: 0.41 sec</span></span>
 <span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 11</span></span>
 <span><span class="co">#&gt;   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted</span></span>
@@ -198,7 +199,10 @@
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Joël : j’ai modifié la logique d’affichage des axes dans <code>distrib_group_discrete</code>. Je voulais que l’on puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc ajouté une condition selon laquelle quand <code>show_labs = TRUE</code> (défaut de la fonction) &amp; que le titre de l’axe est défini comme <code>""</code> (= charactère vide), alors le titre de l’axe est supprimé (<code>NULL</code> dans ggplot). J’ai fait ça car on ne peut pas mettre <code>NULL</code> directement : c’est le défaut de la fonction, et dans ce cas c’est le nom de la variable qui est affiché. A voir si c’est OK pour généraliser !</p></li>
 <li><p>Ordonner les arguments de la même manière pour chaque fonction =&gt; après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</p></li>
+<li><p>Vérifier que <code>reorder = T</code> réordonne toujours de la même façon pour les différentes fonctions.</p></li>
+<li><p>Vérifier que le code est bien documenté partout avec des commentaires adaptés.</p></li>
 <li>
 <p>Ajouter des checks pour les inputs :</p>
 <ol style="list-style-type: decimal">

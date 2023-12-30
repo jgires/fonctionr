@@ -149,6 +149,7 @@ eusilc_prop <- prop_group(
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Variable(s) détectée(s) dans l'expression : py090n
 #> 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
+#> Processing time: 0.41 sec
 eusilc_prop$tab
 #> # A tibble: 8 × 11
 #>   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted
@@ -210,9 +211,25 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 #### En général
 
+- Joël : j’ai modifié la logique d’affichage des axes dans
+  `distrib_group_discrete`. Je voulais que l’on puisse supprimer
+  individuellement l’axe X, Y ou la légende. J’ai donc ajouté une
+  condition selon laquelle quand `show_labs = TRUE` (défaut de la
+  fonction) & que le titre de l’axe est défini comme `""` (= charactère
+  vide), alors le titre de l’axe est supprimé (`NULL` dans ggplot). J’ai
+  fait ça car on ne peut pas mettre `NULL` directement : c’est le défaut
+  de la fonction, et dans ce cas c’est le nom de la variable qui est
+  affiché. A voir si c’est OK pour généraliser !
+
 - Ordonner les arguments de la même manière pour chaque fonction =\>
   après cela, faire pareil pour l’ordre des arguments dans les fonctions
   de check !
+
+- Vérifier que `reorder = T` réordonne toujours de la même façon pour
+  les différentes fonctions.
+
+- Vérifier que le code est bien documenté partout avec des commentaires
+  adaptés.
 
 - Ajouter des checks pour les inputs :
 
