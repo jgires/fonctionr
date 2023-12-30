@@ -346,17 +346,38 @@ distrib_group_discrete <- function(data,
 
   # Ajouter les axes
   if(show_labs == TRUE){
-    graph <- graph +
-      labs(y = ifelse(is.null(xlab),
-                      paste0("Distribution : ", deparse(substitute(quali_var))),
-                      xlab))
-    if(!is.null(ylab)){
+    # X ---
+    if(any(is.null(xlab), xlab != "")){
       graph <- graph +
-        labs(x = ylab)
+        labs(y = ifelse(is.null(xlab),
+                        paste0("Distribution : ", deparse(substitute(quali_var))),
+                        xlab))
     }
-    if(!is.null(legend_lab)){
+    if(all(!is.null(xlab), xlab == "")){
       graph <- graph +
-        labs(fill = legend_lab)
+        labs(y = NULL)
+    }
+
+    # Y ---
+    if(any(is.null(ylab), ylab != "")){
+      if(!is.null(ylab)){
+        graph <- graph +
+          labs(x = ylab)
+      }
+    }
+    if(all(!is.null(ylab), ylab == "")){
+      graph <- graph +
+        labs(x = NULL)
+    }
+
+    # LEGEND ---
+    if(all(!is.null(legend_lab), legend_lab != "")){
+      graph <- graph +
+        labs(fill = str_wrap(legend_lab, wrap_width_leg))
+    }
+    if(all(!is.null(legend_lab), legend_lab == "")){
+      graph <- graph +
+        labs(fill = NULL)
     }
   }
 
