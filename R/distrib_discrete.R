@@ -113,6 +113,10 @@ distrib_discrete <- function(data, # Données en format srvyr
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
+  # On ne garde que les colonnes entrées en input
+  data_W <- data_W %>%
+    select(all_of(vars_input_char))
+
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
     data_W <- data_W %>%

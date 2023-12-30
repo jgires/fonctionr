@@ -99,6 +99,8 @@ prop_group <- function(data,
                        wrap_width = 25,
                        export_path = NULL) {
 
+  start_time <- Sys.time()
+
   # Check des arguments nécessaires
   if((missing(data) | missing(group) | missing(prop_exp)) == TRUE){
     stop("Les arguments data, group et prop_exp doivent être remplis")
@@ -163,6 +165,10 @@ prop_group <- function(data,
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
+
+  # On ne garde que les colonnes entrées en input
+  data_W <- data_W %>%
+    select(all_of(vars_input_char))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
@@ -491,6 +497,9 @@ prop_group <- function(data,
                  fgFill = "skyblue3",
                  bivariate = FALSE)
   }
+
+  end_time <- Sys.time()
+  message(paste("Processing time:", round(end_time - start_time, 2), "sec"))
 
   return(res)
 
