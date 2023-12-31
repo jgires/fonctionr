@@ -434,8 +434,10 @@ prop_group <- function(data,
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(round(prop * scale,
-                               digits = digits),
+          label = paste0(str_replace(round(prop * scale,
+                                           digits = digits),
+                                     "[.]",
+                                     ","),
                          unit),
           family = font),
         size = 3.5,

@@ -133,13 +133,15 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
--   Joël : j'ai modifié la logique d'affichage des axes dans `distrib_group_discrete`. Je voulais que l'on puisse supprimer individuellement l'axe X, Y ou la légende. J'ai donc ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut de la fonction) & que le titre de l'axe est défini comme `""` (= charactère vide), alors le titre de l'axe est supprimé (`NULL` dans ggplot). J'ai fait ça car on ne peut pas mettre `NULL` directement : c'est le défaut de la fonction, et dans ce cas c'est le nom de la variable qui est affiché. A voir si c'est OK pour généraliser !
+-   Joël : j'ai modifié la logique d'affichage des axes dans `distrib_group_discrete()` & `distrib_discrete()`. Je voulais que l'on puisse supprimer individuellement l'axe X, Y ou la légende. J'ai donc ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut de la fonction) & que le titre de l'axe est défini comme `""` (= charactère vide), alors le titre de l'axe est supprimé (`NULL` dans ggplot). J'ai fait ça car on ne peut pas mettre `NULL` directement : c'est le défaut de la fonction, et dans ce cas c'est le nom de la variable qui est affiché. A voir si c'est OK pour généraliser !
 
 -   Ordonner les arguments de la même manière pour chaque fonction =\> après cela, faire pareil pour l'ordre des arguments dans les fonctions de check !
 
+-   Vérifier que le code est bien documenté partout avec des commentaires adaptés.
+
 -   Vérifier que `reorder = T` réordonne toujours de la même façon pour les différentes fonctions.
 
--   Vérifier que le code est bien documenté partout avec des commentaires adaptés.
+-   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne.
 
 -   Ajouter des checks pour les inputs :
 
@@ -159,7 +161,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...).\
     *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
--   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.
+-   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.\
+    *=\> Fait dans `prop_group()` =\> **décider : choix avec argument (anglosaxon et européen) ?** Ensuite, généraliser.*
 
 #### central_group
 

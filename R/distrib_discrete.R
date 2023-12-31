@@ -237,13 +237,21 @@ distrib_discrete <- function(data, # Données en format srvyr
          subtitle = subtitle,
          caption = caption)
 
-  # Ajouter les axes au besoins
+  # Ajouter les axes au besoin
   if(show_labs == TRUE){
-    graph <- graph +
-      labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
-           y = ifelse(is.null(xlab),
-                      paste0("Distribution : ", deparse(substitute(quali_var)), " (total=100%)"),
-                      xlab))
+    # X ---
+    if(any(is.null(xlab), xlab != "")){
+      graph <- graph +
+        labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+             y = ifelse(is.null(xlab),
+                        paste0("Distribution : ", deparse(substitute(quali_var))),
+                        xlab))
+    }
+    if(all(!is.null(xlab), xlab == "")){
+      graph <- graph +
+        labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+             y = NULL)
+    }
   }
 
   # Masquer les axes si show_labs == FALSE
