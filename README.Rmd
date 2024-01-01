@@ -133,11 +133,16 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
--   Joël : j'ai modifié la logique d'affichage des axes dans `distrib_group_discrete()` & `distrib_discrete()`. Je voulais que l'on puisse supprimer individuellement l'axe X, Y ou la légende. J'ai donc ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut de la fonction) & que le titre de l'axe est défini comme `""` (= charactère vide), alors le titre de l'axe est supprimé (`NULL` dans ggplot). J'ai fait ça car on ne peut pas mettre `NULL` directement : c'est le défaut de la fonction, et dans ce cas c'est le nom de la variable qui est affiché. A voir si c'est OK pour généraliser !
+-   Joël : j'ai modifié la logique d'affichage des axes dans `distrib_group_discrete()` & `distrib_discrete()`. Je voulais que l'on puisse supprimer individuellement l'axe X, Y ou la légende. J'ai donc ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut de la fonction) & que le titre de l'axe est défini comme `""` (= charactère vide), alors le titre de l'axe est supprimé (`NULL` dans ggplot). J'ai fait ça car on ne peut pas mettre `NULL` directement : c'est le défaut de la fonction, et dans ce cas c'est le nom de la variable qui est affiché. ***A voir si c'est OK pour généraliser !***
+
+-   Pour les fonctions qui calculent des proportions : ajouter la possibilité d'un `na.rm.prop = FALSE` pour que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur).
 
 -   Ordonner les arguments de la même manière pour chaque fonction =\> après cela, faire pareil pour l'ordre des arguments dans les fonctions de check !
 
 -   Vérifier que le code est bien documenté partout avec des commentaires adaptés.
+
+-   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.\
+    *=\> Fait dans `prop_group()` =\> **décider : choix avec argument (decimal ?) Ensuite, généraliser.***
 
 -   Vérifier que `reorder = T` réordonne toujours de la même façon pour les différentes fonctions.
 
@@ -148,7 +153,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
     1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;
 
     2.  Le bon type (logical, factor...) et la bonne taille (pas un vecteur \> 1).\
-        *=\> C'est fait. Améliorer les messages ? (par ex. : indiquer l'argument)*
+        *=\> C'est fait. Améliorer les messages ? (par ex. : indiquer l'argument) Voir : <https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot>*
 
     3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
@@ -161,9 +166,6 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...).\
     *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
--   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.\
-    *=\> Fait dans `prop_group()` =\> **décider : choix avec argument (anglosaxon et européen) ?** Ensuite, généraliser.*
-
 #### central_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
@@ -171,7 +173,6 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 #### prop_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
--   ajouter la possibilité d'un `na.rm.prop = FALSE` pour que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur)
 
 #### distrib_group_d
 
@@ -191,6 +192,12 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 #### many_prop_group
 
 -   Ajouter l'export excel.
+
+**esth_graph**
+
+-   Changer le nom.
+
+-   Régler le pb si multiples `NA` et voir si un pb se pose avec multiples totaux.
 
 ### Améliorations
 
