@@ -21,6 +21,7 @@
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
@@ -60,6 +61,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                              title = NULL, # Le titre du graphique
                              subtitle = NULL,
                              xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                             ylab = NULL,
                              show_labs = TRUE,
                              font ="Roboto", # Quelle font par défaut?
                              digits = 0,
@@ -242,15 +244,27 @@ distrib_discrete <- function(data, # Données en format srvyr
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
-        labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
              y = ifelse(is.null(xlab),
                         paste0("Distribution : ", deparse(substitute(quali_var))),
                         xlab))
     }
     if(all(!is.null(xlab), xlab == "")){
       graph <- graph +
-        labs(x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
              y = NULL)
+    }
+
+    # Y ---
+    if(any(is.null(ylab), ylab != "")){
+      if(!is.null(ylab)){
+        graph <- graph +
+          labs(x = ylab)
+      }
+    }
+    if(all(!is.null(ylab), ylab == "")){
+      graph <- graph +
+        labs(x = NULL)
     }
   }
 
