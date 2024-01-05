@@ -237,8 +237,10 @@ check_logical <- function(arg) {
 #'
 check_numeric <- function(arg) {
   for(check_i in seq_along(arg)){
-    stopifnot("Un des arguments n'est pas au bon format (numérique)" = is.numeric(arg[[check_i]]),
-              "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
+    if(!is.null(arg[[check_i]])){
+      stopifnot("Un des arguments n'est pas au bon format (numérique)" = is.numeric(arg[[check_i]]),
+                "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
+    }
   }
 }
 

@@ -25,6 +25,7 @@ distrib_discrete(
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
+  ylab = NULL,
   show_labs = TRUE,
   font = "Roboto",
   digits = 0,
@@ -72,6 +73,8 @@ distrib_d(...)
 \item{subtitle}{Subtitle of the graphic.}
 
 \item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
 \item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
