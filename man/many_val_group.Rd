@@ -2,6 +2,9 @@
 % Please edit documentation in R/many_val_group.R
 \name{many_val_group}
 \alias{many_val_group}
+\alias{many_prop_group}
+\alias{many_median_group}
+\alias{many_mean_group}
 \title{many_val_group}
 \usage{
 many_val_group(
@@ -13,25 +16,31 @@ many_val_group(
   filter_exp = NULL,
   prop_method = "beta",
   ...,
-  unit = "\%",
+  unit = NULL,
   caption = NULL,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  scale = 100,
+  scale = NULL,
   digits = 0,
   show_labs = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   dodge = 0.9,
-  pretty_pal = "Hokusai1",
+  pretty_pal = "Egypt",
   direction = 1,
   error_bar = T,
   na.rm.group = T,
   font = "Roboto",
   wrap_width = 25
 )
+
+many_prop_group(..., type = "prop")
+
+many_median_group(..., type = "median")
+
+many_mean_group(..., type = "mean")
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
@@ -39,6 +48,8 @@ many_val_group(
 \item{group}{A variable defining groups be compared.}
 
 \item{bin_vars}{A vector containing names of the dummy variables on which to compute the proportions}
+
+\item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.}
 
 \item{facet_var}{A variable defining the faceting group.}
 

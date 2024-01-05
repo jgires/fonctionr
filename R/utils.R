@@ -221,8 +221,10 @@ check_character_long <- function(arg) {
 #'
 check_logical <- function(arg) {
   for(check_i in seq_along(arg)){
-    stopifnot("Un des arguments n'est pas au bon format (logique)" = is.logical(arg[[check_i]]),
-              "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
+    if(!is.null(arg[[check_i]])){
+      stopifnot("Un des arguments n'est pas au bon format (logique)" = is.logical(arg[[check_i]]),
+                "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
+    }
   }
 }
 

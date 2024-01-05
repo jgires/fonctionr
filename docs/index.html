@@ -145,7 +145,7 @@
 <span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
 <span><span class="co">#&gt; Variable(s) détectée(s) dans l'expression : py090n</span></span>
 <span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression</span></span>
-<span><span class="co">#&gt; Processing time: 0.41 sec</span></span>
+<span><span class="co">#&gt; Processing time: 0.47 sec</span></span>
 <span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 11</span></span>
 <span><span class="co">#&gt;   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted</span></span>
@@ -199,15 +199,20 @@
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>Joël : j’ai modifié la logique d’affichage des axes dans <code>distrib_group_discrete</code>. Je voulais que l’on puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc ajouté une condition selon laquelle quand <code>show_labs = TRUE</code> (défaut de la fonction) &amp; que le titre de l’axe est défini comme <code>""</code> (= charactère vide), alors le titre de l’axe est supprimé (<code>NULL</code> dans ggplot). J’ai fait ça car on ne peut pas mettre <code>NULL</code> directement : c’est le défaut de la fonction, et dans ce cas c’est le nom de la variable qui est affiché. A voir si c’est OK pour généraliser !</p></li>
-<li><p>Ordonner les arguments de la même manière pour chaque fonction =&gt; après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</p></li>
-<li><p>Vérifier que <code>reorder = T</code> réordonne toujours de la même façon pour les différentes fonctions.</p></li>
-<li><p>Vérifier que le code est bien documenté partout avec des commentaires adaptés.</p></li>
+<li><p>Joël : j’ai modifié la logique d’affichage des axes dans <code><a href="reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> &amp; <code><a href="reference/distrib_discrete.html">distrib_discrete()</a></code>. Je voulais que l’on puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc ajouté une condition selon laquelle quand <code>show_labs = TRUE</code> (défaut de la fonction) &amp; que le titre de l’axe est défini comme <code>""</code> (= charactère vide), alors le titre de l’axe est supprimé (<code>NULL</code> dans ggplot). J’ai fait ça car on ne peut pas mettre <code>NULL</code> directement : c’est le défaut de la fonction, et dans ce cas c’est le nom de la variable qui est affiché. <strong><em>A voir si c’est OK pour généraliser !</em></strong></p></li>
+<li><p>Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, notamment du fait de copier-coller).</p></li>
+<li><p>Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =&gt; après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</p></li>
+<li><p>Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.<br><em>=&gt; Fait dans <code><a href="reference/prop_group.html">prop_group()</a></code> =&gt; <strong>décider : choix avec argument (decimal ?) Ensuite, généraliser.</strong></em></p></li>
+<li><p>Ajouter des exemples pour chaque fonction (pour le site).</p></li>
+<li><p>Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce qu’on a fait (il manque des notes).</p></li>
+<li><p>Vérifier que <code>reorder = T</code> réordonne toujours de la même façon pour les différentes fonctions (<code><a href="reference/many_val_group.html">many_prop_group()</a></code> =/= <code><a href="reference/prop_group.html">prop_group()</a></code>).</p></li>
+<li><p>Pour les fonctions qui calculent des proportions : ajouter la possibilité d’un <code>na.rm.prop = FALSE</code> pour que la proportion soit calculée sur l’ensemble des individus (les <code>NA</code> étant comptabilisés dans le dénominateur).</p></li>
+<li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li>
 <p>Ajouter des checks pour les inputs :</p>
 <ol style="list-style-type: decimal">
-<li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;</p></li>
-<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Améliorer les messages ? (par ex. : indiquer l’argument)</em></p></li>
+<li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;<br><strong>=&gt; Peut-être trouvé la solution ici ? =&gt; <a href="https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package" class="external-link uri">https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package</a></strong></p></li>
+<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Améliorer les messages ? (par ex. : indiquer l’argument) Voir : <a href="https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot" class="external-link uri">https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot</a></em></p></li>
 <li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;</p></li>
 <li><p>Pas mettre les mêmes colonnes dans les différents arguments (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>, etc.) ;</p></li>
 </ol>
@@ -215,7 +220,6 @@
 <li><p>Mettre des conditions pour réaliser les tests (n min, distribution, variances égales…).</p></li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le message de la console avec les replicates =&gt; pourquoi ?</p></li>
 <li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
-<li><p>Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -230,7 +234,6 @@
 </h4>
 <ul>
 <li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
-<li>ajouter la possibilité d’un <code>na.rm.prop = FALSE</code> pour que la proportion soit calculée sur l’ensemble des individus (les <code>NA</code> étant comptabilisés dans le dénominateur)</li>
 </ul>
 </div>
 <div class="section level4">
@@ -238,7 +241,6 @@
 </h4>
 <ul>
 <li>Implémenter un test stat lorsqu’il y a des facets =&gt; via modélisation loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de <code>survey</code> (erreurs fréquentes).</li>
-<li>Ajouter les n par “cellule” ?</li>
 </ul>
 </div>
 <div class="section level4">
@@ -258,10 +260,16 @@
 </ul>
 </div>
 <div class="section level4">
-<h4 id="many_prop_group">many_prop_group<a class="anchor" aria-label="anchor" href="#many_prop_group"></a>
+<h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
 </h4>
 <ul>
 <li>Ajouter l’export excel.</li>
+<li>Ajouter un check pour la proportion = seules des valeurs <code>0</code> - <code>1</code> ou <code>FALSE</code> - <code>TRUE</code>.</li>
+</ul>
+<p><strong>esth_graph</strong></p>
+<ul>
+<li><p>Changer le nom.</p></li>
+<li><p>Régler le pb si multiples <code>NA</code> et voir si un pb se pose avec multiples totaux.</p></li>
 </ul>
 </div>
 </div>
@@ -297,9 +305,10 @@
 <h4 id="distrib_group_d-1">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d-1"></a>
 </h4>
 <ul>
+<li><p>Ajouter les n par “cellule” ?</p></li>
+<li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)</p></li>
 <li><p>Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =&gt; comment faire vu qu’il y a la palette de couleur des modalités ?<br><em>=&gt; Tentative en cours d’utiliser des hachures.</em></p></li>
 <li><p>Réordonner les levels sur la variable <code>group</code> ? Mais selon quelle valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la variable <code>var_distrib</code> ?</p></li>
-<li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)</p></li>
 <li><p>Possibilité d’indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?</p></li>
 </ul>
 </div>

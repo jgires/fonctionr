@@ -149,7 +149,7 @@ eusilc_prop <- prop_group(
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Variable(s) détectée(s) dans l'expression : py090n
 #> 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
-#> Processing time: 0.41 sec
+#> Processing time: 0.47 sec
 eusilc_prop$tab
 #> # A tibble: 8 × 11
 #>   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted
@@ -212,35 +212,57 @@ potentiellement la distribution d’échantillonnage. Voir :
 #### En général
 
 - Joël : j’ai modifié la logique d’affichage des axes dans
-  `distrib_group_discrete`. Je voulais que l’on puisse supprimer
-  individuellement l’axe X, Y ou la légende. J’ai donc ajouté une
-  condition selon laquelle quand `show_labs = TRUE` (défaut de la
-  fonction) & que le titre de l’axe est défini comme `""` (= charactère
-  vide), alors le titre de l’axe est supprimé (`NULL` dans ggplot). J’ai
-  fait ça car on ne peut pas mettre `NULL` directement : c’est le défaut
-  de la fonction, et dans ce cas c’est le nom de la variable qui est
-  affiché. A voir si c’est OK pour généraliser !
+  `distrib_group_discrete()` & `distrib_discrete()`. Je voulais que l’on
+  puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc
+  ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut
+  de la fonction) & que le titre de l’axe est défini comme `""` (=
+  charactère vide), alors le titre de l’axe est supprimé (`NULL` dans
+  ggplot). J’ai fait ça car on ne peut pas mettre `NULL` directement :
+  c’est le défaut de la fonction, et dans ce cas c’est le nom de la
+  variable qui est affiché. ***A voir si c’est OK pour généraliser !***
 
-- Ordonner les arguments de la même manière pour chaque fonction =\>
-  après cela, faire pareil pour l’ordre des arguments dans les fonctions
-  de check !
+- Documenter tous les arguments des différentes fonctions + vérifier que
+  les explications sont bien correctes (quelques erreurs repérées,
+  notamment du fait de copier-coller).
+
+- Ordonner les arguments de la même manière pour chaque fonction (voir
+  fichier excel) =\> après cela, faire pareil pour l’ordre des arguments
+  dans les fonctions de check !
+
+- Ajouter la possibilité de changer le point en virgule pour la décimale
+  dans les étiquettes.  
+  *=\> Fait dans `prop_group()` =\> **décider : choix avec argument
+  (decimal ?) Ensuite, généraliser.***
+
+- Ajouter des exemples pour chaque fonction (pour le site).
+
+- Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce
+  qu’on a fait (il manque des notes).
 
 - Vérifier que `reorder = T` réordonne toujours de la même façon pour
-  les différentes fonctions.
+  les différentes fonctions (`many_prop_group()` =/= `prop_group()`).
 
-- Vérifier que le code est bien documenté partout avec des commentaires
-  adaptés.
+- Pour les fonctions qui calculent des proportions : ajouter la
+  possibilité d’un `na.rm.prop = FALSE` pour que la proportion soit
+  calculée sur l’ensemble des individus (les `NA` étant comptabilisés
+  dans le dénominateur).
+
+- Changer la fonction `scales::pvalue`, qui n’est plus valide
+  (superseded) =\> Faire une fonction maison en interne.
 
 - Ajouter des checks pour les inputs :
 
   1.  Existence des colonnes dans le dataframe *=\> C’est fait sauf pour
       les variables de design + pondération ? Est-ce testable, du fait
-      que j’ai mis l’argument `…` ? Investiguer…* ;
+      que j’ai mis l’argument `…` ? Investiguer…* ;  
+      **=\> Peut-être trouvé la solution ici ? =\>
+      <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
 
   2.  Le bon type (logical, factor…) et la bonne taille (pas un vecteur
       \> 1).  
       *=\> C’est fait. Améliorer les messages ? (par ex. : indiquer
-      l’argument)*
+      l’argument) Voir :
+      <https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot>*
 
   3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
@@ -262,9 +284,6 @@ potentiellement la distribution d’échantillonnage. Voir :
   n_tot_weighted, n_tot_weighted_low,
   n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
-- Ajouter la possibilité de changer le point en virgule pour la décimale
-  dans les étiquettes.
-
 #### central_group
 
 - Bypasser l’erreur du test stat avec `tryCatch()`.
@@ -272,16 +291,12 @@ potentiellement la distribution d’échantillonnage. Voir :
 #### prop_group
 
 - Bypasser l’erreur du test stat avec `tryCatch()`.
-- ajouter la possibilité d’un `na.rm.prop = FALSE` pour que la
-  proportion soit calculée sur l’ensemble des individus (les `NA` étant
-  comptabilisés dans le dénominateur)
 
 #### distrib_group_d
 
 - Implémenter un test stat lorsqu’il y a des facets =\> via modélisation
   loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de
   `survey` (erreurs fréquentes).
-- Ajouter les n par “cellule” ?
 
 #### distrib_d
 
@@ -295,9 +310,18 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 - Ajouter l’export excel.
 
-#### many_prop_group
+#### many_val_group
 
 - Ajouter l’export excel.
+- Ajouter un check pour la proportion = seules des valeurs `0` - `1` ou
+  `FALSE` - `TRUE`.
+
+**esth_graph**
+
+- Changer le nom.
+
+- Régler le pb si multiples `NA` et voir si un pb se pose avec multiples
+  totaux.
 
 ### Améliorations
 
@@ -324,6 +348,10 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 #### distrib_group_d
 
+- Ajouter les n par “cellule” ?
+
+- Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
+
 - Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\>
   comment faire vu qu’il y a la palette de couleur des modalités ?  
   *=\> Tentative en cours d’utiliser des hachures.*
@@ -331,8 +359,6 @@ potentiellement la distribution d’échantillonnage. Voir :
 - Réordonner les levels sur la variable `group` ? Mais selon quelle
   valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la
   variable `var_distrib` ?
-
-- Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
 
 - Possibilité d’indiquer un vecteur avec une palette de couleur pour
   coller avec le code couleur de notre institution ?

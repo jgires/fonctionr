@@ -3,6 +3,7 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param bin_vars A vector containing names of the dummy variables on which to compute the proportions
+#' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
@@ -59,7 +60,7 @@ many_val_group = function(data,
                            show_n = FALSE,
                            show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                            dodge = 0.9,
-                           pretty_pal = "Hokusai1",
+                           pretty_pal = "Egypt",
                            direction = 1,
                            error_bar = T,
                            na.rm.group = T,
@@ -67,14 +68,17 @@ many_val_group = function(data,
                            wrap_width = 25){
 
   # Check des arguments nécessaires
-  if((missing(data) | missing(group) | missing(bin_vars)) == TRUE){
-    stop("Les arguments data, group et bin_vars doivent être remplis")
+  if((missing(data) | missing(group) | missing(bin_vars) | missing(type)) == TRUE){
+    stop("Les arguments data, group, bin_vars et type doivent être remplis")
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, pretty_pal, font))
+  check_character(arg = list(type, prop_method, unit, caption, title, subtitle, xlab, ylab, pretty_pal, font))
   check_logical(arg = list(show_labs, show_n, show_value, error_bar, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width))
+
+  # Check que le type est bien le bon
+  match.arg(type, choices = c("mean", "median", "prop"))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -199,13 +203,6 @@ many_val_group = function(data,
         tab <- rbind(tab, tab_i)
       }
     }
-    if(is.null(unit)){
-      unit <- "%"
-    }
-    if(is.null(scale)){
-      scale <- 100
-    }
-    type_ggplot <- "Proportion"
   }
   if(type == "median"){
     # On calcule les proportions par groupe
@@ -239,10 +236,6 @@ many_val_group = function(data,
         tab <- rbind(tab, tab_i)
       }
     }
-    if(is.null(scale)){
-      scale <- 1
-    }
-    type_ggplot <- "Médiane"
   }
   if(type == "mean"){
     # On calcule les proportions par groupe
@@ -276,10 +269,6 @@ many_val_group = function(data,
         tab <- rbind(tab, tab_i)
       }
     }
-    if(is.null(scale)){
-      scale <- 1
-    }
-    type_ggplot <- "Moyenne"
   }
 
   # On crée la palette avec le package met.brewer
@@ -318,6 +307,32 @@ many_val_group = function(data,
 
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On définit le nom de l'indicateur (proportion, médiane ou moyenne) et l'échelle qui seront affichées dans le graphique ggplot
+  if(type == "prop"){
+    # Si l'échelle n'est pas définie par l'utilisateur => échelle = 100
+    if(is.null(scale)){
+      scale <- 100
+    }
+    # Si l'unité n'est pas définie par l'utilisateur => unité = "%"
+    if(is.null(unit)){
+      unit <- "%"
+    }
+    type_ggplot <- "Proportion"
+  }
+  # Par contre, pour la médiane et la moyenne => échelle = 1 (équivalence avec la variable entrée)
+  if(type == "median"){
+    if(is.null(scale)){
+      scale <- 1
+    }
+    type_ggplot <- "Médiane"
+  }
+  if(type == "mean"){
+    if(is.null(scale)){
+      scale <- 1
+    }
+    type_ggplot <- "Moyenne"
+  }
 
   # On crée le graphique
 
@@ -464,4 +479,25 @@ many_val_group = function(data,
   res$graph <- graph
 
   return(res)
+}
+
+
+#' @rdname many_val_group
+#' @export
+many_prop_group <- function(..., type = "prop") {
+  many_val_group(..., type = type)
+}
+
+
+#' @rdname many_val_group
+#' @export
+many_median_group <- function(..., type = "median") {
+  many_val_group(..., type = type)
+}
+
+
+#' @rdname many_val_group
+#' @export
+many_mean_group <- function(..., type = "mean") {
+  many_val_group(..., type = type)
 }
