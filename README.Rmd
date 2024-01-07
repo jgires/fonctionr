@@ -214,7 +214,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### central_group
 
--   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
+Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
 
 #### prop_group
 
@@ -232,6 +232,10 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
 
 -   Possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?
+
+### many_val_group
+
+-   Mettre des labels change l'ordre des variables introduites (car l'ordre alphabétique change) =\> quel comportement adopter ?
 
 ### Fonctions à créer
 

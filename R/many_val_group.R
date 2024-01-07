@@ -3,6 +3,7 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param bin_vars A vector containing names of the dummy variables on which to compute the proportions
+#' @param bin_vars_label
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
@@ -43,6 +44,7 @@
 many_val_group = function(data,
                            group,
                            bin_vars,
+                           bin_vars_label = NULL,
                            type,
                            facet_var = NULL,
                            filter_exp = NULL,
@@ -267,6 +269,23 @@ many_val_group = function(data,
           )
 
         tab <- rbind(tab, tab_i)
+      }
+    }
+  }
+
+  # On remplace bin_vars par les labels bin_vars_label
+  if (!is.null(bin_vars_label)) {
+
+    # vérifier que bin_vars a une même longueur que bin_vars_label
+    # si non, message avec erreur...
+    if (length(vec_bin_vars) != length(bin_vars_label)) {
+      message("Le nombre de labels n'est pas égal au nombre de variables")
+
+      # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans bin_vars_label
+    } else {
+
+      for (i in seq_along(vec_bin_vars)) {
+        tab[["bin_col"]][tab[["bin_col"]] == vec_bin_vars[i]] <- bin_vars_label[i]
       }
     }
   }
