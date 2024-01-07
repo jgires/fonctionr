@@ -368,7 +368,8 @@ many_val_group = function(data,
     ) +
     theme_fonctionr(font = font) +
     theme(
-      legend.position = "bottom"
+      legend.position = "bottom",
+      legend.title=element_blank()
     ) +
     scale_fill_manual(
       values = palette,
