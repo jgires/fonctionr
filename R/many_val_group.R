@@ -75,8 +75,7 @@ many_val_group = function(data,
                           subtitle = NULL,
                           xlab = NULL, # Le nom de l'axe de la variable catégorielle
                           ylab = NULL,
-                          caption = NULL,
-){
+                          caption = NULL){
 
   # Check des arguments nécessaires
   if((missing(data) | missing(group) | missing(list_vars) | missing(type)) == TRUE){
@@ -395,14 +394,30 @@ many_val_group = function(data,
 
   # Ajouter les axes
   if(show_lab == TRUE){
-    graph <- graph +
-      labs(y = ifelse(is.null(xlab),
-                      paste0(type_ggplot, " : ", paste(vec_list_vars, collapse = ", ")),
-                      xlab))
-    if(!is.null(ylab)){
+    # X ---
+    if(any(is.null(xlab), xlab != "")){
       graph <- graph +
-        labs(x = ylab)
+        labs(y = ifelse(is.null(xlab),
+                        paste0(type_ggplot, " : ", paste(vec_list_vars, collapse = ", ")),
+                        xlab))
     }
+    if(all(!is.null(xlab), xlab == "")){
+      graph <- graph +
+        labs(y = NULL)
+    }
+
+    # Y ---
+    if(any(is.null(ylab), ylab != "")){
+      if(!is.null(ylab)){
+        graph <- graph +
+          labs(x = ylab)
+      }
+    }
+    if(all(!is.null(ylab), ylab == "")){
+      graph <- graph +
+        labs(x = NULL)
+    }
+
   }
 
   # Masquer les axes si show_lab == FALSE

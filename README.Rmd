@@ -139,9 +139,6 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =\> après cela, faire pareil pour l'ordre des arguments dans les fonctions de check !
 
--   Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.\
-    *=\> Fait dans `prop_group()` =\> **décider : choix avec argument (decimal ?) Ensuite, généraliser.***
-
 -   Ajouter des exemples pour chaque fonction (pour le site).
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
