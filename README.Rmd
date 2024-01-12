@@ -63,7 +63,7 @@ eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
 eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 ```
 
-`fonctionr` permet de calculer facilement des moyennes de revenu par groupe grâce à la fonction `mean_group()`. Les groupes, ici de statut économique, sont indiqués dans l'argument `group`. C'est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l'argument `quanti_exp` (dans ce cas la variable `eqIncome` est divisée par 12 à la volée). Le design de l'enquête SILC est pris en considération, puisque l'on peut indiquer les clusters (`ids`), les strates (`strata`) et les poids (`weight`) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.
+`fonctionr` comprend plusieurs fonctions pour réaliser facilement des opérations descriptives courantes. `mean_group()` permet par exemple de calculer des moyennes de revenu par groupe. Les groupes, ici de statut économique, sont indiqués dans l'argument `group`. C'est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l'argument `quanti_exp` (dans ce cas la variable `eqIncome` est divisée par 12 à la volée). Le design de l'enquête SILC est pris en considération, puisque l'on peut indiquer les clusters (`ids`), les strates (`strata`) et les poids (`weight`) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.
 
 ```{r}
 eusilc_mean <- mean_group(
@@ -87,7 +87,7 @@ eusilc_mean$test.stat
 eusilc_mean$graph
 ```
 
-`fonctionr` comprend plusieurs fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction `prop_group()`. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l'argument `prop_exp` : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).
+`fonctionr` comprend plusieurs autres fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction `prop_group()`. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l'argument `prop_exp` : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).
 
 ```{r}
 eusilc_prop <- prop_group(
