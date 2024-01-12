@@ -3,27 +3,28 @@
 #' Function to construct a graphic following the aestetics of the other function function of this package from a table
 #'
 #' @param tab Table with the variables to be ploted.
-#' @param ind_var The variable in tab with the indicators to be ploted.
-#' @param cat_var The variable in tab with the labels of the indicators to be ploted.
+#' @param var The variable in tab with the labels of the indicators to be ploted.
+#' @param value The variable in tab with the indicators to be ploted.
 #' @param facet_var A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param unit The unit showd on the plot. Default is percent.
-#' @param caption Caption of the graphic.
-#' @param title Title of the graphic.
-#' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to cat_var in tab.
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to ind_var in tab.
-#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param n_var The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.
-#' @param show_value TRUE if you want to show the values of ind_var on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param reorder TRUE if you want to reorder cat_var according to ind_var. FALSE if you do not want to reorder. Default is FALSE.
+#' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
 #' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
-#' @param total_name Name of the total bar on the graphic.
+#' @param n_var The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.
+#' @param show_value TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.
+#' @param name_total Name of the total bar on the graphic.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param unit The unit showd on the plot. Default is percent.
+#' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param fill Colour of the bars.
+#' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param wrap_width Number of characters before before going to the line. Applies to the labels cat_var. Default is 25.
+#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels var. Default is 25.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to var in tab.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
+#' @param caption Caption of the graphic.
 #'
 #' @return
 #' @export
@@ -31,50 +32,51 @@
 #' @examples
 #'
 esth_graph <- function(tab,
-                       ind_var,
-                       cat_var,
+                       var,
+                       value,
                        facet_var = NULL,
+                       reorder = F,
+                       error_low = NULL,
+                       error_upp = NULL,
+                       n_var = NULL,
+                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                       name_total = NULL,
+                       scale = 1,
+                       digits = 2,
                        unit = "",
                        dec = ",",
-                       caption = NULL,
+                       fill = "indianred4",
+                       dodge = 0.9,
+                       font ="Roboto",
+                       wrap_width_y = 25,
                        title = NULL, # Le titre du graphique
                        subtitle = NULL,
                        xlab = NULL, # Le nom de l'axe de la variable catégorielle
                        ylab = NULL,
-                       scale = 1,
-                       digits = 2,
-                       n_var = NULL,
-                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
-                       dodge = 0.9,
-                       reorder = F,
-                       error_low = NULL,
-                       error_upp = NULL,
-                       total_name = NULL,
-                       fill = "indianred4",
-                       font ="Roboto",
-                       wrap_width = 25) {
+                       caption = NULL
+) {
 
   # Check des arguments nécessaires
-  if((missing(tab) | missing(ind_var) | missing(cat_var)) == TRUE){
-    stop("Les arguments tab, ind_var et cat_var doivent être remplis")
+  if((missing(tab) | missing(value) | missing(var)) == TRUE){
+    stop("Les arguments tab, value et var doivent être remplis")
   }
 
   # Check s'il n'y a pas 2 lignes avec des NA
-  if(sum(is.na(tab[[deparse(substitute(cat_var))]])) > 1){
+  if(sum(is.na(tab[[deparse(substitute(var))]])) > 1){
     stop("Il y a 2 lignes avec des NA dans la variable de groupe")
   }
 
-  # Check si le total existe dans cat_var
-  if (!is.null(total_name)) {
-    if(!total_name %in% tab[[deparse(substitute(cat_var))]]){
-      stop("Le nom indiqué pour le total n'existe pas dans cat_var")
+  # Check si le total existe dans var
+  if (!is.null(name_total)) {
+    if(!name_total %in% tab[[deparse(substitute(var))]]){
+      stop("Le nom indiqué pour le total n'existe pas dans var")
     }
   }
 
   # Check des autres arguments
-  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, total_name, fill, font))
+  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, name_total, fill, font))
   check_logical(arg = list(show_value, reorder))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -86,49 +88,49 @@ esth_graph <- function(tab,
   # On convertit la variable catégorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
-      "{{ cat_var }}" := as.factor({{ cat_var }})
+      "{{ var }}" := as.factor({{ var }})
     )
 
   # On crée la palette
-  if (!is.null(total_name)) {
+  if (!is.null(name_total)) {
     # Avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(cat_var))]]) - 1), "grey40")
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
   }
-  if (is.null(total_name)) {
+  if (is.null(name_total)) {
     # Sans (différencier le) total
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(cat_var))]])))
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]])))
   }
 
   # Créer max_ggplot
-  max_ggplot <- max(tab[[deparse(substitute(ind_var))]])
+  max_ggplot <- max(tab[[deparse(substitute(value))]])
 
   # Si reorder == T
   if (reorder == T) {
-    if (!is.null(total_name))  {
-      # On crée un vecteur pour ordonner les levels de cat_var selon ind_var, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
+    if (!is.null(name_total))  {
+      # On crée un vecteur pour ordonner les levels de var selon value, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
-        total_name,
+        name_total,
         NA,
         levels(reorder(
-          tab[[deparse(substitute(cat_var))]],
-          tab[[deparse(substitute(ind_var))]],
+          tab[[deparse(substitute(var))]],
+          tab[[deparse(substitute(value))]],
           FUN = median,
           decreasing = T
         ))[levels(reorder(
-          tab[[deparse(substitute(cat_var))]],
-          tab[[deparse(substitute(ind_var))]],
+          tab[[deparse(substitute(var))]],
+          tab[[deparse(substitute(value))]],
           FUN = median,
           decreasing = T
-        )) != total_name]
+        )) != name_total]
       )
     }
-    if (is.null(total_name))  {
-      # On crée un vecteur pour ordonner les levels de cat_var selon ind_var, en mettant NA en premier (= en dernier sur le graphique ggplot)
+    if (is.null(name_total))  {
+      # On crée un vecteur pour ordonner les levels de var selon value, en mettant NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         NA,
         levels(reorder(
-          tab[[deparse(substitute(cat_var))]],
-          tab[[deparse(substitute(ind_var))]],
+          tab[[deparse(substitute(var))]],
+          tab[[deparse(substitute(value))]],
           FUN = median,
           decreasing = T
           )
@@ -139,29 +141,29 @@ esth_graph <- function(tab,
 
   # Si reorder == F
   if (reorder == F) {
-    if (!is.null(total_name))  {
-      # On crée un vecteur pour ordonner les levels de cat_var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
+    if (!is.null(name_total))  {
+      # On crée un vecteur pour ordonner les levels de var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
-        total_name,
+        name_total,
         NA,
         rev(
           levels(
-            tab[[deparse(substitute(cat_var))]]
+            tab[[deparse(substitute(var))]]
           )
         )[rev(
           levels(
-            tab[[deparse(substitute(cat_var))]]
-          ) != total_name
+            tab[[deparse(substitute(var))]]
+          ) != name_total
         )]
       )
     }
-    if (is.null(total_name))  {
-      # On crée un vecteur pour ordonner les levels de cat_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
+    if (is.null(name_total))  {
+      # On crée un vecteur pour ordonner les levels de var pour mettre NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         NA,
         rev(
           levels(
-            tab[[deparse(substitute(cat_var))]]
+            tab[[deparse(substitute(var))]]
           )
         )
       )
@@ -169,8 +171,8 @@ esth_graph <- function(tab,
   }
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing
-  # On les supprime donc ssi pas de missing sur la variable de cat_var
-  if (sum(is.na(tab[[deparse(substitute(cat_var))]])) == 0)  {
+  # On les supprime donc ssi pas de missing sur la variable de var
+  if (sum(is.na(tab[[deparse(substitute(var))]])) == 0)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -189,9 +191,9 @@ esth_graph <- function(tab,
 
   graph <- tab %>%
     ggplot(aes(
-      x = {{ cat_var }},
-      y = {{ ind_var }},
-      fill = {{ cat_var }}
+      x = {{ var }},
+      y = {{ value }},
+      fill = {{ var }}
     )) +
     geom_bar(
       width = dodge,
@@ -202,7 +204,7 @@ esth_graph <- function(tab,
     theme(
       legend.position = "none"
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels) +
     scale_fill_manual(
       values = palette,
@@ -254,8 +256,8 @@ esth_graph <- function(tab,
     graph <- graph +
       geom_text(
         aes(
-          y = ({{ ind_var }}) + (0.01 * max_ggplot),
-          label = paste0(str_replace(round({{ ind_var }} * scale,
+          y = ({{ value }}) + (0.01 * max_ggplot),
+          label = paste0(str_replace(round({{ value }} * scale,
                                            digits = digits),
                                      "[.]",
                                      dec),

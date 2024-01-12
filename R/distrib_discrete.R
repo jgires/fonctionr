@@ -6,26 +6,27 @@
 #' @param quali_var The discrete variable that is studied.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.
-#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param na.rm.group TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion.
-#' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm = FALSE, is not included in the reorder.
+#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param dodge Width of the bar, between 0 and 1.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
-#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
-#' @param caption Caption in the graphic.
+#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param fill Colour of the bars. NA bar, in case if na.rm.group.group = FALSE, and total bar are always in grey.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the categories. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param wrap_width Number of characters before going to the line. Applies to the labels of the categories. Default is 25.
+#' @param caption Caption in the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -47,26 +48,28 @@ distrib_discrete <- function(data, # Données en format srvyr
                              facet_var = NULL,
                              filter_exp = NULL,
                              ...,
-                             na.rm = T,
-                             fill = "sienna2",
+                             na.rm.group = T,
+                             # na.rm.facet = T,
+                             # na.rm.var = T,
+                             prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                             reorder = FALSE,
+                             show_ci = T,
                              show_n = FALSE,
                              show_value = TRUE,
-                             reorder = FALSE,
+                             show_lab = TRUE,
                              scale = 100,
-                             dodge = 0.9,
-                             prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                             digits = 0,
                              unit = "%",
                              dec = ",",
-                             error_bar = T,
-                             caption = NULL,
+                             fill = "sienna2",
+                             dodge = 0.9,
+                             font ="Roboto",
+                             wrap_width_y = 25,
                              title = NULL, # Le titre du graphique
                              subtitle = NULL,
                              xlab = NULL, # Le nom de l'axe de la variable catégorielle
                              ylab = NULL,
-                             show_labs = TRUE,
-                             font ="Roboto", # Quelle font par défaut?
-                             digits = 0,
-                             wrap_width = 25,
+                             caption = NULL,
                              export_path = NULL) {
 
   # Un check impératif
@@ -76,8 +79,8 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # Check des autres arguments
   check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, font, fill, export_path))
-  check_logical(arg = list(show_n, show_labs, show_value, reorder, error_bar, na.rm))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+  check_logical(arg = list(show_n, show_lab, show_value, reorder, show_ci, na.rm.group))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -126,8 +129,8 @@ distrib_discrete <- function(data, # Données en format srvyr
       filter({{ filter_exp }})
   }
 
- # On supprime les NA de quali_var si na.rm == T
-  if(na.rm == T){
+ # On supprime les NA de quali_var si na.rm.group == T
+  if(na.rm.group == T){
     data_W <- data_W %>%
       filter(!is.na({{ quali_var }}))
     # idem sur la variable de facet si non-NULL
@@ -175,7 +178,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   palette <- c(rep(fill, nlevels(tab[[deparse(substitute(quali_var))]])))
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(tab$prop, na.rm = TRUE)
+  max_ggplot <- max(tab$prop, na.rm.group = TRUE)
 
   if (reorder == T ) {
     # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
@@ -202,9 +205,9 @@ distrib_discrete <- function(data, # Données en format srvyr
     )
   }
 
-  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, même si na.rm = F !
-  # On les supprime donc ssi na.rm = F et pas de missing sur la variable quali_var **OU** na.rm = T
-  if ((na.rm == F & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm == T)  {
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, même si na.rm.group = F !
+  # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable quali_var **OU** na.rm.group = T
+  if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -228,7 +231,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       na.value = "grey"
       ) +
     scale_x_discrete(
-      labels = function(x) str_wrap(x, width = wrap_width),
+      labels = function(x) str_wrap(x, width = wrap_width_y),
       limits = levels
       ) +
     theme_fonctionr(font = font) +
@@ -241,7 +244,7 @@ distrib_discrete <- function(data, # Données en format srvyr
          caption = caption)
 
   # Ajouter les axes au besoin
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -269,15 +272,15 @@ distrib_discrete <- function(data, # Données en format srvyr
     }
   }
 
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
+  # Masquer les axes si show_lab == FALSE
+  if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)
     }
 
-  # Ajouter les IC si error_bar == T
-  if (error_bar == T) {
+  # Ajouter les IC si show_ci == T
+  if (show_ci == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low,
                         ymax = prop_upp),
@@ -302,7 +305,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                          unit),
           family = font),
         size = 3.5,
-        vjust = ifelse(error_bar == T,
+        vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
         hjust = 0,
