@@ -1,10 +1,30 @@
 #' many_prop
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param group A variable defining groups be compared.
-#' @param bin_vars A vector containing names of the binarized variables on which to compute the proportions
+#' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
+#' @param list_vars_lab
+#' @param facet_var A variable defining the faceting group.
+#' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#'
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param reorder TRUE if you want to reorder the variables according to the proportion.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param unit Unit showed in the graphic. Default is percent.
+#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param fill Colour of the bars.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param caption Caption of the graphic.#'
 #' @return
 #' @import rlang
 #' @import survey
@@ -19,41 +39,43 @@
 #' @examples
 #'
 many_prop = function(data,
-                     bin_vars,
-                     bin_vars_label = NULL,
+                     list_vars,
+                     list_vars_lab = NULL,
                      facet_var = NULL,
                      filter_exp = NULL,
-                     prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                      ...,
+                     # na.rm.facet, #à compléter
+                     # na.var,#à compléter
+                     prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                     reorder = FALSE,
+                     show_ci = T,
+                     show_n = FALSE,
+                     show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                     show_lab = TRUE,
+                     scale = 100,
+                     digits = 0,
                      unit = "%",
                      dec = ",",
-                     caption = NULL,
+                     fill = "mediumseagreen",
+                     dodge = 0.9,
+                     font ="Roboto",
+                     wrap_width_y = 25,
                      title = NULL, # Le titre du graphique
                      subtitle = NULL,
                      xlab = NULL, # Le nom de l'axe de la variable catégorielle
                      ylab = NULL,
-                     scale = 100,
-                     digits = 0,
-                     reorder = FALSE,
-                     show_labs = TRUE,
-                     show_n = FALSE,
-                     show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
-                     dodge = 0.9,
-                     fill = "mediumseagreen",
-                     error_bar = T,
-                     font ="Roboto",
-                     wrap_width = 25){
+                     caption = NULL){
 
   # Check des arguments nécessaires
-  if((missing(data) | missing(bin_vars)) == TRUE){
-    stop("Les arguments data et bin_vars doivent être remplis")
+  if((missing(data) | missing(list_vars)) == TRUE){
+    stop("Les arguments data et list_vars doivent être remplis")
   }
 
   # Check des autres arguments
   check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, font))
-  check_character_long(arg = list(bin_vars_label))
-  check_logical(arg = list(reorder, show_labs, show_n, show_value, error_bar))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+  check_character_long(arg = list(list_vars_lab))
+  check_logical(arg = list(reorder, show_lab, show_n, show_value, show_ci))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -64,12 +86,12 @@ many_prop = function(data,
   quo_filter <- enquo(filter_exp)
 
   # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
-  vec_bin_vars <- all.vars(substitute(bin_vars))
-  message("Variable(s) binaires entrées : ", paste(vec_bin_vars, collapse = ", "))
+  vec_list_vars <- all.vars(substitute(list_vars))
+  message("Variable(s) binaires entrées : ", paste(vec_list_vars, collapse = ", "))
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
-  vars_input_char <- vec_bin_vars
+  vars_input_char <- vec_list_vars
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
     vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
@@ -83,13 +105,13 @@ many_prop = function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans bin_vars, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans bin_vars, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet n'est pas présente dans data")
     }
   }
 
@@ -117,7 +139,7 @@ many_prop = function(data,
   before <- data_W %>%
     summarise(n=unweighted(n()))
   # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-  for (var in vec_bin_vars) {
+  for (var in vec_list_vars) {
     data_W <- data_W %>%
       filter(!is.na(.data[[var]]))
   }
@@ -139,7 +161,7 @@ many_prop = function(data,
   # Si facet
   if (!quo_is_null(quo_facet)) {
     tab <- tibble()
-    for (i in vec_bin_vars) {
+    for (i in vec_list_vars) {
       tab_i <- data_W %>%
         group_by({{ facet_var }}) %>%
         summarise(
@@ -157,7 +179,7 @@ many_prop = function(data,
   # Si pas de facet (= NULL)
   if (quo_is_null(quo_facet)) {
     tab <- tibble()
-    for (i in vec_bin_vars) {
+    for (i in vec_list_vars) {
       tab_i <- data_W %>%
         summarise(
           bin_col = i,
@@ -171,19 +193,19 @@ many_prop = function(data,
     }
   }
 
-  # On remplace bin_vars par les labels bin_vars_label
-  if (!is.null(bin_vars_label)) {
+  # On remplace list_vars par les labels list_vars_lab
+  if (!is.null(list_vars_lab)) {
 
-    # vérifier que bin_vars a une même longueur que bin_vars_label
+    # vérifier que list_vars a une même longueur que list_vars_lab
     # si non, message avec erreur...
-    if (length(vec_bin_vars) != length(bin_vars_label)) {
+    if (length(vec_list_vars) != length(list_vars_lab)) {
       message("Le nombre de labels n'est pas égal au nombre de variables")
 
-    # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans bin_vars_label
+    # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
     } else {
 
-      for (i in seq_along(vec_bin_vars)) {
-        tab[["bin_col"]][tab[["bin_col"]] == vec_bin_vars[i]] <- bin_vars_label[i]
+      for (i in seq_along(vec_list_vars)) {
+        tab[["bin_col"]][tab[["bin_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
       }
     }
   }
@@ -200,10 +222,10 @@ many_prop = function(data,
 
   # Si reorder = F, l'ordre = celui rentré en input
   if (reorder == F) {
-    if (length(vec_bin_vars) == length(bin_vars_label)) {
-      levels <- rev(bin_vars_label)
+    if (length(vec_list_vars) == length(list_vars_lab)) {
+      levels <- rev(list_vars_lab)
     } else {
-      levels <- rev(vec_bin_vars)
+      levels <- rev(vec_list_vars)
     }
   }
 
@@ -227,7 +249,7 @@ many_prop = function(data,
       fill = fill
     ) +
     theme_fonctionr(font = font) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels
     )+
     labs(title = title,
@@ -237,18 +259,18 @@ many_prop = function(data,
     coord_flip()
 
   # Ajouter les axes
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     graph <- graph +
       labs(y = ifelse(is.null(xlab),
-                      paste0("Proportion : ", paste(vec_bin_vars, collapse = ", ")),
+                      paste0("Proportion : ", paste(vec_list_vars, collapse = ", ")),
                       xlab))
 
       graph <- graph +
         labs(x = ylab)
   }
 
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
+  # Masquer les axes si show_lab == FALSE
+  if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)
@@ -276,8 +298,8 @@ many_prop = function(data,
       )
   }
 
-  # Ajouter les IC si error_bar == T
-  if (error_bar == T) {
+  # Ajouter les IC si show_ci == T
+  if (show_ci == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
                     width = dodge * 0.05,
@@ -301,7 +323,7 @@ many_prop = function(data,
                          unit),
           family = font),
         size = 3.5,
-        vjust = ifelse(error_bar == T,
+        vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
         hjust = 0,
