@@ -29,6 +29,7 @@
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param legend_lab Legend (fill) label on the graphic.
 #' @param caption Caption of the graphic.
 #'
 #' @return
@@ -75,6 +76,7 @@ many_val_group = function(data,
                           subtitle = NULL,
                           xlab = NULL, # Le nom de l'axe de la variable catégorielle
                           ylab = NULL,
+                          legend_lab = NULL,
                           caption = NULL){
 
   # Check des arguments nécessaires
@@ -376,8 +378,7 @@ many_val_group = function(data,
     ) +
     theme_fonctionr(font = font) +
     theme(
-      legend.position = "bottom",
-      legend.title=element_blank()
+      legend.position = "bottom"
     ) +
     scale_fill_manual(
       values = palette,
@@ -419,6 +420,19 @@ many_val_group = function(data,
         labs(x = NULL)
     }
 
+    # LEGEND ---
+    if(all(!is.null(legend_lab), legend_lab != "")){
+      graph <- graph +
+        labs(fill = str_wrap(legend_lab, wrap_width_leg))
+    }
+    if(all(!is.null(legend_lab), legend_lab == "")){
+      graph <- graph +
+        labs(fill = NULL)
+    }
+    if(is.null(legend_lab)){
+      graph <- graph +
+        labs(fill = NULL)
+    }
   }
 
   # Masquer les axes si show_lab == FALSE
