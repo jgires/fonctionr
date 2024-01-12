@@ -150,6 +150,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Pour les fonctions qui calculent des proportions : ajouter la possibilité d'un `na.rm.prop = FALSE` pour que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur).
 
+-   Intégrer `load_and_active_fonts()` dans `theme_fonctionr()`, comme ça on la supprime dans les fonctions. Ajouter comme défaut "Roboto", pour l'usage externe.
+
 -   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne.
 
 -   Ajouter des checks pour les inputs :
@@ -192,6 +194,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Documenter les arguments !
 
 -   Ajouter l'export excel.
+
+-   Remplacer par many_val et faire des variantes prop, mean et median.
 
 #### many_val_group
 

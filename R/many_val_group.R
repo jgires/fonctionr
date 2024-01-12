@@ -51,6 +51,7 @@ many_val_group = function(data,
                            prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                            ...,
                            unit = NULL,
+                           dec = ",",
                            caption = NULL,
                            title = NULL, # Le titre du graphique
                            subtitle = NULL,
@@ -441,8 +442,10 @@ many_val_group = function(data,
       geom_text(
         aes(
           y = (indice) + (0.01 * max_ggplot),
-          label = paste0(round(indice * scale,
-                               digits = digits),
+          label = paste0(str_replace(round(indice * scale,
+                                           digits = digits),
+                                     "[.]",
+                                     dec),
                          unit),
           family = font),
         size = 3,

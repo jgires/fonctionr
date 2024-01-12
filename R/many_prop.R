@@ -26,6 +26,7 @@ many_prop = function(data,
                      prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                      ...,
                      unit = "%",
+                     dec = ",",
                      caption = NULL,
                      title = NULL, # Le titre du graphique
                      subtitle = NULL,
@@ -293,8 +294,10 @@ many_prop = function(data,
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(round(prop * scale,
-                               digits = digits),
+          label = paste0(str_replace(round(prop * scale,
+                                           digits = digits),
+                                     "[.]",
+                                     ","),
                          unit),
           family = font),
         size = 3.5,
