@@ -7,27 +7,28 @@
 #' @param prop_exp An expression that define the proportion to be computed.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param total_name Name of the total shown on the graphic. Default is "Total".
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
-#' @param caption Caption of the graphic.
+#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
-#' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
-#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
-#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
-#' @param total_name Name of the total bar on the graphic. Default is Total.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param wrap_width Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -76,27 +77,30 @@ prop_group <- function(data,
                        prop_exp,
                        facet_var = NULL,
                        filter_exp = NULL,
-                       prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        ...,
+                       na.rm.group = T,
+#                       na.rm.facet = T, # à compléter
+#                       na.var = "rm", #### compléter dans le script avec deux possibilité : "rm" et "include"
+                       prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                       reorder = F,
+                       show_ci = T,
+                       show_n = FALSE,
+                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                       show_lab = TRUE,
+                       total_name = "Total",#où mettre???
+                       scale = 100,
+                       digits = 0,
                        unit = "%",
-                       caption = NULL,
+                       dec = ",", ### A FAIRE
+                       fill = "deepskyblue3",
+                       dodge = 0.9,
+                       font ="Roboto",
+                       wrap_width_y = 25,
                        title = NULL, # Le titre du graphique
                        subtitle = NULL,
                        xlab = NULL, # Le nom de l'axe de la variable catégorielle
                        ylab = NULL,
-                       scale = 100,
-                       digits = 0,
-                       show_labs = TRUE,
-                       show_n = FALSE,
-                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
-                       dodge = 0.9,
-                       reorder = F,
-                       error_bar = T,
-                       fill = "deepskyblue3",
-                       na.rm.group = T,
-                       total_name = "Total",
-                       font ="Roboto",
-                       wrap_width = 25,
+                       caption = NULL,
                        export_path = NULL) {
 
   start_time <- Sys.time()
@@ -108,8 +112,8 @@ prop_group <- function(data,
 
   # Check des autres arguments
   check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
-  check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width))
+  check_logical(arg = list(show_lab, show_n, show_value, reorder, show_ci, na.rm.group))
+  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -364,7 +368,7 @@ prop_group <- function(data,
       values = palette,
       na.value = "grey"
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels)+
     labs(title = title,
          subtitle = subtitle,
@@ -376,7 +380,7 @@ prop_group <- function(data,
     coord_flip()
 
   # Ajouter les axes
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     graph <- graph +
       labs(y = ifelse(is.null(xlab),
                       paste0("Proportion : ", deparse(substitute(prop_exp))),
@@ -387,8 +391,8 @@ prop_group <- function(data,
     }
   }
 
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
+  # Masquer les axes si show_lab == FALSE
+  if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)
@@ -416,8 +420,8 @@ prop_group <- function(data,
       )
   }
 
-  # Ajouter les IC si error_bar == T
-  if (error_bar == T) {
+  # Ajouter les IC si show_ci == T
+  if (show_ci == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
                     width = dodge * 0.05,
@@ -437,11 +441,11 @@ prop_group <- function(data,
           label = paste0(str_replace(round(prop * scale,
                                            digits = digits),
                                      "[.]",
-                                     ","),
+                                     dec),
                          unit),
           family = font),
         size = 3.5,
-        vjust = ifelse(error_bar == T,
+        vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
         hjust = 0,
