@@ -56,6 +56,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                              dodge = 0.9,
                              prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                              unit = "%",
+                             dec = ",",
                              error_bar = T,
                              caption = NULL,
                              title = NULL, # Le titre du graphique
@@ -294,8 +295,10 @@ distrib_discrete <- function(data, # Données en format srvyr
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(round(prop * scale,
-                               digits = digits),
+          label = paste0(str_replace(round(prop * scale,
+                                           digits = digits),
+                                     "[.]",
+                                     dec),
                          unit),
           family = font),
         size = 3.5,
