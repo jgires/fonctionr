@@ -7,28 +7,29 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param quanti_exp An expression that define the mean/mediam to be computed.
+#' @param type "mean" to compute means by group ; "median" to compute medians by group.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param unit Unit showed in the graphic. Default is no unit.
-#' @param title Title of the graphic.
-#' @param subtitle Subtitle of the graphic.
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param caption Caption of the graphic.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
+#' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
-#' @param error_bar TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
-#' @param type "mean" to compute means by group ; "median" to compute medians by group.
-#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
+#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param total_name Name of the total bar on the graphic. Default is Total.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param unit Unit showed in the graphic. Default is no unit.
+#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param wrap_width Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -72,29 +73,30 @@
 central_group <- function(data,
                           group,
                           quanti_exp,
+                          type,
                           facet_var = NULL,
                           filter_exp = NULL,
                           ...,
-                          unit = "",
-                          dec = ",",
-                          title = NULL,
-                          subtitle = NULL,
-                          ylab = NULL,
-                          xlab = NULL,
-                          caption = NULL,
-                          digits = 0,
-                          show_labs = TRUE,
+                          na.rm.group = T,
+#                          na.rm.facet = T,## à completer
+                          reorder = F,
+                          show_ci = T,
                           show_n = FALSE,
                           show_value = TRUE,
-                          dodge = 0.9,
-                          reorder = F,
-                          error_bar = T,
-                          type,
-                          fill = NULL,
-                          na.rm.group = T,
+                          show_lab = TRUE,
                           total_name = "Total",
+                          digits = 0,
+                          unit = "",
+                          dec = ",",
+                          fill = NULL,
+                          dodge = 0.9,
                           font ="Roboto",
-                          wrap_width = 25,
+                          wrap_width_y = 25,
+                          title = NULL,
+                          subtitle = NULL,
+                          xlab = NULL,
+                          ylab = NULL,
+                          caption = NULL,
                           export_path = NULL) {
 
   # Un check impératif
@@ -104,8 +106,8 @@ central_group <- function(data,
 
   # Check des autres arguments
   check_character(arg = list(unit, title, subtitle, xlab, ylab, caption, type, fill, total_name, font, export_path))
-  check_logical(arg = list(show_labs, show_n, show_value, reorder, error_bar, na.rm.group))
-  check_numeric(arg = list(digits, dodge, wrap_width))
+  check_logical(arg = list(show_lab, show_n, show_value, reorder, show_ci, na.rm.group))
+  check_numeric(arg = list(digits, dodge, wrap_width_y))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -394,7 +396,7 @@ central_group <- function(data,
       values = palette,
       na.value = "grey"
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels) +
     labs(title = title,
          subtitle = subtitle
@@ -423,7 +425,7 @@ central_group <- function(data,
   }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     if (type == "mean") {
       graph <- graph +
         labs(y = ifelse(is.null(xlab),
@@ -442,8 +444,8 @@ central_group <- function(data,
     }
   }
 
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
+  # Masquer les axes si show_lab == FALSE
+  if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)
@@ -471,8 +473,8 @@ central_group <- function(data,
       )
   }
 
-  # Ajouter les IC si error_bar == T
-  if (error_bar == T) {
+  # Ajouter les IC si show_ci == T
+  if (show_ci == T) {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low,
                         ymax = indice_upp),
@@ -497,7 +499,7 @@ central_group <- function(data,
                          unit),
           family = font),
         size = 3.5,
-        vjust = ifelse(error_bar == T,
+        vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
         hjust = 0,
