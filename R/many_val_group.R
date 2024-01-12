@@ -381,6 +381,7 @@ many_val_group = function(data,
     ) +
     scale_fill_manual(
       values = palette,
+      labels = function(x) str_wrap(x, width = wrap_width_leg),
       na.value = "grey"
 
     ) +
