@@ -7,27 +7,28 @@
 #' @param quali_var The discrete variable that is studied.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.rm.group TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.
+#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.
+#' @param show_lab TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
+#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param unit Unit showed in the graphic. Default is percent.
+#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param dodge Width of the bar, between 0 and 1.
+#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is 25.
+#' @param wrap_width_leg Number of characters before going to the line for the labels of the categories. Default is 25.
+#' @param legend_ncol Number of colomns in the legend. Default is 4.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param legend_lab Legend (fill) label on the graphic.
 #' @param caption Caption of the graphic.
-#' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
-#' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param unit Unit showed in the graphic. Default is percent.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
-#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param wrap_width Number of characters before going to the line for the labels of the groups. Default is 25.
-#' @param wrap_width_leg Number of characters before going to the line for the labels of the categories. Default is 25.
-#' @param legend_ncol Number of colomns in the legend. Default is 4.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param na.rm TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -54,28 +55,30 @@ distrib_group_discrete <- function(data,
                                    quali_var,
                                    facet_var = NULL,
                                    filter_exp = NULL,
-                                   prop_method = "beta",
                                    ...,
+                                   na.rm.group = T,
+                                   # na.rm.facet = T,
+                                   # na.var = T,
+                                   prop_method = "beta",
+                                   show_value = TRUE,
+                                   show_lab = TRUE,
+                                   scale = 100,
+                                   digits = 0,
+                                   unit = "",
+                                   dec = ",",
+                                   pretty_pal = "Hokusai1",
+                                   direction = 1,
+                                   dodge = 0.9,
+                                   font ="Roboto",
+                                   wrap_width_y = 25,
+                                   wrap_width_leg = 25,
+                                   legend_ncol = 4,
                                    title = NULL, # Le titre du graphique
                                    subtitle = NULL,
                                    xlab = NULL, # Le nom de l'axe de la variable catégorielle
                                    ylab = NULL,
                                    legend_lab = NULL,
                                    caption = NULL,
-                                   show_labs = TRUE,
-                                   show_value = TRUE,
-                                   unit = "",
-                                   dec = ",",
-                                   scale = 100,
-                                   digits = 0,
-                                   dodge = 0.9,
-                                   pretty_pal = "Hokusai1",
-                                   direction = 1,
-                                   wrap_width = 25,
-                                   wrap_width_leg = 25,
-                                   legend_ncol = 4,
-                                   font ="Roboto",
-                                   na.rm = T,
                                    export_path = NULL) {
 
   # Un check impératif
@@ -85,8 +88,8 @@ distrib_group_discrete <- function(data,
 
   # Check des autres arguments
   check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, legend_lab, font, pretty_pal, export_path))
-  check_logical(arg = list(show_labs, show_value, na.rm))
-  check_numeric(arg = list(digits, dodge, direction, wrap_width, wrap_width_leg, legend_ncol))
+  check_logical(arg = list(show_lab, show_value, na.rm.group))
+  check_numeric(arg = list(digits, dodge, direction, wrap_width_y, wrap_width_leg, legend_ncol))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -142,8 +145,8 @@ distrib_group_discrete <- function(data,
       filter({{ filter_exp }})
   }
 
-  # On supprime les NA des 2 variables si na.rm == T
-  if(na.rm == T){
+  # On supprime les NA des 2 variables si na.rm.group == T
+  if(na.rm.group == T){
     data_W <- data_W %>%
       filter(!is.na({{ group }}) & !is.na({{ quali_var }}))
     # idem sur la variable de facet si non-NULL
@@ -169,7 +172,7 @@ distrib_group_discrete <- function(data,
   # Ici je crée une copie des données dans data_W_NA
   # L'idée est de recoder les NA des 2 variables croisées en level "NA", pour que le khi2 s'applique aussi aux NA
   # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
-  if(na.rm == F){
+  if(na.rm.group == F){
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(fct_na_value_to_level({{ group }}, "NA")),
@@ -188,7 +191,7 @@ distrib_group_discrete <- function(data,
     quali_var_fmla <- as.character(substitute(quali_var))
     group_fmla <- as.character(substitute(group))
     fmla <- as.formula(paste("~", group_fmla, "+", quali_var_fmla))
-    if(na.rm == F){
+    if(na.rm.group == F){
       # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
       test.stat <- tryCatch(
         expr = {
@@ -200,7 +203,7 @@ distrib_group_discrete <- function(data,
         }
       )
     }
-    if(na.rm == T){
+    if(na.rm.group == T){
       test.stat <- tryCatch(
         expr = {
           svychisq(fmla, data_W)
@@ -273,9 +276,9 @@ distrib_group_discrete <- function(data,
     )
   )
 
-  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, même si na.rm.group = F !
-  # On les supprime donc ssi na.rm = F et pas de missing sur la variable de groupe **OU** na.rm = T
-  if ((na.rm == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm == T)  {
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, même si na.rm.group.group = F !
+  # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
+  if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -306,7 +309,7 @@ distrib_group_discrete <- function(data,
       labels = function(x) { paste0(x * scale, unit) },
       expand = expansion(mult = c(.01, .05))
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width),
+    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels) +
     guides(fill = guide_legend(ncol = legend_ncol)) +
     labs(title = title,
@@ -346,7 +349,7 @@ distrib_group_discrete <- function(data,
   }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -382,8 +385,8 @@ distrib_group_discrete <- function(data,
     }
   }
 
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
+  # Masquer les axes si show_lab == FALSE
+  if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL,
