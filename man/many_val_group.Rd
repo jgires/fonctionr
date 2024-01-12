@@ -10,30 +10,35 @@
 many_val_group(
   data,
   group,
-  bin_vars,
+  list_vars,
   type,
+  list_vars_lab = NULL,
   facet_var = NULL,
   filter_exp = NULL,
-  prop_method = "beta",
   ...,
+  na.rm.group = T,
+  prop_method = "beta",
+  show_ci = T,
+  show_n = FALSE,
+  show_value = TRUE,
+  show_lab = TRUE,
+  scale = NULL,
+  digits = 0,
   unit = NULL,
-  caption = NULL,
+  dec = ",",
+  pretty_pal = "Egypt",
+  direction = 1,
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
+  wrap_width_leg = 25,
+  legend_ncol = 4,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  scale = NULL,
-  digits = 0,
-  show_labs = TRUE,
-  show_n = FALSE,
-  show_value = TRUE,
-  dodge = 0.9,
-  pretty_pal = "Egypt",
-  direction = 1,
-  error_bar = T,
-  na.rm.group = T,
-  font = "Roboto",
-  wrap_width = 25
+  legend_lab = NULL,
+  caption = NULL
 )
 
 many_prop_group(..., type = "prop")
@@ -47,21 +52,51 @@ many_mean_group(..., type = "mean")
 
 \item{group}{A variable defining groups be compared.}
 
-\item{bin_vars}{A vector containing names of the dummy variables on which to compute the proportions}
+\item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
 
 \item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.}
+
+\item{list_vars_lab}{names of the variables}
 
 \item{facet_var}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
+\item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+
+\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+
+\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
+
+\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+
+\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{caption}{Caption of the graphic.}
+\item{dec}{Decimal mark shown on the graphic. Default is ","}
+
+\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+
+\item{wrap_width_leg}{Number of characters before before going to the line. Applies to the labels of the legend. Default is 25.}
+
+\item{legend_ncol}{Number maximum of colomn in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 
@@ -71,29 +106,9 @@ many_mean_group(..., type = "mean")
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+\item{legend_lab}{Legend (fill) label on the graphic.}
 
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
-
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
-
-\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
-
-\item{dodge}{Width of the bar, between 0 and 1.}
-
-\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
-
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
-
-\item{error_bar}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
-
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
-
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
-
-\item{wrap_width}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{caption}{Caption of the graphic.}
 }
 \description{
 many_val_group

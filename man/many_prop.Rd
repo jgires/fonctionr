@@ -6,39 +6,82 @@
 \usage{
 many_prop(
   data,
-  bin_vars,
-  bin_vars_label = NULL,
+  list_vars,
+  list_vars_lab = NULL,
   facet_var = NULL,
   filter_exp = NULL,
-  prop_method = "beta",
   ...,
+  prop_method = "beta",
+  reorder = FALSE,
+  show_ci = T,
+  show_n = FALSE,
+  show_value = TRUE,
+  show_lab = TRUE,
+  scale = 100,
+  digits = 0,
   unit = "\%",
-  caption = NULL,
+  dec = ",",
+  fill = "mediumseagreen",
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  scale = 100,
-  digits = 0,
-  reorder = FALSE,
-  show_labs = TRUE,
-  show_n = FALSE,
-  show_value = TRUE,
-  dodge = 0.9,
-  fill = "mediumseagreen",
-  error_bar = T,
-  font = "Roboto",
-  wrap_width = 25
+  caption = NULL
 )
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{bin_vars}{A vector containing names of the binarized variables on which to compute the proportions}
+\item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
+
+\item{list_vars_lab}{names of the variables}
+
+\item{facet_var}{A variable defining the faceting group.}
+
+\item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{group}{A variable defining groups be compared.}
+\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+
+\item{reorder}{TRUE if you want to reorder the variables according to the proportion.}
+
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+
+\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+
+\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
+
+\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+
+\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+
+\item{unit}{Unit showed in the graphic. Default is percent.}
+
+\item{dec}{Decimal mark shown on the graphic. Default is ","}
+
+\item{fill}{Colour of the bars.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+
+\item{title}{Title of the graphic.}
+
+\item{subtitle}{Subtitle of the graphic.}
+
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{caption}{Caption of the graphic.#'}
 }
 \description{
 many_prop

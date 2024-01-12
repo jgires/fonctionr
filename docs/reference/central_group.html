@@ -46,28 +46,29 @@
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">quanti_exp</span>,</span>
+<span>  <span class="va">type</span>,</span>
 <span>  facet_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  unit <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  show_labs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na.rm.group <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  show_ci <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_n <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  dodge <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  error_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  <span class="va">type</span>,</span>
-<span>  fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  na.rm.group <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  show_lab <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  total_name <span class="op">=</span> <span class="st">"Total"</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  unit <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  dec <span class="op">=</span> <span class="st">","</span>,</span>
+<span>  fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dodge <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
-<span>  wrap_width <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  wrap_width_y <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_path <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -90,6 +91,10 @@
 <dd><p>An expression that define the mean/mediam to be computed.</p></dd>
 
 
+<dt>type</dt>
+<dd><p>"mean" to compute means by group ; "median" to compute medians by group.</p></dd>
+
+
 <dt>facet_var</dt>
 <dd><p>A variable defining the faceting group.</p></dd>
 
@@ -102,36 +107,16 @@
 <dd><p>All options possible in as_survey_design in srvyr package.</p></dd>
 
 
-<dt>unit</dt>
-<dd><p>Unit showed in the graphic. Default is no unit.</p></dd>
+<dt>na.rm.group</dt>
+<dd><p>TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.</p></dd>
 
 
-<dt>title</dt>
-<dd><p>Title of the graphic.</p></dd>
+<dt>reorder</dt>
+<dd><p>TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.</p></dd>
 
 
-<dt>subtitle</dt>
-<dd><p>Subtitle of the graphic.</p></dd>
-
-
-<dt>ylab</dt>
-<dd><p>Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
-
-
-<dt>xlab</dt>
-<dd><p>X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
-
-
-<dt>caption</dt>
-<dd><p>Caption of the graphic.</p></dd>
-
-
-<dt>digits</dt>
-<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
-
-
-<dt>show_labs</dt>
-<dd><p>TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.</p></dd>
+<dt>show_ci</dt>
+<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.</p></dd>
 
 
 <dt>show_n</dt>
@@ -142,40 +127,60 @@
 <dd><p>TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median</p></dd>
 
 
-<dt>dodge</dt>
-<dd><p>Width of the bar, between 0 and 1.</p></dd>
-
-
-<dt>reorder</dt>
-<dd><p>TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.</p></dd>
-
-
-<dt>error_bar</dt>
-<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.</p></dd>
-
-
-<dt>type</dt>
-<dd><p>"mean" to compute means by group ; "median" to compute medians by group.</p></dd>
-
-
-<dt>fill</dt>
-<dd><p>Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.</p></dd>
-
-
-<dt>na.rm.group</dt>
-<dd><p>TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.</p></dd>
+<dt>show_lab</dt>
+<dd><p>TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.</p></dd>
 
 
 <dt>total_name</dt>
 <dd><p>Name of the total bar on the graphic. Default is Total.</p></dd>
 
 
+<dt>digits</dt>
+<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
+
+
+<dt>unit</dt>
+<dd><p>Unit showed in the graphic. Default is no unit.</p></dd>
+
+
+<dt>dec</dt>
+<dd><p>Decimal mark shown on the graphic. Default is ","</p></dd>
+
+
+<dt>fill</dt>
+<dd><p>Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.</p></dd>
+
+
+<dt>dodge</dt>
+<dd><p>Width of the bar, between 0 and 1.</p></dd>
+
+
 <dt>font</dt>
 <dd><p>Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".</p></dd>
 
 
-<dt>wrap_width</dt>
+<dt>wrap_width_y</dt>
 <dd><p>Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.</p></dd>
+
+
+<dt>title</dt>
+<dd><p>Title of the graphic.</p></dd>
+
+
+<dt>subtitle</dt>
+<dd><p>Subtitle of the graphic.</p></dd>
+
+
+<dt>xlab</dt>
+<dd><p>X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
+
+
+<dt>ylab</dt>
+<dd><p>Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
+
+
+<dt>caption</dt>
+<dd><p>Caption of the graphic.</p></dd>
 
 
 <dt>export_path</dt>

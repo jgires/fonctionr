@@ -4,7 +4,7 @@
 #' @param group A variable defining groups be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
-#' @param list_vars_lab
+#' @param list_vars_lab names of the variables
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.

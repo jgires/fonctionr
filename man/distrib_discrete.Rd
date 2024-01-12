@@ -11,25 +11,26 @@ distrib_discrete(
   facet_var = NULL,
   filter_exp = NULL,
   ...,
-  na.rm = T,
-  fill = "sienna2",
+  na.rm.group = T,
+  prop_method = "beta",
+  reorder = FALSE,
+  show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
-  reorder = FALSE,
+  show_lab = TRUE,
   scale = 100,
-  dodge = 0.9,
-  prop_method = "beta",
+  digits = 0,
   unit = "\%",
-  error_bar = T,
-  caption = NULL,
+  dec = ",",
+  fill = "sienna2",
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  show_labs = TRUE,
-  font = "Roboto",
-  digits = 0,
-  wrap_width = 25,
+  caption = NULL,
   export_path = NULL
 )
 
@@ -46,27 +47,35 @@ distrib_d(...)
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm}{TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.}
+\item{na.rm.group}{TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.}
 
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+
+\item{reorder}{TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
+
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
 
 \item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
 \item{show_value}{TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion.}
 
-\item{reorder}{TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm = FALSE, is not included in the reorder.}
+\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
-
-\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{error_bar}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+\item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{caption}{Caption in the graphic.}
+\item{fill}{Colour of the bars. NA bar, in case if na.rm.group.group = FALSE, and total bar are always in grey.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the categories. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
@@ -76,13 +85,7 @@ distrib_d(...)
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
-
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
-
-\item{wrap_width}{Number of characters before going to the line. Applies to the labels of the categories. Default is 25.}
+\item{caption}{Caption in the graphic.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }

@@ -145,7 +145,7 @@
 <span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
 <span><span class="co">#&gt; Variable(s) détectée(s) dans l'expression : py090n</span></span>
 <span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression</span></span>
-<span><span class="co">#&gt; Processing time: 0.47 sec</span></span>
+<span><span class="co">#&gt; Processing time: 0.36 sec</span></span>
 <span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 11</span></span>
 <span><span class="co">#&gt;   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted</span></span>
@@ -199,14 +199,13 @@
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>Joël : j’ai modifié la logique d’affichage des axes dans <code><a href="reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> &amp; <code><a href="reference/distrib_discrete.html">distrib_discrete()</a></code>. Je voulais que l’on puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc ajouté une condition selon laquelle quand <code>show_labs = TRUE</code> (défaut de la fonction) &amp; que le titre de l’axe est défini comme <code>""</code> (= charactère vide), alors le titre de l’axe est supprimé (<code>NULL</code> dans ggplot). J’ai fait ça car on ne peut pas mettre <code>NULL</code> directement : c’est le défaut de la fonction, et dans ce cas c’est le nom de la variable qui est affiché. <strong><em>A voir si c’est OK pour généraliser !</em></strong></p></li>
 <li><p>Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, notamment du fait de copier-coller).</p></li>
-<li><p>Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =&gt; après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</p></li>
-<li><p>Ajouter la possibilité de changer le point en virgule pour la décimale dans les étiquettes.<br><em>=&gt; Fait dans <code><a href="reference/prop_group.html">prop_group()</a></code> =&gt; <strong>décider : choix avec argument (decimal ?) Ensuite, généraliser.</strong></em></p></li>
+<li><p>Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =&gt; <strong>après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</strong></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site).</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce qu’on a fait (il manque des notes).</p></li>
 <li><p>Vérifier que <code>reorder = T</code> réordonne toujours de la même façon pour les différentes fonctions (<code><a href="reference/many_val_group.html">many_prop_group()</a></code> =/= <code><a href="reference/prop_group.html">prop_group()</a></code>).</p></li>
 <li><p>Pour les fonctions qui calculent des proportions : ajouter la possibilité d’un <code>na.rm.prop = FALSE</code> pour que la proportion soit calculée sur l’ensemble des individus (les <code>NA</code> étant comptabilisés dans le dénominateur).</p></li>
+<li><p>Intégrer <code><a href="reference/load_and_active_fonts.html">load_and_active_fonts()</a></code> dans <code><a href="reference/theme_fonctionr.html">theme_fonctionr()</a></code>, comme ça on la supprime dans les fonctions. Ajouter comme défaut “Roboto”, pour l’usage externe.</p></li>
 <li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li>
 <p>Ajouter des checks pour les inputs :</p>
@@ -257,6 +256,7 @@
 <ul>
 <li><p>Documenter les arguments !</p></li>
 <li><p>Ajouter l’export excel.</p></li>
+<li><p>Remplacer par many_val et faire des variantes prop, mean et median.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -288,10 +288,7 @@
 <div class="section level4">
 <h4 id="central_group-1">central_group<a class="anchor" aria-label="anchor" href="#central_group-1"></a>
 </h4>
-<ul>
-<li>Pouvoir réordonner avec les facet =&gt; solution avec <code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a>
-</li>
-</ul>
+<p>Pouvoir réordonner avec les facet =&gt; solution avec <code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a></p>
 </div>
 <div class="section level4">
 <h4 id="prop_group-1">prop_group<a class="anchor" aria-label="anchor" href="#prop_group-1"></a>
@@ -312,6 +309,13 @@
 <li><p>Possibilité d’indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?</p></li>
 </ul>
 </div>
+</div>
+<div class="section level3">
+<h3 id="many_val_group-1">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group-1"></a>
+</h3>
+<ul>
+<li>Mettre des labels change l’ordre des variables introduites (car l’ordre alphabétique change) =&gt; quel comportement adopter ?</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>

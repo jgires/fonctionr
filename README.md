@@ -149,7 +149,7 @@ eusilc_prop <- prop_group(
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Variable(s) détectée(s) dans l'expression : py090n
 #> 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
-#> Processing time: 0.47 sec
+#> Processing time: 0.36 sec
 eusilc_prop$tab
 #> # A tibble: 8 × 11
 #>   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted
@@ -211,28 +211,13 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 #### En général
 
-- Joël : j’ai modifié la logique d’affichage des axes dans
-  `distrib_group_discrete()` & `distrib_discrete()`. Je voulais que l’on
-  puisse supprimer individuellement l’axe X, Y ou la légende. J’ai donc
-  ajouté une condition selon laquelle quand `show_labs = TRUE` (défaut
-  de la fonction) & que le titre de l’axe est défini comme `""` (=
-  charactère vide), alors le titre de l’axe est supprimé (`NULL` dans
-  ggplot). J’ai fait ça car on ne peut pas mettre `NULL` directement :
-  c’est le défaut de la fonction, et dans ce cas c’est le nom de la
-  variable qui est affiché. ***A voir si c’est OK pour généraliser !***
-
 - Documenter tous les arguments des différentes fonctions + vérifier que
   les explications sont bien correctes (quelques erreurs repérées,
   notamment du fait de copier-coller).
 
 - Ordonner les arguments de la même manière pour chaque fonction (voir
-  fichier excel) =\> après cela, faire pareil pour l’ordre des arguments
-  dans les fonctions de check !
-
-- Ajouter la possibilité de changer le point en virgule pour la décimale
-  dans les étiquettes.  
-  *=\> Fait dans `prop_group()` =\> **décider : choix avec argument
-  (decimal ?) Ensuite, généraliser.***
+  fichier excel) =\> **après cela, faire pareil pour l’ordre des
+  arguments dans les fonctions de check !**
 
 - Ajouter des exemples pour chaque fonction (pour le site).
 
@@ -246,6 +231,10 @@ potentiellement la distribution d’échantillonnage. Voir :
   possibilité d’un `na.rm.prop = FALSE` pour que la proportion soit
   calculée sur l’ensemble des individus (les `NA` étant comptabilisés
   dans le dénominateur).
+
+- Intégrer `load_and_active_fonts()` dans `theme_fonctionr()`, comme ça
+  on la supprime dans les fonctions. Ajouter comme défaut “Roboto”, pour
+  l’usage externe.
 
 - Changer la fonction `scales::pvalue`, qui n’est plus valide
   (superseded) =\> Faire une fonction maison en interne.
@@ -310,6 +299,8 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 - Ajouter l’export excel.
 
+- Remplacer par many_val et faire des variantes prop, mean et median.
+
 #### many_val_group
 
 - Ajouter l’export excel.
@@ -338,8 +329,8 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 #### central_group
 
-- Pouvoir réordonner avec les facet =\> solution avec `tidytext`
-  <https://juliasilge.com/blog/reorder-within/>
+Pouvoir réordonner avec les facet =\> solution avec `tidytext`
+<https://juliasilge.com/blog/reorder-within/>
 
 #### prop_group
 
@@ -362,6 +353,11 @@ potentiellement la distribution d’échantillonnage. Voir :
 
 - Possibilité d’indiquer un vecteur avec une palette de couleur pour
   coller avec le code couleur de notre institution ?
+
+### many_val_group
+
+- Mettre des labels change l’ordre des variables introduites (car
+  l’ordre alphabétique change) =\> quel comportement adopter ?
 
 ### Fonctions à créer
 

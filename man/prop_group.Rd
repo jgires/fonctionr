@@ -10,27 +10,28 @@ prop_group(
   prop_exp,
   facet_var = NULL,
   filter_exp = NULL,
-  prop_method = "beta",
   ...,
+  na.rm.group = T,
+  prop_method = "beta",
+  reorder = F,
+  show_ci = T,
+  show_n = FALSE,
+  show_value = TRUE,
+  show_lab = TRUE,
+  total_name = "Total",
+  scale = 100,
+  digits = 0,
   unit = "\%",
-  caption = NULL,
+  dec = ",",
+  fill = "deepskyblue3",
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  scale = 100,
-  digits = 0,
-  show_labs = TRUE,
-  show_n = FALSE,
-  show_value = TRUE,
-  dodge = 0.9,
-  reorder = F,
-  error_bar = T,
-  fill = "deepskyblue3",
-  na.rm.group = T,
-  total_name = "Total",
-  font = "Roboto",
-  wrap_width = 25,
+  caption = NULL,
   export_path = NULL
 )
 }
@@ -45,13 +46,39 @@ prop_group(
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
+\item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
+
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+
+\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+
+\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
+
+\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+
+\item{total_name}{Name of the total shown on the graphic. Default is "Total".}
+
+\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{caption}{Caption of the graphic.}
+\item{dec}{Decimal mark shown on the graphic. Default is ","}
+
+\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
@@ -61,31 +88,7 @@ prop_group(
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
-
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
-
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
-
-\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
-
-\item{dodge}{Width of the bar, between 0 and 1.}
-
-\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
-
-\item{error_bar}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
-
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
-
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
-
-\item{total_name}{Name of the total bar on the graphic. Default is Total.}
-
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
-
-\item{wrap_width}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{caption}{Caption of the graphic.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }

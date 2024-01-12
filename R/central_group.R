@@ -425,7 +425,7 @@ central_group <- function(data,
   }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
+  if(show_lab == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       if (type == "mean") {

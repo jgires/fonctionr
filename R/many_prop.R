@@ -2,7 +2,7 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
-#' @param list_vars_lab
+#' @param list_vars_lab names of the variables
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.

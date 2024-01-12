@@ -48,27 +48,28 @@
 <span>  <span class="va">quali_var</span>,</span>
 <span>  facet_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  prop_method <span class="op">=</span> <span class="st">"beta"</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  na.rm.group <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  prop_method <span class="op">=</span> <span class="st">"beta"</span>,</span>
+<span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  show_lab <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  unit <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  dec <span class="op">=</span> <span class="st">","</span>,</span>
+<span>  pretty_pal <span class="op">=</span> <span class="st">"Hokusai1"</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  dodge <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
+<span>  wrap_width_y <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  wrap_width_leg <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  show_labs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  unit <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  scale <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  dodge <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span>  pretty_pal <span class="op">=</span> <span class="st">"Hokusai1"</span>,</span>
-<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  wrap_width <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  wrap_width_leg <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  legend_ncol <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  export_path <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -97,12 +98,68 @@
 <dd><p>An expression that filters the data, preserving the design.</p></dd>
 
 
+<dt>...</dt>
+<dd><p>All options possible in as_survey_design in srvyr package.</p></dd>
+
+
+<dt>na.rm.group</dt>
+<dd><p>TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.</p></dd>
+
+
 <dt>prop_method</dt>
 <dd><p>Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.</p></dd>
 
 
-<dt>...</dt>
-<dd><p>All options possible in as_survey_design in srvyr package.</p></dd>
+<dt>show_value</dt>
+<dd><p>TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.</p></dd>
+
+
+<dt>show_lab</dt>
+<dd><p>TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.</p></dd>
+
+
+<dt>scale</dt>
+<dd><p>Denominator of the proportion. Default is 100 to interprets numbers as percentages.</p></dd>
+
+
+<dt>digits</dt>
+<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
+
+
+<dt>unit</dt>
+<dd><p>Unit showed in the graphic. Default is percent.</p></dd>
+
+
+<dt>dec</dt>
+<dd><p>Decimal mark shown on the graphic. Default is ","</p></dd>
+
+
+<dt>pretty_pal</dt>
+<dd><p>Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.</p></dd>
+
+
+<dt>direction</dt>
+<dd><p>Direction of the palette color. Default is 1. The opposite direction is -1.</p></dd>
+
+
+<dt>dodge</dt>
+<dd><p>Width of the bar, between 0 and 1.</p></dd>
+
+
+<dt>font</dt>
+<dd><p>Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".</p></dd>
+
+
+<dt>wrap_width_y</dt>
+<dd><p>Number of characters before going to the line for the labels of the groups. Default is 25.</p></dd>
+
+
+<dt>wrap_width_leg</dt>
+<dd><p>Number of characters before going to the line for the labels of the categories. Default is 25.</p></dd>
+
+
+<dt>legend_ncol</dt>
+<dd><p>Number of colomns in the legend. Default is 4.</p></dd>
 
 
 <dt>title</dt>
@@ -127,58 +184,6 @@
 
 <dt>caption</dt>
 <dd><p>Caption of the graphic.</p></dd>
-
-
-<dt>show_labs</dt>
-<dd><p>TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.</p></dd>
-
-
-<dt>show_value</dt>
-<dd><p>TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.</p></dd>
-
-
-<dt>unit</dt>
-<dd><p>Unit showed in the graphic. Default is percent.</p></dd>
-
-
-<dt>scale</dt>
-<dd><p>Denominator of the proportion. Default is 100 to interprets numbers as percentages.</p></dd>
-
-
-<dt>digits</dt>
-<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
-
-
-<dt>dodge</dt>
-<dd><p>Width of the bar, between 0 and 1.</p></dd>
-
-
-<dt>pretty_pal</dt>
-<dd><p>Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.</p></dd>
-
-
-<dt>direction</dt>
-<dd><p>Direction of the palette color. Default is 1. The opposite direction is -1.</p></dd>
-
-
-<dt>wrap_width</dt>
-<dd><p>Number of characters before going to the line for the labels of the groups. Default is 25.</p></dd>
-
-
-<dt>wrap_width_leg</dt>
-<dd><p>Number of characters before going to the line for the labels of the categories. Default is 25.</p></dd>
-
-
-<dt>legend_ncol</dt>
-<dd><p>Number of colomns in the legend. Default is 4.</p></dd>
-
-
-<dt>font</dt>
-<dd><p>Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".</p></dd>
-
-
-<dt>na.rm</dt>
-<dd><p>TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.</p></dd>
 
 
 <dt>export_path</dt>

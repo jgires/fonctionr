@@ -11,27 +11,28 @@ distrib_group_discrete(
   quali_var,
   facet_var = NULL,
   filter_exp = NULL,
-  prop_method = "beta",
   ...,
+  na.rm.group = T,
+  prop_method = "beta",
+  show_value = TRUE,
+  show_lab = TRUE,
+  scale = 100,
+  digits = 0,
+  unit = "",
+  dec = ",",
+  pretty_pal = "Hokusai1",
+  direction = 1,
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
+  wrap_width_leg = 25,
+  legend_ncol = 4,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
   legend_lab = NULL,
   caption = NULL,
-  show_labs = TRUE,
-  show_value = TRUE,
-  unit = "",
-  scale = 100,
-  digits = 0,
-  dodge = 0.9,
-  pretty_pal = "Hokusai1",
-  direction = 1,
-  wrap_width = 25,
-  wrap_width_leg = 25,
-  legend_ncol = 4,
-  font = "Roboto",
-  na.rm = T,
   export_path = NULL
 )
 
@@ -48,9 +49,37 @@ distrib_group_d(...)
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
+\item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.rm.group}{TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.}
+
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.}
+
+\item{show_lab}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
+
+\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+
+\item{unit}{Unit showed in the graphic. Default is percent.}
+
+\item{dec}{Decimal mark shown on the graphic. Default is ","}
+
+\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{dodge}{Width of the bar, between 0 and 1.}
+
+\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
+
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories. Default is 25.}
+
+\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 
@@ -63,32 +92,6 @@ distrib_group_d(...)
 \item{legend_lab}{Legend (fill) label on the graphic.}
 
 \item{caption}{Caption of the graphic.}
-
-\item{show_labs}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
-
-\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.}
-
-\item{unit}{Unit showed in the graphic. Default is percent.}
-
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
-
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
-
-\item{dodge}{Width of the bar, between 0 and 1.}
-
-\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
-
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
-
-\item{wrap_width}{Number of characters before going to the line for the labels of the groups. Default is 25.}
-
-\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories. Default is 25.}
-
-\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
-
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
-
-\item{na.rm}{TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
