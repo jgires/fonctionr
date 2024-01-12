@@ -177,6 +177,14 @@ esth_graph <- function(tab,
   # On charge et active les polices
   load_and_active_fonts()
 
+  # Par cohérence avec autres fonctions => si xlab/ylab == "", alors NULL (pour le faire disparaître sur le ggplot)
+  if(all(!is.null(xlab), xlab == "")){
+    xlab <- NULL
+  }
+  if(all(!is.null(ylab), ylab == "")){
+    ylab <- NULL
+  }
+
   # On crée le graphique
 
   graph <- tab %>%

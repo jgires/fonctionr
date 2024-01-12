@@ -260,13 +260,29 @@ many_prop = function(data,
 
   # Ajouter les axes
   if(show_lab == TRUE){
-    graph <- graph +
-      labs(y = ifelse(is.null(xlab),
-                      paste0("Proportion : ", paste(vec_list_vars, collapse = ", ")),
-                      xlab))
+      # X ---
+      if(any(is.null(xlab), xlab != "")){
+        graph <- graph +
+          labs(y = ifelse(is.null(xlab),
+                          paste0("Proportion : ", paste(vec_list_vars, collapse = ", ")),
+                          xlab))
+      }
+      if(all(!is.null(xlab), xlab == "")){
+        graph <- graph +
+          labs(y = NULL)
+      }
 
-      graph <- graph +
-        labs(x = ylab)
+      # Y ---
+      if(any(is.null(ylab), ylab != "")){
+        if(!is.null(ylab)){
+          graph <- graph +
+            labs(x = ylab)
+        }
+      }
+      if(all(!is.null(ylab), ylab == "")){
+        graph <- graph +
+          labs(x = NULL)
+      }
   }
 
   # Masquer les axes si show_lab == FALSE

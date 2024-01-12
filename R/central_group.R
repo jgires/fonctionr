@@ -425,22 +425,37 @@ central_group <- function(data,
   }
 
   # Ajouter les axes
-  if(show_lab == TRUE){
-    if (type == "mean") {
-      graph <- graph +
-        labs(y = ifelse(is.null(xlab),
-                        paste0("Moyenne : ", deparse(substitute(quanti_exp))),
-                        xlab))
+  if(show_labs == TRUE){
+    # X ---
+    if(any(is.null(xlab), xlab != "")){
+      if (type == "mean") {
+        graph <- graph +
+          labs(y = ifelse(is.null(xlab),
+                          paste0("Moyenne : ", deparse(substitute(quanti_exp))),
+                          xlab))
+      }
+      if (type == "median") {
+        graph <- graph +
+          labs(y = ifelse(is.null(xlab),
+                          paste0("Médiane : ", deparse(substitute(quanti_exp))),
+                          xlab))
+      }
     }
-    if (type == "median") {
+    if(all(!is.null(xlab), xlab == "")){
       graph <- graph +
-        labs(y = ifelse(is.null(xlab),
-                        paste0("Médiane : ", deparse(substitute(quanti_exp))),
-                        xlab))
+        labs(y = NULL)
     }
-    if(!is.null(ylab)){
+
+    # Y ---
+    if(any(is.null(ylab), ylab != "")){
+      if(!is.null(ylab)){
+        graph <- graph +
+          labs(x = ylab)
+      }
+    }
+    if(all(!is.null(ylab), ylab == "")){
       graph <- graph +
-        labs(x = ylab)
+        labs(x = NULL)
     }
   }
 
