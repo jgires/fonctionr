@@ -165,7 +165,7 @@ many_prop = function(data,
       tab_i <- data_W %>%
         group_by({{ facet_var }}) %>%
         summarise(
-          bin_col = i,
+          list_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
           n_sample = unweighted(n()),
           n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
@@ -182,7 +182,7 @@ many_prop = function(data,
     for (i in vec_list_vars) {
       tab_i <- data_W %>%
         summarise(
-          bin_col = i,
+          list_col = i,
           prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
           n_sample = unweighted(n()),
           n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
@@ -201,19 +201,25 @@ many_prop = function(data,
     if (length(vec_list_vars) != length(list_vars_lab)) {
       message("Le nombre de labels n'est pas égal au nombre de variables")
 
-    # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
+    # si oui, on remplace dans tab$list_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
     } else {
 
       for (i in seq_along(vec_list_vars)) {
-        tab[["bin_col"]][tab[["bin_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
+        tab[["list_col"]][tab[["list_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
       }
+      # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+      tab$list_col <- factor(tab$list_col, levels = list_vars_lab)
     }
+  }
+  # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+  if (is.null(list_vars_lab)) {
+    tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
   }
 
   # Si reorder = T, on crée un vecteur pour ordonner les levels
   if (reorder == T) {
     levels <- levels(reorder(
-      tab[["bin_col"]],
+      tab[["list_col"]],
       tab[["prop"]],
       FUN = median,
       decreasing = T
@@ -239,7 +245,7 @@ many_prop = function(data,
 
   graph <- tab %>%
     ggplot(aes(
-      x = bin_col,
+      x = list_col,
       y = prop,
     )) +
     geom_bar(
@@ -277,6 +283,10 @@ many_prop = function(data,
         if(!is.null(ylab)){
           graph <- graph +
             labs(x = ylab)
+        }
+        if(is.null(ylab)){
+          graph <- graph +
+            labs(x = "Indicateurs")
         }
       }
       if(all(!is.null(ylab), ylab == "")){

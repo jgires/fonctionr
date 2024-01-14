@@ -189,7 +189,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
             n_sample = unweighted(n()),
             n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
@@ -205,7 +205,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ facet_var }}, {{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
             n_sample = unweighted(n()),
             n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
@@ -224,7 +224,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_median(.data[[i]], na.rm = T, vartype = "ci"),
             n_sample = unweighted(n()),
             n_weighted = survey_total(vartype = "ci")
@@ -239,7 +239,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ facet_var }}, {{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_median(.data[[i]], na.rm = T, vartype = "ci"),
             n_sample = unweighted(n()),
             n_tot_weighted = survey_total(vartype = "ci")
@@ -257,7 +257,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
             n_sample = unweighted(n()),
             n_weighted = survey_total(vartype = "ci")
@@ -272,7 +272,7 @@ many_val_group = function(data,
         tab_i <- data_W %>%
           group_by({{ facet_var }}, {{ group }}) %>%
           summarise(
-            bin_col = i,
+            list_col = i,
             indice = survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
             n_sample = unweighted(n()),
             n_tot_weighted = survey_total(vartype = "ci")
@@ -291,14 +291,20 @@ many_val_group = function(data,
     if (length(vec_list_vars) != length(list_vars_lab)) {
       message("Le nombre de labels n'est pas égal au nombre de variables")
 
-      # si oui, on remplace dans tab$bin_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
+      # si oui, on remplace dans tab$list_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
     } else {
 
       for (i in seq_along(vec_list_vars)) {
-        tab[["bin_col"]][tab[["bin_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
+        tab[["list_col"]][tab[["list_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
       }
+      # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+      tab$list_col <- factor(tab$list_col, levels = list_vars_lab)
     }
   }
+  # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+  if (is.null(list_vars_lab)) {
+    tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
+    }
 
   # On crée la palette avec le package met.brewer
   if(pretty_pal %in% c("Archambault","Austria","Benedictus","Cassatt1","Cassatt2","Cross","Degas","Demuth",
@@ -309,7 +315,7 @@ many_val_group = function(data,
                        "OKeeffe1","OKeeffe2","Paquin","Peru1","Peru2","Pillement","Pissaro",
                        "Redon","Renoir","Signac","Tam","Tara","Thomas","Tiepolo","Troy",
                        "Tsimshian","VanGogh1","VanGogh2","VanGogh3","Veronese","Wissing" )){
-    palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[["bin_col"]])), type = "continuous", direction = direction))
+    palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
 
   #ou la crée avec le package MoMAColors
@@ -318,7 +324,7 @@ many_val_group = function(data,
                        "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
                        "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
                        "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
-    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[["bin_col"]])), type = "continuous", direction = direction))
+    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
 
   # On crée la palette avec le package PrettyCols
@@ -328,7 +334,7 @@ many_val_group = function(data,
                        "Light","Neon","Summer","Autumn","Winter","Rainbow",
                        "Beach","Fun","Sea","Bright","Relax","Lucent",
                        "Lively","Joyful")){
-    palette <- as.character(prettycols(name = pretty_pal, n = nlevels(as.factor(tab[["bin_col"]])), type = "continuous", direction = direction))
+    palette <- as.character(prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
@@ -367,9 +373,9 @@ many_val_group = function(data,
 
   graph <- tab %>%
     ggplot(aes(
-      x = {{ group }},
+      x = fct_rev({{ group }}),
       y = indice,
-      fill = bin_col
+      fill = list_col
     )) +
     geom_bar(
       width = dodge,
