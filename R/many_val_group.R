@@ -372,8 +372,9 @@ many_val_group = function(data,
   # On crée le graphique
 
   graph <- tab %>%
+    mutate("{{ group }}" := fct_rev({{ group }})) %>%
     ggplot(aes(
-      x = fct_rev({{ group }}),
+      x = {{ group }},
       y = indice,
       fill = list_col
     )) +
