@@ -492,7 +492,7 @@ many_val_group = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = (indice) + (0.01 * max_ggplot),
+          y = if (position == "dodge") (indice) + (0.01 * max_ggplot) else indice,
           label = paste0(str_replace(round(indice * scale,
                                            digits = digits),
                                      "[.]",
@@ -501,7 +501,7 @@ many_val_group = function(data,
           family = font),
         size = 3,
         vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
-        hjust = 0,
+        hjust = if (position == "dodge") "left" else "center",
         color = if (position == "dodge") "black" else "white",
         alpha = 0.9,
         # position = position_stack(vjust = .5))
@@ -515,7 +515,7 @@ many_val_group = function(data,
       geom_text(
         aes(
           y = if (position == "dodge") 0 + (0.01 * max_ggplot) else indice, # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = if (position == "dodge") paste0("n=", n_sample) else paste0(" n=", n_sample),
+          label = paste0("n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,
