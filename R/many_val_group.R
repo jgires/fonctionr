@@ -10,6 +10,7 @@
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param position Position adjustment for geom_bar
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
@@ -57,6 +58,7 @@ many_val_group = function(data,
 #                         na.rm.facet = T,# à compléter
 #                         na.var = rm, #à compléter rm = remove, rm.all = remove tous ceux qui ont au moins 1 NA et include, c'est uniquement pour les prop
                           prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                          position = "dodge",
                           show_ci = T,
                           show_n = FALSE,
                           show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
@@ -86,11 +88,13 @@ many_val_group = function(data,
 
   # Check des autres arguments
   check_character(arg = list(type, prop_method, unit, caption, title, subtitle, xlab, ylab, pretty_pal, font))
+  check_character_long(arg = list(list_vars_lab, position, type))
   check_logical(arg = list(show_lab, show_n, show_value, show_ci, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y,wrap_width_leg,legend_ncol))
 
-  # Check que le type est bien le bon
+  # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median", "prop"))
+  match.arg(position, choices = c("dodge", "stack"))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -381,7 +385,7 @@ many_val_group = function(data,
     geom_bar(
       width = dodge,
       stat = "identity",
-      position = "dodge"
+      position = position
     ) +
     theme_fonctionr(font = font) +
     theme(
@@ -472,7 +476,7 @@ many_val_group = function(data,
   }
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T) {
+  if (show_ci == T & position == "dodge") {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low, ymax = indice_upp),
                     width = dodge * 0.05,
@@ -496,14 +500,12 @@ many_val_group = function(data,
                          unit),
           family = font),
         size = 3,
-        vjust = ifelse(show_ci == T,
-                       -0.25,
-                       0.5),
+        vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
         hjust = 0,
-        color = "black",
+        color = if (position == "dodge") "black" else "white",
         alpha = 0.9,
         # position = position_stack(vjust = .5))
-        position = position_dodge(width = dodge)
+        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
       )
   }
 
@@ -512,14 +514,14 @@ many_val_group = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
-          label = paste0("n=", n_sample),
+          y = if (position == "dodge") 0 + (0.01 * max_ggplot) else indice, # Pour ajouter des labels avec les effectifs en dessous des barres
+          label = if (position == "dodge") paste0("n=", n_sample) else paste0(" n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,
         hjust = 0, # Justifié à droite
         vjust = 0.4,
-        position = position_dodge(width = dodge)
+        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = 0)
       )
   }
 

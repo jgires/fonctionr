@@ -137,6 +137,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =\> **faire pareil pour l'ordre des arguments dans les fonctions de check** (qques erreurs repérées) **!**
 
+-   Vérifier les checks pour tous les arguments (j'ai repéré qu'il en manque, notamment pour les arguments ajoutés dernièrement ou pour type dans `central_group`).
+
 -   Ajouter des exemples pour chaque fonction (pour le site).
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
@@ -191,6 +193,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Ajouter l'export excel.
 
 -   Ajouter un check pour la proportion =\> seules des valeurs (`0` - `1)` ou (`FALSE` - `TRUE)`.
+
+-   Bricolage pour l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 
 **esth_graph**
 
