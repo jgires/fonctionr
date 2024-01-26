@@ -44,7 +44,31 @@
 #' @import openxlsx
 #' @export
 #'
-#' @examples
+#' @examples#'
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Recoding variables
+#' eusilc$worker <- 0
+#' eusilc$worker[eusilc$pl030 == "1"]<-1
+#' eusilc$worker[eusilc$pl030 == "2"]<-1
+#' eusilc$austrian<-0
+#' eusilc$austrian[eusilc$pb220a == "AT"]<-1
+#'
+#' # Computation, taking sample design into account
+#' eusilc_many_mean_group <- many_mean_group(
+#' eusilc,
+#' group = rb090,
+#' list_vars = c(py010n,py050n,py090n,py100n),
+#' list_vars_lab = c("Wage","Self-employement income","unemployement benefit","pension"),
+#' strata = db040,
+#' ids = db030,
+#' weight = rb050,
+#' title = "Average incomes according to gender",
+#' subtitle = "Example with austrian SILC data from 'laeken' package"
+#' )
+#' eusilc_many_mean_group$graph
+#' eusilc_many_mean_group$tab
 #'
 many_val_group = function(data,
                           group,
