@@ -112,8 +112,8 @@ prop_group <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, total_name, font, export_path))
-  check_logical(arg = list(show_lab, show_n, show_value, reorder, show_ci, na.rm.group))
+  check_character(arg = list(na.var, prop_method, total_name, unit, dec, fill, font, title, subtitle, xlab, ylab, caption, export_path))
+  check_logical(arg = list(reorder, show_ci, show_n, show_value, show_lab, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # Check que les arguments avec choix précis sont les bons

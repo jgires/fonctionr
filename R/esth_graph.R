@@ -74,8 +74,8 @@ esth_graph <- function(tab,
   }
 
   # Check des autres arguments
-  check_character(arg = list(unit, caption, title, subtitle, xlab, ylab, name_total, fill, font))
-  check_logical(arg = list(show_value, reorder))
+  check_character(arg = list(name_total, unit, dec, fill, font, title, subtitle, xlab, ylab, caption))
+  check_logical(arg = list(reorder, show_value))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
