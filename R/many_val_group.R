@@ -293,7 +293,10 @@ many_val_group = function(data,
     # vérifier que list_vars a une même longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      message("Le nombre de labels n'est pas égal au nombre de variables")
+      warning("Le nombre de labels n'est pas égal au nombre de variables : les labels ne sont pas pris en compte")
+
+      # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+      tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
 
       # si oui, on remplace dans tab$list_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
     } else {
@@ -305,7 +308,7 @@ many_val_group = function(data,
       tab$list_col <- factor(tab$list_col, levels = list_vars_lab)
     }
   }
-  # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+  # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
   if (is.null(list_vars_lab)) {
     tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
     }
