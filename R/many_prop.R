@@ -96,9 +96,9 @@ many_prop = function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, ylab, fill, font))
+  check_character(arg = list(na.var, prop_method, unit, dec, fill, font, title, subtitle, xlab, ylab, caption))
   check_character_long(arg = list(list_vars_lab))
-  check_logical(arg = list(reorder, show_lab, show_n, show_value, show_ci))
+  check_logical(arg = list(reorder, show_ci, show_n, show_value, show_lab))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
   # Petite fonction utile
