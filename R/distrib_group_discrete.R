@@ -63,7 +63,7 @@
 #' eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 #'
 #' # Computation, taking sample design into account
-#' eusilc_dist_d <- distrib_d(
+#' eusilc_dist_d <- distrib_group_d(
 #' eusilc,
 #' group = pb220a,
 #' quali_var = pl030_rec,
