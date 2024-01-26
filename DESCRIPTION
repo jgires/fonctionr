@@ -1,7 +1,7 @@
 Package: fonctionr
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))

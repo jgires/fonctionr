@@ -113,7 +113,7 @@ distrib_group_discrete <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(na.var, prop_method, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption, export_path))
+  check_character(arg = list(prop_method, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption, export_path))
   check_logical(arg = list(na.rm.group, show_value, show_lab))
   check_numeric(arg = list(scale, digits, direction, dodge, wrap_width_y, wrap_width_leg, legend_ncol))
 

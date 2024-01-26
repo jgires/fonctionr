@@ -111,7 +111,7 @@ many_val_group = function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(type, na.var, prop_method, position, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption))
+  check_character(arg = list(type, prop_method, position, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption))
   check_character_long(arg = list(list_vars_lab))
   check_logical(arg = list(na.rm.group, show_ci, show_n, show_value, show_lab))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y, wrap_width_leg, legend_ncol))

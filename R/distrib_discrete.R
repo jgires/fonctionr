@@ -75,7 +75,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                              ...,
                              na.rm.group = T,
                              # na.rm.facet = T,
-                             # na.rm.var = T,
+                             # na.var = "rm",
                              prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                              reorder = FALSE,
                              show_ci = T,
@@ -103,7 +103,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   }
 
   # Check des autres arguments
-  check_character(arg = list(na.var, prop_method, unit, dec, fill, font, title, subtitle, xlab, caption, export_path))
+  check_character(arg = list(prop_method, unit, dec, fill, font, title, subtitle, xlab, caption, export_path))
   check_logical(arg = list(show_n, show_lab, show_value, reorder, show_ci, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
