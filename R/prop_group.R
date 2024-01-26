@@ -9,6 +9,7 @@
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param na.var "rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -79,8 +80,8 @@ prop_group <- function(data,
                        filter_exp = NULL,
                        ...,
                        na.rm.group = T,
-#                       na.rm.facet = T, # à compléter
-#                       na.var = "rm", #### compléter dans le script avec deux possibilité : "rm" et "include"
+#                      na.rm.facet = T, # à compléter
+                       na.var = "rm",
                        prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        reorder = F,
                        show_ci = T,
@@ -152,11 +153,13 @@ prop_group <- function(data,
     }
   }
 
-  # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
-  # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
-  names_expression <- all.names(substitute(prop_exp))
-  if("is.na" %in% names_expression){
-    stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
+  if(na.var == "rm"){
+    # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
+    # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
+   names_expression <- all.names(substitute(prop_exp))
+   if("is.na" %in% names_expression){
+     stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
+   }
   }
 
   # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(express_bin))")
@@ -198,35 +201,49 @@ prop_group <- function(data,
     }
   }
 
-  # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vars_expression créé au début
-  message("Variable(s) détectée(s) dans l'expression : ", paste(vars_expression, collapse = ", "))
-  # On calcule les effectifs avant filtre
-  before <- data_W %>%
-    summarise(n=unweighted(n()))
-  # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-  for (var in vars_expression) {
-    data_W <- data_W %>%
-      filter(!is.na(.data[[var]]))
-  }
-  # On calcule les effectifs après filtre
-  after <- data_W %>%
-    summarise(n=unweighted(n()))
-  # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression")
+  if(na.var == "rm"){
+    # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
+    # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vars_expression créé au début
+    message("Variable(s) détectée(s) dans l'expression : ", paste(vars_expression, collapse = ", "))
+    # On calcule les effectifs avant filtre
+    before <- data_W %>%
+      summarise(n=unweighted(n()))
+    # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+    for (var in vars_expression) {
+      data_W <- data_W %>%
+        filter(!is.na(.data[[var]]))
+    }
+    # On calcule les effectifs après filtre
+    after <- data_W %>%
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimées (pour vérification)
+    message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression")
 
-  # On convertit la variable de groupe en facteur si pas facteur
-  # On crée également une variable binaire liée à la proportion pour le khi2
-  data_W <- data_W %>%
-    mutate(
-      "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-      express_bin = {{ prop_exp }}
-    )
-  # On convertit également la variable de facet en facteur si facet non-NULL
-  if(!quo_is_null(quo_facet)){
+    # On convertit la variable de groupe en facteur si pas facteur
+    # On crée également une variable binaire liée à la proportion pour le khi2
     data_W <- data_W %>%
       mutate(
-        "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        express_bin = {{ prop_exp }}
+      )
+    # On convertit également la variable de facet en facteur si facet non-NULL
+    if(!quo_is_null(quo_facet)){
+      data_W <- data_W %>%
+        mutate(
+          "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+    }
+  }
+
+  if(na.var == "include"){
+    data_W <- data_W %>%
+      mutate(
+        "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        express_bin_zero = 0,
+        express_bin_temp = {{ prop_exp }},
+        express_bin = ifelse(!is.na(express_bin_temp),
+                             express_bin_temp,
+                             express_bin_zero)
+      )
   }
 
   # /!\ NOTE : méthode de filtrage remplacée par version avec filtre sur vars_expression avec boucle for (voir précédent) /!\
@@ -275,7 +292,7 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ group }}) %>%
       cascade(
-        prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        prop = survey_mean(express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()),
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
@@ -287,7 +304,7 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ facet_var }}, {{ group }}) %>%
       cascade(
-        prop = survey_mean({{ prop_exp }}, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        prop = survey_mean(express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()),
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
