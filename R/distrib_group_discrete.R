@@ -70,7 +70,7 @@
 #' strata = db040,
 #' ids = db030,
 #' weight = rb050,
-#' title = "Distribution of socio-économic status according to nationality",
+#' title = "Distribution of socio-economic status according to nationality",
 #' subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
 #' eusilc_dist_d$graph
