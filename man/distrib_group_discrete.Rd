@@ -101,3 +101,32 @@ A list that contains a table, a graphic and a statistical test
 \description{
 Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
 }
+\examples{
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Recoding eusilc$pl030 into eusilc$pl030_rec
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+
+# Computation, taking sample design into account
+eusilc_dist_d <- distrib_group_d(
+eusilc,
+group = pb220a,
+quali_var = pl030_rec,
+strata = db040,
+ids = db030,
+weight = rb050,
+title = "Distribution of socio-economic status according to nationality",
+subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_dist_d$graph
+eusilc_dist_d$tab
+
+}

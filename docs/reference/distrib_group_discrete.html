@@ -197,6 +197,57 @@
 <p>A list that contains a table, a graphic and a statistical test</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Loading of data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">eusilc</span>, package <span class="op">=</span> <span class="st">"laeken"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Recoding eusilc$pl030 into eusilc$pl030_rec</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working full time"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working part time"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"3"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Unemployed"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"4"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Student"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"5"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Retired"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"6"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Permanently disabled"</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Computation, taking sample design into account</span></span></span>
+<span class="r-in"><span><span class="va">eusilc_dist_d</span> <span class="op">&lt;-</span> <span class="fu">distrib_group_d</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">eusilc</span>,</span></span>
+<span class="r-in"><span>group <span class="op">=</span> <span class="va">pb220a</span>,</span></span>
+<span class="r-in"><span>quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span></span>
+<span class="r-in"><span>strata <span class="op">=</span> <span class="va">db040</span>,</span></span>
+<span class="r-in"><span>ids <span class="op">=</span> <span class="va">db030</span>,</span></span>
+<span class="r-in"><span>weight <span class="op">=</span> <span class="va">rb050</span>,</span></span>
+<span class="r-in"><span>title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to nationality"</span>,</span></span>
+<span class="r-in"><span>subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Input: data.frame</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span>
+<span class="r-in"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (`geom_text()`).</span>
+<span class="r-plt img"><img src="distrib_group_discrete-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">tab</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 21 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   pb220a [3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    pb220a pl030_rec    prop prop_low prop_upp n_sample n_weighted n_weighted_low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> AT     Fulfillin… 0.089<span style="text-decoration: underline;">0</span>  0.084<span style="text-decoration: underline;">0</span>    0.094<span style="text-decoration: underline;">2</span>     <span style="text-decoration: underline;">1</span>036    <span style="text-decoration: underline;">548</span>489.        <span style="text-decoration: underline;">516</span>433.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AT     Permanent… 0.011<span style="text-decoration: underline;">9</span>  0.009<span style="text-decoration: underline;">31</span>   0.015<span style="text-decoration: underline;">0</span>      125     <span style="text-decoration: underline;">73</span>270.         <span style="text-decoration: underline;">56</span>226.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> AT     Retired    0.285   0.275     0.295      <span style="text-decoration: underline;">3</span>055   1<span style="text-decoration: underline;">754</span>654.       1<span style="text-decoration: underline;">694</span>827.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> AT     Student    0.060<span style="text-decoration: underline;">2</span>  0.055<span style="text-decoration: underline;">8</span>    0.065<span style="text-decoration: underline;">0</span>      693    <span style="text-decoration: underline;">371</span>222.        <span style="text-decoration: underline;">341</span>944.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> AT     Unemployed 0.038<span style="text-decoration: underline;">8</span>  0.035<span style="text-decoration: underline;">1</span>    0.042<span style="text-decoration: underline;">7</span>      411    <span style="text-decoration: underline;">238</span>841.        <span style="text-decoration: underline;">215</span>788.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> AT     Working f… 0.421   0.412     0.431      <span style="text-decoration: underline;">4</span>689   2<span style="text-decoration: underline;">595</span>137.       2<span style="text-decoration: underline;">526</span>927.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> AT     Working p… 0.094<span style="text-decoration: underline;">2</span>  0.088<span style="text-decoration: underline;">9</span>    0.099<span style="text-decoration: underline;">8</span>     <span style="text-decoration: underline;">1</span>064    <span style="text-decoration: underline;">580</span>514.        <span style="text-decoration: underline;">546</span>750.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> EU     Fulfillin… 0.124   0.088<span style="text-decoration: underline;">6</span>    0.167        38     <span style="text-decoration: underline;">20</span>343.         <span style="text-decoration: underline;">13</span>863.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> EU     Permanent… 0.049<span style="text-decoration: underline;">8</span>  0.028<span style="text-decoration: underline;">0</span>    0.081<span style="text-decoration: underline;">0</span>       15      <span style="text-decoration: underline;">8</span>186.          <span style="text-decoration: underline;">4</span>024.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> EU     Retired    0.155   0.115     0.202        45     <span style="text-decoration: underline;">25</span>429.         <span style="text-decoration: underline;">17</span>953.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
