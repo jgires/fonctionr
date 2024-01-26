@@ -56,7 +56,7 @@
 #' eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 #'
 #' # Computation, taking sample design into account
-#' eusilc_dist_d <- distrib_d(
+#' eusilc_dist_group_d <- distrib_d(
 #' eusilc,
 #' pl030_rec,
 #' strata = db040,
@@ -65,8 +65,8 @@
 #' title = "Distribution of socio-economic status",
 #' subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
-#' eusilc_dist_d$graph
-#' eusilc_dist_d$tab
+#' eusilc_dist_group_d$graph
+#' eusilc_dist_group_d$tab
 #'
 distrib_discrete <- function(data, # Données en format srvyr
                              quali_var, # Variable catégorielle
