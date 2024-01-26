@@ -8,11 +8,11 @@ globalVariables(unique(c(
   # distrib_group_discrete:
   "prop",
   # many_prop:
-  "bin_col", "median", "n_sample", "prop", "prop_low", "prop_upp",
+  "list_col", "median", "n_sample", "prop", "prop_low", "prop_upp",
   # many_prop_group:
-  "bin_col", "n_sample", "prop", "prop_low", "prop_upp",
+  "list_col", "n_sample", "prop", "prop_low", "prop_upp",
   # pivot_longer_survey:
   "type",
   # prop_group:
-  "median", "n_sample", "prop", "prop_low", "prop_upp"
+  "median", "n_sample", "prop", "prop_low", "prop_upp", "express_bin_temp", "express_bin_zero", "express_bin"
 )))

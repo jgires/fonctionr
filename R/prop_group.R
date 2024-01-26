@@ -116,6 +116,9 @@ prop_group <- function(data,
   check_logical(arg = list(show_lab, show_n, show_value, reorder, show_ci, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
+  # Check que les arguments avec choix précis sont les bons
+  match.arg(na.var, choices = c("rm", "include"))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 

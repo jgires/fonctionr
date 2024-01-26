@@ -29,4 +29,6 @@ Imports:
     broom,
     showtext,
     sysfonts
+Suggests:
+    laeken
 RoxygenNote: 7.2.3

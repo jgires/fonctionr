@@ -18,6 +18,7 @@ many_val_group(
   ...,
   na.rm.group = T,
   prop_method = "beta",
+  position = "dodge",
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
@@ -67,6 +68,8 @@ many_mean_group(..., type = "mean")
 \item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+
+\item{position}{Position adjustment for geom_bar}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
 
