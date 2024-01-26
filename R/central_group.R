@@ -105,8 +105,8 @@ central_group <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(unit, title, subtitle, xlab, ylab, caption, type, fill, total_name, font, export_path))
-  check_logical(arg = list(show_lab, show_n, show_value, reorder, show_ci, na.rm.group))
+  check_character(arg = list(type, total_name, unit, dec, fill, font, title, subtitle, xlab, ylab, caption, export_path))
+  check_logical(arg = list(na.rm.group, reorder, show_ci, show_n, show_value, show_lab))
   check_numeric(arg = list(digits, dodge, wrap_width_y))
 
   # Check que les arguments avec choix précis sont les bons

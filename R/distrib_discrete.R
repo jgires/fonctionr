@@ -103,7 +103,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, caption, title, subtitle, xlab, font, fill, export_path))
+  check_character(arg = list(na.var, prop_method, unit, dec, fill, font, title, subtitle, xlab, caption, export_path))
   check_logical(arg = list(show_n, show_lab, show_value, reorder, show_ci, na.rm.group))
   check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
 
