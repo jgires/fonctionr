@@ -37,6 +37,30 @@
 #' @export
 #'
 #' @examples
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Recoding variables
+#' eusilc$worker <- 0
+#' eusilc$worker[eusilc$pl030 == "1"]<-1
+#' eusilc$worker[eusilc$pl030 == "2"]<-1
+#' eusilc$austrian<-0
+#' eusilc$austrian[eusilc$pb220a == "AT"]<-1
+#'
+#' # Computation, taking sample design into account
+#' eusilc_many_prop <- many_prop(
+#' eusilc,
+#' list_vars = c(worker,austrian),
+#' list_vars_lab = c("% of workers","% of Austrian"),
+#' facet_var = rb090,
+#' strata = db040,
+#' ids = db030,
+#' weight = rb050,
+#' title = "Proportion of workers and Autrian according to gender",
+#' subtitle = "Example with austrian SILC data from 'laeken' package"
+#' )
+#' eusilc_many_prop$graph
+#' eusilc_many_prop$tab
 #'
 many_prop = function(data,
                      list_vars,
