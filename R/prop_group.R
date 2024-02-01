@@ -369,6 +369,12 @@ prop_group <- function(data,
 
   # On crée le graphique
 
+  # Pour caption
+
+  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
@@ -394,7 +400,6 @@ prop_group <- function(data,
          subtitle = subtitle,
          caption = paste0(
            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
-           "\n",
            caption)
          ) +
     coord_flip()

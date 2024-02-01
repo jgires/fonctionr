@@ -343,13 +343,17 @@ distrib_group_discrete <- function(data,
     coord_flip()
 
   # Pour caption
+
+  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
   if (quo_is_null(quo_facet)) {
     if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
       graph <- graph +
         labs(
           caption = paste0(
             "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
-            "\n",
             caption
           )
         )
@@ -359,7 +363,6 @@ distrib_group_discrete <- function(data,
         labs(
           caption = paste0(
             "Khi2 d'indépendance : conditions non remplies",
-            "\n",
             caption
           )
         )

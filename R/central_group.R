@@ -406,12 +406,18 @@ central_group <- function(data,
     ) +
     coord_flip()
 
+
+  # Pour caption
+
+  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
   if (type == "mean") {
     graph <- graph +
       labs(
         caption = paste0(
           "GLM : ", pvalue(test.stat$p[1], add_p = T),
-          "\n",
           caption
         )
       )
@@ -421,7 +427,6 @@ central_group <- function(data,
       labs(
         caption = paste0(
           "Kruskal Wallis : ", pvalue(test.stat$p.value[1], add_p = T),
-          "\n",
           caption
         )
       )
