@@ -320,7 +320,7 @@ many_val_group = function(data,
       warning("Le nombre de labels n'est pas égal au nombre de variables : les labels ne sont pas pris en compte")
 
       # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
-      tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
+      tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))
 
       # si oui, on remplace dans tab$list_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
     } else {
@@ -329,12 +329,12 @@ many_val_group = function(data,
         tab[["list_col"]][tab[["list_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
       }
       # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
-      tab$list_col <- factor(tab$list_col, levels = list_vars_lab)
+      tab$list_col <- factor(tab$list_col, levels = rev(list_vars_lab))
     }
   }
   # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
   if (is.null(list_vars_lab)) {
-    tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
+    tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))
     }
 
   # On crée la palette avec le package met.brewer
@@ -429,7 +429,8 @@ many_val_group = function(data,
          subtitle = subtitle,
          caption = caption
     ) +
-    guides(fill = guide_legend(ncol = legend_ncol)) +
+    guides(fill = guide_legend(ncol = legend_ncol,
+                               reverse = TRUE)) +
     coord_flip()
 
   # Ajouter les axes
