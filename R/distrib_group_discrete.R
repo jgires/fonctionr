@@ -262,33 +262,17 @@ distrib_group_discrete <- function(data,
   }
 
   # On crée la palette avecle package met.brewer
-  if(pretty_pal %in% c("Archambault","Austria","Benedictus","Cassatt1","Cassatt2","Cross","Degas","Demuth",
-                       "Derain","Egypt","Gauguin","Greek","Hiroshige","Hokusai1",
-                       "Hokusai2","Hokusai3","Homer1","Homer2","Ingres","Isfahan1","Isfahan2",
-                       "Java","Johnson","Juarez","Kandinsky","Klimt","Lakota","Manet",
-                       "Monet","Moreau","Morgenstern","Nattier","Navajo","NewKingdom","Nizami",
-                       "OKeeffe1","OKeeffe2","Paquin","Peru1","Peru2","Pillement","Pissaro",
-                       "Redon","Renoir","Signac","Tam","Tara","Thomas","Tiepolo","Troy",
-                       "Tsimshian","VanGogh1","VanGogh2","VanGogh3","Veronese","Wissing" )){
+  if(pretty_pal %in% names(MetBrewer::MetPalettes)){
   palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
   #ou la crée avec le package MoMAColors
-  if(pretty_pal %in% c("Abbott","Alkalay1","Alkalay2","Althoff","Andri","Avedon","Budnitz",
-                       "Clay","Connors","Dali","Doughton","Ernst","Exter","Flash",
-                       "Fritsch","Kippenberger","Klein","Koons","Levine1","Levine2","Liu",
-                       "Lupi","Ohchi","OKeeffe","Palermo","Panton","Picabia","Picasso",
-                       "Rattner","Sidhu","Smith","ustwo","VanGogh","vonHeyl","Warhol" )){
+  if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
   # On crée la palette avecle package PrettyCols
-  if(pretty_pal %in% c("Blues","Purples","Tangerines","Greens","Pinks","Teals",
-                       "Yellows","Reds","PurpleGreens","PinkGreens","TangerineBlues","PurpleTangerines",
-                       "PurplePinks","TealGreens","PurpleYellows","RedBlues","Bold","Dark",
-                       "Light","Neon","Summer","Autumn","Winter","Rainbow",
-                       "Beach","Fun","Sea","Bright","Relax","Lucent",
-                       "Lively","Joyful")){
+  if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(prettycols(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
