@@ -80,7 +80,7 @@ prop_group <- function(data,
                        filter_exp = NULL,
                        ...,
                        na.rm.group = T,
-#                      na.rm.facet = T, # à compléter
+                       # na.rm.facet = T, # à compléter
                        na.var = "rm",
                        prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        reorder = F,
@@ -104,7 +104,7 @@ prop_group <- function(data,
                        caption = NULL,
                        export_path = NULL) {
 
-  start_time <- Sys.time()
+  # start_time <- Sys.time()
 
   # Check des arguments nécessaires
   if((missing(data) | missing(group) | missing(prop_exp)) == TRUE){
@@ -579,8 +579,8 @@ prop_group <- function(data,
                  bivariate = FALSE)
   }
 
-  end_time <- Sys.time()
-  message(paste("Processing time:", round(end_time - start_time, 2), "sec"))
+  # end_time <- Sys.time()
+  # message(paste("Processing time:", round(end_time - start_time, 2), "sec"))
 
   return(res)
 

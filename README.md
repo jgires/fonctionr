@@ -115,7 +115,7 @@ eusilc_mean <- mean_group(
 
 La fonction produit une liste encapsulant plusieurs résultats dans des
 objets différents. L’objet `tab` comprend un data.frame avec les
-résultats au format “tidy” :
+résultats au format *tidy* :
 
 ``` r
 eusilc_mean$tab
@@ -134,8 +134,8 @@ eusilc_mean$tab
 ```
 
 L’objet `test.stat` comprend les résultats d’un test d’hypothèse prenant
-en compte le design de l’échantillon. Le test pratiqué est dépendant de
-la statistique calculée. Dans le cas de `mean_group()`, il s’agit d’une
+en compte le design de l’enquête. Le test pratiqué est dépendant de la
+statistique calculée. Dans le cas de `mean_group()`, il s’agit d’une
 ANOVA avec comme hypothèse nulle l’égalité entre les moyennes de tous
 les groupes :
 
@@ -160,7 +160,7 @@ opérations similaires, par exemple pour calculer des proportions par
 groupe avec la fonction `prop_group()`. On peut à nouveau indiquer
 directement une expression à partir de laquelle calculer les proportions
 dans l’argument `prop_exp` : dans ce cas la proportion à recevoir des
-revenus du chômage (= supérieurs à 0).
+revenus du chômage (`py090n` supérieurs à 0).
 
 ``` r
 eusilc_prop <- prop_group(

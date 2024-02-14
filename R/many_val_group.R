@@ -44,7 +44,7 @@
 #' @import openxlsx
 #' @export
 #'
-#' @examples#'
+#' @examples
 #' # Loading of data
 #' data(eusilc, package = "laeken")
 #'
@@ -79,8 +79,8 @@ many_val_group = function(data,
                           filter_exp = NULL,
                           ...,
                           na.rm.group = T,
-#                         na.rm.facet = T,# à compléter
-#                         na.var = rm, #à compléter rm = remove, rm.all = remove tous ceux qui ont au moins 1 NA et include, c'est uniquement pour les prop
+                          # na.rm.facet = T,# à compléter
+                          # na.var = rm, #à compléter rm = remove, rm.all = remove tous ceux qui ont au moins 1 NA et include, c'est uniquement pour les prop
                           prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                           position = "dodge",
                           show_ci = T,

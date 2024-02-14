@@ -117,7 +117,6 @@ many_mean_group(..., type = "mean")
 many_val_group
 }
 \examples{
-#'
 # Loading of data
 data(eusilc, package = "laeken")
 

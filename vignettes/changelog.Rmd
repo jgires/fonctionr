@@ -51,17 +51,15 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
--   Vérifier les messages (corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat).
+-   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 
--   Optimiser le code avec les multiples pipelines avec summarise() qui varient selon que c'est une médiane / moyenne / etc. (`central_group()` ou `many_val_group()`) =\> pénible à maintenir, trouver une simplification.
+-   Optimiser le code dupliqués des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller).
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des foncitons `many_prop()` et `many_val_group()`**.
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : **manque pivot_longer_survey, esth_graph**.
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
-
--   Vérifier que les fonctions ordonnent (ordre "naturel" du facteur et avec `reorder = T`) toujours de la même façon pour les différentes fonctions (`many_prop_group()` =/= `prop_group()`).
 
 -   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> **Voir fichier excel avec ordre des arguments**.\
     *=\> Fait pour `prop_group()`.*
@@ -73,12 +71,9 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
     1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;\
         **=\> Peut-être trouvé la solution ici ? =\> <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
 
-    2.  Améliorer les messages\
-        *=\> C'est en cours, déjà fait pour `prop_group()` et `many_val_group()`. Solution trouvée ici : [https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot](#0){.uri}*
+    2.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
 
-    3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
-
-    4.  Pas mettre les mêmes colonnes dans les différents arguments (`group`, `var_distrib`, `facet_var`, etc.) ;
+    3.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
@@ -131,7 +126,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### central_group
 
-Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
+-   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
 
 #### prop_group
 
@@ -150,10 +145,6 @@ Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasi
 
 -   Possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?
 
-### many_val_group
-
--   Mettre des labels change l'ordre des variables introduites (car l'ordre alphabétique change) =\> quel comportement adopter ?
-
 ### Fonctions à créer
 
 #### Univarié
@@ -162,7 +153,7 @@ Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasi
 
 #### Bivarié ou 3 variables+
 
--   prop/moyenne/médiane par 2 groupes
+-   Superposition de 2 statistiques (bar + lines) avec échelles différentes.
 
 -   Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)
 

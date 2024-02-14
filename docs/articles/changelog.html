@@ -136,24 +136,24 @@ expliquer dans la doc !</strong></em></p>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>Vérifier les messages (corriger, traduire, ajouter des guillemets
-pour les arguments dans les checks, mieux écrire les résultats des tests
-stat).</p></li>
-<li><p>Optimiser le code avec les multiples pipelines avec summarise()
-qui varient selon que c’est une médiane / moyenne / etc.
-(<code><a href="../reference/central_group.html">central_group()</a></code> ou <code><a href="../reference/many_val_group.html">many_val_group()</a></code>) =&gt;
-pénible à maintenir, trouver une simplification.</p></li>
+<li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
+corriger, traduire, ajouter des guillemets pour les arguments dans les
+checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
+est l’hypothèse nulle).</p></li>
+<li><p>Optimiser le code dupliqués des pipelines avec
+<code>summarise()</code> pour <code><a href="../reference/central_group.html">central_group()</a></code> ou
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> : ce sont des quasi copies selon que c’est
+une médiane / moyenne / etc. =&gt; pénible à maintenir, trouver une
+simplification.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
-repérées, par ex. à cause de copier-coller).</p></li>
+repérées, par ex. à cause de copier-coller). <strong>Il manque les
+descriptions générales des foncitons <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code></strong>.</p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) :
 <strong>manque pivot_longer_survey, esth_graph</strong>.</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
 rappelle ce qu’on a fait (il manque des notes).</p></li>
-<li><p>Vérifier que les fonctions ordonnent (ordre “naturel” du facteur
-et avec <code>reorder = T</code>) toujours de la même façon pour les
-différentes fonctions (<code><a href="../reference/many_val_group.html">many_prop_group()</a></code> =/=
-<code><a href="../reference/prop_group.html">prop_group()</a></code>).</p></li>
 <li><p>Pour les fonctions qui calculent des proportions : ajouter la
 possibilité que la proportion soit calculée sur l’ensemble des individus
 (les <code>NA</code> étant comptabilisés dans le dénominateur) =&gt;
@@ -166,13 +166,11 @@ valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait
 sauf pour les variables de design + pondération ? Est-ce testable, du
 fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;<br><strong>=&gt; Peut-être trouvé la solution ici ? =&gt; <a href="https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package" class="external-link uri">https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package</a></strong></p></li>
-<li><p>Améliorer les messages<br><em>=&gt; C’est en cours, déjà fait pour <code><a href="../reference/prop_group.html">prop_group()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code>. Solution trouvée ici : <a href="#id_0" class="uri">https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot</a></em></p></li>
 <li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.)
 ;</p></li>
-<li><p>Pas mettre les mêmes colonnes dans les différents arguments
+<li><p>Pas mettre les mêmes colonnes dans les différents arguments ?
 (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>,
-etc.) ;</p></li>
+etc.).</p></li>
 </ol>
 </li>
 <li><p>Mettre des conditions pour réaliser les tests (n min,
@@ -270,8 +268,11 @@ les fonctions de <code>rlang</code>.</em>
 <div class="section level4">
 <h4 id="central_group-1">central_group<a class="anchor" aria-label="anchor" href="#central_group-1"></a>
 </h4>
-<p>Pouvoir réordonner avec les facet =&gt; solution avec
-<code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a></p>
+<ul>
+<li>Pouvoir réordonner avec les facet =&gt; solution avec
+<code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a>
+</li>
+</ul>
 </div>
 <div class="section level4">
 <h4 id="prop_group-1">prop_group<a class="anchor" aria-label="anchor" href="#prop_group-1"></a>
@@ -301,14 +302,6 @@ pour coller avec le code couleur de notre institution ?</p></li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="many_val_group-1">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group-1"></a>
-</h3>
-<ul>
-<li>Mettre des labels change l’ordre des variables introduites (car
-l’ordre alphabétique change) =&gt; quel comportement adopter ?</li>
-</ul>
-</div>
-<div class="section level3">
 <h3 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>
 </h3>
 <div class="section level4">
@@ -322,7 +315,8 @@ l’ordre alphabétique change) =&gt; quel comportement adopter ?</li>
 <h4 id="bivarié-ou-3-variables">Bivarié ou 3 variables+<a class="anchor" aria-label="anchor" href="#bivari%C3%A9-ou-3-variables"></a>
 </h4>
 <ul>
-<li><p>prop/moyenne/médiane par 2 groupes</p></li>
+<li><p>Superposition de 2 statistiques (bar + lines) avec échelles
+différentes.</p></li>
 <li><p>Tableau croisé avec résidus ou couleur par proportion
 (proportions par c, l, ou total)</p></li>
 <li><p>Densité par groupe (pour variable continue)</p></li>

@@ -78,7 +78,7 @@ central_group <- function(data,
                           filter_exp = NULL,
                           ...,
                           na.rm.group = T,
-#                          na.rm.facet = T,## à completer
+                          # na.rm.facet = T,## à completer
                           reorder = F,
                           show_ci = T,
                           show_n = FALSE,
