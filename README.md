@@ -26,6 +26,20 @@ résultats à l’aide de `ggplot2`, dans le but de pouvoir intégrer
 directement et rapidement les résultats produits dans un rapport/une
 publication.
 
+Vous trouverez ci-dessous une rapide introduction à `fonctionr`.  
+Pour plus de détails, deux vignettes sont disponibles :
+
+<div style="border:1px; background-color:#E1F1FA; padding: 5px 10px 10px 10px; margin-bottom: 10px">
+
+- La vignette Manipulate complex Survey Design explique de quelle
+  manière `fonctionr` peut prendre en compte le plan d’échantillonnage
+  réel des sondages.
+
+- La vignette Overview of functionr functions décrit avec plus de
+  détails les différentes fonctions de `fonctionr`.
+
+</div>
+
 ## Installation
 
 Vous pouvez installer le package `fonctionr` depuis
@@ -69,8 +83,9 @@ eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
 eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 ```
 
-`fonctionr` permet de calculer facilement des moyennes de revenu par
-groupe grâce à la fonction `mean_group()`. Les groupes, ici de statut
+`fonctionr` comprend plusieurs fonctions pour réaliser facilement des
+opérations descriptives courantes. `mean_group()` permet par exemple de
+calculer des moyennes de revenu par groupe. Les groupes, ici de statut
 économique, sont indiqués dans l’argument `group`. C’est la moyenne du
 revenu mensuel qui est calculée, car on peut indiquer soit une variable
 quantitative, soit une expression pour calculer celle-ci, directement
@@ -93,15 +108,11 @@ eusilc_mean <- mean_group(
   title = "Mean of equivalised income in household by status of individuals",
   subtitle = "Example with austrian SILC data from 'laeken' package",
   )
-#> Input: data.frame
-#> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> Variable(s) détectée(s) dans quanti_exp : eqIncome
-#> 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp
 ```
 
-La fonction produit un tableau de résultats, le résultat d’un test
-statistique et un graphique ggplot qui regroupe l’ensemble, prêt à être
-inséré dans une publication :
+La fonction produit une liste encapsulant plusieurs résultats dans des
+objets différents. L’objet `tab` comprend un data.frame avec les
+résultats au format “tidy” :
 
 ``` r
 eusilc_mean$tab
@@ -117,21 +128,36 @@ eusilc_mean$tab
 #> 7 Working part time   1591.    1542.    1639.     1160    636121.        600709.
 #> 8 Total               1703.    1679.    1726.    12107   6757264.       6683738.
 #> # ℹ 1 more variable: n_weighted_upp <dbl>
+```
+
+L’objet `test.stat` comprend les résultats d’un test d’hypothèse prenant
+en compte le design de l’échantillon. Le test pratiqué est dépendant de
+la statistique calculée. Dans le cas de `mean_group()`, il s’agit d’une
+ANOVA avec comme hypothèse nulle l’égalité entre les moyennes de tous
+les groupes :
+
+``` r
 eusilc_mean$test.stat
 #> Wald test for pl030_rec
 #>  in svyglm(formula = fmla, design = data_W)
 #> F =  141.5453  on  6  and  5985  df: p= < 2.22e-16
+```
+
+L’objet `graph` comprend un graphique ggplot présentant les résultats et
+prêt à être inséré dans une publication :
+
+``` r
 eusilc_mean$graph
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
-`fonctionr` comprend plusieurs fonctions pour réaliser des opérations
-similaires, par exemple pour calculer des proportions par groupe avec la
-fonction `prop_group()`. On peut à nouveau indiquer directement une
-expression à partir de laquelle calculer les proportions dans l’argument
-`prop_exp` : dans ce cas la proportion à recevoir des revenus du chômage
-(= supérieurs à 0).
+`fonctionr` comprend plusieurs autres fonctions pour réaliser des
+opérations similaires, par exemple pour calculer des proportions par
+groupe avec la fonction `prop_group()`. On peut à nouveau indiquer
+directement une expression à partir de laquelle calculer les proportions
+dans l’argument `prop_exp` : dans ce cas la proportion à recevoir des
+revenus du chômage (= supérieurs à 0).
 
 ``` r
 eusilc_prop <- prop_group(
@@ -145,11 +171,14 @@ eusilc_prop <- prop_group(
   title = "Proportion of individuals receiving income from unemployment in their household",
   subtitle = "Example with austrian SILC data from 'laeken' package"
 )
-#> Input: data.frame
-#> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> Variable(s) détectée(s) dans l'expression : py090n
-#> 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
-#> Processing time: 0.36 sec
+```
+
+Le résultat contient à nouveau un tableau, le résultat d’un test
+d’hypothèse et un graphique ggplot. Dans le cas de `prop_test()`, le
+test d’hypothèse est un khi2 avec comme hypothèse nulle l’égalité de
+toutes les proportions.
+
+``` r
 eusilc_prop$tab
 #> # A tibble: 8 × 11
 #>   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted
@@ -164,16 +193,22 @@ eusilc_prop$tab
 #> 8 Total                     0.0916   0.0863   0.0971    12107         619054.
 #> # ℹ 5 more variables: n_true_weighted_low <dbl>, n_true_weighted_upp <dbl>,
 #> #   n_tot_weighted <dbl>, n_tot_weighted_low <dbl>, n_tot_weighted_upp <dbl>
+```
+
+``` r
 eusilc_prop$test.stat
 #> 
 #>  Pearson's X^2: Rao & Scott adjustment
 #> 
 #> data:  NextMethod()
 #> F = 475.2, ndf = 5.9608, ddf = 35711.0201, p-value < 2.2e-16
+```
+
+``` r
 eusilc_prop$graph
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ## Auteurs
 
@@ -187,191 +222,4 @@ Nous sommes ouverts à toute remarque afin d’améliorer notre package.
 
 [<img src="man/figures/logo_observatoire_sante_social.png" align="center" height="120/"/>](https://www.ccc-ggc.brussels/fr/observatbru/accueil)[<img src="man/figures/logo_iweps.png" align="center" height="120/"/>](https://www.iweps.be)
 
-<div style="border:1px; background-color:#f8f5e4; padding: 5px 10px 10px 10px; margin-bottom: 10px">
-
-## To do list
-
-### Prioritaire (nécessités ou bugs)
-
-#### Filtrage
-
-Il semble qu’il faille filtrer <u>après</u> la déclaration du design. Si
-on ne le fait pas, on considère le design sur l’objet filtré (avec moins
-de PSU / strates qu’il y en a en réalité), ce qui sous-estime
-potentiellement la distribution d’échantillonnage. Voir :
-
-- <https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i>
-
-- <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
-
-  *=\> De ce fait, j’ai inclus une option de filtre (`filter_exp`) dans
-  les fonctions (qui filtre après la déclaration du design), qui évite
-  de filtrer l’objet avant en dégradant le design. =\> Vérifier que
-  c’est bien OK ! **A FAIRE : expliquer dans la doc !***
-
-#### En général
-
-- Documenter tous les arguments des différentes fonctions + vérifier que
-  les explications sont bien correctes (quelques erreurs repérées,
-  notamment du fait de copier-coller).
-
-- Ordonner les arguments de la même manière pour chaque fonction (voir
-  fichier excel) =\> **après cela, faire pareil pour l’ordre des
-  arguments dans les fonctions de check !**
-
-- Ajouter des exemples pour chaque fonction (pour le site).
-
-- Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce
-  qu’on a fait (il manque des notes).
-
-- Vérifier que `reorder = T` réordonne toujours de la même façon pour
-  les différentes fonctions (`many_prop_group()` =/= `prop_group()`).
-
-- Pour les fonctions qui calculent des proportions : ajouter la
-  possibilité d’un `na.rm.prop = FALSE` pour que la proportion soit
-  calculée sur l’ensemble des individus (les `NA` étant comptabilisés
-  dans le dénominateur).
-
-- Intégrer `load_and_active_fonts()` dans `theme_fonctionr()`, comme ça
-  on la supprime dans les fonctions. Ajouter comme défaut “Roboto”, pour
-  l’usage externe.
-
-- Changer la fonction `scales::pvalue`, qui n’est plus valide
-  (superseded) =\> Faire une fonction maison en interne.
-
-- Ajouter des checks pour les inputs :
-
-  1.  Existence des colonnes dans le dataframe *=\> C’est fait sauf pour
-      les variables de design + pondération ? Est-ce testable, du fait
-      que j’ai mis l’argument `…` ? Investiguer…* ;  
-      **=\> Peut-être trouvé la solution ici ? =\>
-      <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
-
-  2.  Le bon type (logical, factor…) et la bonne taille (pas un vecteur
-      \> 1).  
-      *=\> C’est fait. Améliorer les messages ? (par ex. : indiquer
-      l’argument) Voir :
-      <https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot>*
-
-  3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
-
-  4.  Pas mettre les mêmes colonnes dans les différents arguments
-      (`group`, `var_distrib`, `facet_var`, etc.) ;
-
-- Mettre des conditions pour réaliser les tests (n min, distribution,
-  variances égales…).
-
-- Les cluster / strates / weights n’apparaissent pas dans le message de
-  la console avec les replicates =\> pourquoi ?
-
-- Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des
-  colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs
-  `n_tot_weighted`…).  
-  *=\> François : je propose l’ordre suivant : les variables de
-  ventilation, l’indicateur, l’indicateur_low, l’indicateur_up,
-  n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp,
-  n_tot_weighted, n_tot_weighted_low,
-  n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
-
-#### central_group
-
-- Bypasser l’erreur du test stat avec `tryCatch()`.
-
-#### prop_group
-
-- Bypasser l’erreur du test stat avec `tryCatch()`.
-
-#### distrib_group_d
-
-- Implémenter un test stat lorsqu’il y a des facets =\> via modélisation
-  loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de
-  `survey` (erreurs fréquentes).
-
-#### distrib_d
-
-- Ajouter un test khi2 d’adéquation =\> **Pour rappel, l’import de
-  `survey` dans les dépendances ne sert à rien tant que le test n’est
-  pas implémenté !**
-
-#### many_prop
-
-- Documenter les arguments !
-
-- Ajouter l’export excel.
-
-- Remplacer par many_val et faire des variantes prop, mean et median.
-
-#### many_val_group
-
-- Ajouter l’export excel.
-- Ajouter un check pour la proportion = seules des valeurs `0` - `1` ou
-  `FALSE` - `TRUE`.
-
-**esth_graph**
-
-- Changer le nom.
-
-- Régler le pb si multiples `NA` et voir si un pb se pose avec multiples
-  totaux.
-
-### Améliorations
-
-#### En général
-
-- Voir si on peut créer une fonction commune à toutes les fonctions du
-  package pour créer le ggplot =\> ce serait une large simplification.
-  Pour l’instant, il y a déjà un thème commun `theme_fonctionr`.
-- Créer une fonction de check des inputs indispensables (car redondance
-  entre les 4 fonctions)  
-  *=\> Pour l’instant c’est fait “en dur” : difficultés de créer une
-  fonction du fait de l’usage du tidyverse : il faut sans doute utiliser
-  les fonctions de `rlang`.*
-
-#### central_group
-
-Pouvoir réordonner avec les facet =\> solution avec `tidytext`
-<https://juliasilge.com/blog/reorder-within/>
-
-#### prop_group
-
-- Pouvoir réordonner avec les facet =\> solution avec `tidytext`
-  <https://juliasilge.com/blog/reorder-within/>
-
-#### distrib_group_d
-
-- Ajouter les n par “cellule” ?
-
-- Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-
-- Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\>
-  comment faire vu qu’il y a la palette de couleur des modalités ?  
-  *=\> Tentative en cours d’utiliser des hachures.*
-
-- Réordonner les levels sur la variable `group` ? Mais selon quelle
-  valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la
-  variable `var_distrib` ?
-
-- Possibilité d’indiquer un vecteur avec une palette de couleur pour
-  coller avec le code couleur de notre institution ?
-
-### many_val_group
-
-- Mettre des labels change l’ordre des variables introduites (car
-  l’ordre alphabétique change) =\> quel comportement adopter ?
-
-### Fonctions à créer
-
-#### Univarié
-
-- Densité pour le général (pour variable continue)
-
-#### Bivarié ou 3 variables+
-
-- prop/moyenne/médiane par 2 groupes
-
-- Tableau croisé avec résidus ou couleur par proportion (proportions par
-  c, l, ou total)
-
-- Densité par groupe (pour variable continue)
-
-</div>
+## 

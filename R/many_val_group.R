@@ -106,15 +106,59 @@ many_val_group = function(data,
                           caption = NULL){
 
   # Check des arguments nécessaires
-  if((missing(data) | missing(group) | missing(list_vars) | missing(type)) == TRUE){
-    stop("Les arguments data, group, list_vars et type doivent être remplis")
+  if(missing(type) == TRUE){
+    stop("L'argument type doit être rempli")
+  }
+  if((missing(data) | missing(group) | missing(list_vars)) == TRUE){
+    stop("Les arguments data, group, list_vars doivent être remplis")
   }
 
   # Check des autres arguments
-  check_character(arg = list(type, prop_method, position, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption))
-  check_character_long(arg = list(list_vars_lab))
-  check_logical(arg = list(na.rm.group, show_ci, show_n, show_value, show_lab))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width_y, wrap_width_leg, legend_ncol))
+  check_arg(
+    arg = list(
+      type = type,
+      prop_method = prop_method,
+      position = position,
+      unit = unit,
+      dec = dec,
+      pretty_pal = pretty_pal,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      legend_lab = legend_lab,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      list_vars_lab = list_vars_lab),
+    short = F,
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      na.rm.group = na.rm.group,
+      show_ci = show_ci,
+      show_n = show_n,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y,
+      wrap_width_leg = wrap_width_leg,
+      legend_ncol = legend_ncol
+    ),
+    type = "numeric"
+  )
 
   # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median", "prop"))
@@ -128,9 +172,9 @@ many_val_group = function(data,
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
 
-  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
+  # On transforme les colonnes entrées en un vecteur caractère (plus facile pour le code !)
   vec_list_vars <- all.vars(substitute(list_vars))
-  message("Variable(s) binaires entrées : ", paste(vec_list_vars, collapse = ", "))
+  message("Variable(s) entrées : ", paste(vec_list_vars, collapse = ", "))
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
@@ -148,13 +192,13 @@ many_val_group = function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans list_vars, group, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, group, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans list_vars, group, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, group, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 
@@ -182,7 +226,7 @@ many_val_group = function(data,
     }
   }
 
-  # On supprime les NA sur la/les variable(s) binarisées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) binarisées sont non missing (et pas tout le groupe : ça on s'en fout)
+  # On supprime les NA sur la/les variable(s) entrées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) entrées sont non missing (et pas tout le groupe : ça on s'en fout)
   # On calcule les effectifs avant filtre
   before <- data_W %>%
     summarise(n=unweighted(n()))
@@ -195,7 +239,7 @@ many_val_group = function(data,
   after <- data_W %>%
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) binarisées")
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) entrées")
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W %>%
@@ -341,12 +385,10 @@ many_val_group = function(data,
   if(pretty_pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
-
   #ou la crée avec le package MoMAColors
   if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
-
   # On crée la palette avec le package PrettyCols
   if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))

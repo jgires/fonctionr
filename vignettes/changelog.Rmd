@@ -1,0 +1,170 @@
+---
+title: "Changelog"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Changelog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(fonctionr)
+```
+
+## fonctionr 0.2.1
+
+Date : 2024-02-14
+
+Amélioration des fonctions internes de vérification de la validité des arguments. Celles-ci renvoient un message plus clair pour l'utilisateur.
+
+## fonctionr 0.2.0
+
+-   `prop_group()` : ajout de la possibilité de calculer des proportions en comptant les `NA` au dénominateur avec l'argument `na.var = "include"`. Dans ce cas, l'expression `prop_exp` peut contenir la fonction `is.na()` pour calculer la proportion de valeurs manquantes.
+
+-   `many_val_group()` : changement de l'ordre des labels pour que l'ordre des couleurs corresponde à l'ordre sur le graphique.
+
+-   Ajout d'exemples dans la documentation à partir des données SILC inclues dans le package laeken.
+
+-   Correction de bugs mineurs.
+
+::: {style="border:1px; background-color:#f8f5e4; padding: 5px 10px 10px 10px; margin-bottom: 10px"}
+## To do list
+
+### Prioritaire (nécessités ou bugs)
+
+#### Filtrage
+
+Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. Si on ne le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage. Voir :
+
+-   <https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i>
+
+-   <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
+
+    *=\> De ce fait, j'ai inclus une option de filtre (`filter_exp`) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! **A FAIRE : expliquer dans la doc !***
+
+#### En général
+
+-   Vérifier les messages (corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat).
+
+-   Optimiser le code avec les multiples pipelines avec summarise() qui varient selon que c'est une médiane / moyenne / etc. (`central_group()` ou `many_val_group()`) =\> pénible à maintenir, trouver une simplification.
+
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller).
+
+-   Ajouter des exemples pour chaque fonction (pour le site) : **manque pivot_longer_survey, esth_graph**.
+
+-   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
+
+-   Vérifier que les fonctions ordonnent (ordre "naturel" du facteur et avec `reorder = T`) toujours de la même façon pour les différentes fonctions (`many_prop_group()` =/= `prop_group()`).
+
+-   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> **Voir fichier excel avec ordre des arguments**.\
+    *=\> Fait pour `prop_group()`.*
+
+-   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne.
+
+-   Ajouter des checks pour les inputs :
+
+    1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;\
+        **=\> Peut-être trouvé la solution ici ? =\> <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
+
+    2.  Améliorer les messages\
+        *=\> C'est en cours, déjà fait pour `prop_group()` et `many_val_group()`. Solution trouvée ici : [https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot](#0){.uri}*
+
+    3.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
+
+    4.  Pas mettre les mêmes colonnes dans les différents arguments (`group`, `var_distrib`, `facet_var`, etc.) ;
+
+-   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
+
+-   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
+
+-   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...).\
+    *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
+
+#### central_group
+
+-   Bypasser l'erreur du test stat avec `tryCatch()`.
+
+#### prop_group
+
+-   Bypasser l'erreur du test stat avec `tryCatch()`.
+
+#### distrib_group_d
+
+-   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
+
+#### distrib_d
+
+-   Ajouter un test khi2 d'adéquation =\> **Pour rappel, l'import de `survey` dans les dépendances ne sert à rien tant que le test n'est pas implémenté !**
+
+#### many_prop
+
+-   Ajouter l'export excel.
+
+#### many_val_group
+
+-   Ajouter l'export excel.
+
+-   Ajouter un check pour la proportion =\> seules des valeurs (`0` - `1)` ou (`FALSE` - `TRUE)`.
+
+-   Bricolage pour l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
+
+**esth_graph**
+
+-   Changer le nom.
+
+-   Régler le pb si multiples `NA` + voir si un pb se pose avec multiples totaux.
+
+### Améliorations
+
+#### En général
+
+-   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
+-   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
+    *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
+
+#### central_group
+
+Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
+
+#### prop_group
+
+-   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
+
+#### distrib_group_d
+
+-   Ajouter les n par "cellule" ?
+
+-   Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
+
+-   Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\> comment faire vu qu'il y a la palette de couleur des modalités ?\
+    *=\> Tentative en cours d'utiliser des hachures.*
+
+-   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
+
+-   Possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?
+
+### many_val_group
+
+-   Mettre des labels change l'ordre des variables introduites (car l'ordre alphabétique change) =\> quel comportement adopter ?
+
+### Fonctions à créer
+
+#### Univarié
+
+-   Densité pour le général (pour variable continue)
+
+#### Bivarié ou 3 variables+
+
+-   prop/moyenne/médiane par 2 groupes
+
+-   Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)
+
+-   Densité par groupe (pour variable continue)
+:::

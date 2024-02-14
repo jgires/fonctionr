@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">fonctionr</a>
 
@@ -38,12 +38,30 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/complex_survey_design.html">Manipuler facilement des données avec design complexe</a>
+    <a class="dropdown-item" href="articles/fonctionr_functions.html">Présentation synthétique des fonctions</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="articles/changelog.html">Changelog</a>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/jgires/fonctionr">
+    <span class="fa fa-github fa-lg"></span>
+     
+    github
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -58,6 +76,14 @@
 <!-- badges: end -->
 <p><code>fonctionr</code> est un package R qui a pour but de produire facilement des statistiques descriptives complètes à partir de données individuelles issues de sondages avec un design complexe. Le package inclut des fonctions permettant de produire les résultats les plus usuels (comparaison de proportions, de moyennes, de médianes, de distributions), en tenant compte du plan d’échantillonnage réel grâce au package <code>survey</code>.</p>
 <p><code>fonctionr</code> a l’objectif de faciliter l’inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l’enquête. <code>fonctionr</code> produit également des graphiques des résultats à l’aide de <code>ggplot2</code>, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication.</p>
+<p>Vous trouverez ci-dessous une rapide introduction à <code>fonctionr</code>.<br>
+Pour plus de détails, deux vignettes sont disponibles :</p>
+<div style="border:1px; background-color:#E1F1FA; padding: 5px 10px 10px 10px; margin-bottom: 10px">
+<ul>
+<li><p>La vignette Manipulate complex Survey Design explique de quelle manière <code>fonctionr</code> peut prendre en compte le plan d’échantillonnage réel des sondages.</p></li>
+<li><p>La vignette Overview of functionr functions décrit avec plus de détails les différentes fonctions de <code>fonctionr</code>.</p></li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -90,7 +116,7 @@
 <span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"5"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Retired"</span></span>
 <span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"6"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Permanently disabled"</span></span>
 <span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span></code></pre></div>
-<p><code>fonctionr</code> permet de calculer facilement des moyennes de revenu par groupe grâce à la fonction <code><a href="reference/central_group.html">mean_group()</a></code>. Les groupes, ici de statut économique, sont indiqués dans l’argument <code>group</code>. C’est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l’argument <code>quanti_exp</code> (dans ce cas la variable <code>eqIncome</code> est divisée par 12 à la volée). Le design de l’enquête SILC est pris en considération, puisque l’on peut indiquer les clusters (<code>ids</code>), les strates (<code>strata</code>) et les poids (<code>weight</code>) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.</p>
+<p><code>fonctionr</code> comprend plusieurs fonctions pour réaliser facilement des opérations descriptives courantes. <code><a href="reference/central_group.html">mean_group()</a></code> permet par exemple de calculer des moyennes de revenu par groupe. Les groupes, ici de statut économique, sont indiqués dans l’argument <code>group</code>. C’est la moyenne du revenu mensuel qui est calculée, car on peut indiquer soit une variable quantitative, soit une expression pour calculer celle-ci, directement dans l’argument <code>quanti_exp</code> (dans ce cas la variable <code>eqIncome</code> est divisée par 12 à la volée). Le design de l’enquête SILC est pris en considération, puisque l’on peut indiquer les clusters (<code>ids</code>), les strates (<code>strata</code>) et les poids (<code>weight</code>) dans la fonction. Les intervalles de confiance et un test de différence des moyennes sont calculés en conséquence.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -102,12 +128,8 @@
 <span>  reorder <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Mean of equivalised income in household by status of individuals"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span>,</span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Input: data.frame</span></span>
-<span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
-<span><span class="co">#&gt; Variable(s) détectée(s) dans quanti_exp : eqIncome</span></span>
-<span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp</span></span></code></pre></div>
-<p>La fonction produit un tableau de résultats, le résultat d’un test statistique et un graphique ggplot qui regroupe l’ensemble, prêt à être inséré dans une publication :</p>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>La fonction produit une liste encapsulant plusieurs résultats dans des objets différents. L’objet <code>tab</code> comprend un data.frame avec les résultats au format “tidy” :</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 8</span></span>
@@ -121,15 +143,19 @@
 <span><span class="co">#&gt; 6 Working full time   1895.    1864.    1926.     5162   2869868.       2797833.</span></span>
 <span><span class="co">#&gt; 7 Working part time   1591.    1542.    1639.     1160    636121.        600709.</span></span>
 <span><span class="co">#&gt; 8 Total               1703.    1679.    1726.    12107   6757264.       6683738.</span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span>
-<span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">test.stat</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></code></pre></div>
+<p>L’objet <code>test.stat</code> comprend les résultats d’un test d’hypothèse prenant en compte le design de l’échantillon. Le test pratiqué est dépendant de la statistique calculée. Dans le cas de <code><a href="reference/central_group.html">mean_group()</a></code>, il s’agit d’une ANOVA avec comme hypothèse nulle l’égalité entre les moyennes de tous les groupes :</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">test.stat</span></span>
 <span><span class="co">#&gt; Wald test for pl030_rec</span></span>
 <span><span class="co">#&gt;  in svyglm(formula = fmla, design = data_W)</span></span>
-<span><span class="co">#&gt; F =  141.5453  on  6  and  5985  df: p= &lt; 2.22e-16</span></span>
-<span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<p><code>fonctionr</code> comprend plusieurs fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction <code><a href="reference/prop_group.html">prop_group()</a></code>. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l’argument <code>prop_exp</code> : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; F =  141.5453  on  6  and  5985  df: p= &lt; 2.22e-16</span></span></code></pre></div>
+<p>L’objet <code>graph</code> comprend un graphique ggplot présentant les résultats et prêt à être inséré dans une publication :</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<p><code>fonctionr</code> comprend plusieurs autres fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction <code><a href="reference/prop_group.html">prop_group()</a></code>. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l’argument <code>prop_exp</code> : dans ce cas la proportion à recevoir des revenus du chômage (= supérieurs à 0).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
@@ -140,13 +166,10 @@
 <span>  reorder <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Proportion of individuals receiving income from unemployment in their household"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Input: data.frame</span></span>
-<span><span class="co">#&gt; Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span></span>
-<span><span class="co">#&gt; Variable(s) détectée(s) dans l'expression : py090n</span></span>
-<span><span class="co">#&gt; 0 lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression</span></span>
-<span><span class="co">#&gt; Processing time: 0.36 sec</span></span>
-<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Le résultat contient à nouveau un tableau, le résultat d’un test d’hypothèse et un graphique ggplot. Dans le cas de <code>prop_test()</code>, le test d’hypothèse est un khi2 avec comme hypothèse nulle l’égalité de toutes les proportions.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 11</span></span>
 <span><span class="co">#&gt;   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;                      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;int&gt;           &lt;dbl&gt;</span></span>
@@ -159,15 +182,17 @@
 <span><span class="co">#&gt; 7 Working part time         0.110    0.0921   0.130      1160          69869.</span></span>
 <span><span class="co">#&gt; 8 Total                     0.0916   0.0863   0.0971    12107         619054.</span></span>
 <span><span class="co">#&gt; # ℹ 5 more variables: n_true_weighted_low &lt;dbl&gt;, n_true_weighted_upp &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   n_tot_weighted &lt;dbl&gt;, n_tot_weighted_low &lt;dbl&gt;, n_tot_weighted_upp &lt;dbl&gt;</span></span>
-<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">test.stat</span></span>
+<span><span class="co">#&gt; #   n_tot_weighted &lt;dbl&gt;, n_tot_weighted_low &lt;dbl&gt;, n_tot_weighted_upp &lt;dbl&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">test.stat</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Pearson's X^2: Rao &amp; Scott adjustment</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  NextMethod()</span></span>
-<span><span class="co">#&gt; F = 475.2, ndf = 5.9608, ddf = 35711.0201, p-value &lt; 2.2e-16</span></span>
-<span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<span><span class="co">#&gt; F = 475.2, ndf = 5.9608, ddf = 35711.0201, p-value &lt; 2.2e-16</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="auteurs">Auteurs<a class="anchor" aria-label="anchor" href="#auteurs"></a>
@@ -177,166 +202,8 @@
 <p>Nous sommes ouverts à toute remarque afin d’améliorer notre package.</p>
 <p><a href="https://www.ccc-ggc.brussels/fr/observatbru/accueil" class="external-link"><img src="reference/figures/logo_observatoire_sante_social.png" align="center" height="120/"></a><a href="https://www.iweps.be" class="external-link"><img src="reference/figures/logo_iweps.png" align="center" height="120/"></a></p>
 </div>
-<div class="section level2" style="border:1px; background-color:#f8f5e4; padding: 5px 10px 10px 10px; margin-bottom: 10px">
-<h2 id="to-do-list">To do list<a class="anchor" aria-label="anchor" href="#to-do-list"></a>
-</h2>
-<div class="section level3">
-<h3 id="prioritaire-nécessités-ou-bugs">Prioritaire (nécessités ou bugs)<a class="anchor" aria-label="anchor" href="#prioritaire-n%C3%A9cessit%C3%A9s-ou-bugs"></a>
-</h3>
-<div class="section level4">
-<h4 id="filtrage">Filtrage<a class="anchor" aria-label="anchor" href="#filtrage"></a>
-</h4>
-<p>Il semble qu’il faille filtrer <u>après</u> la déclaration du design. Si on ne le fait pas, on considère le design sur l’objet filtré (avec moins de PSU / strates qu’il y en a en réalité), ce qui sous-estime potentiellement la distribution d’échantillonnage. Voir :</p>
-<ul>
-<li><p><a href="https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i" class="external-link uri">https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i</a></p></li>
-<li>
-<p><a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri">https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/</a></p>
-<p><em>=&gt; De ce fait, j’ai inclus une option de filtre (<code>filter_exp</code>) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l’objet avant en dégradant le design. =&gt; Vérifier que c’est bien OK ! <strong>A FAIRE : expliquer dans la doc !</strong></em></p>
-</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
-</h4>
-<ul>
-<li><p>Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, notamment du fait de copier-coller).</p></li>
-<li><p>Ordonner les arguments de la même manière pour chaque fonction (voir fichier excel) =&gt; <strong>après cela, faire pareil pour l’ordre des arguments dans les fonctions de check !</strong></p></li>
-<li><p>Ajouter des exemples pour chaque fonction (pour le site).</p></li>
-<li><p>Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce qu’on a fait (il manque des notes).</p></li>
-<li><p>Vérifier que <code>reorder = T</code> réordonne toujours de la même façon pour les différentes fonctions (<code><a href="reference/many_val_group.html">many_prop_group()</a></code> =/= <code><a href="reference/prop_group.html">prop_group()</a></code>).</p></li>
-<li><p>Pour les fonctions qui calculent des proportions : ajouter la possibilité d’un <code>na.rm.prop = FALSE</code> pour que la proportion soit calculée sur l’ensemble des individus (les <code>NA</code> étant comptabilisés dans le dénominateur).</p></li>
-<li><p>Intégrer <code><a href="reference/load_and_active_fonts.html">load_and_active_fonts()</a></code> dans <code><a href="reference/theme_fonctionr.html">theme_fonctionr()</a></code>, comme ça on la supprime dans les fonctions. Ajouter comme défaut “Roboto”, pour l’usage externe.</p></li>
-<li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
-<li>
-<p>Ajouter des checks pour les inputs :</p>
-<ol style="list-style-type: decimal">
-<li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;<br><strong>=&gt; Peut-être trouvé la solution ici ? =&gt; <a href="https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package" class="external-link uri">https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package</a></strong></p></li>
-<li><p>Le bon type (logical, factor…) et la bonne taille (pas un vecteur &gt; 1).<br><em>=&gt; C’est fait. Améliorer les messages ? (par ex. : indiquer l’argument) Voir : <a href="https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot" class="external-link uri">https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot</a></em></p></li>
-<li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;</p></li>
-<li><p>Pas mettre les mêmes colonnes dans les différents arguments (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>, etc.) ;</p></li>
-</ol>
-</li>
-<li><p>Mettre des conditions pour réaliser les tests (n min, distribution, variances égales…).</p></li>
-<li><p>Les cluster / strates / weights n’apparaissent pas dans le message de la console avec les replicates =&gt; pourquoi ?</p></li>
-<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> + harmoniser les noms des colonnes entre fonctions (<code>n</code> vs <code>n_tot</code>, <code>n_weighted</code> vs <code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="central_group">central_group<a class="anchor" aria-label="anchor" href="#central_group"></a>
-</h4>
-<ul>
-<li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="prop_group">prop_group<a class="anchor" aria-label="anchor" href="#prop_group"></a>
-</h4>
-<ul>
-<li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="distrib_group_d">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d"></a>
-</h4>
-<ul>
-<li>Implémenter un test stat lorsqu’il y a des facets =&gt; via modélisation loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de <code>survey</code> (erreurs fréquentes).</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="distrib_d">distrib_d<a class="anchor" aria-label="anchor" href="#distrib_d"></a>
-</h4>
-<ul>
-<li>Ajouter un test khi2 d’adéquation =&gt; <strong>Pour rappel, l’import de <code>survey</code> dans les dépendances ne sert à rien tant que le test n’est pas implémenté !</strong>
-</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="many_prop">many_prop<a class="anchor" aria-label="anchor" href="#many_prop"></a>
-</h4>
-<ul>
-<li><p>Documenter les arguments !</p></li>
-<li><p>Ajouter l’export excel.</p></li>
-<li><p>Remplacer par many_val et faire des variantes prop, mean et median.</p></li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
-</h4>
-<ul>
-<li>Ajouter l’export excel.</li>
-<li>Ajouter un check pour la proportion = seules des valeurs <code>0</code> - <code>1</code> ou <code>FALSE</code> - <code>TRUE</code>.</li>
-</ul>
-<p><strong>esth_graph</strong></p>
-<ul>
-<li><p>Changer le nom.</p></li>
-<li><p>Régler le pb si multiples <code>NA</code> et voir si un pb se pose avec multiples totaux.</p></li>
-</ul>
-</div>
-</div>
-<div class="section level3">
-<h3 id="améliorations">Améliorations<a class="anchor" aria-label="anchor" href="#am%C3%A9liorations"></a>
-</h3>
-<div class="section level4">
-<h4 id="en-général-1">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral-1"></a>
-</h4>
-<ul>
-<li>Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =&gt; ce serait une large simplification. Pour l’instant, il y a déjà un thème commun <code>theme_fonctionr</code>.</li>
-<li>Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)<br><em>=&gt; Pour l’instant c’est fait “en dur” : difficultés de créer une fonction du fait de l’usage du tidyverse : il faut sans doute utiliser les fonctions de <code>rlang</code>.</em>
-</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="central_group-1">central_group<a class="anchor" aria-label="anchor" href="#central_group-1"></a>
-</h4>
-<p>Pouvoir réordonner avec les facet =&gt; solution avec <code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a></p>
-</div>
-<div class="section level4">
-<h4 id="prop_group-1">prop_group<a class="anchor" aria-label="anchor" href="#prop_group-1"></a>
-</h4>
-<ul>
-<li>Pouvoir réordonner avec les facet =&gt; solution avec <code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a>
-</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="distrib_group_d-1">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d-1"></a>
-</h4>
-<ul>
-<li><p>Ajouter les n par “cellule” ?</p></li>
-<li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)</p></li>
-<li><p>Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =&gt; comment faire vu qu’il y a la palette de couleur des modalités ?<br><em>=&gt; Tentative en cours d’utiliser des hachures.</em></p></li>
-<li><p>Réordonner les levels sur la variable <code>group</code> ? Mais selon quelle valeur (vu qu’il y en a plusieurs) ? Celle du premier level de la variable <code>var_distrib</code> ?</p></li>
-<li><p>Possibilité d’indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?</p></li>
-</ul>
-</div>
-</div>
-<div class="section level3">
-<h3 id="many_val_group-1">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group-1"></a>
-</h3>
-<ul>
-<li>Mettre des labels change l’ordre des variables introduites (car l’ordre alphabétique change) =&gt; quel comportement adopter ?</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>
-</h3>
-<div class="section level4">
-<h4 id="univarié">Univarié<a class="anchor" aria-label="anchor" href="#univari%C3%A9"></a>
-</h4>
-<ul>
-<li>Densité pour le général (pour variable continue)</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="bivarié-ou-3-variables">Bivarié ou 3 variables+<a class="anchor" aria-label="anchor" href="#bivari%C3%A9-ou-3-variables"></a>
-</h4>
-<ul>
-<li><p>prop/moyenne/médiane par 2 groupes</p></li>
-<li><p>Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)</p></li>
-<li><p>Densité par groupe (pour variable continue)</p></li>
-</ul>
-</div>
-</div>
+<div class="section level2">
+<h2 id="section"></h2>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

@@ -181,67 +181,31 @@ export_excel <- function(tab_excel,
 #' Internal function to check if arguments are character vectors of length 1
 #'
 #' @param arg List of arguments to check
+#' @param short Chek if arguments lenght is not superior to 1
+#' @param type Type of check
 #'
 #' @noRd
 #'
-check_character <- function(arg) {
+
+# Solution trouvée ici pour les messages : https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot
+
+check_arg <- function(arg,
+                      short = T,
+                      type) {
   for(check_i in seq_along(arg)){
     if(!is.null(arg[[check_i]])){
-      stopifnot("Un des arguments n'est pas au bon format (caractère)" = is.character(arg[[check_i]]),
-                "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
-    }
-  }
-}
-
-
-#' check_character_long
-#'
-#' Internal function to check if arguments are character vectors of any length
-#'
-#' @param arg List of arguments to check
-#'
-#' @noRd
-#'
-check_character_long <- function(arg) {
-  for(check_i in seq_along(arg)){
-    if(!is.null(arg[[check_i]])){
-      stopifnot("Un des arguments n'est pas au bon format (caractère)" = is.character(arg[[check_i]]))
-    }
-  }
-}
-
-
-#' check_logical
-#'
-#' Internal function to check if arguments are logical vectors of length 1
-#'
-#' @param arg List of arguments to check
-#'
-#' @noRd
-#'
-check_logical <- function(arg) {
-  for(check_i in seq_along(arg)){
-    if(!is.null(arg[[check_i]])){
-      stopifnot("Un des arguments n'est pas au bon format (logique)" = is.logical(arg[[check_i]]),
-                "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
-    }
-  }
-}
-
-
-#' check_numeric
-#'
-#' Internal function to check if arguments are numeric vectors of length 1
-#'
-#' @param arg List of arguments to check
-#'
-#' @noRd
-#'
-check_numeric <- function(arg) {
-  for(check_i in seq_along(arg)){
-    if(!is.null(arg[[check_i]])){
-      stopifnot("Un des arguments n'est pas au bon format (numérique)" = is.numeric(arg[[check_i]]),
-                "Un des arguments n'a pas la bonne longueur (max 1)" = length(arg[[check_i]]) == 1)
+      if(short == T){
+        if (!length(arg[[check_i]]) == 1) stop(paste("L'argument", names(arg)[[check_i]], "n'a pas la bonne longueur (max 1)"), call. = FALSE)
+      }
+      if(type == "character"){
+        if (!is.character(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (caractère)"), call. = FALSE)
+      }
+      if(type == "logical"){
+        if (!is.logical(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (logique)"), call. = FALSE)
+      }
+      if(type == "numeric"){
+        if (!is.numeric(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (numérique)"), call. = FALSE)
+      }
     }
   }
 }

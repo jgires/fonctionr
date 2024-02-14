@@ -96,10 +96,45 @@ many_prop = function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, dec, fill, font, title, subtitle, xlab, ylab, caption))
-  check_character_long(arg = list(list_vars_lab))
-  check_logical(arg = list(reorder, show_ci, show_n, show_value, show_lab))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
+  check_arg(
+    arg = list(
+      prop_method = prop_method,
+      unit = unit,
+      dec = dec,
+      fill = fill,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(list_vars_lab = list_vars_lab),
+    short = F,
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      reorder = reorder,
+      show_ci = show_ci,
+      show_n = show_n,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -109,9 +144,9 @@ many_prop = function(data,
   quo_facet <- enquo(facet_var)
   quo_filter <- enquo(filter_exp)
 
-  # On transforme les colonnes binarisée en un vecteur caractère (plus facile pour le code !)
+  # On transforme les colonnes entrées en un vecteur caractère (plus facile pour le code !)
   vec_list_vars <- all.vars(substitute(list_vars))
-  message("Variable(s) binaires entrées : ", paste(vec_list_vars, collapse = ", "))
+  message("Variable(s) entrées : ", paste(vec_list_vars, collapse = ", "))
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
@@ -129,13 +164,13 @@ many_prop = function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans list_vars, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 
@@ -158,7 +193,7 @@ many_prop = function(data,
       filter(!is.na({{ facet_var }}))
   }
 
-  # On supprime les NA sur la/les variable(s) binarisées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) binarisées sont non missing (et pas tout le groupe : ça on s'en fout)
+  # On supprime les NA sur la/les variable(s) entrées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) entrées sont non missing (et pas tout le groupe : ça on s'en fout)
   # On calcule les effectifs avant filtre
   before <- data_W %>%
     summarise(n=unweighted(n()))
@@ -171,7 +206,7 @@ many_prop = function(data,
   after <- data_W %>%
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) binarisées")
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) entrées")
 
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {

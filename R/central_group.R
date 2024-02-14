@@ -100,14 +100,50 @@ central_group <- function(data,
                           export_path = NULL) {
 
   # Un check impératif
+  if(missing(type) == TRUE){
+    stop("L'argument type doit être rempli")
+  }
   if((missing(data) | missing(group) | missing(quanti_exp)) == TRUE){
     stop("Les arguments data, group et quanti_exp doivent être remplis")
   }
 
   # Check des autres arguments
-  check_character(arg = list(type, total_name, unit, dec, fill, font, title, subtitle, xlab, ylab, caption, export_path))
-  check_logical(arg = list(na.rm.group, reorder, show_ci, show_n, show_value, show_lab))
-  check_numeric(arg = list(digits, dodge, wrap_width_y))
+  check_arg(
+    arg = list(
+      type = type,
+      total_name = total_name,
+      unit = unit,
+      dec = dec,
+      fill = fill,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption,
+      export_path = export_path
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      na.rm.group = na.rm.group,
+      reorder = reorder,
+      show_ci = show_ci,
+      show_n = show_n,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
 
   # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median"))
@@ -139,13 +175,13 @@ central_group <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 

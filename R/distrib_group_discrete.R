@@ -113,9 +113,43 @@ distrib_group_discrete <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, dec, pretty_pal, font, title, subtitle, xlab, ylab, legend_lab, caption, export_path))
-  check_logical(arg = list(na.rm.group, show_value, show_lab))
-  check_numeric(arg = list(scale, digits, direction, dodge, wrap_width_y, wrap_width_leg, legend_ncol))
+  check_arg(
+    arg = list(
+      prop_method = prop_method,
+      unit = unit,
+      dec = dec,
+      pretty_pal = pretty_pal,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      legend_lab = legend_lab,
+      caption = caption,
+      export_path = export_path
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      na.rm.group = na.rm.group,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      direction = direction,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y,
+      wrap_width_leg = wrap_width_leg,
+      legend_ncol = legend_ncol
+    ),
+    type = "numeric"
+  )
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -141,21 +175,14 @@ distrib_group_discrete <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
-  }
-
-  # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
-  # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
-  names_expression <- all.names(substitute(prop_exp))
-  if("is.na" %in% names_expression){
-    stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
   }
 
   # On convertit d'abord en objet srvyr
@@ -265,12 +292,10 @@ distrib_group_discrete <- function(data,
   if(pretty_pal %in% names(MetBrewer::MetPalettes)){
   palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
-
   #ou la crée avec le package MoMAColors
   if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
-
   # On crée la palette avecle package PrettyCols
   if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(prettycols(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))

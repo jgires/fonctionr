@@ -112,9 +112,44 @@ prop_group <- function(data,
   }
 
   # Check des autres arguments
-  check_character(arg = list(na.var, prop_method, total_name, unit, dec, fill, font, title, subtitle, xlab, ylab, caption, export_path))
-  check_logical(arg = list(reorder, show_ci, show_n, show_value, show_lab, na.rm.group))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
+  check_arg(
+    arg = list(
+      na.var = na.var,
+      prop_method = prop_method,
+      total_name = total_name,
+      unit = unit,
+      dec = dec,
+      fill = fill,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption,
+      export_path = export_path
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      reorder = reorder,
+      show_ci = show_ci,
+      show_n = show_n,
+      show_value = show_value,
+      show_lab = show_lab,
+      na.rm.group = na.rm.group
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
 
   # Check que les arguments avec choix précis sont les bons
   match.arg(na.var, choices = c("rm", "include"))
@@ -146,13 +181,13 @@ prop_group <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 

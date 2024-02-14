@@ -1,7 +1,7 @@
 Package: fonctionr
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
@@ -30,5 +30,8 @@ Imports:
     showtext,
     sysfonts
 Suggests:
-    laeken
+    knitr,
+    laeken,
+    rmarkdown
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr

@@ -74,9 +74,37 @@ esth_graph <- function(tab,
   }
 
   # Check des autres arguments
-  check_character(arg = list(name_total, unit, dec, fill, font, title, subtitle, xlab, ylab, caption))
-  check_logical(arg = list(reorder, show_value))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
+  check_arg(
+    arg = list(
+      name_total = name_total,
+      unit = unit,
+      dec = dec,
+      fill = fill,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      reorder = reorder,
+      show_value = show_value
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
 
   # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing

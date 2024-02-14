@@ -103,9 +103,41 @@ distrib_discrete <- function(data, # Données en format srvyr
   }
 
   # Check des autres arguments
-  check_character(arg = list(prop_method, unit, dec, fill, font, title, subtitle, xlab, caption, export_path))
-  check_logical(arg = list(show_n, show_lab, show_value, reorder, show_ci, na.rm.group))
-  check_numeric(arg = list(scale, digits, dodge, wrap_width_y))
+  check_arg(
+    arg = list(
+      prop_method = prop_method,
+      unit = unit,
+      dec = dec,
+      fill = fill,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      caption = caption,
+      export_path = export_path
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      show_n = show_n,
+      show_lab = show_lab,
+      show_value = show_value,
+      reorder = reorder,
+      show_ci = show_ci,
+      na.rm.group = na.rm.group
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      scale = scale,
+      digits = digits,
+      dodge = dodge,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -131,13 +163,13 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 
