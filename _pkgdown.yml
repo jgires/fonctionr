@@ -1,7 +1,7 @@
 url: ~
 template:
   bootstrap: 5
-  bootswatch: flatly
+  bootswatch: yeti
 
 navbar:
   left:
@@ -19,3 +19,4 @@ navbar:
     - icon: fa-github fa-lg
       text: "github"
       href: https://github.com/jgires/fonctionr
+      

@@ -26,17 +26,19 @@ résultats à l’aide de `ggplot2`, dans le but de pouvoir intégrer
 directement et rapidement les résultats produits dans un rapport/une
 publication.
 
-Vous trouverez ci-dessous une rapide introduction à `fonctionr`.  
-Pour plus de détails, deux vignettes sont disponibles :
+Vous trouverez ci-dessous une rapide introduction à `fonctionr`. Pour
+plus de détails, deux vignettes sont disponibles :
 
-<div style="border:1px; background-color:#E1F1FA; padding: 5px 10px 10px 10px; margin-bottom: 10px">
+<div style="border:1px; width: 70%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
-- La vignette Manipulate complex Survey Design explique de quelle
-  manière `fonctionr` peut prendre en compte le plan d’échantillonnage
-  réel des sondages.
+- La vignette [Manipulate complex Survey
+  Design](https://jgires.github.io/fonctionr/articles/complex_survey_design.html)
+  explique de quelle manière `fonctionr` peut prendre en compte le plan
+  d’échantillonnage réel des sondages.
 
-- La vignette Overview of functionr functions décrit avec plus de
-  détails les différentes fonctions de `fonctionr`.
+- La vignette [Overview of functionr
+  functions](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
+  décrit avec plus de détails les différentes fonctions de `fonctionr`.
 
 </div>
 

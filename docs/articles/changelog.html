@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,14 +82,14 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fonctionr</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'MoMAColors':</span></span>
-<span><span class="co">#&gt;   method        from     </span></span>
-<span><span class="co">#&gt;   print.palette MetBrewer</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'PrettyCols':</span></span>
-<span><span class="co">#&gt;   method        from      </span></span>
-<span><span class="co">#&gt;   print.palette MoMAColors</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="fonctionr-0-2-1">fonctionr 0.2.1<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-1"></a>
+</h2>
+<p>Date : 2024-02-14</p>
+<p>Amélioration des fonctions internes de vérification de la validité
+des arguments. Celles-ci renvoient un message plus clair pour
+l’utilisateur.</p>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-0">fonctionr 0.2.0<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-0"></a>
 </h2>
@@ -139,6 +139,10 @@ expliquer dans la doc !</strong></em></p>
 <li><p>Vérifier les messages (corriger, traduire, ajouter des guillemets
 pour les arguments dans les checks, mieux écrire les résultats des tests
 stat).</p></li>
+<li><p>Optimiser le code avec les multiples pipelines avec summarise()
+qui varient selon que c’est une médiane / moyenne / etc.
+(<code><a href="../reference/central_group.html">central_group()</a></code> ou <code><a href="../reference/many_val_group.html">many_val_group()</a></code>) =&gt;
+pénible à maintenir, trouver une simplification.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller).</p></li>
