@@ -491,6 +491,7 @@ distrib_group_discrete <- function(data,
                                         row.names = NULL)
       }
     }
+    # Pour faceting, test pas encore implémenté => on crée un data.frame à la main
     if (!quo_is_null(quo_facet)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
                                     Value = "Test pas encore implémenté avec le faceting",

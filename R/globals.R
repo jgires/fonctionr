@@ -4,7 +4,7 @@ globalVariables(unique(c(
   # central_group:
   "indice", "indice_low", "indice_upp", "median", "n_sample",
   # distrib_discrete:
-  "median", "n_sample", "n_weighted_low", "n_weighted_upp", "prop", "prop_low", "prop_upp",
+  "median", "n_sample", "n_weighted_low", "n_weighted_upp", "prop", "prop_low", "prop_upp", "group",
   # distrib_group_discrete:
   "prop",
   # many_prop:

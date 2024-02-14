@@ -12,6 +12,7 @@ distrib_discrete(
   filter_exp = NULL,
   ...,
   na.rm.group = T,
+  probs = NULL,
   prop_method = "beta",
   reorder = FALSE,
   show_ci = T,
@@ -48,6 +49,8 @@ distrib_d(...)
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
 \item{na.rm.group}{TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.}
+
+\item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1)}
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 

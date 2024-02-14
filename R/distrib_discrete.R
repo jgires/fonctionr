@@ -8,6 +8,7 @@
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.
+#' @param probs Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1)
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -76,6 +77,7 @@ distrib_discrete <- function(data, # Données en format srvyr
                              na.rm.group = T,
                              # na.rm.facet = T,
                              # na.var = "rm",
+                             probs = NULL,
                              prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                              reorder = FALSE,
                              show_ci = T,
@@ -137,6 +139,13 @@ distrib_discrete <- function(data, # Données en format srvyr
       wrap_width_y = wrap_width_y
     ),
     type = "numeric"
+  )
+  check_arg(
+    arg = list(
+      probs = probs
+    ),
+    type = "numeric",
+    short = F
   )
 
   # Petite fonction utile
@@ -209,6 +218,36 @@ distrib_discrete <- function(data, # Données en format srvyr
         "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
+  # Ici je crée une copie des données dans data_W_NA
+  # L'idée est de recoder les NA des 2 variables group et facet_var en level "NA", pour que le test stat s'applique aussi aux NA
+  # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
+  if(na.rm.group == F){
+    data_W_NA <- data_W %>%
+      # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
+      mutate("{{ quali_var }}" := droplevels(fct_na_value_to_level({{ quali_var }}, "NA"))
+      )
+    if(!quo_is_null(quo_facet)){
+      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
+        mutate("{{ facet_var }}" := droplevels(fct_na_value_to_level({{ facet_var }}, "NA"))
+        )
+    }
+  }
+
+  # On réalise un test khi2 d'adéquation sur quali_var
+  if(!is.null(probs)){ # Uniquement si probs est non null
+    if(quo_is_null(quo_facet)){ # Uniquement sans facet (pour le moment)
+      quali_var_fmla <- as.character(substitute(quali_var))
+      fmla <- as.formula(paste("~", quali_var_fmla))
+
+      if(na.rm.group == F){
+        test.stat <- svygofchisq(fmla, data_W_NA, p = probs)
+      }
+      if(na.rm.group == T){
+        test.stat <- svygofchisq(fmla, data_W, p = probs)
+      }
+    }
+  }
+
   # Faire la table ------------------
 
   # On calcule les fréquences relatives
@@ -235,7 +274,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   palette <- c(rep(fill, nlevels(tab[[deparse(substitute(quali_var))]])))
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(tab$prop, na.rm.group = TRUE)
+  max_ggplot <- max(tab$prop, na.rm = TRUE)
 
   if (reorder == T ) {
     # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
@@ -273,6 +312,12 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # Le graphique proprement dit
 
+  # Pour caption
+
+  if (!is.null(caption) & !is.null(probs) & quo_is_null(quo_facet)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
   graph <- tab %>%
     ggplot(aes(
       x = {{ quali_var }},
@@ -298,7 +343,10 @@ distrib_discrete <- function(data, # Données en format srvyr
     coord_flip() +
     labs(title = title,
          subtitle = subtitle,
-         caption = caption)
+         caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
+           "Khi2 d'adéquation : ", pvalue(test.stat$p.value, add_p = T),
+           caption) else caption
+         )
 
   # Ajouter les axes au besoin
   if(show_lab == TRUE){
@@ -410,10 +458,14 @@ distrib_discrete <- function(data, # Données en format srvyr
       )
   }
 
-  # Retourner les résultat
+  # On crée l'objet final
   res <- list()
   res$tab <- tab
   res$graph <- graph
+  # Pour l'instant, test uniquement si pas de facet
+  if(!is.null(probs) & quo_is_null(quo_facet)){
+    res$test.stat <- test.stat
+  }
 
   if (!is.null(export_path)) {
     # L'export en excel
@@ -421,10 +473,23 @@ distrib_discrete <- function(data, # Données en format srvyr
     # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
-    # On crée ici manuellement le dataframe pour le test, celui-ci n'étant pas encore implémenté
-    test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                  Value = "Test pas encore implémenté pour quali_distrib()",
-                                  row.names = NULL)
+    # On transforme le test stat en dataframe
+    if (quo_is_null(quo_facet)) {
+      test_stat_excel <- test.stat %>%
+        broom::tidy() %>%
+        t() %>%
+        as.data.frame()
+      test_stat_excel$names <- rownames(test_stat_excel)
+      test_stat_excel <- test_stat_excel[, c(2,1)]
+      names(test_stat_excel)[1] <- "Parameter"
+      names(test_stat_excel)[2] <- "Value"
+    }
+    # Pour faceting, test pas encore implémenté => on crée un data.frame à la main
+    if (!quo_is_null(quo_facet)) {
+      test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                    Value = "Test pas encore implémenté avec le faceting",
+                                    row.names = NULL)
+    }
 
     # J'exporte les résultats en Excel
     export_excel(tab_excel = tab,

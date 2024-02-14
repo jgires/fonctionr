@@ -18,11 +18,19 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.2
+
+Date : 2024-02-14
+
+-   Implémentation du test statistique pour `distrib_discrete()`.
+
+-   Correction d'un bug découverrt à cette occasion, qui empêchait de faire fonctionner `distrib_discrete()` avec `na.rm.group = FALSE`.
+
 ## fonctionr 0.2.1
 
 Date : 2024-02-14
 
-Amélioration des fonctions internes de vérification de la validité des arguments. Celles-ci renvoient un message plus clair pour l'utilisateur.
+-   Amélioration des fonctions internes de vérification de la validité des arguments. Celles-ci renvoient désormais un message plus clair pour l'utilisateur.
 
 ## fonctionr 0.2.0
 
@@ -51,15 +59,17 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des foncitons `many_prop()` et `many_val_group()`**.
+
+-   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
+
+-   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> **de gros bugs encore découverts ! (copier-coller de fonction avec de mauvais noms d'arguments !)**
+
 -   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 
 -   Optimiser le code dupliqués des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des foncitons `many_prop()` et `many_val_group()`**.
-
 -   Ajouter des exemples pour chaque fonction (pour le site) : **manque pivot_longer_survey, esth_graph**.
-
--   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
 -   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> **Voir fichier excel avec ordre des arguments**.\
     *=\> Fait pour `prop_group()`.*
@@ -93,10 +103,6 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 #### distrib_group_d
 
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
-
-#### distrib_d
-
--   Ajouter un test khi2 d'adéquation =\> **Pour rappel, l'import de `survey` dans les dépendances ne sert à rien tant que le test n'est pas implémenté !**
 
 #### many_prop
 

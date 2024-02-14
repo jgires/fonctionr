@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,12 +83,26 @@
     
     
 <div class="section level2">
+<h2 id="fonctionr-0-2-2">fonctionr 0.2.2<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-2"></a>
+</h2>
+<p>Date : 2024-02-14</p>
+<ul>
+<li><p>Implémentation du test statistique pour
+<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>.</p></li>
+<li><p>Correction d’un bug découverrt à cette occasion, qui empêchait de
+faire fonctionner <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> avec
+<code>na.rm.group = FALSE</code>.</p></li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="fonctionr-0-2-1">fonctionr 0.2.1<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-1"></a>
 </h2>
 <p>Date : 2024-02-14</p>
-<p>Amélioration des fonctions internes de vérification de la validité
-des arguments. Celles-ci renvoient un message plus clair pour
-l’utilisateur.</p>
+<ul>
+<li>Amélioration des fonctions internes de vérification de la validité
+des arguments. Celles-ci renvoient désormais un message plus clair pour
+l’utilisateur.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-0">fonctionr 0.2.0<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-0"></a>
@@ -136,6 +150,17 @@ expliquer dans la doc !</strong></em></p>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Documenter tous les arguments des différentes fonctions +
+vérifier que les explications sont bien correctes (quelques erreurs
+repérées, par ex. à cause de copier-coller). <strong>Il manque les
+descriptions générales des foncitons <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code></strong>.</p></li>
+<li><p>Vérifier que les scripts sont bien commentés pour qu’on se
+rappelle ce qu’on a fait (il manque des notes).</p></li>
+<li><p>Passer le code de chaque fonction en revue à l’occasion de la
+vérification des commentaires =&gt; <strong>de gros bugs encore
+découverts ! (copier-coller de fonction avec de mauvais noms d’arguments
+!)</strong></p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
 corriger, traduire, ajouter des guillemets pour les arguments dans les
 checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
@@ -145,15 +170,8 @@ est l’hypothèse nulle).</p></li>
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> : ce sont des quasi copies selon que c’est
 une médiane / moyenne / etc. =&gt; pénible à maintenir, trouver une
 simplification.</p></li>
-<li><p>Documenter tous les arguments des différentes fonctions +
-vérifier que les explications sont bien correctes (quelques erreurs
-repérées, par ex. à cause de copier-coller). <strong>Il manque les
-descriptions générales des foncitons <code><a href="../reference/many_prop.html">many_prop()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code></strong>.</p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) :
 <strong>manque pivot_longer_survey, esth_graph</strong>.</p></li>
-<li><p>Vérifier que les scripts sont bien commentés pour qu’on se
-rappelle ce qu’on a fait (il manque des notes).</p></li>
 <li><p>Pour les fonctions qui calculent des proportions : ajouter la
 possibilité que la proportion soit calculée sur l’ensemble des individus
 (les <code>NA</code> étant comptabilisés dans le dénominateur) =&gt;
@@ -208,16 +226,6 @@ n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 <li>Implémenter un test stat lorsqu’il y a des facets =&gt; via
 modélisation loglinéaire, mais j’ai un peu de mal à comprendre les
 erreurs de <code>survey</code> (erreurs fréquentes).</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="distrib_d">distrib_d<a class="anchor" aria-label="anchor" href="#distrib_d"></a>
-</h4>
-<ul>
-<li>Ajouter un test khi2 d’adéquation =&gt; <strong>Pour rappel,
-l’import de <code>survey</code> dans les dépendances ne sert à rien tant
-que le test n’est pas implémenté !</strong>
-</li>
 </ul>
 </div>
 <div class="section level4">
