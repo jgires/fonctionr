@@ -29,7 +29,8 @@ many_prop(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  caption = NULL
+  caption = NULL,
+  export_path = NULL
 )
 }
 \arguments{
@@ -81,7 +82,9 @@ many_prop(
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
-\item{caption}{Caption of the graphic.#'}
+\item{caption}{Caption of the graphic.}
+
+\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
 \description{
 many_prop

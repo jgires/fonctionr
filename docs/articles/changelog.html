@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/complex_survey_design.html">Manipuler facilement des données avec design complexe</a>
     <a class="dropdown-item" href="../articles/fonctionr_functions.html">Présentation synthétique des fonctions</a>
+    <a class="dropdown-item" href="../articles/publication_ready.html">Des résultats prêts à la publication</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -82,6 +83,15 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-2-3">fonctionr 0.2.3<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-3"></a>
+</h2>
+<p>Date : 2024-02-17</p>
+<ul>
+<li>Implémentation de l’export excel pour <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code>.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-2">fonctionr 0.2.2<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-2"></a>
 </h2>
@@ -161,6 +171,12 @@ rappelle ce qu’on a fait (il manque des notes).</p></li>
 vérification des commentaires =&gt; <strong>de gros bugs encore
 découverts ! (copier-coller de fonction avec de mauvais noms d’arguments
 !)</strong></p></li>
+<li><p>L’import des packages extérieurs n’est pas OK :
+<code>MetBrewer</code> et <code>MoMAColors</code> masquent des fonctions
+de base et sont par ailleurs en conflit ! (message d’erreur au
+chargement de <code>fonctionr</code>) Par ailleurs, il est inutile
+d’importer tous les packages extérieurs via NAMESPACE =&gt; Voir <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>.</p></li>
+<li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
 corriger, traduire, ajouter des guillemets pour les arguments dans les
 checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
@@ -232,14 +248,13 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 <h4 id="many_prop">many_prop<a class="anchor" aria-label="anchor" href="#many_prop"></a>
 </h4>
 <ul>
-<li>Ajouter l’export excel.</li>
+<li>Ajouter la possibilité de calculer moyennes et médianes.</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
 </h4>
 <ul>
-<li><p>Ajouter l’export excel.</p></li>
 <li><p>Ajouter un check pour la proportion =&gt; seules des valeurs
 (<code>0</code> - <code>1)</code> ou (<code>FALSE</code> -
 <code>TRUE)</code>.</p></li>

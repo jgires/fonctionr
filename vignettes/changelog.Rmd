@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.3
+
+Date : 2024-02-17
+
+-   Implémentation de l'export excel pour `many_prop()` et `many_val_group()`.
+
 ## fonctionr 0.2.2
 
 Date : 2024-02-14
@@ -65,6 +71,10 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> **de gros bugs encore découverts ! (copier-coller de fonction avec de mauvais noms d'arguments !)**
 
+-   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquent des fonctions de base et sont par ailleurs en conflit ! (message d'erreur au chargement de `fonctionr`) Par ailleurs, il est inutile d'importer tous les packages extérieurs via NAMESPACE =\> Voir <https://r-pkgs.org/dependencies-in-practice.html>.
+
+-   Bug avec le fichier YML pour `pkgdown`.
+
 -   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 
 -   Optimiser le code dupliqués des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
@@ -106,11 +116,9 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### many_prop
 
--   Ajouter l'export excel.
+-   Ajouter la possibilité de calculer moyennes et médianes.
 
 #### many_val_group
-
--   Ajouter l'export excel.
 
 -   Ajouter un check pour la proportion =\> seules des valeurs (`0` - `1)` ou (`FALSE` - `TRUE)`.
 

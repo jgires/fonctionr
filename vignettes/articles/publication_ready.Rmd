@@ -1,0 +1,16 @@
+---
+title: "Ready for publication"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE, eval=FALSE}
+library(fonctionr)
+```
+
+To write...

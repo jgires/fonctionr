@@ -32,6 +32,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param legend_lab Legend (fill) label on the graphic.
 #' @param caption Caption of the graphic.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return
 #' @import rlang
@@ -103,7 +104,8 @@ many_val_group = function(data,
                           xlab = NULL, # Le nom de l'axe de la variable catégorielle
                           ylab = NULL,
                           legend_lab = NULL,
-                          caption = NULL){
+                          caption = NULL,
+                          export_path = NULL){
 
   # Check des arguments nécessaires
   if(missing(type) == TRUE){
@@ -603,6 +605,28 @@ many_val_group = function(data,
   res <- list()
   res$tab <- tab
   res$graph <- graph
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # Pour many_val_group, test pas encore implémenté => on crée un data.frame à la main
+    test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                    Value = "Test pas encore implémenté dans many_val_group",
+                                    row.names = NULL)
+
+    # J'exporte les résultats en Excel
+    export_excel(tab_excel = tab,
+                 graph = graph,
+                 test_stat_excel = test_stat_excel,
+                 facet_null = quo_is_null(quo_facet),
+                 export_path = export_path,
+                 percent_fm = ifelse(type == "prop", TRUE, FALSE),
+                 fgFill = "mediumvioletred",
+                 bivariate = TRUE)
+  }
 
   return(res)
 }

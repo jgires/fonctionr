@@ -30,7 +30,8 @@ Vous trouverez ci-dessous une rapide introduction à `fonctionr`.
 
 <div style="border:1px; width: 80%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
-Pour plus de détails, deux vignettes sont disponibles :
+Pour comprendre plus en profondeur notre package et toutes ses
+possibilités, trois vignettes sont disponibles :
 
 - La vignette [Manipulate complex Survey
   Design](https://jgires.github.io/fonctionr/articles/complex_survey_design.html)
@@ -40,6 +41,12 @@ Pour plus de détails, deux vignettes sont disponibles :
 - La vignette [Overview of functionr
   functions](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
   décrit avec plus de détails les différentes fonctions de `fonctionr`.
+
+- La vignette [Ready for
+  publication](https://jgires.github.io/fonctionr/articles/publication_ready.html)
+  explique la philosophie de `fonctionr` de produire des résultats
+  directement prêts à l’emploi : à la communication à des tiers ou à la
+  publication.
 
 </div>
 

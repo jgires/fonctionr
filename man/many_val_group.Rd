@@ -39,7 +39,8 @@ many_val_group(
   xlab = NULL,
   ylab = NULL,
   legend_lab = NULL,
-  caption = NULL
+  caption = NULL,
+  export_path = NULL
 )
 
 many_prop_group(..., type = "prop")
@@ -112,6 +113,8 @@ many_mean_group(..., type = "mean")
 \item{legend_lab}{Legend (fill) label on the graphic.}
 
 \item{caption}{Caption of the graphic.}
+
+\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
 \description{
 many_val_group

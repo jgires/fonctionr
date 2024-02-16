@@ -13,6 +13,8 @@ navbar:
       href: articles/complex_survey_design.html
     - text: Présentation synthétique des fonctions
       href: articles/fonctionr_functions.html
+    - text: Des résultats prêts à la publication
+      href: articles/publication_ready.html
   - text: Changelog
     href: articles/changelog.html
   right:

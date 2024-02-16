@@ -24,7 +24,9 @@
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param caption Caption of the graphic.#'
+#' @param caption Caption of the graphic.
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
+#'
 #' @return
 #' @import rlang
 #' @import survey
@@ -88,7 +90,8 @@ many_prop = function(data,
                      subtitle = NULL,
                      xlab = NULL, # Le nom de l'axe de la variable catégorielle
                      ylab = NULL,
-                     caption = NULL){
+                     caption = NULL,
+                     export_path = NULL){
 
   # Check des arguments nécessaires
   if((missing(data) | missing(list_vars)) == TRUE){
@@ -439,6 +442,28 @@ many_prop = function(data,
   res <- list()
   res$tab <- tab
   res$graph <- graph
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # Pour many_prop, test pas encore implémenté => on crée un data.frame à la main
+    test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                  Value = "Test pas encore implémenté dans many_prop",
+                                  row.names = NULL)
+
+    # J'exporte les résultats en Excel
+    export_excel(tab_excel = tab,
+                 graph = graph,
+                 test_stat_excel = test_stat_excel,
+                 facet_null = quo_is_null(quo_facet),
+                 export_path = export_path,
+                 percent_fm = TRUE,
+                 fgFill = "mediumseagreen",
+                 bivariate = FALSE)
+  }
 
   return(res)
 }
