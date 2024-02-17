@@ -116,7 +116,7 @@ esth_graph <- function(tab,
   # On convertit la variable catégorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
-      "{{ var }}" := as.factor({{ var }})
+      "{{ var }}" := as.factor(droplevels({{ var }}))
     )
 
   # On crée la palette

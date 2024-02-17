@@ -24,11 +24,10 @@ confiance et des tests statistiques qui prennent en compte de design
 réel de l’enquête. `fonctionr` produit également des graphiques des
 résultats à l’aide de `ggplot2`, dans le but de pouvoir intégrer
 directement et rapidement les résultats produits dans un rapport/une
-publication.
+publication. Vous trouverez sur cette page une rapide introduction à
+`fonctionr` ; pour plus de détails, voir les vignettes.
 
-Vous trouverez ci-dessous une rapide introduction à `fonctionr`.
-
-<div style="border:1px; width: 80%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
+<div style="border:1px; width: 85%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
 Pour comprendre plus en profondeur notre package et toutes ses
 possibilités, trois vignettes sont disponibles :

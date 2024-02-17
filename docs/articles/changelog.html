@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,6 +84,18 @@
     
     
 <div class="section level2">
+<h2 id="fonctionr-0-2-4">fonctionr 0.2.4<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-4"></a>
+</h2>
+<p>Date : 2024-02-17</p>
+<ul>
+<li>Implémentation de checks pour vérifier que les variables de
+<code><a href="../reference/many_val_group.html">many_prop_group()</a></code> soient bien binaires, et pour éviter les
+variables à une modalité pour <code>quali_var</code> dans
+<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>.</li>
+<li>Correction d’un bug dans <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="fonctionr-0-2-3">fonctionr 0.2.3<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-3"></a>
 </h2>
 <p>Date : 2024-02-17</p>
@@ -99,7 +111,7 @@
 <ul>
 <li><p>Implémentation du test statistique pour
 <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>.</p></li>
-<li><p>Correction d’un bug découverrt à cette occasion, qui empêchait de
+<li><p>Correction d’un bug découvert à cette occasion, qui empêchait de
 faire fonctionner <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> avec
 <code>na.rm.group = FALSE</code>.</p></li>
 </ul>
@@ -163,19 +175,19 @@ expliquer dans la doc !</strong></em></p>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller). <strong>Il manque les
-descriptions générales des foncitons <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+descriptions générales des fonctions <code><a href="../reference/many_prop.html">many_prop()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code></strong>.</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
 rappelle ce qu’on a fait (il manque des notes).</p></li>
 <li><p>Passer le code de chaque fonction en revue à l’occasion de la
 vérification des commentaires =&gt; <strong>de gros bugs encore
-découverts ! (copier-coller de fonction avec de mauvais noms d’arguments
-!)</strong></p></li>
+découverts ! (copier-coller de fonctions avec de mauvais noms
+d’arguments !)</strong></p></li>
 <li><p>L’import des packages extérieurs n’est pas OK :
 <code>MetBrewer</code> et <code>MoMAColors</code> masquent des fonctions
-de base et sont par ailleurs en conflit ! (message d’erreur au
-chargement de <code>fonctionr</code>) Par ailleurs, il est inutile
-d’importer tous les packages extérieurs via NAMESPACE =&gt; Voir <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>.</p></li>
+de base et sont par ailleurs en conflit (message d’erreur au chargement
+de <code>fonctionr</code>) = Par ailleurs, il est inutile d’importer
+tous les packages extérieurs via le NAMESPACE =&gt; Voir <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>.</p></li>
 <li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
 corriger, traduire, ajouter des guillemets pour les arguments dans les
@@ -192,6 +204,8 @@ simplification.</p></li>
 possibilité que la proportion soit calculée sur l’ensemble des individus
 (les <code>NA</code> étant comptabilisés dans le dénominateur) =&gt;
 <strong>Voir fichier excel avec ordre des arguments</strong>.<br><em>=&gt; Fait pour <code><a href="../reference/prop_group.html">prop_group()</a></code>.</em></p></li>
+<li><p>Mettre des conditions pour réaliser les tests (n min,
+distribution, variances égales…).</p></li>
 <li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus
 valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li>
@@ -200,15 +214,11 @@ valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait
 sauf pour les variables de design + pondération ? Est-ce testable, du
 fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;<br><strong>=&gt; Peut-être trouvé la solution ici ? =&gt; <a href="https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package" class="external-link uri">https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package</a></strong></p></li>
-<li><p>Suffisamment de modalités (pas de facteur à 1 modalité, par ex.)
-;</p></li>
 <li><p>Pas mettre les mêmes colonnes dans les différents arguments ?
 (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>,
 etc.).</p></li>
 </ol>
 </li>
-<li><p>Mettre des conditions pour réaliser les tests (n min,
-distribution, variances égales…).</p></li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le
 message de la console avec les replicates =&gt; pourquoi ?</p></li>
 <li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> +
@@ -255,12 +265,9 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 <h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
 </h4>
 <ul>
-<li><p>Ajouter un check pour la proportion =&gt; seules des valeurs
-(<code>0</code> - <code>1)</code> ou (<code>FALSE</code> -
-<code>TRUE)</code>.</p></li>
-<li><p>Bricolage pour l’alignement des effectifs avec
-<code>show_n = T</code> lorsque
-<code>position == "stack"</code></p></li>
+<li>Améliorer l’alignement des effectifs avec <code>show_n = T</code>
+lorsque <code>position == "stack"</code>
+</li>
 </ul>
 <p><strong>esth_graph</strong></p>
 <ul>

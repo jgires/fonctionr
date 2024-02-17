@@ -176,6 +176,13 @@ many_val_group = function(data,
 
   # On transforme les colonnes entrées en un vecteur caractère (plus facile pour le code !)
   vec_list_vars <- all.vars(substitute(list_vars))
+
+  # Check que list_vars ne comprend que des variables binaires
+  if(type == "prop"){
+    check_bin(data = data,
+              vec_list_vars = vec_list_vars)
+  }
+
   message("Variable(s) entrées : ", paste(vec_list_vars, collapse = ", "))
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur

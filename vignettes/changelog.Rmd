@@ -18,6 +18,13 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.4
+
+Date : 2024-02-17
+
+-   Implémentation de checks pour vérifier que les variables de `many_prop_group()` soient bien binaires, et pour éviter les variables à une modalité pour `quali_var` dans `distrib_group_discrete()`.
+-   Correction d'un bug dans `esth_graph()`.
+
 ## fonctionr 0.2.3
 
 Date : 2024-02-17
@@ -30,7 +37,7 @@ Date : 2024-02-14
 
 -   Implémentation du test statistique pour `distrib_discrete()`.
 
--   Correction d'un bug découverrt à cette occasion, qui empêchait de faire fonctionner `distrib_discrete()` avec `na.rm.group = FALSE`.
+-   Correction d'un bug découvert à cette occasion, qui empêchait de faire fonctionner `distrib_discrete()` avec `na.rm.group = FALSE`.
 
 ## fonctionr 0.2.1
 
@@ -65,13 +72,13 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des foncitons `many_prop()` et `many_val_group()`**.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`**.
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
--   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> **de gros bugs encore découverts ! (copier-coller de fonction avec de mauvais noms d'arguments !)**
+-   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> **de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments !)**
 
--   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquent des fonctions de base et sont par ailleurs en conflit ! (message d'erreur au chargement de `fonctionr`) Par ailleurs, il est inutile d'importer tous les packages extérieurs via NAMESPACE =\> Voir <https://r-pkgs.org/dependencies-in-practice.html>.
+-   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquent des fonctions de base et sont par ailleurs en conflit (message d'erreur au chargement de `fonctionr`) = Par ailleurs, il est inutile d'importer tous les packages extérieurs via le NAMESPACE =\> Voir <https://r-pkgs.org/dependencies-in-practice.html>.
 
 -   Bug avec le fichier YML pour `pkgdown`.
 
@@ -84,6 +91,8 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> **Voir fichier excel avec ordre des arguments**.\
     *=\> Fait pour `prop_group()`.*
 
+-   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
+
 -   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne.
 
 -   Ajouter des checks pour les inputs :
@@ -91,11 +100,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
     1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;\
         **=\> Peut-être trouvé la solution ici ? =\> <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
 
-    2.  Suffisamment de modalités (pas de facteur à 1 modalité, par ex.) ;
-
-    3.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
-
--   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
+    2.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
@@ -120,9 +125,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### many_val_group
 
--   Ajouter un check pour la proportion =\> seules des valeurs (`0` - `1)` ou (`FALSE` - `TRUE)`.
-
--   Bricolage pour l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
+-   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 
 **esth_graph**
 

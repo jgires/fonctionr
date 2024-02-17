@@ -112,6 +112,11 @@ distrib_group_discrete <- function(data,
     stop("Les arguments data, group et quali_var doivent être remplis")
   }
 
+  # Un check pour voir si quali_var n'a pas qu'un unique level => sinon aucun intérêt à l'analyse
+  if(nlevels(droplevels(as.factor(data[[deparse(substitute(quali_var))]]))) == 1){
+    stop(paste(deparse(substitute(quali_var)), "ne possède qu'un level"))
+  }
+
   # Check des autres arguments
   check_arg(
     arg = list(
