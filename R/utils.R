@@ -211,41 +211,6 @@ check_arg <- function(arg,
 }
 
 
-#' check_arg
-#'
-#' Internal function to check arguments
-#'
-#' @param arg List of arguments to check
-#' @param short Chek if arguments lenght is not superior to 1
-#' @param type Type of check
-#'
-#' @noRd
-#'
-
-# Solution trouvée ici pour les messages : https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot
-
-check_arg <- function(arg,
-                      short = T,
-                      type) {
-  for(check_i in seq_along(arg)){
-    if(!is.null(arg[[check_i]])){
-      if(short == T){
-        if (!length(arg[[check_i]]) == 1) stop(paste("L'argument", names(arg)[[check_i]], "n'a pas la bonne longueur (max 1)"), call. = FALSE)
-      }
-      if(type == "character"){
-        if (!is.character(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (caractère)"), call. = FALSE)
-      }
-      if(type == "logical"){
-        if (!is.logical(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (logique)"), call. = FALSE)
-      }
-      if(type == "numeric"){
-        if (!is.numeric(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (numérique)"), call. = FALSE)
-      }
-    }
-  }
-}
-
-
 #' check_bin
 #'
 #' Internal function to check if variables are binarized
