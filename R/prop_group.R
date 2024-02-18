@@ -181,11 +181,12 @@ prop_group <- function(data,
     if(all(vars_input_char %in% names(data)) == FALSE){
       stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
-    # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
-    vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
-    if(all(vars_survey %in% names(data)) == FALSE){
-      stop("Au moins une des variables du design n'est pas présente dans data")
-    }
+    # # DESACTIVé : NE FONCTIONNE PAS !
+    # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+    # vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+    # if(all(vars_survey %in% names(data)) == FALSE){
+    #   stop("Au moins une des variables du design n'est pas présente dans data")
+    # }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
