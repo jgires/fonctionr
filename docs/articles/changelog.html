@@ -173,11 +173,8 @@ descriptions générales des fonctions <code><a href="../reference/many_prop.htm
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code>). Il y a également des champs manquants
 (voir warnings de <code>roxygenise()</code>). Voir ici pour savoir les
 différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.</p></li>
-<li><p>L’import des packages extérieurs n’est pas OK :
-<code>MetBrewer</code> et <code>MoMAColors</code> masquaient des
-fonctions de base et étaient en conflit (message d’erreur au chargement
-de <code>fonctionr</code> =&gt; résolu). Par ailleurs, il est inutile
-d’importer tous les packages extérieurs via le NAMESPACE, cela augmenter
+<li><p>L’import des packages extérieurs n’est pas OK : il est inutile
+d’importer tous les packages extérieurs via le NAMESPACE, cela augmente
 fortement le risque de collisions de noms de fonctions =&gt; un bon
 résumé ici : <a href="https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/" class="external-link uri">https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/</a>
 et pour plus de détails : <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>. De

@@ -72,7 +72,7 @@ Date : 2024-02-14
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
 
--   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquaient des fonctions de base et étaient en conflit (message d'erreur au chargement de `fonctionr` =\> résolu). Par ailleurs, il est inutile d'importer tous les packages extérieurs via le NAMESPACE, cela augmenter fortement le risque de collisions de noms de fonctions =\> un bon résumé ici : <https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/> et pour plus de détails : <https://r-pkgs.org/dependencies-in-practice.html>. De plus, certains imports sont absents du squelette roxygen dans certaines fonctions (`esth_graph()`, mais aussi d'autres =\> corriger !).
+-   L'import des packages extérieurs n'est pas OK : il est inutile d'importer tous les packages extérieurs via le NAMESPACE, cela augmente fortement le risque de collisions de noms de fonctions =\> un bon résumé ici : <https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/> et pour plus de détails : <https://r-pkgs.org/dependencies-in-practice.html>. De plus, certains imports sont absents du squelette roxygen dans certaines fonctions (`esth_graph()`, mais aussi d'autres =\> corriger !).
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
