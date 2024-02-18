@@ -90,12 +90,6 @@
 <ul>
 <li>Implémentation de checks pour vérifier que les variables du design
 (passées à <code>survey</code>) existent dans <code>data</code>.</li>
-<li>Les fonctions de créations des palettes (de <code>MoMAColors</code>,
-<code>MetBrewer</code> et <code>PrettyCols</code>) sont sorties du
-NAMESPACE pour éviter un bug de collision de noms de fonctions (il y
-avait un warning au chargement de <code>fonctionr</code>). Cela engage
-un travail futur de tri de ce qui est importé dans le NAMESPACE et de ce
-qui ne l’est pas pour désambiguïser le code source.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -169,6 +163,9 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Bug à l’import de fonctionr du fait de collision entre
+<code>MetBrewer</code>, <code>MoMAColors</code>, <code>PrettyCols</code>
+et les fonctions de base ? Je ne comprends pas ce bug.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller, et il manque les
