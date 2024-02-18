@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.5
+
+Date : 2024-02-18
+
+-   Implémentation de checks pour vérifier que les variables du design (passées à `survey`) existent dans `data`.
+
 ## fonctionr 0.2.4
 
 Date : 2024-02-17
@@ -60,35 +66,25 @@ Date : 2024-02-14
 
 ### Prioritaire (nécessités ou bugs)
 
-#### Filtrage
-
-Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. Si on ne le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage. Voir :
-
--   <https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i>
-
--   <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
-
-    *=\> De ce fait, j'ai inclus une option de filtre (`filter_exp`) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! **A FAIRE : expliquer dans la doc !***
-
 #### En général
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller). **Il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`**.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
+
+-   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquaient des fonctions de base et étaient en conflit (message d'erreur au chargement de `fonctionr` =\> résolu). Par ailleurs, il est inutile d'importer tous les packages extérieurs via le NAMESPACE, cela augmenter fortement le risque de collisions de noms de fonctions =\> un bon résumé ici : <https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/> et pour plus de détails : <https://r-pkgs.org/dependencies-in-practice.html>. De plus, certains imports sont absents du squelette roxygen dans certaines fonctions (`esth_graph()`, mais aussi d'autres =\> corriger !).
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
--   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> **de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments !)**
+-   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires et de la réécriture avec `::` pour le choix des fonctions externes (au lieu de les importer) =\> de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments, erreurs qui font bugger le na.rm.group...)
 
--   L'import des packages extérieurs n'est pas OK : `MetBrewer` et `MoMAColors` masquent des fonctions de base et sont par ailleurs en conflit (message d'erreur au chargement de `fonctionr`) = Par ailleurs, il est inutile d'importer tous les packages extérieurs via le NAMESPACE =\> Voir <https://r-pkgs.org/dependencies-in-practice.html>.
+-   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
 
 -   Bug avec le fichier YML pour `pkgdown`.
 
+-   Fichiers \*.R pas compatibles ASCII =\> tout écrire en anglais.
+
 -   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 
--   Optimiser le code dupliqués des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
-
--   Ajouter des exemples pour chaque fonction (pour le site) : **manque pivot_longer_survey, esth_graph**.
-
--   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> **Voir fichier excel avec ordre des arguments**.\
+-   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> Voir fichier excel avec ordre des arguments.\
     *=\> Fait pour `prop_group()`.*
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
@@ -97,10 +93,7 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 -   Ajouter des checks pour les inputs :
 
-    1.  Existence des colonnes dans le dataframe *=\> C'est fait sauf pour les variables de design + pondération ? Est-ce testable, du fait que j'ai mis l'argument `…` ? Investiguer...* ;\
-        **=\> Peut-être trouvé la solution ici ? =\> <https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package>**
-
-    2.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
+    1.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
@@ -137,6 +130,9 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 
 #### En général
 
+-   Pour les checks : mieux préciser les variables incriminées ? Ce n'est pas le cas pour les checks des variables nécessaires ou des variables du design, par ex. Elles ne sont pas nombreuses, mais c'est plus sympa pour l'utilisateur.
+-   Optimiser le code dupliqué des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
+-   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
@@ -161,6 +157,18 @@ Il semble qu'il faille filtrer [après]{.underline} la déclaration du design. S
 -   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
 
 -   Possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?
+
+## Notes
+
+### Filtrage
+
+Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage. Voir :
+
+<https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i>
+
+<https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
+
+*=\> De ce fait, j'ai inclus une option de filtre (filter_exp) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! [A FAIRE : expliquer dans la doc !]{.underline}*
 
 ### Fonctions à créer
 

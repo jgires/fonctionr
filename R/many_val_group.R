@@ -203,6 +203,11 @@ many_val_group = function(data,
     if(all(vars_input_char %in% names(data)) == FALSE){
       stop("Au moins une des variables introduites dans list_vars, group, filter_exp ou facet_var n'est pas présente dans data")
     }
+    # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+    vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+    if(all(vars_survey %in% names(data)) == FALSE){
+      stop("Au moins une des variables du design n'est pas présente dans data")
+    }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
@@ -392,15 +397,15 @@ many_val_group = function(data,
 
   # On crée la palette avec le package met.brewer
   if(pretty_pal %in% names(MetBrewer::MetPalettes)){
-    palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(MetBrewer::met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
   #ou la crée avec le package MoMAColors
   if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
   # On crée la palette avec le package PrettyCols
   if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot

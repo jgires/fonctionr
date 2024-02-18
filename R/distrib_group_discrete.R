@@ -36,16 +36,11 @@
 #' @import survey
 #' @import srvyr
 #' @import dplyr
-#' @import scales
-#' @import MetBrewer
-#' @import PrettyCols
 #' @import ggplot2
-#' @importFrom stats as.formula
 #' @import forcats
 #' @import stringr
 #' @import openxlsx
 #' @import broom
-#' @import MoMAColors
 #' @export
 #'
 #' @examples
@@ -182,6 +177,11 @@ distrib_group_discrete <- function(data,
     if(all(vars_input_char %in% names(data)) == FALSE){
       stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
+    # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+    vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+    if(all(vars_survey %in% names(data)) == FALSE){
+      stop("Au moins une des variables du design n'est pas présente dans data")
+    }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
@@ -248,7 +248,7 @@ distrib_group_discrete <- function(data,
   if(quo_is_null(quo_facet)){
     quali_var_fmla <- as.character(substitute(quali_var))
     group_fmla <- as.character(substitute(group))
-    fmla <- as.formula(paste("~", group_fmla, "+", quali_var_fmla))
+    fmla <- stats::as.formula(paste("~", group_fmla, "+", quali_var_fmla))
     if(na.rm.group == F){
       # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
       test.stat <- tryCatch(
@@ -295,15 +295,15 @@ distrib_group_discrete <- function(data,
 
   # On crée la palette avecle package met.brewer
   if(pretty_pal %in% names(MetBrewer::MetPalettes)){
-  palette <- as.character(met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  palette <- as.character(MetBrewer::met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
   #ou la crée avec le package MoMAColors
   if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
   # On crée la palette avecle package PrettyCols
   if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(prettycols(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
   # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
@@ -367,7 +367,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
+            "Khi2 d'indépendance : ", scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )

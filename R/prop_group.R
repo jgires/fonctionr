@@ -38,8 +38,6 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
-#' @import scales
-#' @importFrom stats as.formula
 #' @import forcats
 #' @import stringr
 #' @import openxlsx
@@ -183,6 +181,11 @@ prop_group <- function(data,
     if(all(vars_input_char %in% names(data)) == FALSE){
       stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
     }
+    # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+    vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+    if(all(vars_survey %in% names(data)) == FALSE){
+      stop("Au moins une des variables du design n'est pas présente dans data")
+    }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
@@ -311,12 +314,12 @@ prop_group <- function(data,
   # Ici un test khi2 sur une variable binaire "express_bin" oui/non pour l'expression
   if(quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(group))
-    fmla <- as.formula(paste("~", group_fmla, "+", "express_bin"))
+    fmla <- stats::as.formula(paste("~", group_fmla, "+", "express_bin"))
   }
   # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
     facet_fmla <- as.character(substitute(facet_var))
-    fmla <- as.formula(paste("~", facet_fmla, "+", "express_bin"))
+    fmla <- stats::as.formula(paste("~", facet_fmla, "+", "express_bin"))
   }
   if(na.rm.group == F){
     test.stat <- svychisq(fmla, data_W_NA)
@@ -434,7 +437,7 @@ prop_group <- function(data,
     labs(title = title,
          subtitle = subtitle,
          caption = paste0(
-           "Khi2 d'indépendance : ", pvalue(test.stat$p.value, add_p = T),
+           "Khi2 d'indépendance : ", scales::pvalue(test.stat$p.value, add_p = T),
            caption)
          ) +
     coord_flip()

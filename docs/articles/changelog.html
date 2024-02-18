@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,21 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-2-5">fonctionr 0.2.5<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-5"></a>
+</h2>
+<p>Date : 2024-02-18</p>
+<ul>
+<li>Implémentation de checks pour vérifier que les variables du design
+(passées à <code>survey</code>) existent dans <code>data</code>.</li>
+<li>Les fonctions de créations des palettes (de <code>MoMAColors</code>,
+<code>MetBrewer</code> et <code>PrettyCols</code>) sont sorties du
+NAMESPACE pour éviter un bug de collision de noms de fonctions (il y
+avait un warning au chargement de <code>fonctionr</code>). Cela engage
+un travail futur de tri de ce qui est importé dans le NAMESPACE et de ce
+qui ne l’est pas pour désambiguïser le code source.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-4">fonctionr 0.2.4<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-4"></a>
 </h2>
@@ -143,67 +158,56 @@ inclues dans le package laeken.</p></li>
 <li><p>Correction de bugs mineurs.</p></li>
 </ul>
 </div>
-<div class="section level2" style="border:1px; background-color:#f8f5e4; padding: 5px 10px 10px 10px; margin-bottom: 10px">
+<div style="border:1px; background-color:#f8f5e4; padding: 5px 10px 10px 10px; margin-bottom: 10px">
+<div class="section level2">
 <h2 id="to-do-list">To do list<a class="anchor" aria-label="anchor" href="#to-do-list"></a>
 </h2>
 <div class="section level3">
 <h3 id="prioritaire-nécessités-ou-bugs">Prioritaire (nécessités ou bugs)<a class="anchor" aria-label="anchor" href="#prioritaire-n%C3%A9cessit%C3%A9s-ou-bugs"></a>
 </h3>
 <div class="section level4">
-<h4 id="filtrage">Filtrage<a class="anchor" aria-label="anchor" href="#filtrage"></a>
-</h4>
-<p>Il semble qu’il faille filtrer <u>après</u> la déclaration du design.
-Si on ne le fait pas, on considère le design sur l’objet filtré (avec
-moins de PSU / strates qu’il y en a en réalité), ce qui sous-estime
-potentiellement la distribution d’échantillonnage. Voir :</p>
-<ul>
-<li><p><a href="https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i" class="external-link uri">https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i</a></p></li>
-<li>
-<p><a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri">https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/</a></p>
-<p><em>=&gt; De ce fait, j’ai inclus une option de filtre
-(<code>filter_exp</code>) dans les fonctions (qui filtre après la
-déclaration du design), qui évite de filtrer l’objet avant en dégradant
-le design. =&gt; Vérifier que c’est bien OK ! <strong>A FAIRE :
-expliquer dans la doc !</strong></em></p>
-</li>
-</ul>
-</div>
-<div class="section level4">
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
-repérées, par ex. à cause de copier-coller). <strong>Il manque les
+repérées, par ex. à cause de copier-coller, et il manque les
 descriptions générales des fonctions <code><a href="../reference/many_prop.html">many_prop()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code></strong>.</p></li>
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code>). Il y a également des champs manquants
+(voir warnings de <code>roxygenise()</code>). Voir ici pour savoir les
+différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.</p></li>
+<li><p>L’import des packages extérieurs n’est pas OK :
+<code>MetBrewer</code> et <code>MoMAColors</code> masquaient des
+fonctions de base et étaient en conflit (message d’erreur au chargement
+de <code>fonctionr</code> =&gt; résolu). Par ailleurs, il est inutile
+d’importer tous les packages extérieurs via le NAMESPACE, cela augmenter
+fortement le risque de collisions de noms de fonctions =&gt; un bon
+résumé ici : <a href="https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/" class="external-link uri">https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/</a>
+et pour plus de détails : <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>. De
+plus, certains imports sont absents du squelette roxygen dans certaines
+fonctions (<code><a href="../reference/esth_graph.html">esth_graph()</a></code>, mais aussi d’autres =&gt; corriger
+!).</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
 rappelle ce qu’on a fait (il manque des notes).</p></li>
 <li><p>Passer le code de chaque fonction en revue à l’occasion de la
-vérification des commentaires =&gt; <strong>de gros bugs encore
-découverts ! (copier-coller de fonctions avec de mauvais noms
-d’arguments !)</strong></p></li>
-<li><p>L’import des packages extérieurs n’est pas OK :
-<code>MetBrewer</code> et <code>MoMAColors</code> masquent des fonctions
-de base et sont par ailleurs en conflit (message d’erreur au chargement
-de <code>fonctionr</code>) = Par ailleurs, il est inutile d’importer
-tous les packages extérieurs via le NAMESPACE =&gt; Voir <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>.</p></li>
+vérification des commentaires et de la réécriture avec <code>::</code>
+pour le choix des fonctions externes (au lieu de les importer) =&gt; de
+gros bugs encore découverts ! (copier-coller de fonctions avec de
+mauvais noms d’arguments, erreurs qui font bugger le
+na.rm.group…)</p></li>
+<li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
+<code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 <li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
+<li><p>Fichiers *.R pas compatibles ASCII =&gt; tout écrire en
+anglais.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
 corriger, traduire, ajouter des guillemets pour les arguments dans les
 checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
 est l’hypothèse nulle).</p></li>
-<li><p>Optimiser le code dupliqués des pipelines avec
-<code>summarise()</code> pour <code><a href="../reference/central_group.html">central_group()</a></code> ou
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> : ce sont des quasi copies selon que c’est
-une médiane / moyenne / etc. =&gt; pénible à maintenir, trouver une
-simplification.</p></li>
-<li><p>Ajouter des exemples pour chaque fonction (pour le site) :
-<strong>manque pivot_longer_survey, esth_graph</strong>.</p></li>
 <li><p>Pour les fonctions qui calculent des proportions : ajouter la
 possibilité que la proportion soit calculée sur l’ensemble des individus
 (les <code>NA</code> étant comptabilisés dans le dénominateur) =&gt;
-<strong>Voir fichier excel avec ordre des arguments</strong>.<br><em>=&gt; Fait pour <code><a href="../reference/prop_group.html">prop_group()</a></code>.</em></p></li>
+Voir fichier excel avec ordre des arguments.<br><em>=&gt; Fait pour <code><a href="../reference/prop_group.html">prop_group()</a></code>.</em></p></li>
 <li><p>Mettre des conditions pour réaliser les tests (n min,
 distribution, variances égales…).</p></li>
 <li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus
@@ -211,12 +215,9 @@ valide (superseded) =&gt; Faire une fonction maison en interne.</p></li>
 <li>
 <p>Ajouter des checks pour les inputs :</p>
 <ol style="list-style-type: decimal">
-<li><p>Existence des colonnes dans le dataframe <em>=&gt; C’est fait
-sauf pour les variables de design + pondération ? Est-ce testable, du
-fait que j’ai mis l’argument <code>…</code> ? Investiguer…</em> ;<br><strong>=&gt; Peut-être trouvé la solution ici ? =&gt; <a href="https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package" class="external-link uri">https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package</a></strong></p></li>
-<li><p>Pas mettre les mêmes colonnes dans les différents arguments ?
+<li>Pas mettre les mêmes colonnes dans les différents arguments ?
 (<code>group</code>, <code>var_distrib</code>, <code>facet_var</code>,
-etc.).</p></li>
+etc.).</li>
 </ol>
 </li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le
@@ -284,6 +285,18 @@ avec multiples totaux.</p></li>
 <h4 id="en-général-1">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral-1"></a>
 </h4>
 <ul>
+<li>Pour les checks : mieux préciser les variables incriminées ? Ce
+n’est pas le cas pour les checks des variables nécessaires ou des
+variables du design, par ex. Elles ne sont pas nombreuses, mais c’est
+plus sympa pour l’utilisateur.</li>
+<li>Optimiser le code dupliqué des pipelines avec
+<code>summarise()</code> pour <code><a href="../reference/central_group.html">central_group()</a></code> ou
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> : ce sont des quasi copies selon que c’est
+une médiane / moyenne / etc. =&gt; pénible à maintenir, trouver une
+simplification.</li>
+<li>Réécrire le code du test pour avoir la formule originale =&gt;
+possible avec <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>, voir code de
+<code><a href="../reference/central_group.html">central_group()</a></code>.</li>
 <li>Voir si on peut créer une fonction commune à toutes les fonctions du
 package pour créer le ggplot =&gt; ce serait une large simplification.
 Pour l’instant, il y a déjà un thème commun
@@ -331,6 +344,24 @@ pour coller avec le code couleur de notre institution ?</p></li>
 </ul>
 </div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
+</h2>
+<div class="section level3">
+<h3 id="filtrage">Filtrage<a class="anchor" aria-label="anchor" href="#filtrage"></a>
+</h3>
+<p>Il semble qu’il faille filtrer après la déclaration du design. Si on
+ne le fait pas, on considère le design sur l’objet filtré (avec moins de
+PSU / strates qu’il y en a en réalité), ce qui sous-estime
+potentiellement la distribution d’échantillonnage. Voir :</p>
+<p><a href="https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i" class="external-link uri">https://stats.stackexchange.com/questions/411026/why-it-is-important-to-make-survey-design-object-svydesign-function-in-r-with-i</a></p>
+<p><a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri">https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/</a></p>
+<p><em>=&gt; De ce fait, j’ai inclus une option de filtre (filter_exp)
+dans les fonctions (qui filtre après la déclaration du design), qui
+évite de filtrer l’objet avant en dégradant le design. =&gt; Vérifier
+que c’est bien OK ! <u>A FAIRE : expliquer dans la doc !</u></em></p>
+</div>
 <div class="section level3">
 <h3 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>
 </h3>
@@ -351,6 +382,7 @@ différentes.</p></li>
 (proportions par c, l, ou total)</p></li>
 <li><p>Densité par groupe (pour variable continue)</p></li>
 </ul>
+</div>
 </div>
 </div>
 </div>

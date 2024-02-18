@@ -38,8 +38,6 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
-#' @import scales
-#' @importFrom stats as.formula
 #' @import forcats
 #' @import stringr
 #' @import openxlsx
@@ -177,6 +175,11 @@ central_group <- function(data,
     if(all(vars_input_char %in% names(data)) == FALSE){
       stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet_var n'est pas présente dans data")
     }
+    # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+    vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+    if(all(vars_survey %in% names(data)) == FALSE){
+      stop("Au moins une des variables du design n'est pas présente dans data")
+    }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
@@ -275,14 +278,14 @@ central_group <- function(data,
   quanti_exp_fmla <- "quanti_exp_flattened" # Un string car on a créé la variable "en dur" dans la fonction
   if(quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(group))
-    fmla <- as.formula(paste(quanti_exp_fmla, "~", group_fmla))
-    fmla2 <- as.formula(paste("~", group_fmla))
+    fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
+    fmla2 <- stats::as.formula(paste("~", group_fmla))
   }
   # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(facet_var))
-    fmla <- as.formula(paste(quanti_exp_fmla, "~", group_fmla))
-    fmla2 <- as.formula(paste("~", group_fmla))
+    fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
+    fmla2 <- stats::as.formula(paste("~", group_fmla))
   }
 
   if(type == "mean"){
@@ -453,7 +456,7 @@ central_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "GLM : ", pvalue(test.stat$p[1], add_p = T),
+          "GLM : ", scales::pvalue(test.stat$p[1], add_p = T),
           caption
         )
       )
@@ -462,7 +465,7 @@ central_group <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "Kruskal Wallis : ", pvalue(test.stat$p.value[1], add_p = T),
+          "Kruskal Wallis : ", scales::pvalue(test.stat$p.value[1], add_p = T),
           caption
         )
       )
