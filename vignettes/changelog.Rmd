@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.5
+
+Date : 2024-02-19
+
+-   Implémentation du `trycatch()` sur le test statistique dans `prop_group()` : le test statistique est désormais bypassé si les conditions ne sont pas remplies et ne stoppe donc plus `prop_group()` en cas d'erreur.
+
 ## fonctionr 0.2.4
 
 Date : 2024-02-17

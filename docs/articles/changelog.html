@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,17 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-2-5">fonctionr 0.2.5<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-5"></a>
+</h2>
+<p>Date : 2024-02-19</p>
+<ul>
+<li>Implémentation du <code>trycatch()</code> sur le test statistique
+dans <code><a href="../reference/prop_group.html">prop_group()</a></code> : le test statistique est désormais
+bypassé si les conditions ne sont pas remplies et ne stoppe donc plus
+<code><a href="../reference/prop_group.html">prop_group()</a></code> en cas d’erreur.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-4">fonctionr 0.2.4<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-4"></a>
 </h2>
@@ -228,7 +239,9 @@ n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 <h4 id="prop_group">prop_group<a class="anchor" aria-label="anchor" href="#prop_group"></a>
 </h4>
 <ul>
-<li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
+<li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.<br><strong>=&gt; Possible de créer l’erreur lorsque prop = 100% dans chaque
+groupe !</strong>
+</li>
 </ul>
 </div>
 <div class="section level4">

@@ -179,7 +179,7 @@ prop_group <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet_var n'est pas présente dans data")
     }
     # # DESACTIVé : NE FONCTIONNE PAS !
     # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
@@ -191,7 +191,7 @@ prop_group <- function(data,
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans group, quali_var, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet_var n'est pas présente dans data")
     }
   }
 
@@ -322,11 +322,28 @@ prop_group <- function(data,
     facet_fmla <- as.character(substitute(facet_var))
     fmla <- stats::as.formula(paste("~", facet_fmla, "+", "express_bin"))
   }
+
   if(na.rm.group == F){
-    test.stat <- svychisq(fmla, data_W_NA)
+    # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
+    test.stat <- tryCatch(
+      expr = {
+        svychisq(fmla, data_W_NA)
+      },
+      # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
+      error = function(e){
+        "Conditions non remplies"
+      }
+    )
   }
   if(na.rm.group == T){
-    test.stat <- svychisq(fmla, data_W)
+    test.stat <- tryCatch(
+      expr = {
+        svychisq(fmla, data_W)
+      },
+      error = function(e){
+        "Conditions non remplies"
+      }
+    )
   }
 
   # On calcule les proportions par groupe
@@ -436,12 +453,34 @@ prop_group <- function(data,
     scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
                      limits = levels)+
     labs(title = title,
-         subtitle = subtitle,
-         caption = paste0(
-           "Khi2 d'indépendance : ", scales::pvalue(test.stat$p.value, add_p = T),
-           caption)
+         subtitle = subtitle
          ) +
     coord_flip()
+
+  # Pour caption
+
+  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
+  if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "Khi2 d'indépendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+          caption
+        )
+      )
+  }
+  if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "Khi2 d'indépendance : conditions non remplies",
+          caption
+        )
+      )
+  }
 
   # Ajouter les axes
   if(show_lab == TRUE){
@@ -563,14 +602,21 @@ prop_group <- function(data,
     # print(graph)
 
     # On transforme le test stat en dataframe
-    test_stat_excel <- test.stat %>%
-      broom::tidy() %>%
-      t() %>%
-      as.data.frame()
-    test_stat_excel$names <- rownames(test_stat_excel)
-    test_stat_excel <- test_stat_excel[, c(2,1)]
-    names(test_stat_excel)[1] <- "Parameter"
-    names(test_stat_excel)[2] <- "Value"
+    if(all(test.stat != "Conditions non remplies")){
+      test_stat_excel <- test.stat %>%
+        broom::tidy() %>%
+        t() %>%
+        as.data.frame()
+      test_stat_excel$names <- rownames(test_stat_excel)
+      test_stat_excel <- test_stat_excel[, c(2,1)]
+      names(test_stat_excel)[1] <- "Parameter"
+      names(test_stat_excel)[2] <- "Value"
+    }
+    if(all(test.stat == "Conditions non remplies")){
+      test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                    Value = test.stat,
+                                    row.names = NULL)
+    }
 
     # J'exporte les résultats en Excel
     export_excel(tab_excel = tab,
