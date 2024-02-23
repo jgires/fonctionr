@@ -33,12 +33,9 @@
 #' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import ggplot2
-#' @import stringr
 #' @import survey
 #' @import srvyr
 #' @import dplyr
-#' @import showtext
-#' @import sysfonts
 #' @export
 #'
 #' @examples
@@ -229,11 +226,11 @@ distrib_discrete <- function(data, # Données en format srvyr
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ quali_var }}" := droplevels(fct_na_value_to_level({{ quali_var }}, "NA"))
+      mutate("{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(fct_na_value_to_level({{ facet_var }}, "NA"))
+        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
         )
     }
   }
@@ -338,7 +335,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       na.value = "grey"
       ) +
     scale_x_discrete(
-      labels = function(x) str_wrap(x, width = wrap_width_y),
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
       limits = levels
       ) +
     theme_fonctionr(font = font) +
@@ -408,10 +405,10 @@ distrib_discrete <- function(data, # Données en format srvyr
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(str_replace(round(prop * scale,
-                                           digits = digits),
-                                     "[.]",
-                                     dec),
+          label = paste0(stringr::str_replace(round(prop * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
                          unit),
           family = font),
         size = 3.5,
