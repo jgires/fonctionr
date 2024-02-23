@@ -1,5 +1,7 @@
 #' many_prop
 #'
+#' Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
+#'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param list_vars_lab names of the variables

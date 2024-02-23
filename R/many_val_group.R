@@ -1,5 +1,7 @@
 #' many_val_group
 #'
+#' Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
+#'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
