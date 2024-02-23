@@ -76,11 +76,9 @@ Date : 2024-02-14
 
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas ce bug.
 
--   Problème si data a les mêmes noms que les variables créées par `fonctionr` en interne !
+-   Revoir la logique des `na.rm` =\> voir feuille Excel.
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
-
--   L'import des packages extérieurs n'est pas OK : il est inutile d'importer tous les packages extérieurs via le NAMESPACE, cela augmente fortement le risque de collisions de noms de fonctions =\> un bon résumé ici : <https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/> et pour plus de détails : <https://r-pkgs.org/dependencies-in-practice.html>. De plus, certains imports sont absents du squelette roxygen dans certaines fonctions (`esth_graph()`, mais aussi d'autres =\> corriger !).
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
@@ -147,6 +145,8 @@ Date : 2024-02-14
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
+-   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
+    *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
 
 #### central_group
 

@@ -144,7 +144,7 @@ export_excel <- function(tab_excel,
     bivar_add <- 1
   }
 
-  # Des if statements dans le cas où le résultat est démultiplié par modalité de facet_var => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
+  # Des if statements dans le cas où le résultat est démultiplié par modalité de facet => Pas les mêmes règles vu qu'il y a une colonne en plus à mettre en gras
   if (!facet_null) {
     addStyle(wb, "Résultats", firstC, cols = 1:(2+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style à la première colonne (sans la première ligne)
     if (percent_fm == TRUE) {

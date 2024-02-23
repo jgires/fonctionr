@@ -5,11 +5,11 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param prop_exp An expression that define the proportion to be computed.
-#' @param facet_var A variable defining the faceting group.
+#' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
-#' @param na.var "rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp
+#' @param na.prop "rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -70,12 +70,12 @@
 prop_group <- function(data,
                        group,
                        prop_exp,
-                       facet_var = NULL,
+                       facet = NULL,
                        filter_exp = NULL,
                        ...,
                        na.rm.group = T,
                        # na.rm.facet = T, # à compléter
-                       na.var = "rm",
+                       na.prop = "rm",
                        prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        reorder = F,
                        show_ci = T,
@@ -108,7 +108,7 @@ prop_group <- function(data,
   # Check des autres arguments
   check_arg(
     arg = list(
-      na.var = na.var,
+      na.prop = na.prop,
       prop_method = prop_method,
       total_name = total_name,
       unit = unit,
@@ -146,7 +146,7 @@ prop_group <- function(data,
   )
 
   # Check que les arguments avec choix précis sont les bons
-  match.arg(na.var, choices = c("rm", "include"))
+  match.arg(na.prop, choices = c("rm", "include"))
 
   # Test que prop_exp est OK
   data <- data %>%
@@ -156,9 +156,9 @@ prop_group <- function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
-  quo_facet <- enquo(facet_var)
+  quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
@@ -169,7 +169,7 @@ prop_group <- function(data,
   vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
-    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet)))
   }
   # On ajoute filter si non-NULL
   if(!quo_is_null(quo_filter)){
@@ -180,7 +180,7 @@ prop_group <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet n'est pas présente dans data")
     }
     # # DESACTIVé : NE FONCTIONNE PAS !
     # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
@@ -192,11 +192,11 @@ prop_group <- function(data,
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet n'est pas présente dans data")
     }
   }
 
-  if(na.var == "rm"){
+  if(na.prop == "rm"){
     # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
     # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
    names_expression <- all.names(substitute(prop_exp))
@@ -240,11 +240,11 @@ prop_group <- function(data,
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
-        filter(!is.na({{ facet_var }}))
+        filter(!is.na({{ facet }}))
     }
   }
 
-  if(na.var == "rm"){
+  if(na.prop == "rm"){
     # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
     # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vars_expression créé au début
     message("Variable(s) détectée(s) dans l'expression : ", paste(vars_expression, collapse = ", "))
@@ -273,11 +273,11 @@ prop_group <- function(data,
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
         mutate(
-          "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+          "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
     }
   }
 
-  if(na.var == "include"){
+  if(na.prop == "include"){
     data_W <- data_W %>%
       mutate(
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
@@ -296,7 +296,7 @@ prop_group <- function(data,
   #   filter(!is.na(fonctionr_express_bin))
 
   # Ici je crée une copie des données dans data_W_NA
-  # L'idée est de recoder les NA des 2 variables group et facet_var en level "NA", pour que le test stat s'applique aussi aux NA
+  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
@@ -304,8 +304,8 @@ prop_group <- function(data,
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
+      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
   }
@@ -316,9 +316,9 @@ prop_group <- function(data,
     group_fmla <- as.character(substitute(group))
     fmla <- stats::as.formula(paste("~", group_fmla, "+", "fonctionr_express_bin"))
   }
-  # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
+  # Avec facet : prévoir une boucle pour chacune des modalité de facet => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
-    facet_fmla <- as.character(substitute(facet_var))
+    facet_fmla <- as.character(substitute(facet))
     fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
   }
 
@@ -360,7 +360,7 @@ prop_group <- function(data,
   # Version avec facet
   if(!quo_is_null(quo_facet)){
     tab <- data_W %>%
-      group_by({{ facet_var }}, {{ group }}) %>%
+      group_by({{ facet }}, {{ group }}) %>%
       cascade(
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()),
@@ -368,7 +368,7 @@ prop_group <- function(data,
         n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
       ) %>%
-      filter({{ facet_var }} != total_name | is.na({{ facet_var }}))
+      filter({{ facet }} != total_name | is.na({{ facet }}))
   }
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
@@ -518,7 +518,7 @@ prop_group <- function(data,
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }})) +
+      facet_wrap(vars({{ facet }})) +
       theme(panel.spacing.x = unit(1, "lines")) +
       scale_y_continuous(
         labels = function(x) { paste0(x * scale, unit) },

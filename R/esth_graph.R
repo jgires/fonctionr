@@ -5,7 +5,7 @@
 #' @param tab Table with the variables to be ploted.
 #' @param var The variable in tab with the labels of the indicators to be ploted.
 #' @param value The variable in tab with the indicators to be ploted.
-#' @param facet_var A variable in tab defining the faceting group, if applicable. Default is NULL.
+#' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
 #' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
 #' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
@@ -37,7 +37,7 @@
 esth_graph <- function(tab,
                        var,
                        value,
-                       facet_var = NULL,
+                       facet = NULL,
                        reorder = F,
                        error_low = NULL,
                        error_upp = NULL,
@@ -111,7 +111,7 @@ esth_graph <- function(tab,
 
   # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
-  quo_facet <- enquo(facet_var)
+  quo_facet <- enquo(facet)
   quo_low <- enquo(error_low)
   quo_up <- enquo(error_upp)
   quo_n <- enquo(n_var)
@@ -251,7 +251,7 @@ esth_graph <- function(tab,
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }})) +
+      facet_wrap(vars({{ facet }})) +
       theme(panel.spacing.x = unit(1, "lines")) +
       scale_y_continuous(
         labels = function(x) { paste0(x * scale, unit) },

@@ -4,10 +4,10 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param quali_var The discrete variable that is described.
-#' @param facet_var A variable defining the faceting group.
+#' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove observations with NA in quali_var and observations with NA on facet_var if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet_var if applicable. Default is TRUE.
+#' @param na.rm.group TRUE if you want to remove observations with NA in quali_var and observations with NA on facet if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet if applicable. Default is TRUE.
 #' @param probs Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.
 #' @param prop_method Type of proportion method to use to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
@@ -67,7 +67,7 @@
 #'
 distrib_discrete <- function(data, # Données en format srvyr
                              quali_var, # Variable catégorielle
-                             facet_var = NULL,
+                             facet = NULL,
                              filter_exp = NULL,
                              ...,
                              na.rm.group = T,
@@ -147,9 +147,9 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
-  quo_facet <- enquo(facet_var)
+  quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
@@ -157,7 +157,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   vars_input_char <- c(as.character(substitute(quali_var)))
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
-    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet)))
   }
   # On ajoute filter si non-NULL
   if(!quo_is_null(quo_filter)){
@@ -168,7 +168,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
     }
     # # DESACTIVé : NE FONCTIONNE PAS !
     # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
@@ -180,7 +180,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
     }
   }
 
@@ -204,7 +204,7 @@ distrib_discrete <- function(data, # Données en format srvyr
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
-        filter(!is.na({{ facet_var }}))
+        filter(!is.na({{ facet }}))
     }
   }
 
@@ -217,11 +217,11 @@ distrib_discrete <- function(data, # Données en format srvyr
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
   # Ici je crée une copie des données dans data_W_NA
-  # L'idée est de recoder les NA des 2 variables group et facet_var en level "NA", pour que le test stat s'applique aussi aux NA
+  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
@@ -229,8 +229,8 @@ distrib_discrete <- function(data, # Données en format srvyr
       mutate("{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
+      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
   }
@@ -263,7 +263,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   }
   if (!quo_is_null(quo_facet)) {
     tab <- data_W %>%
-      group_by({{ facet_var }}, {{ quali_var }}) %>%
+      group_by({{ facet }}, {{ quali_var }}) %>%
       srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
                        n_sample = unweighted(n()),
                        n_weighted = survey_total(vartype = "ci"), # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
@@ -441,7 +441,7 @@ distrib_discrete <- function(data, # Données en format srvyr
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }})) +
+      facet_wrap(vars({{ facet }})) +
       theme(panel.spacing.x = unit(1, "lines")) +
       scale_y_continuous(
         labels = function(x) { paste0(x * scale, unit) },

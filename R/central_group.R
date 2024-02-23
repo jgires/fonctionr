@@ -8,7 +8,7 @@
 #' @param group A variable defining groups to be compared.
 #' @param quanti_exp An expression that define the variable from which the mean/median is computed.
 #' @param type "mean" to compute mean by group ; "median" to compute median by group.
-#' @param facet_var A variable defining the faceting group.
+#' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.
@@ -66,7 +66,7 @@ central_group <- function(data,
                           group,
                           quanti_exp,
                           type,
-                          facet_var = NULL,
+                          facet = NULL,
                           filter_exp = NULL,
                           ...,
                           na.rm.group = T,
@@ -143,9 +143,9 @@ central_group <- function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet_var & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
-  quo_facet <- enquo(facet_var)
+  quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
@@ -156,7 +156,7 @@ central_group <- function(data,
   vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
-    vars_input_char <- c(vars_input_char, as.character(substitute(facet_var)))
+    vars_input_char <- c(vars_input_char, as.character(substitute(facet)))
   }
   # On ajoute filter si non-NULL
   if(!quo_is_null(quo_filter)){
@@ -167,7 +167,7 @@ central_group <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet n'est pas présente dans data")
     }
     # # DESACTIVé : NE FONCTIONNE PAS !
     # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
@@ -179,7 +179,7 @@ central_group <- function(data,
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet_var n'est pas présente dans data")
+      stop("Au moins une des variables introduites dans group, quanti_exp, filter_exp ou facet n'est pas présente dans data")
     }
   }
 
@@ -211,7 +211,7 @@ central_group <- function(data,
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
-        filter(!is.na({{ facet_var }}))
+        filter(!is.na({{ facet }}))
     }
   }
 
@@ -246,7 +246,7 @@ central_group <- function(data,
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet_var }}" := droplevels(as.factor({{ facet_var }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
   # Ici je crée une copie des données dans data_W_NA
@@ -258,8 +258,8 @@ central_group <- function(data,
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
+      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
   }
@@ -276,9 +276,9 @@ central_group <- function(data,
     fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
     fmla2 <- stats::as.formula(paste("~", group_fmla))
   }
-  # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
+  # Avec facet : prévoir une boucle pour chacune des modalité de facet => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
-    group_fmla <- as.character(substitute(facet_var))
+    group_fmla <- as.character(substitute(facet))
     fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
     fmla2 <- stats::as.formula(paste("~", group_fmla))
   }
@@ -339,25 +339,25 @@ central_group <- function(data,
   if(!quo_is_null(quo_facet)){
     if (type == "mean") {
       tab <- data_W %>%
-        group_by({{ facet_var }}, {{ group }}) %>%
+        group_by({{ facet }}, {{ group }}) %>%
         cascade(
           indice = survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_sample = unweighted(n()),
           n_weighted = survey_total(vartype = "ci"),
           .fill = total_name, # Le total
         ) %>%
-        filter({{ facet_var }} != total_name | is.na({{ facet_var }}))
+        filter({{ facet }} != total_name | is.na({{ facet }}))
     }
     if (type == "median") {
       tab <- data_W %>%
-        group_by({{ facet_var }}, {{ group }}) %>%
+        group_by({{ facet }}, {{ group }}) %>%
         cascade(
           indice = survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci"),
           n_sample = unweighted(n()),
           n_weighted = survey_total(vartype = "ci"),
           .fill = total_name, # Le total
         ) %>%
-        filter({{ facet_var }} != total_name | is.na({{ facet_var }}))
+        filter({{ facet }} != total_name | is.na({{ facet }}))
     }
   }
 
@@ -511,7 +511,7 @@ central_group <- function(data,
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
-      facet_wrap(vars({{ facet_var }})) +
+      facet_wrap(vars({{ facet }})) +
       theme(panel.spacing.x = unit(1, "lines")) +
       scale_y_continuous(
         labels = function(x) { paste0(x, unit) },
