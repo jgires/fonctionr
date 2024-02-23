@@ -14,5 +14,5 @@ globalVariables(unique(c(
   # pivot_longer_survey:
   "type",
   # prop_group:
-  "median", "n_sample", "prop", "prop_low", "prop_upp", "express_bin_temp", "express_bin_zero", "express_bin"
+  "median", "n_sample", "prop", "prop_low", "prop_upp", "fonctionr_express_bin"
 )))

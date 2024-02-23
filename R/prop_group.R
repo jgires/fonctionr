@@ -152,6 +152,11 @@ prop_group <- function(data,
   # Check que les arguments avec choix précis sont les bons
   match.arg(na.var, choices = c("rm", "include"))
 
+  # Test que prop_exp est OK
+  data <- data %>%
+    mutate(test_prop_exp = {{ prop_exp }})
+  if (!all(data[["test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -204,7 +209,7 @@ prop_group <- function(data,
    }
   }
 
-  # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(express_bin))")
+  # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(fonctionr_express_bin))")
   # express_check <- str_extract_all((deparse(substitute(prop_exp))), "[\\&\\|]+")[[1]]
   # if(length(express_check) > 0){
   #   if(express_check %in% c("&", "&&", "|", "||")){
@@ -225,7 +230,7 @@ prop_group <- function(data,
       filter({{ filter_exp }})
   }
 
-  # /!\ NOTE : méthode de filtrage pas sure ! Remplacée par version avec filtre sur "express_bin" /!\
+  # /!\ NOTE : méthode de filtrage pas sure ! Remplacée par version avec filtre sur "fonctionr_express_bin" /!\
   # # On choppe la colonne sur laquelle on calcule la proportion dans l'expression => devient un vecteur string
   # var_prop <- str_extract((deparse(substitute(prop_exp))), "\\w+\\b")
   # # Et on filtre le data.frame pour enlever les valeurs manquantes sur cette variable => sinon ambigu : de cette façon les n par groupe sont toujours les effectifs pour lesquels la variable var_prop est non missing (et pas tout le groupe : ça on s'en fout)
@@ -266,7 +271,7 @@ prop_group <- function(data,
     data_W <- data_W %>%
       mutate(
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-        express_bin = {{ prop_exp }}
+        fonctionr_express_bin = {{ prop_exp }}
       )
     # On convertit également la variable de facet en facteur si facet non-NULL
     if(!quo_is_null(quo_facet)){
@@ -280,21 +285,19 @@ prop_group <- function(data,
     data_W <- data_W %>%
       mutate(
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-        express_bin_zero = 0,
-        express_bin_temp = {{ prop_exp }},
-        express_bin = ifelse(!is.na(express_bin_temp),
-                             express_bin_temp,
-                             express_bin_zero)
+        fonctionr_express_bin = ifelse(!is.na({{ prop_exp }}),
+                             {{ prop_exp }},
+                             0)
       )
   }
 
   # /!\ NOTE : méthode de filtrage remplacée par version avec filtre sur vars_expression avec boucle for (voir précédent) /!\
   # # Méthode plus sure de filtrage des NA sur la variable sur laquelle est calculée la proportion
   # express_na <- data_W %>%
-  #   summarise(na_express = sum(is.na(express_bin)))
+  #   summarise(na_express = sum(is.na(fonctionr_express_bin)))
   # message(paste0(express_na[[1]]), " valeur(s) manquante(s) supprimée(s) dans l'expression")
   # data_W <- data_W %>%
-  #   filter(!is.na(express_bin))
+  #   filter(!is.na(fonctionr_express_bin))
 
   # Ici je crée une copie des données dans data_W_NA
   # L'idée est de recoder les NA des 2 variables group et facet_var en level "NA", pour que le test stat s'applique aussi aux NA
@@ -312,15 +315,15 @@ prop_group <- function(data,
   }
 
   # On réalise les tests statistiques
-  # Ici un test khi2 sur une variable binaire "express_bin" oui/non pour l'expression
+  # Ici un test khi2 sur une variable binaire "fonctionr_express_bin" oui/non pour l'expression
   if(quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(group))
-    fmla <- stats::as.formula(paste("~", group_fmla, "+", "express_bin"))
+    fmla <- stats::as.formula(paste("~", group_fmla, "+", "fonctionr_express_bin"))
   }
   # Avec facet : prévoir une boucle pour chacune des modalité de facet_var => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
     facet_fmla <- as.character(substitute(facet_var))
-    fmla <- stats::as.formula(paste("~", facet_fmla, "+", "express_bin"))
+    fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
   }
 
   if(na.rm.group == F){
@@ -351,7 +354,7 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ group }}) %>%
       cascade(
-        prop = survey_mean(express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()),
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
@@ -363,7 +366,7 @@ prop_group <- function(data,
     tab <- data_W %>%
       group_by({{ facet_var }}, {{ group }}) %>%
       cascade(
-        prop = survey_mean(express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()),
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),

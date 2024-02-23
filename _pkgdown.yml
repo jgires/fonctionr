@@ -9,12 +9,10 @@ navbar:
     href: reference/index.html
   - text: Articles
     menu:
-    - text: Manipuler facilement des données avec design complexe
-      href: articles/complex_survey_design.html
-    - text: Présentation synthétique des fonctions
+    - text: Présentation des fonctions
       href: articles/fonctionr_functions.html
-    - text: Des résultats prêts à la publication
-      href: articles/publication_ready.html
+    - text: Présentation des arguments
+      href: articles/fonctionr_arguments.html
   - text: Changelog
     href: articles/changelog.html
   right:

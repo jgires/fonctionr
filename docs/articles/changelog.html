@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +41,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/complex_survey_design.html">Manipuler facilement des données avec design complexe</a>
-    <a class="dropdown-item" href="../articles/fonctionr_functions.html">Présentation synthétique des fonctions</a>
-    <a class="dropdown-item" href="../articles/publication_ready.html">Des résultats prêts à la publication</a>
+    <a class="dropdown-item" href="../articles/fonctionr_functions.html">Présentation des fonctions</a>
+    <a class="dropdown-item" href="../articles/fonctionr_arguments.html">Présentation des arguments</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -83,6 +82,15 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-2-6">fonctionr 0.2.6<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-6"></a>
+</h2>
+<p>Date : 2024-02-22</p>
+<ul>
+<li>Ajout d’un check de l’expression dans <code><a href="../reference/prop_group.html">prop_group()</a></code>,
+évitant de produire des résultats incohérents.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-5">fonctionr 0.2.5<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-5"></a>
 </h2>
@@ -165,9 +173,12 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>Bug à l’import de fonctionr du fait de collision entre
-<code>MetBrewer</code>, <code>MoMAColors</code>, <code>PrettyCols</code>
-et les fonctions de base ? Je ne comprends pas ce bug.</p></li>
+<li><p>Bug à l’import de <code>fonctionr</code> du fait de collision
+entre <code>MetBrewer</code>, <code>MoMAColors</code>,
+<code>PrettyCols</code> et les fonctions de base ? Je ne comprends pas
+ce bug.</p></li>
+<li><p>Problème si data a les mêmes noms que les variables créées par
+<code>fonctionr</code> en interne !</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller, et il manque les

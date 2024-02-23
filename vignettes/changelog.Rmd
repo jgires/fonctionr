@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.6
+
+Date : 2024-02-22
+
+-   Ajout d'un check de l'expression dans `prop_group()`, évitant de produire des résultats incohérents.
+
 ## fonctionr 0.2.5
 
 Date : 2024-02-19
@@ -68,7 +74,9 @@ Date : 2024-02-14
 
 #### En général
 
--   Bug à l'import de fonctionr du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas ce bug.
+-   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas ce bug.
+
+-   Problème si data a les mêmes noms que les variables créées par `fonctionr` en interne !
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
 
