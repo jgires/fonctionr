@@ -5,32 +5,32 @@
 #' @name central_group
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param group A variable defining groups be compared.
-#' @param quanti_exp An expression that define the mean/mediam to be computed.
-#' @param type "mean" to compute means by group ; "median" to compute medians by group.
+#' @param group A variable defining groups to be compared.
+#' @param quanti_exp An expression that define the variable from which the mean/median is computed.
+#' @param type "mean" to compute mean by group ; "median" to compute median by group.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.
 #' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
-#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
-#' @param show_value TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median
+#' @param show_value TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
 #' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param total_name Name of the total bar on the graphic. Default is Total.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param unit Unit showed in the graphic. Default is no unit.
-#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
+#' @param unit Unit showed on the graphic. Default is no unit.
+#' @param dec Decimal mark shown on the graphic. Default is ",".
 #' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
-#' @param dodge Width of the bar, between 0 and 1.
+#' @param dodge Width of the bar, between 0 and 1.Default is 0.9.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
-#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_y Number of characters before going to the line in the labels of the groups. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Médianne : " + quanti_exp. To show no X label, use xlab = "".
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data.If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param caption Caption of the graphic.
-#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
+#' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
