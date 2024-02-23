@@ -3,16 +3,16 @@
 #' Function describe the distribution of a discrete variable from complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param quali_var The discrete variable that is studied.
+#' @param quali_var The discrete variable that is described.
 #' @param facet_var A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.
-#' @param probs Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1)
-#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
+#' @param na.rm.group TRUE if you want to remove observations with NA in quali_var and observations with NA on facet_var if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet_var if applicable. Default is TRUE.
+#' @param probs Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.
+#' @param prop_method Type of proportion method to use to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each modality of quali_var. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion.
 #' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
@@ -33,9 +33,12 @@
 #' @return A list that contains a table, a graphic and a statistical test
 #' @import rlang
 #' @import ggplot2
+#' @import stringr
 #' @import survey
 #' @import srvyr
 #' @import dplyr
+#' @import showtext
+#' @import sysfonts
 #' @export
 #'
 #' @examples
@@ -226,11 +229,11 @@ distrib_discrete <- function(data, # Données en format srvyr
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
+      mutate("{{ quali_var }}" := droplevels(fct_na_value_to_level({{ quali_var }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
+        mutate("{{ facet_var }}" := droplevels(fct_na_value_to_level({{ facet_var }}, "NA"))
         )
     }
   }
@@ -335,7 +338,7 @@ distrib_discrete <- function(data, # Données en format srvyr
       na.value = "grey"
       ) +
     scale_x_discrete(
-      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
+      labels = function(x) str_wrap(x, width = wrap_width_y),
       limits = levels
       ) +
     theme_fonctionr(font = font) +
@@ -405,10 +408,10 @@ distrib_discrete <- function(data, # Données en format srvyr
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(stringr::str_replace(round(prop * scale,
-                                                    digits = digits),
-                                              "[.]",
-                                              dec),
+          label = paste0(str_replace(round(prop * scale,
+                                           digits = digits),
+                                     "[.]",
+                                     dec),
                          unit),
           family = font),
         size = 3.5,
