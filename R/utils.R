@@ -69,8 +69,6 @@ convert_to_srvyr <- function(data, ...) {
 #' Fonction pour charger et activer les polices de fonctionr
 #'
 #' @return
-#' @import showtext
-#' @import sysfonts
 #' @export
 #'
 #' @examples
@@ -78,10 +76,10 @@ convert_to_srvyr <- function(data, ...) {
 load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
-  font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
-  font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
-  font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
-  showtext_auto()
+  sysfonts::font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  sysfonts::font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  sysfonts::font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
+  showtext::showtext_auto()
 
 }
 
@@ -100,7 +98,6 @@ load_and_active_fonts <- function(){
 #' @param bivariate A logical vector. TRUE if results are bivariate.
 #'
 #' @import openxlsx
-#' @import broom
 #'
 #' @noRd
 #'

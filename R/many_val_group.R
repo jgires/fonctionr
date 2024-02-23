@@ -40,9 +40,6 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
-#' @import forcats
-#' @import stringr
-#' @import openxlsx
 #' @export
 #'
 #' @examples
@@ -444,7 +441,7 @@ many_val_group = function(data,
   # On crée le graphique
 
   graph <- tab %>%
-    mutate("{{ group }}" := fct_rev({{ group }})) %>%
+    mutate("{{ group }}" := forcats::fct_rev({{ group }})) %>%
     ggplot(aes(
       x = {{ group }},
       y = indice,
@@ -461,11 +458,11 @@ many_val_group = function(data,
     ) +
     scale_fill_manual(
       values = palette,
-      labels = function(x) str_wrap(x, width = wrap_width_leg),
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
       na.value = "grey"
 
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y))+
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y))+
     labs(title = title,
          subtitle = subtitle,
          caption = caption
@@ -503,7 +500,7 @@ many_val_group = function(data,
     # LEGEND ---
     if(all(!is.null(legend_lab), legend_lab != "")){
       graph <- graph +
-        labs(fill = str_wrap(legend_lab, wrap_width_leg))
+        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
     }
     if(all(!is.null(legend_lab), legend_lab == "")){
       graph <- graph +
@@ -562,10 +559,10 @@ many_val_group = function(data,
       geom_text(
         aes(
           y = if (position == "dodge") (indice) + (0.01 * max_ggplot) else indice,
-          label = paste0(str_replace(round(indice * scale,
-                                           digits = digits),
-                                     "[.]",
-                                     dec),
+          label = paste0(stringr::str_replace(round(indice * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
                          unit),
           family = font),
         size = 3,

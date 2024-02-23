@@ -38,10 +38,6 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
-#' @import forcats
-#' @import stringr
-#' @import openxlsx
-#' @import broom
 #' @export
 #'
 #' @examples
@@ -305,11 +301,11 @@ prop_group <- function(data,
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ group }}" := droplevels(fct_na_value_to_level({{ group }}, "NA"))
+      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(fct_na_value_to_level({{ facet_var }}, "NA"))
+        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
         )
     }
   }
@@ -453,7 +449,7 @@ prop_group <- function(data,
       values = palette,
       na.value = "grey"
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
                      limits = levels)+
     labs(title = title,
          subtitle = subtitle
@@ -559,10 +555,10 @@ prop_group <- function(data,
       geom_text(
         aes(
           y = (prop) + (0.01 * max_ggplot),
-          label = paste0(str_replace(round(prop * scale,
-                                           digits = digits),
-                                     "[.]",
-                                     dec),
+          label = paste0(stringr::str_replace(round(prop * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
                          unit),
           family = font),
         size = 3.5,

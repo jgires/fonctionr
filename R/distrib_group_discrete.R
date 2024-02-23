@@ -37,10 +37,6 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
-#' @import forcats
-#' @import stringr
-#' @import openxlsx
-#' @import broom
 #' @export
 #'
 #' @examples
@@ -234,12 +230,12 @@ distrib_group_discrete <- function(data,
   if(na.rm.group == F){
     data_W_NA <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ group }}" := droplevels(fct_na_value_to_level({{ group }}, "NA")),
-             "{{ quali_var }}" := droplevels(fct_na_value_to_level({{ quali_var }}, "NA"))
+      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")),
+             "{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
       )
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet_var
-        mutate("{{ facet_var }}" := droplevels(fct_na_value_to_level({{ facet_var }}, "NA"))
+        mutate("{{ facet_var }}" := droplevels(forcats::fct_na_value_to_level({{ facet_var }}, "NA"))
         )
     }
   }
@@ -344,13 +340,13 @@ distrib_group_discrete <- function(data,
       legend.position = "bottom"
     ) +
     scale_fill_manual(values = palette,
-                      labels = function(x) str_wrap(x, width = wrap_width_leg),
+                      labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
                       na.value = "grey") +
     scale_y_continuous(
       labels = function(x) { paste0(x * scale, unit) },
       expand = expansion(mult = c(.01, .05))
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
                      limits = levels) +
     guides(fill = guide_legend(ncol = legend_ncol)) +
     labs(title = title,
@@ -421,7 +417,7 @@ distrib_group_discrete <- function(data,
     # LEGEND ---
     if(all(!is.null(legend_lab), legend_lab != "")){
       graph <- graph +
-        labs(fill = str_wrap(legend_lab, wrap_width_leg))
+        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
     }
     if(all(!is.null(legend_lab), legend_lab == "")){
       graph <- graph +
@@ -450,10 +446,10 @@ distrib_group_discrete <- function(data,
       geom_text(
         aes(
           label = ifelse(prop > 0.02,
-                         paste0(str_replace(round(prop * scale,
-                                                  digits = digits),
-                                            "[.]",
-                                            dec),
+                         paste0(stringr::str_replace(round(prop * scale,
+                                                           digits = digits),
+                                                     "[.]",
+                                                     dec),
                                 unit),
                          NA),
           family = font),

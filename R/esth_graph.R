@@ -27,6 +27,9 @@
 #' @param caption Caption of the graphic.
 #'
 #' @return
+#' @import rlang
+#' @import dplyr
+#' @import ggplot2
 #' @export
 #'
 #' @examples
@@ -116,7 +119,7 @@ esth_graph <- function(tab,
   # On convertit la variable catégorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
-      "{{ var }}" := as.factor(droplevels({{ var }}))
+      "{{ var }}" := droplevels(as.factor({{ var }}))
     )
 
   # On crée la palette
@@ -232,7 +235,7 @@ esth_graph <- function(tab,
     theme(
       legend.position = "none"
     ) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = wrap_width_y),
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
                      limits = levels) +
     scale_fill_manual(
       values = palette,
@@ -285,10 +288,10 @@ esth_graph <- function(tab,
       geom_text(
         aes(
           y = ({{ value }}) + (0.01 * max_ggplot),
-          label = paste0(str_replace(round({{ value }} * scale,
-                                           digits = digits),
-                                     "[.]",
-                                     dec),
+          label = paste0(stringr::str_replace(round({{ value }} * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
                          unit),
           family = font),
         size = 3.5,
