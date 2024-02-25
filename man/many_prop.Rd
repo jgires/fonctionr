@@ -8,7 +8,7 @@ many_prop(
   data,
   list_vars,
   list_vars_lab = NULL,
-  facet_var = NULL,
+  facet = NULL,
   filter_exp = NULL,
   ...,
   prop_method = "beta",
@@ -40,7 +40,7 @@ many_prop(
 
 \item{list_vars_lab}{names of the variables}
 
-\item{facet_var}{A variable defining the faceting group.}
+\item{facet}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
@@ -87,7 +87,7 @@ many_prop(
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
 \description{
-many_prop
+Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
 }
 \examples{
 # Loading of data
@@ -105,7 +105,7 @@ eusilc_many_prop <- many_prop(
 eusilc,
 list_vars = c(worker,austrian),
 list_vars_lab = c("\% of workers","\% of Austrian"),
-facet_var = rb090,
+facet = rb090,
 strata = db040,
 ids = db030,
 weight = rb050,

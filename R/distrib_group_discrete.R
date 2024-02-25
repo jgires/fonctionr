@@ -271,24 +271,20 @@ distrib_group_discrete <- function(data,
   }
 
   # On calcule les fréquences relatives par groupe
-  if(quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ group }}, {{ quali_var }}) %>%
-      summarise(
-        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
-        n_sample = unweighted(n()),
-        n_weighted = survey_total(vartype = c("ci"))
-      )
+  if (quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ group }}, {{ quali_var }})
   }
-  if(!quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ facet }}, {{ group }}, {{ quali_var }}) %>%
-      summarise(
-        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
-        n_sample = unweighted(n()),
-        n_weighted = survey_total(vartype = c("ci"))
-      )
+  if (!quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ facet }}, {{ group }}, {{ quali_var }})
   }
+  tab <- data_W %>%
+    summarise(
+      prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+      n_sample = unweighted(n()),
+      n_weighted = survey_total(vartype = c("ci"))
+    )
 
   # On crée la palette avecle package met.brewer
   if(pretty_pal %in% names(MetBrewer::MetPalettes)){

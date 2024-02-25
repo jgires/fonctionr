@@ -150,8 +150,8 @@ prop_group <- function(data,
 
   # Test que prop_exp est OK
   data <- data %>%
-    mutate(test_prop_exp = {{ prop_exp }})
-  if (!all(data[["test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
+    mutate(fonctionr_test_prop_exp = {{ prop_exp }})
+  if (!all(data[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)

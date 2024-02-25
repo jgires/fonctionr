@@ -315,50 +315,29 @@ central_group <- function(data,
 
   # On calcule l'indicateur par groupe (mean ou median selon la fonction appelée)
   if(quo_is_null(quo_facet)){
-    if (type == "mean") {
-      tab <- data_W %>%
-        group_by({{ group }}) %>%
-        cascade(
-          indice = survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_weighted = survey_total(vartype = "ci"),
-          .fill = total_name, # Le total
-        )
-    }
-    if (type == "median") {
-      tab <- data_W %>%
-        group_by({{ group }}) %>%
-        cascade(
-          indice = survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_weighted = survey_total(vartype = "ci"),
-          .fill = total_name, # Le total
-        )
-    }
+    tab <- data_W %>%
+      group_by({{ group }}) %>%
+      cascade(
+        indice = if (type == "median") {
+          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = "ci"),
+        .fill = total_name, # Le total
+      )
   }
   if(!quo_is_null(quo_facet)){
-    if (type == "mean") {
-      tab <- data_W %>%
-        group_by({{ facet }}, {{ group }}) %>%
-        cascade(
-          indice = survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_weighted = survey_total(vartype = "ci"),
-          .fill = total_name, # Le total
-        ) %>%
-        filter({{ facet }} != total_name | is.na({{ facet }}))
-    }
-    if (type == "median") {
-      tab <- data_W %>%
-        group_by({{ facet }}, {{ group }}) %>%
-        cascade(
-          indice = survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_weighted = survey_total(vartype = "ci"),
-          .fill = total_name, # Le total
-        ) %>%
-        filter({{ facet }} != total_name | is.na({{ facet }}))
-    }
+    tab <- data_W %>%
+      group_by({{ facet }}, {{ group }}) %>%
+      cascade(
+        indice = if (type == "median") {
+          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = "ci"),
+        .fill = total_name, # Le total
+      ) %>%
+      filter({{ facet }} != total_name | is.na({{ facet }}))
   }
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)

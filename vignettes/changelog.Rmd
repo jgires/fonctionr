@@ -78,11 +78,12 @@ Date : 2024-02-14
 
 -   Revoir la logique des `na.rm` =\> voir feuille Excel.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.\
+    **=\> POUR FRANCOIS : caractères illégaux ajoutés dans les explications des commentaires, je crois que ce sont les guillemets français (`")` =\> faire tourner un check pour voir !**
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
 
--   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires et de la réécriture avec `::` pour le choix des fonctions externes (au lieu de les importer) =\> de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments, erreurs qui font bugger le na.rm.group...)
+-   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments, erreurs qui font bugger le `na.rm.group`, etc.)
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
 
@@ -112,11 +113,6 @@ Date : 2024-02-14
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
 
-#### prop_group
-
--   Bypasser l'erreur du test stat avec `tryCatch()`.\
-    **=\> Possible de créer l'erreur lorsque prop = 100% dans chaque groupe !**
-
 #### distrib_group_d
 
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
@@ -139,22 +135,13 @@ Date : 2024-02-14
 
 #### En général
 
--   Pour les checks : mieux préciser les variables incriminées ? Ce n'est pas le cas pour les checks des variables nécessaires ou des variables du design, par ex. Elles ne sont pas nombreuses, mais c'est plus sympa pour l'utilisateur.
--   Optimiser le code dupliqué des pipelines avec `summarise()` pour `central_group()` ou `many_val_group()` : ce sont des quasi copies selon que c'est une médiane / moyenne / etc. =\> pénible à maintenir, trouver une simplification.
+-   Pour les checks : mieux préciser les variables incriminées ? Ce n'est pas le cas pour les checks des variables nécessaires, par ex. Elles ne sont pas nombreuses, mais c'est plus sympa pour l'utilisateur.
 -   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
 -   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
     *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
-
-#### central_group
-
--   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
-
-#### prop_group
-
--   Pouvoir réordonner avec les facet =\> solution avec `tidytext` <https://juliasilge.com/blog/reorder-within/>
 
 #### distrib_group_d
 
@@ -181,13 +168,13 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 *=\> De ce fait, j'ai inclus une option de filtre (filter_exp) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! [A FAIRE : expliquer dans la doc !]{.underline}*
 
-### Fonctions à créer
+## Fonctions à créer
 
-#### Univarié
+### Univarié
 
 -   Densité pour le général (pour variable continue)
 
-#### Bivarié ou 3 variables+
+### Bivarié ou 3 variables+
 
 -   Superposition de 2 statistiques (bar + lines) avec échelles différentes.
 

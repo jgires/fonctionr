@@ -267,105 +267,46 @@ many_val_group = function(data,
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
+  # Si facet
+  if (quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ group }})
+  }
+  # Si non facet
+  if (!quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ facet }}, {{ group }})
+  }
+  tab <- tibble()
+  # On calcule les proportions par groupe
   if(type == "prop"){
-    # On calcule les proportions par groupe
-    tab <- tibble()
-    if(quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
-            n_tot_weighted = survey_total(vartype = "ci")
-          )
+    for(i in vec_list_vars) {
+      tab_i <- data_W %>%
+        summarise(
+          list_col = i,
+          indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          n_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+          n_tot_weighted = survey_total(vartype = "ci")
+        )
 
-        tab <- rbind(tab, tab_i)
-      }
-    }
-    # Version avec facet
-    if(!quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ facet }}, {{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
-            n_tot_weighted = survey_total(vartype = "ci")
-          )
-
-        tab <- rbind(tab, tab_i)
-      }
+      tab <- rbind(tab, tab_i)
     }
   }
-  if(type == "median"){
-    # On calcule les proportions par groupe
-    tab <- tibble()
-    if(quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_median(.data[[i]], na.rm = T, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_weighted = survey_total(vartype = "ci")
-          )
+  # On calcule les moyennes/médianes par groupe
+  if(type == "median" | type == "mean"){
+    for(i in vec_list_vars) {
+      tab_i <- data_W %>%
+        summarise(
+          list_col = i,
+          indice = if (type == "median") {
+            survey_median(.data[[i]], na.rm = T, vartype = "ci")
+          } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+          n_sample = unweighted(n()),
+          n_weighted = survey_total(vartype = "ci")
+        )
 
-        tab <- rbind(tab, tab_i)
-      }
-    }
-    # Version avec facet
-    if(!quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ facet }}, {{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_median(.data[[i]], na.rm = T, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_tot_weighted = survey_total(vartype = "ci")
-          )
-
-        tab <- rbind(tab, tab_i)
-      }
-    }
-  }
-  if(type == "mean"){
-    # On calcule les proportions par groupe
-    tab <- tibble()
-    if(quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_weighted = survey_total(vartype = "ci")
-          )
-
-        tab <- rbind(tab, tab_i)
-      }
-    }
-    # Version avec facet
-    if(!quo_is_null(quo_facet)){
-      for(i in vec_list_vars) {
-        tab_i <- data_W %>%
-          group_by({{ facet }}, {{ group }}) %>%
-          summarise(
-            list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-            n_sample = unweighted(n()),
-            n_tot_weighted = survey_total(vartype = "ci")
-          )
-
-        tab <- rbind(tab, tab_i)
-      }
+      tab <- rbind(tab, tab_i)
     }
   }
 

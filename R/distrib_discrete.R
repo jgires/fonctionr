@@ -254,21 +254,19 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # On calcule les fréquences relatives
   if (quo_is_null(quo_facet)) {
-    tab <- data_W %>%
-      group_by({{ quali_var }}) %>%
-      srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
-                       n_sample = unweighted(n()),
-                       n_weighted = survey_total(vartype = "ci"), # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
-                       )
-  }
+    data_W <- data_W %>%
+      group_by({{ quali_var }})
+    }
   if (!quo_is_null(quo_facet)) {
-    tab <- data_W %>%
-      group_by({{ facet }}, {{ quali_var }}) %>%
-      srvyr::summarize(prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
-                       n_sample = unweighted(n()),
-                       n_weighted = survey_total(vartype = "ci"), # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
-                       )
-  }
+    data_W <- data_W %>%
+      group_by({{ facet }}, {{ quali_var }})
+    }
+  tab <- data_W %>%
+    summarize(
+      prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
+      n_sample = unweighted(n()),
+      n_weighted = survey_total(vartype = "ci") # si l'on met les poids pondéré, je trouve nécessaire et pertinent de mettre leurs IC
+    )
 
   # Faire le graphique ---------------
 

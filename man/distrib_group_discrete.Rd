@@ -9,7 +9,7 @@ distrib_group_discrete(
   data,
   group,
   quali_var,
-  facet_var = NULL,
+  facet = NULL,
   filter_exp = NULL,
   ...,
   na.rm.group = T,
@@ -41,21 +41,21 @@ distrib_group_d(...)
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{group}{A variable defining groups be compared.}
+\item{group}{A variable defining groups to be compared.}
 
-\item{quali_var}{The discrete variable that is studied.}
+\item{quali_var}{The discrete variable that is described in the different groups.}
 
-\item{facet_var}{A variable defining the faceting group.}
+\item{facet}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove the NAs in quali_var, group and facet_var. FALSE if you want to create NA categories for quali_var, group and facet_var. Default is TRUE.}
+\item{na.rm.group}{TRUE if you want to remove the NAs in quali_var, group and facet. FALSE if you want to create NA categories for quali_var, group and facet. Default is TRUE.}
 
-\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportion.}
+\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2% or less are never showed on the graphic. Default is TRUE.}
 
 \item{show_lab}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
 
@@ -63,21 +63,21 @@ distrib_group_d(...)
 
 \item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is percent.}
+\item{unit}{Unit showed in the graphic. Default is no unit.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ","}
+\item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
 \item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bar, between 0 and 1. Default is 0.9.}
 
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
 
 \item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
 
-\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories of quali_var. Default is 25.}
 
 \item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 
@@ -85,15 +85,15 @@ distrib_group_d(...)
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, the X label on the graphic wil be Distribution : " + quali_var. To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
 
-\item{legend_lab}{Legend (fill) label on the graphic.}
+\item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be quali_var. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }
 \value{
 A list that contains a table, a graphic and a statistical test

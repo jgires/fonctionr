@@ -64,7 +64,7 @@
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">quanti_exp</span>,</span>
 <span>  <span class="va">type</span>,</span>
-<span>  facet_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  na.rm.group <span class="op">=</span> <span class="cn">T</span>,</span>
@@ -101,18 +101,18 @@
 
 
 <dt>group</dt>
-<dd><p>A variable defining groups be compared.</p></dd>
+<dd><p>A variable defining groups to be compared.</p></dd>
 
 
 <dt>quanti_exp</dt>
-<dd><p>An expression that define the mean/mediam to be computed.</p></dd>
+<dd><p>An expression that define the variable from which the mean/median is computed.</p></dd>
 
 
 <dt>type</dt>
-<dd><p>"mean" to compute means by group ; "median" to compute medians by group.</p></dd>
+<dd><p>"mean" to compute mean by group ; "median" to compute median by group.</p></dd>
 
 
-<dt>facet_var</dt>
+<dt>facet</dt>
 <dd><p>A variable defining the faceting group.</p></dd>
 
 
@@ -125,7 +125,7 @@
 
 
 <dt>na.rm.group</dt>
-<dd><p>TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.</p></dd>
+<dd><p>TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.</p></dd>
 
 
 <dt>reorder</dt>
@@ -133,7 +133,7 @@
 
 
 <dt>show_ci</dt>
-<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.</p></dd>
+<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.</p></dd>
 
 
 <dt>show_n</dt>
@@ -141,7 +141,7 @@
 
 
 <dt>show_value</dt>
-<dd><p>TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median</p></dd>
+<dd><p>TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.</p></dd>
 
 
 <dt>show_lab</dt>
@@ -153,15 +153,15 @@
 
 
 <dt>digits</dt>
-<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
+<dd><p>Numbers of digits showed on the value labels on the graphic. Default is 0.</p></dd>
 
 
 <dt>unit</dt>
-<dd><p>Unit showed in the graphic. Default is no unit.</p></dd>
+<dd><p>Unit showed on the graphic. Default is no unit.</p></dd>
 
 
 <dt>dec</dt>
-<dd><p>Decimal mark shown on the graphic. Default is ","</p></dd>
+<dd><p>Decimal mark shown on the graphic. Default is ",".</p></dd>
 
 
 <dt>fill</dt>
@@ -169,7 +169,7 @@
 
 
 <dt>dodge</dt>
-<dd><p>Width of the bar, between 0 and 1.</p></dd>
+<dd><p>Width of the bar, between 0 and 1.Default is 0.9.</p></dd>
 
 
 <dt>font</dt>
@@ -177,7 +177,7 @@
 
 
 <dt>wrap_width_y</dt>
-<dd><p>Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.</p></dd>
+<dd><p>Number of characters before going to the line in the labels of the groups. Default is 25.</p></dd>
 
 
 <dt>title</dt>
@@ -189,11 +189,11 @@
 
 
 <dt>xlab</dt>
-<dd><p>X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
+<dd><p>X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Médianne : " + quanti_exp. To show no X label, use xlab = "".</p></dd>
 
 
 <dt>ylab</dt>
-<dd><p>Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
+<dd><p>Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".</p></dd>
 
 
 <dt>caption</dt>
@@ -201,7 +201,7 @@
 
 
 <dt>export_path</dt>
-<dd><p>Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.</p></dd>
+<dd><p>Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.</p></dd>
 
 </dl></div>
     <div class="section level2">

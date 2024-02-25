@@ -13,7 +13,7 @@ many_val_group(
   list_vars,
   type,
   list_vars_lab = NULL,
-  facet_var = NULL,
+  facet = NULL,
   filter_exp = NULL,
   ...,
   na.rm.group = T,
@@ -60,7 +60,7 @@ many_mean_group(..., type = "mean")
 
 \item{list_vars_lab}{names of the variables}
 
-\item{facet_var}{A variable defining the faceting group.}
+\item{facet}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
@@ -117,7 +117,7 @@ many_mean_group(..., type = "mean")
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
 \description{
-many_val_group
+Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
 }
 \examples{
 # Loading of data

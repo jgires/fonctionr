@@ -177,31 +177,24 @@ inclues dans le package laeken.</p></li>
 entre <code>MetBrewer</code>, <code>MoMAColors</code>,
 <code>PrettyCols</code> et les fonctions de base ? Je ne comprends pas
 ce bug.</p></li>
-<li><p>Problème si data a les mêmes noms que les variables créées par
-<code>fonctionr</code> en interne !</p></li>
+<li><p>Revoir la logique des <code>na.rm</code> =&gt; voir feuille
+Excel.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller, et il manque les
 descriptions générales des fonctions <code><a href="../reference/many_prop.html">many_prop()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code>). Il y a également des champs manquants
 (voir warnings de <code>roxygenise()</code>). Voir ici pour savoir les
-différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.</p></li>
-<li><p>L’import des packages extérieurs n’est pas OK : il est inutile
-d’importer tous les packages extérieurs via le NAMESPACE, cela augmente
-fortement le risque de collisions de noms de fonctions =&gt; un bon
-résumé ici : <a href="https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/" class="external-link uri">https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/</a>
-et pour plus de détails : <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link uri">https://r-pkgs.org/dependencies-in-practice.html</a>. De
-plus, certains imports sont absents du squelette roxygen dans certaines
-fonctions (<code><a href="../reference/esth_graph.html">esth_graph()</a></code>, mais aussi d’autres =&gt; corriger
-!).</p></li>
+différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.<br><strong>=&gt; POUR FRANCOIS : caractères illégaux ajoutés dans les
+explications des commentaires, je crois que ce sont les guillemets
+français (<code>")</code> =&gt; faire tourner un check pour voir
+!</strong></p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
 rappelle ce qu’on a fait (il manque des notes).</p></li>
 <li><p>Passer le code de chaque fonction en revue à l’occasion de la
-vérification des commentaires et de la réécriture avec <code>::</code>
-pour le choix des fonctions externes (au lieu de les importer) =&gt; de
-gros bugs encore découverts ! (copier-coller de fonctions avec de
-mauvais noms d’arguments, erreurs qui font bugger le
-na.rm.group…)</p></li>
+vérification des commentaires =&gt; de gros bugs encore découverts !
+(copier-coller de fonctions avec de mauvais noms d’arguments, erreurs
+qui font bugger le <code>na.rm.group</code>, etc.)</p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 <li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
@@ -247,15 +240,6 @@ n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="prop_group">prop_group<a class="anchor" aria-label="anchor" href="#prop_group"></a>
-</h4>
-<ul>
-<li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.<br><strong>=&gt; Possible de créer l’erreur lorsque prop = 100% dans chaque
-groupe !</strong>
-</li>
-</ul>
-</div>
-<div class="section level4">
 <h4 id="distrib_group_d">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d"></a>
 </h4>
 <ul>
@@ -295,14 +279,9 @@ avec multiples totaux.</p></li>
 </h4>
 <ul>
 <li>Pour les checks : mieux préciser les variables incriminées ? Ce
-n’est pas le cas pour les checks des variables nécessaires ou des
-variables du design, par ex. Elles ne sont pas nombreuses, mais c’est
-plus sympa pour l’utilisateur.</li>
-<li>Optimiser le code dupliqué des pipelines avec
-<code>summarise()</code> pour <code><a href="../reference/central_group.html">central_group()</a></code> ou
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> : ce sont des quasi copies selon que c’est
-une médiane / moyenne / etc. =&gt; pénible à maintenir, trouver une
-simplification.</li>
+n’est pas le cas pour les checks des variables nécessaires, par ex.
+Elles ne sont pas nombreuses, mais c’est plus sympa pour
+l’utilisateur.</li>
 <li>Réécrire le code du test pour avoir la formule originale =&gt;
 possible avec <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>, voir code de
 <code><a href="../reference/central_group.html">central_group()</a></code>.</li>
@@ -315,23 +294,12 @@ redondance entre les 4 fonctions)<br><em>=&gt; Pour l’instant c’est fait “
 fonction du fait de l’usage du tidyverse : il faut sans doute utiliser
 les fonctions de <code>rlang</code>.</em>
 </li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="central_group-1">central_group<a class="anchor" aria-label="anchor" href="#central_group-1"></a>
-</h4>
-<ul>
-<li>Pouvoir réordonner avec les facet =&gt; solution avec
-<code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a>
-</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="prop_group-1">prop_group<a class="anchor" aria-label="anchor" href="#prop_group-1"></a>
-</h4>
-<ul>
-<li>Pouvoir réordonner avec les facet =&gt; solution avec
-<code>tidytext</code> <a href="https://juliasilge.com/blog/reorder-within/" class="external-link uri">https://juliasilge.com/blog/reorder-within/</a>
+<li>L’import des packages peut être optimisé : il n’est pas utile
+d’importer des packages extérieurs <u>entiers</u> dans le NAMESPACE,
+cela augmente le risque de collisions de noms de fonctions =&gt; un bon
+résumé ici : <a href="#id_0" class="uri">https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/</a>
+et pour plus de détails : <a href="#id_0" class="uri">https://r-pkgs.org/dependencies-in-practice.html</a>.<br><em>=&gt; A faire : importer seulement les fonctions utiles (mutate,
+select, etc.).</em>
 </li>
 </ul>
 </div>
@@ -371,19 +339,20 @@ dans les fonctions (qui filtre après la déclaration du design), qui
 évite de filtrer l’objet avant en dégradant le design. =&gt; Vérifier
 que c’est bien OK ! <u>A FAIRE : expliquer dans la doc !</u></em></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>
+</h2>
 <div class="section level3">
-<h3 id="fonctions-à-créer">Fonctions à créer<a class="anchor" aria-label="anchor" href="#fonctions-%C3%A0-cr%C3%A9er"></a>
+<h3 id="univarié">Univarié<a class="anchor" aria-label="anchor" href="#univari%C3%A9"></a>
 </h3>
-<div class="section level4">
-<h4 id="univarié">Univarié<a class="anchor" aria-label="anchor" href="#univari%C3%A9"></a>
-</h4>
 <ul>
 <li>Densité pour le général (pour variable continue)</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="bivarié-ou-3-variables">Bivarié ou 3 variables+<a class="anchor" aria-label="anchor" href="#bivari%C3%A9-ou-3-variables"></a>
-</h4>
+<div class="section level3">
+<h3 id="bivarié-ou-3-variables">Bivarié ou 3 variables+<a class="anchor" aria-label="anchor" href="#bivari%C3%A9-ou-3-variables"></a>
+</h3>
 <ul>
 <li><p>Superposition de 2 statistiques (bar + lines) avec échelles
 différentes.</p></li>
@@ -391,7 +360,6 @@ différentes.</p></li>
 (proportions par c, l, ou total)</p></li>
 <li><p>Densité par groupe (pour variable continue)</p></li>
 </ul>
-</div>
 </div>
 </div>
 </div>

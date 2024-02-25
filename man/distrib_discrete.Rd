@@ -8,14 +8,14 @@
 distrib_discrete(
   data,
   quali_var,
-  facet_var = NULL,
+  facet = NULL,
   filter_exp = NULL,
   ...,
   na.rm.group = T,
   probs = NULL,
   prop_method = "beta",
   reorder = FALSE,
-  show_ci = T,
+  show_ci = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   show_lab = TRUE,
@@ -40,27 +40,27 @@ distrib_d(...)
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{quali_var}{The discrete variable that is studied.}
+\item{quali_var}{The discrete variable that is described.}
 
-\item{facet_var}{A variable defining the faceting group.}
+\item{facet}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove the NAs in quali_var. FALSE if you want to create a NA category in the graphic and the table. Default is TRUE.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA in quali_var and observations with NA on facet if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet if applicable. Default is TRUE.}
 
-\item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1)}
+\item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.}
 
-\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+\item{prop_method}{Type of proportion method to use to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{reorder}{TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
+\item{reorder}{TRUE if you want to reorder the categories according to their proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder. Default is FALSE.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each modality of quali_var. FALSE if you do not want to show this number. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion.}
+\item{show_value}{TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.}
 
 \item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
@@ -68,29 +68,29 @@ distrib_d(...)
 
 \item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is percent.}
+\item{unit}{Unit showed in the graphic. Default is "%".}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ","}
+\item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group.group = FALSE, and total bar are always in grey.}
+\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bar, between 0 and 1. Default is 0.9.}
 
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the categories. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line in the labels of the categories. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Distribution (total : 100%)". To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".}
 
 \item{caption}{Caption in the graphic.}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).}
 }
 \value{
 A list that contains a table, a graphic and a statistical test

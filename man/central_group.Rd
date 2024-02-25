@@ -11,7 +11,7 @@ central_group(
   group,
   quanti_exp,
   type,
-  facet_var = NULL,
+  facet = NULL,
   filter_exp = NULL,
   ...,
   na.rm.group = T,
@@ -43,57 +43,57 @@ mean_group(..., type = "mean")
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{group}{A variable defining groups be compared.}
+\item{group}{A variable defining groups to be compared.}
 
-\item{quanti_exp}{An expression that define the mean/mediam to be computed.}
+\item{quanti_exp}{An expression that define the variable from which the mean/median is computed.}
 
-\item{type}{"mean" to compute means by group ; "median" to compute medians by group.}
+\item{type}{"mean" to compute mean by group ; "median" to compute median by group.}
 
-\item{facet_var}{A variable defining the faceting group.}
+\item{facet}{A variable defining the faceting group.}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.}
 
 \item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
 
 \item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the mean/median in each group on the graphic. FALSE if you do not want to show the mean/median}
+\item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
 \item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{total_name}{Name of the total bar on the graphic. Default is Total.}
 
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+\item{digits}{Numbers of digits showed on the value labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is no unit.}
+\item{unit}{Unit showed on the graphic. Default is no unit.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ","}
+\item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
 \item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bar, between 0 and 1.Default is 0.9.}
 
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Médianne : " + quanti_exp. To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
 
 \item{caption}{Caption of the graphic.}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }
 \value{
 A list that contains a table, a graphic and a statistical test

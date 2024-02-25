@@ -225,39 +225,23 @@ many_prop = function(data,
   }
 
   # On calcule les proportions
+  tab <- tibble()
   # Si facet
   if (!quo_is_null(quo_facet)) {
-    tab <- tibble()
-    for (i in vec_list_vars) {
-      tab_i <- data_W %>%
-        group_by({{ facet }}) %>%
-        summarise(
-          list_col = i,
-          prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(vartype = "ci")
-        )
-
-      tab <- rbind(tab, tab_i)
-    }
+    data_W <- data_W %>%
+      group_by({{ facet }})
   }
+  for (i in vec_list_vars) {
+    tab_i <- data_W %>%
+      summarise(
+        list_col = i,
+        prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        n_sample = unweighted(n()),
+        n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci")
+      )
 
-  # Si pas de facet (= NULL)
-  if (quo_is_null(quo_facet)) {
-    tab <- tibble()
-    for (i in vec_list_vars) {
-      tab_i <- data_W %>%
-        summarise(
-          list_col = i,
-          prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(vartype = "ci")
-        )
-
-      tab <- rbind(tab, tab_i)
-    }
+    tab <- rbind(tab, tab_i)
   }
 
   # On remplace list_vars par les labels list_vars_lab

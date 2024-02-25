@@ -8,7 +8,7 @@ esth_graph(
   tab,
   var,
   value,
-  facet_var = NULL,
+  facet = NULL,
   reorder = F,
   error_low = NULL,
   error_upp = NULL,
@@ -37,7 +37,7 @@ esth_graph(
 
 \item{value}{The variable in tab with the indicators to be ploted.}
 
-\item{facet_var}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
+\item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
 \item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.}
 
