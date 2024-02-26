@@ -13,6 +13,123 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
-To write...
+# Introduction : l'objectif général du Package et des différentes fonctions
 
-Expliquer l'intérêt de chaque fonction avec un graphique illustratif pour chacune d'entre elle. 
+L'objectif de fonctionr est de faciliter grandement l'analyse des données issues de sondages complexes, en particulier pour la description de variables et le croisement bivariés.
+
+Plusieurs package permettent traiter des données issues de sondages complexes, c'est en particulier le cas de survey qui permet de réaliser des analyses de estimations sur base de ce type de données et de srvyr qui permet d'appliquer les verbes de dplyr à des sondages complexes, mais aucun de ces deux packages ne permet de réaliser des graphiques prêts à la publications, et ils ne permettent pas de réaliser dans une seule fonction à la fois des estimations d'indicateurs et des tests statistiques.
+
+fonctionr se base sur ces deux packages et sur ggplot2 pour faciliter grandement le travail du chercheur en produisant directement en une seule fonction (pour chaque type de variable ou de croisement entre variable) : un tableau de résultat avec les indicateurs, les effectifs et leurs intervalles de confiance ; un graphique prêt à être publié et le plus souvent un test statistique le plus approprié au croisement étudié. Il est aussi possible de directement exporter ces trois résultats dans un fichier xlsx.
+
+La suite de ce manuel se déroule de la manière suivante. Dans un premier temps on décrira les différentes fonctions, ce qu'elles produisent et dans quels cas elles peuvent être utilisées. Dans un deuxième temps, on présente un tableau récapitulatif des arguments. En effet, de nombreux arguments revenant dans plusieurs fonctions, il est plus facile de présenter la structure globale de ceux-ci que de se répéter dans chaque fonction. Les arguments peuvent aussi être classés en différents type, ce qui permet d'aborder successivement certaines. Ainsi, nous aborderons successivement :
+
+-   la question du type de base de données utilisées;
+
+-   les arguments obligatoires qui reprennent, par exemple les variables décrites;
+
+-   Les arguments facultatifs mais qui ont une influence sur les calculs, par exemple la possibilité d'introduire des facettes ou de filtrer les données
+
+-   Les arguments esthétiques qui influencent uniquement le graphique, par exemple les polices, les couleurs ou les légendes à insérer dans le graphique.
+
+# L'objectif des différentes fonctions
+
+## distrib_discrete() pour décrire la distribution d'une variable qualitative
+
+distrib_discrete(), avec distrib_d() comme alias, a comme objectif de permettre la distribution de la fréquence des différentes modalités d'une variables qualitative. L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques. Dans l'exemple ci-dessous[^1], la fonction distrib_d() décrit la distribution de la variable pl030_rec dans le dataframe eusilc, avec une le poids rb050, et produit une liste comprenant un graphique, un tableau et un test statistique.
+
+[^1]: Précisons que dans cet exemple simple, il n'y a pas de plan de sondage qui est mentionné. Seule la variable de pondération est introduite. Nous aborderons ce point ultérieurement.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la modalité (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+
+-   Le résultat du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle, la répartition de la population selon le vecteur mentionné dans probs, c'est-à-dire, ici, 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'était mentionné dans probs, aucun test n'aurait été effectué. Si le vecteur n'avait pas une somme de 1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+
+```{r}
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Recoding eusilc$pl030 into eusilc$pl030_rec
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+
+# Computation, taking sample design into account
+eusilc_dist_group_d <- distrib_d(
+data = eusilc,
+weight = rb050,
+quali_var = pl030_rec,
+probs = c(.2,.15,.1,.1,.25,.1,.1),
+title = "Distribution of socio-economic status",
+subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_dist_group_d$graph
+eusilc_dist_group_d$tab
+eusilc_dist_group_d$test.stat
+
+```
+
+## distrib_discrete() pour décrire la distribution d'une variable qualitative selon des groupes (une autre variable qualitative)
+
+## prop_group() pour décrire les variations d'une proportion selon des groupes
+
+## mean_group() pour décrire les variations d'une moyenne selon des groupes
+
+## median_group() pour décrire les variations d'une moyenne selon des groupes
+
+## many_prop() pour décrire en même temps plusieurs proportions 
+
+## many_prop_group() pour décrire en même temps plusieurs proportions selon des groupes
+
+## many_mean_group() pour décrire en même temps plusieurs moyenne selon des groupes
+
+## many_median_group() pour décrire en même temps plusieurs médianes selon des groupes
+
+## esth_graph() pour réaliser un graphique reprenant la même esthétique que les autres fonction à partir d'un tableau de résultat
+
+## theme_fonctionr() pour appliquer le thème de fonctionr à des graphiques de ggplot2
+
+## pivot_longer_suvey()
+
+# Le tableau récapitulait des arguments
+
+intro : même structure avec des argument revenant à chaque fois. Ex. l'argument group revient dans toutes les fonctions qui comparent des groupes. Mais certains arguments diffèrent.
+
+TABLEAU
+
+Pour des raisons pédagogiques, les arguments sont abordés succèssivement par types : la base de données, les arguments indispensables, les arguments ayant une influence sur les calculs, les arguments esthétiques,
+
+# Les arguments liés à la base de données utilisée
+
+différents formats.
+
+# Les arguments indispensables
+
+## expressions et variables
+
+# Les arguments ayant une influence sur les résultats
+
+## expressions et variables, le retour
+
+## Le traitement des NA
+
+## prop_method
+
+# Les arguments esthétiques
+
+## Ce qu'on montre ou non dans le graphique
+
+## L'esthétique graphique
+
+## L'esthétique des chiffres
+
+## L'esthétique des lettres
+
+## Les labels (y compris des variables dans les fonctions many) 
+
+# L'export au format xlsx
