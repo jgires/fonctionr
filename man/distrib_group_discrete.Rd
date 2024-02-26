@@ -55,7 +55,7 @@ distrib_group_d(...)
 
 \item{prop_method}{Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2% or less are never showed on the graphic. Default is TRUE.}
+\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.}
 
 \item{show_lab}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
 

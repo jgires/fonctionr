@@ -68,7 +68,7 @@ distrib_d(...)
 
 \item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is "%".}
+\item{unit}{Unit showed in the graphic. Default is percent.}
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
@@ -84,7 +84,7 @@ distrib_d(...)
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Distribution (total : 100%)". To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Distribution (total : 100 percent)". To show no X label, use xlab = "".}
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".}
 

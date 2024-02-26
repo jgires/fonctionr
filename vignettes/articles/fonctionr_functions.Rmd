@@ -15,4 +15,4 @@ library(fonctionr)
 
 To write...
 
-Expliquer l'intérêt de chaque fonction avec une graphique illustratif pour chacune d'entre elle. 
+Expliquer l'intérêt de chaque fonction avec un graphique illustratif pour chacune d'entre elle. 
