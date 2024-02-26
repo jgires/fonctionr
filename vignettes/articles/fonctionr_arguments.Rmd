@@ -14,3 +14,9 @@ library(fonctionr)
 ```
 
 To write...
+
+Tableau avec couleurs
+
+Passer en revue chacun des groupes d'arguments.
+
+Avoir une attention particulière pour data (différents format, replicates, données non pondérées).
