@@ -39,7 +39,7 @@ distrib_discrete(), avec distrib_d() comme alias, a comme objectif de permettre 
 
 [^1]: Précisons que dans cet exemple simple, il n'y a pas de plan de sondage qui est mentionné. Seule la variable de pondération est introduite. Nous aborderons ce point ultérieurement.
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance.
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
 
 -   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la modalité (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
