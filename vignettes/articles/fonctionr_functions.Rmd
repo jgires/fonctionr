@@ -43,7 +43,7 @@ distrib_discrete(), avec distrib_d() comme alias, a comme objectif de permettre 
 
 -   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la modalité (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
--   Le résultat du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle, la répartition de la population selon le vecteur mentionné dans probs, c'est-à-dire, ici, 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'était mentionné dans probs, aucun test n'aurait été effectué. Si le vecteur n'avait pas une somme de 1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+-   Le résultat du test statistique "test.stat". Il s'ait du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle, la répartition de la population selon le vecteur mentionné dans probs, c'est-à-dire, ici, 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'était mentionné dans probs, aucun test n'aurait été effectué. Si le vecteur n'avait pas une somme de 1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
 
 ```{r}
 # Loading of data
@@ -74,7 +74,7 @@ eusilc_dist_group_d$test.stat
 
 ```
 
-## distrib_discrete() pour décrire la distribution d'une variable qualitative selon des groupes (une autre variable qualitative)
+## distrib_group_discrete() pour décrire la distribution d'une variable qualitative selon des groupes (une autre variable qualitative)
 
 ## prop_group() pour décrire les variations d'une proportion selon des groupes
 
