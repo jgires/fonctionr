@@ -1,9 +1,10 @@
-#' many_prop
+#' many_val
 #'
 #' Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
+#' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
@@ -63,8 +64,9 @@
 #' eusilc_many_prop$graph
 #' eusilc_many_prop$tab
 #'
-many_prop = function(data,
+many_val = function(data,
                      list_vars,
+                     type,
                      list_vars_lab = NULL,
                      facet = NULL,
                      filter_exp = NULL,
@@ -77,9 +79,9 @@ many_prop = function(data,
                      show_n = FALSE,
                      show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
                      show_lab = TRUE,
-                     scale = 100,
+                     scale = NULL,
                      digits = 0,
-                     unit = "%",
+                     unit = NULL,
                      dec = ",",
                      fill = "mediumseagreen",
                      dodge = 0.9,
@@ -93,6 +95,9 @@ many_prop = function(data,
                      export_path = NULL){
 
   # Check des arguments nécessaires
+  if(missing(type) == TRUE){
+    stop("L'argument type doit être rempli")
+  }
   if((missing(data) | missing(list_vars)) == TRUE){
     stop("Les arguments data et list_vars doivent être remplis")
   }
@@ -100,6 +105,7 @@ many_prop = function(data,
   # Check des autres arguments
   check_arg(
     arg = list(
+      type = type,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
@@ -138,6 +144,9 @@ many_prop = function(data,
     type = "numeric"
   )
 
+  # Check que les arguments avec choix précis sont les bons
+  match.arg(type, choices = c("mean", "median", "prop"))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -148,6 +157,13 @@ many_prop = function(data,
 
   # On transforme les colonnes entrées en un vecteur caractère (plus facile pour le code !)
   vec_list_vars <- all.vars(substitute(list_vars))
+
+  # Check que list_vars ne comprend que des variables binaires
+  if(type == "prop"){
+    check_bin(data = data,
+              vec_list_vars = vec_list_vars)
+  }
+
   message("Variable(s) entrées : ", paste(vec_list_vars, collapse = ", "))
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
@@ -224,24 +240,42 @@ many_prop = function(data,
         )
   }
 
-  # On calcule les proportions
-  tab <- tibble()
   # Si facet
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       group_by({{ facet }})
   }
-  for (i in vec_list_vars) {
-    tab_i <- data_W %>%
-      summarise(
-        list_col = i,
-        prop = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_sample = unweighted(n()),
-        n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
-        n_tot_weighted = survey_total(vartype = "ci")
-      )
+  tab <- tibble()
+  # On calcule les proportions
+  if(type == "prop"){
+    for (i in vec_list_vars) {
+      tab_i <- data_W %>%
+        summarise(
+          list_col = i,
+          indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          n_sample = unweighted(n()),
+          n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
+          n_tot_weighted = survey_total(vartype = "ci")
+        )
 
-    tab <- rbind(tab, tab_i)
+      tab <- rbind(tab, tab_i)
+    }
+  }
+  # On calcule les moyennes/médianes
+  if(type == "median" | type == "mean"){
+    for (i in vec_list_vars) {
+      tab_i <- data_W %>%
+        summarise(
+          list_col = i,
+          indice = if (type == "median") {
+            survey_median(.data[[i]], na.rm = T, vartype = "ci")
+          } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+          n_sample = unweighted(n()),
+          n_weighted = survey_total(vartype = "ci")
+        )
+
+      tab <- rbind(tab, tab_i)
+    }
   }
 
   # On remplace list_vars par les labels list_vars_lab
@@ -271,7 +305,7 @@ many_prop = function(data,
   if (reorder == T) {
     levels <- levels(reorder(
       tab[["list_col"]],
-      tab[["prop"]],
+      tab[["indice"]],
       FUN = median,
       decreasing = T
     ))
@@ -287,17 +321,43 @@ many_prop = function(data,
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(tab$prop, na.rm = TRUE)
+  max_ggplot <- max(tab$indice, na.rm = TRUE)
 
   # On charge et active les polices
   load_and_active_fonts()
+
+  # On définit le nom de l'indicateur (proportion, médiane ou moyenne) et l'échelle qui seront affichées dans le graphique ggplot
+  if(type == "prop"){
+    # Si l'échelle n'est pas définie par l'utilisateur => échelle = 100
+    if(is.null(scale)){
+      scale <- 100
+    }
+    # Si l'unité n'est pas définie par l'utilisateur => unité = "%"
+    if(is.null(unit)){
+      unit <- "%"
+    }
+    type_ggplot <- "Proportion"
+  }
+  # Par contre, pour la médiane et la moyenne => échelle = 1 (équivalence avec la variable entrée)
+  if(type == "median"){
+    if(is.null(scale)){
+      scale <- 1
+    }
+    type_ggplot <- "Médiane"
+  }
+  if(type == "mean"){
+    if(is.null(scale)){
+      scale <- 1
+    }
+    type_ggplot <- "Moyenne"
+  }
 
   # On crée le graphique
 
   graph <- tab %>%
     ggplot(aes(
       x = list_col,
-      y = prop,
+      y = indice,
     )) +
     geom_bar(
       width = dodge,
@@ -321,7 +381,7 @@ many_prop = function(data,
       if(any(is.null(xlab), xlab != "")){
         graph <- graph +
           labs(y = ifelse(is.null(xlab),
-                          paste0("Proportion : ", paste(vec_list_vars, collapse = ", ")),
+                          paste0(type_ggplot, " : ", paste(vec_list_vars, collapse = ", ")),
                           xlab))
       }
       if(all(!is.null(xlab), xlab == "")){
@@ -378,7 +438,7 @@ many_prop = function(data,
   # Ajouter les IC si show_ci == T
   if (show_ci == T) {
     graph <- graph +
-      geom_errorbar(aes(ymin = prop_low, ymax = prop_upp),
+      geom_errorbar(aes(ymin = indice_low, ymax = indice_upp),
                     width = dodge * 0.05,
                     colour = "black",
                     alpha = 0.5,
@@ -392,8 +452,8 @@ many_prop = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = (prop) + (0.01 * max_ggplot),
-          label = paste0(stringr::str_replace(round(prop * scale,
+          y = (indice) + (0.01 * max_ggplot),
+          label = paste0(stringr::str_replace(round(indice * scale,
                                                     digits = digits),
                                               "[.]",
                                               ","),
@@ -427,6 +487,26 @@ many_prop = function(data,
       )
   }
 
+  # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
+  if (type == "prop") {
+    tab <- tab %>%
+      rename(prop = indice,
+             prop_low = indice_low,
+             prop_upp = indice_upp)
+  }
+  if (type == "median") {
+    tab <- tab %>%
+      rename(median = indice,
+             median_low = indice_low,
+             median_upp = indice_upp)
+  }
+  if (type == "mean") {
+    tab <- tab %>%
+      rename(mean = indice,
+             mean_low = indice_low,
+             mean_upp = indice_upp)
+  }
+
   # On crée l'objet final
   res <- list()
   res$tab <- tab
@@ -449,10 +529,32 @@ many_prop = function(data,
                  test_stat_excel = test_stat_excel,
                  facet_null = quo_is_null(quo_facet),
                  export_path = export_path,
-                 percent_fm = TRUE,
+                 percent_fm = ifelse(type == "prop", TRUE, FALSE),
                  fgFill = "mediumseagreen",
                  bivariate = FALSE)
   }
 
   return(res)
 }
+
+
+#' @rdname many_val
+#' @export
+many_prop <- function(..., type = "prop") {
+  many_val(..., type = type)
+}
+
+
+#' @rdname many_val
+#' @export
+many_median <- function(..., type = "median") {
+  many_val(..., type = type)
+}
+
+
+#' @rdname many_val
+#' @export
+many_mean <- function(..., type = "mean") {
+  many_val(..., type = type)
+}
+

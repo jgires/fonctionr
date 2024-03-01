@@ -18,6 +18,15 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.7
+
+Date : 2024-03-01
+
+-   Ajout de `many_val()` comme fonction plus générale qui englobe `many_prop()`. Il y a désormais la possibilité de calculer des moyennes et des médianes avec les alias `many_mean()` et `many_median()`.
+-   Plus de parcimonie pour l'import des packages extérieurs dans le namespace.
+-   Changement de nom des arguments : `na.var` devient `na.prop` et `facet.var` devient `facet`.
+-   Début de simplification du code dans un but de facilité pour la maintenance et les modifs futures.
+
 ## fonctionr 0.2.6
 
 Date : 2024-02-22
