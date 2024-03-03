@@ -226,6 +226,45 @@ check_bin <- function(data,
 }
 
 
+#' check_input
+#'
+#' Internal function to check if input variables exist in data
+#'
+#' @param data A dataframe or survey object in which to check
+#' @param vec_list_vars A named vector containing names of columns and names of input arguments
+#'
+#' @noRd
+#'
+
+check_input <- function(data,
+                        vars_input_char) {
+
+  # Petite fonction utile
+  `%ni%` = Negate(`%in%`)
+
+  # Si data.frame
+  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
+    for (i in seq_along(vars_input_char)) {
+      if (!vars_input_char[i] %in% names(data)) stop(paste("La colonne", vars_input_char[i], "introduite dans", names(vars_input_char[i]) , "n'est pas présente dans data"), call. = FALSE)
+    }
+  }
+  # Si objet sondage
+  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
+    for (i in seq_along(vars_input_char)) {
+      if (!vars_input_char[i] %in% names(data[["variables"]])) stop(paste("La colonne", vars_input_char[i], "introduite dans", names(vars_input_char[i]) , "n'est pas présente dans data"), call. = FALSE)
+    }
+  }
+
+  # # DESACTIVé : NE FONCTIONNE PAS !
+  # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
+  # vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
+  # if(all(vars_survey %in% names(data)) == FALSE){
+  #   stop("Au moins une des variables du design n'est pas présente dans data")
+  # }
+
+}
+
+
 #' theme_fonctionr
 #'
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".

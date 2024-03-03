@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.8
+
+Date : 2024-03-03
+
+-   Modification des checks pour voir si les variables indispensables existent bien dans `data` : simplification du code et message plus clair et utile pour l'utilisateur.
+
 ## fonctionr 0.2.7
 
 Date : 2024-03-01
@@ -140,7 +146,6 @@ Date : 2024-02-14
 
 #### En général
 
--   Pour les checks : mieux préciser les variables incriminées ? Ce n'est pas le cas pour les checks des variables nécessaires, par ex. Elles ne sont pas nombreuses, mais c'est plus sympa pour l'utilisateur.
 -   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\

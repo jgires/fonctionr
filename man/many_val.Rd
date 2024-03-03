@@ -21,7 +21,7 @@ many_val(
   show_n = FALSE,
   show_value = TRUE,
   show_lab = TRUE,
-  scale = 100,
+  scale = NULL,
   digits = 0,
   unit = NULL,
   dec = ",",

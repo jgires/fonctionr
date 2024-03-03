@@ -8,8 +8,8 @@
 <meta name="description" content="fonctionr">
 <title>Overview of functionr functions • fonctionr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Overview of functionr functions">
 <meta property="og:description" content="fonctionr">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,10 +82,267 @@
 
     
     
-<p>To write…</p>
-<p>Expliquer l’intérêt de chaque fonction avec un graphique illustratif
-pour chacune d’entre elle.</p>
-  </main>
+<div class="section level2">
+<h2 id="introduction-lobjectif-général-du-package-et-des-différentes-fonctions">Introduction : l’objectif général du Package et des différentes
+fonctions<a class="anchor" aria-label="anchor" href="#introduction-lobjectif-g%C3%A9n%C3%A9ral-du-package-et-des-diff%C3%A9rentes-fonctions"></a>
+</h2>
+<p>L’objectif de fonctionr est de faciliter grandement l’analyse des
+données issues de sondages complexes, en particulier pour la description
+de variables et le croisement bivariés.</p>
+<p>Plusieurs package permettent traiter des données issues de sondages
+complexes, c’est en particulier le cas de survey qui permet de réaliser
+des analyses de estimations sur base de ce type de données et de srvyr
+qui permet d’appliquer les verbes de dplyr à des sondages complexes,
+mais aucun de ces deux packages ne permet de réaliser des graphiques
+prêts à la publications, et ils ne permettent pas de réaliser dans une
+seule fonction à la fois des estimations d’indicateurs et des tests
+statistiques.</p>
+<p>fonctionr se base sur ces deux packages et sur ggplot2 pour faciliter
+grandement le travail du chercheur en produisant directement en une
+seule fonction (pour chaque type de variable ou de croisement entre
+variable) : un tableau de résultat avec les indicateurs, les effectifs
+et leurs intervalles de confiance ; un graphique prêt à être publié et
+le plus souvent un test statistique le plus approprié au croisement
+étudié. Il est aussi possible de directement exporter ces trois
+résultats dans un fichier xlsx.</p>
+<p>La suite de ce manuel se déroule de la manière suivante. Dans un
+premier temps on décrira les différentes fonctions, ce qu’elles
+produisent et dans quels cas elles peuvent être utilisées. Dans un
+deuxième temps, on présente un tableau récapitulatif des arguments. En
+effet, de nombreux arguments revenant dans plusieurs fonctions, il est
+plus facile de présenter la structure globale de ceux-ci que de se
+répéter dans chaque fonction. Les arguments peuvent aussi être classés
+en différents type, ce qui permet d’aborder successivement certaines.
+Ainsi, nous aborderons successivement :</p>
+<ul>
+<li><p>la question du type de base de données utilisées;</p></li>
+<li><p>les arguments obligatoires qui reprennent, par exemple les
+variables décrites;</p></li>
+<li><p>Les arguments facultatifs mais qui ont une influence sur les
+calculs, par exemple la possibilité d’introduire des facettes ou de
+filtrer les données</p></li>
+<li><p>Les arguments esthétiques qui influencent uniquement le
+graphique, par exemple les polices, les couleurs ou les légendes à
+insérer dans le graphique.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="lobjectif-des-différentes-fonctions">L’objectif des différentes fonctions<a class="anchor" aria-label="anchor" href="#lobjectif-des-diff%C3%A9rentes-fonctions"></a>
+</h2>
+<div class="section level3">
+<h3 id="distrib_discrete-pour-décrire-la-distribution-dune-variable-qualitative">distrib_discrete() pour décrire la distribution d’une variable
+qualitative<a class="anchor" aria-label="anchor" href="#distrib_discrete-pour-d%C3%A9crire-la-distribution-dune-variable-qualitative"></a>
+</h3>
+<p>distrib_discrete(), avec distrib_d() comme alias, a comme objectif de
+permettre la distribution de la fréquence des différentes modalités
+d’une variables qualitative. L’exemple ci-dessous montre la distribution
+des fréquences des différents statuts socio-économiques. Dans l’exemple
+ci-dessous<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Précisons que dans cet exemple simple, il n’y a pas de
+plan de sondage qui est mentionné. Seule la variable de pondération est
+introduite. Nous aborderons ce point ultérieurement.&lt;/p&gt;"><sup>1</sup></a>, la fonction distrib_d() décrit la
+distribution de la variable pl030_rec dans le dataframe eusilc, avec une
+le poids rb050, et produit une liste comprenant un graphique, un tableau
+et un test statistique.</p>
+<ul>
+<li><p>Le graphique “graph” permet une visualisation facile et
+directement utilisable dans une publication de la distribution des
+fréquences avec des intervalle de confiance. Il s’agit d’un objet de
+ggplot2 qui peut donc aussi être modifié par la suite.</p></li>
+<li><p>Le tableau “tab” reprend les chiffres sur base desquels le
+graphique est construit. Les différentes colonnes reprennent
+respectivement : le nom de la modalité (pl030_rec), l’estimation de la
+proportion de la population appartenant à la modalité (prop), les bornes
+inférieure (prop_low) et supérieure (prop_upp) de l’intervalle de
+confiance de cette estimation à un niveau de confiance de 95%, le nombre
+de personnes dans l’échantillon appartenant à la modalité (n_sample),
+l’estimation du nombre de personnes dans la population appartenant à la
+modalité (n_weighted), et les bornes inférieure (n_weighted_low) et
+supérieure (n_weighted_upp) de l’intervalle de confiance de cette
+estimation à un niveau de confiance de 95%.</p></li>
+<li><p>Le résultat du test statistique “test.stat”. Il s’ait du khi2
+d’adéquation. Ce test est réalisé avec comme hypothèse nulle, la
+répartition de la population selon le vecteur mentionné dans probs,
+c’est-à-dire, ici, 20% de travailleurs à temps plein, 15% de
+travailleurs à temps partiel, 10% de chômeurs, 10% d’étudiants, 25% de
+pensionnés, 10% de personnes en incapacité permanente de travail et 10%
+de personnes au foyer. Si aucun vecteur n’était mentionné dans probs,
+aucun test n’aurait été effectué. Si le vecteur n’avait pas une somme de
+1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la
+p valeur du test est aussi mentionnée sur le graphique.</p></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Loading of data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">eusilc</span>, package <span class="op">=</span> <span class="st">"laeken"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Recoding eusilc$pl030 into eusilc$pl030_rec</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working full time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working part time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"3"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Unemployed"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"4"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Student"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"5"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Retired"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"6"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Permanently disabled"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span>
+<span></span>
+<span><span class="co"># Computation, taking sample design into account</span></span>
+<span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_discrete.html">distrib_d</a></span><span class="op">(</span></span>
+<span>data <span class="op">=</span> <span class="va">eusilc</span>,</span>
+<span>weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>,<span class="fl">.15</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.25</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>,</span>
+<span>title <span class="op">=</span> <span class="st">"Distribution of socio-economic status"</span>,</span>
+<span>subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  `1`, weights:  rb050</span></span>
+<span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 8</span></span></span>
+<span><span class="co">#&gt;   pl030_rec            prop prop_low prop_upp n_sample n_weighted n_weighted_low</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Fulfilling domest… 0.094<span style="text-decoration: underline;">8</span>   0.089<span style="text-decoration: underline;">7</span>   0.100      <span style="text-decoration: underline;">1</span>207    <span style="text-decoration: underline;">640</span>311.        <span style="text-decoration: underline;">605</span>407.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Permanently disab… 0.015<span style="text-decoration: underline;">5</span>   0.013<span style="text-decoration: underline;">3</span>   0.018<span style="text-decoration: underline;">0</span>      178    <span style="text-decoration: underline;">104</span>930.         <span style="text-decoration: underline;">89</span>217.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Retired            0.267    0.259    0.276      <span style="text-decoration: underline;">3</span>146   1<span style="text-decoration: underline;">806</span>954.       1<span style="text-decoration: underline;">750</span>021.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Student            0.058<span style="text-decoration: underline;">6</span>   0.054<span style="text-decoration: underline;">5</span>   0.062<span style="text-decoration: underline;">9</span>      736    <span style="text-decoration: underline;">395</span>829.        <span style="text-decoration: underline;">367</span>611.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Unemployed         0.044<span style="text-decoration: underline;">9</span>   0.041<span style="text-decoration: underline;">1</span>   0.048<span style="text-decoration: underline;">9</span>      518    <span style="text-decoration: underline;">303</span>252.        <span style="text-decoration: underline;">277</span>166.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Working full time  0.425    0.416    0.434      <span style="text-decoration: underline;">5</span>162   2<span style="text-decoration: underline;">869</span>868.       2<span style="text-decoration: underline;">805</span>298.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Working part time  0.094<span style="text-decoration: underline;">1</span>   0.089<span style="text-decoration: underline;">0</span>   0.099<span style="text-decoration: underline;">5</span>     <span style="text-decoration: underline;">1</span>160    <span style="text-decoration: underline;">636</span>121.        <span style="text-decoration: underline;">600</span>495.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span>
+<span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">test.stat</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Design-based chi-squared test for given probabilities</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; data:  ~pl030_rec</span></span>
+<span><span class="co">#&gt; X-squared = 11462652, scale = 1300.5577, df = 2.9068, p-value &lt; 2.2e-16</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="distrib_group_discrete-pour-décrire-la-distribution-dune-variable-qualitative-selon-des-groupes-une-autre-variable-qualitative">distrib_group_discrete() pour décrire la distribution d’une variable
+qualitative selon des groupes (une autre variable qualitative)<a class="anchor" aria-label="anchor" href="#distrib_group_discrete-pour-d%C3%A9crire-la-distribution-dune-variable-qualitative-selon-des-groupes-une-autre-variable-qualitative"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="prop_group-pour-décrire-les-variations-dune-proportion-selon-des-groupes">prop_group() pour décrire les variations d’une proportion selon des
+groupes<a class="anchor" aria-label="anchor" href="#prop_group-pour-d%C3%A9crire-les-variations-dune-proportion-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="mean_group-pour-décrire-les-variations-dune-moyenne-selon-des-groupes">mean_group() pour décrire les variations d’une moyenne selon des
+groupes<a class="anchor" aria-label="anchor" href="#mean_group-pour-d%C3%A9crire-les-variations-dune-moyenne-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="median_group-pour-décrire-les-variations-dune-moyenne-selon-des-groupes">median_group() pour décrire les variations d’une moyenne selon des
+groupes<a class="anchor" aria-label="anchor" href="#median_group-pour-d%C3%A9crire-les-variations-dune-moyenne-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="many_prop-pour-décrire-en-même-temps-plusieurs-proportions">many_prop() pour décrire en même temps plusieurs proportions<a class="anchor" aria-label="anchor" href="#many_prop-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-proportions"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="many_prop_group-pour-décrire-en-même-temps-plusieurs-proportions-selon-des-groupes">many_prop_group() pour décrire en même temps plusieurs proportions
+selon des groupes<a class="anchor" aria-label="anchor" href="#many_prop_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-proportions-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="many_mean_group-pour-décrire-en-même-temps-plusieurs-moyenne-selon-des-groupes">many_mean_group() pour décrire en même temps plusieurs moyenne selon
+des groupes<a class="anchor" aria-label="anchor" href="#many_mean_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-moyenne-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="many_median_group-pour-décrire-en-même-temps-plusieurs-médianes-selon-des-groupes">many_median_group() pour décrire en même temps plusieurs médianes
+selon des groupes<a class="anchor" aria-label="anchor" href="#many_median_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-m%C3%A9dianes-selon-des-groupes"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="esth_graph-pour-réaliser-un-graphique-reprenant-la-même-esthétique-que-les-autres-fonction-à-partir-dun-tableau-de-résultat">esth_graph() pour réaliser un graphique reprenant la même esthétique
+que les autres fonction à partir d’un tableau de résultat<a class="anchor" aria-label="anchor" href="#esth_graph-pour-r%C3%A9aliser-un-graphique-reprenant-la-m%C3%AAme-esth%C3%A9tique-que-les-autres-fonction-%C3%A0-partir-dun-tableau-de-r%C3%A9sultat"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="theme_fonctionr-pour-appliquer-le-thème-de-fonctionr-à-des-graphiques-de-ggplot2">theme_fonctionr() pour appliquer le thème de fonctionr à des
+graphiques de ggplot2<a class="anchor" aria-label="anchor" href="#theme_fonctionr-pour-appliquer-le-th%C3%A8me-de-fonctionr-%C3%A0-des-graphiques-de-ggplot2"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="pivot_longer_suvey">pivot_longer_suvey()<a class="anchor" aria-label="anchor" href="#pivot_longer_suvey"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="le-tableau-récapitulait-des-arguments">Le tableau récapitulait des arguments<a class="anchor" aria-label="anchor" href="#le-tableau-r%C3%A9capitulait-des-arguments"></a>
+</h2>
+<p>intro : même structure avec des argument revenant à chaque fois. Ex.
+l’argument group revient dans toutes les fonctions qui comparent des
+groupes. Mais certains arguments diffèrent.</p>
+<p>TABLEAU</p>
+<p>Pour des raisons pédagogiques, les arguments sont abordés
+succèssivement par types : la base de données, les arguments
+indispensables, les arguments ayant une influence sur les calculs, les
+arguments esthétiques,</p>
+</div>
+<div class="section level2">
+<h2 id="les-arguments-liés-à-la-base-de-données-utilisée">Les arguments liés à la base de données utilisée<a class="anchor" aria-label="anchor" href="#les-arguments-li%C3%A9s-%C3%A0-la-base-de-donn%C3%A9es-utilis%C3%A9e"></a>
+</h2>
+<p>différents formats.</p>
+</div>
+<div class="section level2">
+<h2 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
+</h2>
+<div class="section level3">
+<h3 id="expressions-et-variables">expressions et variables<a class="anchor" aria-label="anchor" href="#expressions-et-variables"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="les-arguments-ayant-une-influence-sur-les-résultats">Les arguments ayant une influence sur les résultats<a class="anchor" aria-label="anchor" href="#les-arguments-ayant-une-influence-sur-les-r%C3%A9sultats"></a>
+</h2>
+<div class="section level3">
+<h3 id="expressions-et-variables-le-retour">expressions et variables, le retour<a class="anchor" aria-label="anchor" href="#expressions-et-variables-le-retour"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="le-traitement-des-na">Le traitement des NA<a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="prop_method">prop_method<a class="anchor" aria-label="anchor" href="#prop_method"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="les-arguments-esthétiques">Les arguments esthétiques<a class="anchor" aria-label="anchor" href="#les-arguments-esth%C3%A9tiques"></a>
+</h2>
+<div class="section level3">
+<h3 id="ce-quon-montre-ou-non-dans-le-graphique">Ce qu’on montre ou non dans le graphique<a class="anchor" aria-label="anchor" href="#ce-quon-montre-ou-non-dans-le-graphique"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="les-labels-y-compris-des-variables-dans-les-fonctions-many">Les labels (y compris des variables dans les fonctions many)<a class="anchor" aria-label="anchor" href="#les-labels-y-compris-des-variables-dans-les-fonctions-many"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="lexport-au-format-xlsx">L’export au format xlsx<a class="anchor" aria-label="anchor" href="#lexport-au-format-xlsx"></a>
+</h2>
+</div>
+
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

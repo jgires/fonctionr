@@ -154,42 +154,30 @@ distrib_discrete <- function(data, # Données en format srvyr
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
-  vars_input_char <- c(as.character(substitute(quali_var)))
+  vec_quali_var <- all.vars(substitute(quali_var))
+  names(vec_quali_var) <- rep("quali_var", length(vec_quali_var))
+  vars_input_char <- vec_quali_var
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
-    vars_input_char <- c(vars_input_char, as.character(substitute(facet)))
+    vec_facet <- c(facet = as.character(substitute(facet)))
+    vars_input_char <- c(vars_input_char, vec_facet)
   }
   # On ajoute filter si non-NULL
   if(!quo_is_null(quo_filter)){
-    vars_filter <- all.vars(substitute(filter_exp))
-    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+    vec_filter_exp <- all.vars(substitute(filter_exp))
+    names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
+    vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
   # Ici la contition et le stop à proprement parler
-  # Si data.frame
-  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
-    if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
-    }
-    # # DESACTIVé : NE FONCTIONNE PAS !
-    # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
-    # vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
-    # if(all(vars_survey %in% names(data)) == FALSE){
-    #   stop("Au moins une des variables du design n'est pas présente dans data")
-    # }
-  }
-  # Si objet sondage
-  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
-    if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans quali_var, filter_exp ou facet n'est pas présente dans data")
-    }
-  }
+  check_input(data,
+              vars_input_char)
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
   # On ne garde que les colonnes entrées en input
   data_W <- data_W %>%
-    select(all_of(vars_input_char))
+    select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){

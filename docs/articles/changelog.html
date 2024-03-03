@@ -8,8 +8,8 @@
 <meta name="description" content="fonctionr">
 <title>Changelog • fonctionr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Changelog">
 <meta property="og:description" content="fonctionr">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,34 @@
     
     
 <div class="section level2">
+<h2 id="fonctionr-0-2-8">fonctionr 0.2.8<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-8"></a>
+</h2>
+<p>Date : 2024-03-03</p>
+<ul>
+<li>Modification des checks pour voir si les variables indispensables
+existent bien dans <code>data</code> : simplification du code et message
+plus clair et utile pour l’utilisateur.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="fonctionr-0-2-7">fonctionr 0.2.7<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-7"></a>
+</h2>
+<p>Date : 2024-03-01</p>
+<ul>
+<li>Ajout de <code><a href="../reference/many_val.html">many_val()</a></code> comme fonction plus générale qui
+englobe <code><a href="../reference/many_val.html">many_prop()</a></code>. Il y a désormais la possibilité de
+calculer des moyennes et des médianes avec les alias
+<code><a href="../reference/many_val.html">many_mean()</a></code> et <code><a href="../reference/many_val.html">many_median()</a></code>.</li>
+<li>Plus de parcimonie pour l’import des packages extérieurs dans le
+namespace.</li>
+<li>Changement de nom des arguments : <code>na.var</code> devient
+<code>na.prop</code> et <code>facet.var</code> devient
+<code>facet</code>.</li>
+<li>Début de simplification du code dans un but de facilité pour la
+maintenance et les modifs futures.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="fonctionr-0-2-6">fonctionr 0.2.6<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-6"></a>
 </h2>
 <p>Date : 2024-02-22</p>
@@ -119,7 +147,7 @@ variables à une modalité pour <code>quali_var</code> dans
 </h2>
 <p>Date : 2024-02-17</p>
 <ul>
-<li>Implémentation de l’export excel pour <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+<li>Implémentation de l’export excel pour <code><a href="../reference/many_val.html">many_prop()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code>.</li>
 </ul>
 </div>
@@ -182,7 +210,7 @@ Excel.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs
 repérées, par ex. à cause de copier-coller, et il manque les
-descriptions générales des fonctions <code><a href="../reference/many_prop.html">many_prop()</a></code> et
+descriptions générales des fonctions <code><a href="../reference/many_val.html">many_prop()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code>). Il y a également des champs manquants
 (voir warnings de <code>roxygenise()</code>). Voir ici pour savoir les
 différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.<br><strong>=&gt; POUR FRANCOIS : caractères illégaux ajoutés dans les
@@ -246,13 +274,6 @@ n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 <li>Implémenter un test stat lorsqu’il y a des facets =&gt; via
 modélisation loglinéaire, mais j’ai un peu de mal à comprendre les
 erreurs de <code>survey</code> (erreurs fréquentes).</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="many_prop">many_prop<a class="anchor" aria-label="anchor" href="#many_prop"></a>
-</h4>
-<ul>
-<li>Ajouter la possibilité de calculer moyennes et médianes.</li>
 </ul>
 </div>
 <div class="section level4">

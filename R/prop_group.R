@@ -148,11 +148,6 @@ prop_group <- function(data,
   # Check que les arguments avec choix précis sont les bons
   match.arg(na.prop, choices = c("rm", "include"))
 
-  # Test que prop_exp est OK
-  data <- data %>%
-    mutate(fonctionr_test_prop_exp = {{ prop_exp }})
-  if (!all(data[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
-
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -164,44 +159,37 @@ prop_group <- function(data,
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On détecte d'abord les variables entrées dans l'expression pour calculer la proportion
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
-  vars_expression <- all.vars(substitute(prop_exp))
+  vec_prop_exp <- all.vars(substitute(prop_exp))
+  names(vec_prop_exp) <- rep("prop_exp", length(vec_prop_exp))
   # On crée ensuite un vecteur string qui contient toutes les variables entrées
-  vars_input_char <- c(as.character(vars_expression), as.character(substitute(group)))
+  vec_group <- c(group = as.character(substitute(group)))
+  vars_input_char <- c(vec_prop_exp, vec_group)
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
-    vars_input_char <- c(vars_input_char, as.character(substitute(facet)))
+    vec_facet <- c(facet = as.character(substitute(facet)))
+    vars_input_char <- c(vars_input_char, vec_facet)
   }
   # On ajoute filter si non-NULL
   if(!quo_is_null(quo_filter)){
-    vars_filter <- all.vars(substitute(filter_exp))
-    vars_input_char <- c(vars_input_char, as.character(vars_filter))
+    vec_filter_exp <- all.vars(substitute(filter_exp))
+    names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
+    vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici la condition et le stop à proprement parler
-  # Si data.frame
-  if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
-    if(all(vars_input_char %in% names(data)) == FALSE){
-      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet n'est pas présente dans data")
-    }
-    # # DESACTIVé : NE FONCTIONNE PAS !
-    # # Check du design. Solution trouvée ici : https://stackoverflow.com/questions/70652685/how-to-set-aliases-for-function-arguments-in-an-r-package
-    # vars_survey <- as.character(substitute(...()))[names(as.list(substitute(...()))) %in% c("strata", "ids", "weight", "weights", "probs", "variables", "fpc")]
-    # if(all(vars_survey %in% names(data)) == FALSE){
-    #   stop("Au moins une des variables du design n'est pas présente dans data")
-    # }
-  }
-  # Si objet sondage
-  if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
-    if(all(vars_input_char %in% names(data[["variables"]])) == FALSE){
-      stop("Au moins une des variables introduites dans group, prop_exp, filter_exp ou facet n'est pas présente dans data")
-    }
-  }
+  # Ici la contition et le stop à proprement parler
+  check_input(data,
+              vars_input_char)
+
+  # Test que prop_exp est OK
+  data <- data %>%
+    mutate(fonctionr_test_prop_exp = {{ prop_exp }})
+  if (!all(data[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
 
   if(na.prop == "rm"){
     # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
     # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
    names_expression <- all.names(substitute(prop_exp))
    if("is.na" %in% names_expression){
-     stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes")
+     stop("is.na() est détecté dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes lorsque na.prop == 'rm'")
    }
   }
 
@@ -218,7 +206,7 @@ prop_group <- function(data,
 
   # On ne garde que les colonnes entrées en input
   data_W <- data_W %>%
-    select(all_of(vars_input_char))
+    select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
@@ -246,13 +234,13 @@ prop_group <- function(data,
 
   if(na.prop == "rm"){
     # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
-    # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vars_expression créé au début
-    message("Variable(s) détectée(s) dans l'expression : ", paste(vars_expression, collapse = ", "))
+    # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vec_prop_exp créé au début
+    message("Variable(s) détectée(s) dans l'expression : ", paste(vec_prop_exp, collapse = ", "))
     # On calcule les effectifs avant filtre
     before <- data_W %>%
       summarise(n=unweighted(n()))
     # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-    for (var in vars_expression) {
+    for (var in vec_prop_exp) {
       data_W <- data_W %>%
         filter(!is.na(.data[[var]]))
     }
