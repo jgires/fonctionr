@@ -116,6 +116,9 @@ many_mean_group(..., type = "mean")
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
+\value{
+A list that contains a table and a graphic
+}
 \description{
 Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
 }

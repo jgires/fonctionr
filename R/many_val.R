@@ -19,7 +19,8 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param fill Colour of the bars.
+#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
@@ -30,7 +31,7 @@
 #' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table and a graphic
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -83,7 +84,8 @@ many_val = function(data,
                      digits = 0,
                      unit = NULL,
                      dec = ",",
-                     fill = "mediumseagreen",
+                     pretty_pal = "Egypt",
+                     direction = 1,
                      dodge = 0.9,
                      font ="Roboto",
                      wrap_width_y = 25,
@@ -109,7 +111,7 @@ many_val = function(data,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
-      fill = fill,
+      pretty_pal = pretty_pal,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -138,6 +140,7 @@ many_val = function(data,
     arg = list(
       scale = scale,
       digits = digits,
+      direction = direction,
       dodge = dodge,
       wrap_width_y = wrap_width_y
     ),
@@ -308,6 +311,19 @@ many_val = function(data,
     }
   }
 
+  # On crée la palette avec le package met.brewer
+  if(pretty_pal %in% names(MetBrewer::MetPalettes)){
+    palette <- as.character(MetBrewer::met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  }
+  #ou la crée avec le package MoMAColors
+  if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  }
+  # On crée la palette avec le package PrettyCols
+  if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
+    palette <- as.character(PrettyCols::prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  }
+
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
 
@@ -346,21 +362,26 @@ many_val = function(data,
     ggplot(aes(
       x = list_col,
       y = indice,
+      fill = list_col
     )) +
     geom_bar(
       width = dodge,
       stat = "identity",
-      position = "dodge",
-      fill = fill
+      position = "dodge"
     ) +
     theme_fonctionr(font = font) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
-                     limits = levels
+    scale_fill_manual(
+      values = palette
+    ) +
+    scale_x_discrete(
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
+      limits = levels
     )+
     labs(title = title,
          subtitle = subtitle,
          caption = caption
     ) +
+    guides(fill="none") +
     coord_flip()
 
   # Ajouter les axes

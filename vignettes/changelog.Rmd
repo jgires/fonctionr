@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.9
+
+Date : 2024-03-05
+
+-   Ajout des palettes dans `many_val()`.
+
 ## fonctionr 0.2.8
 
 Date : 2024-03-03

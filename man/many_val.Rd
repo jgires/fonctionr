@@ -25,7 +25,8 @@ many_val(
   digits = 0,
   unit = NULL,
   dec = ",",
-  fill = "mediumseagreen",
+  pretty_pal = "Egypt",
+  direction = 1,
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -78,7 +79,9 @@ many_mean(..., type = "mean")
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{fill}{Colour of the bars.}
+\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
 \item{dodge}{Width of the bar, between 0 and 1.}
 
@@ -97,6 +100,9 @@ many_mean(..., type = "mean")
 \item{caption}{Caption of the graphic.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+}
+\value{
+A list that contains a table and a graphic
 }
 \description{
 Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.

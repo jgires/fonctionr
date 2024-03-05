@@ -36,7 +36,7 @@
 #' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
-#' @return
+#' @return A list that contains a table and a graphic
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -391,7 +391,6 @@ many_val_group = function(data,
       values = palette,
       labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
       na.value = "grey"
-
     ) +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y))+
     labs(title = title,

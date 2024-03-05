@@ -1,7 +1,7 @@
 Package: fonctionr
 Type: Package
 Title: Package for easy manipulation of data with complex design
-Version: 0.2.8
+Version: 0.2.9
 Authors@R: 
     c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
@@ -33,5 +33,5 @@ Suggests:
     knitr,
     laeken,
     rmarkdown
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr
