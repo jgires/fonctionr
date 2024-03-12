@@ -3,12 +3,12 @@
 #' Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the variables according to the proportion.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -66,12 +66,12 @@
 #' eusilc_many_prop$tab
 #'
 many_val = function(data,
-                     list_vars,
+                    ...,
+                    list_vars,
                      type,
                      list_vars_lab = NULL,
                      facet = NULL,
                      filter_exp = NULL,
-                     ...,
                      # na.rm.facet, #à compléter
                      # na.var,#à compléter
                      prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit

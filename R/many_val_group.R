@@ -3,13 +3,13 @@
 #' Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param position Position adjustment for geom_bar
@@ -71,13 +71,13 @@
 #' eusilc_many_mean_group$tab
 #'
 many_val_group = function(data,
+                          ...,
                           group,
                           list_vars,
                           type,
                           list_vars_lab = NULL,
                           facet = NULL,
                           filter_exp = NULL,
-                          ...,
                           na.rm.group = T,
                           # na.rm.facet = T,# à compléter
                           # na.var = rm, #à compléter rm = remove, rm.all = remove tous ceux qui ont au moins 1 NA et include, c'est uniquement pour les prop
