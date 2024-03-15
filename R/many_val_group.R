@@ -124,7 +124,7 @@ many_val_group = function(data,
       position = position,
       unit = unit,
       dec = dec,
-      pretty_pal = pretty_pal,
+      pal = pal,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -330,16 +330,16 @@ many_val_group = function(data,
     }
 
   # On crée la palette avec le package met.brewer
-  if(pretty_pal %in% names(MetBrewer::MetPalettes)){
-    palette <- as.character(MetBrewer::met.brewer(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  if(pal %in% names(MetBrewer::MetPalettes)){
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
   #ou la crée avec le package MoMAColors
-  if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(MoMAColors::moma.colors(palette_name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  if(pal %in% names(MoMAColors::MoMAPalettes)){
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
   # On crée la palette avec le package PrettyCols
-  if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pretty_pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+    palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot

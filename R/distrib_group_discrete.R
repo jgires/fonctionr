@@ -114,7 +114,7 @@ distrib_group_discrete <- function(data,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
-      pretty_pal = pretty_pal,
+      pal = pal,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -276,16 +276,16 @@ distrib_group_discrete <- function(data,
     )
 
   # On crée la palette avecle package met.brewer
-  if(pretty_pal %in% names(MetBrewer::MetPalettes)){
-  palette <- as.character(MetBrewer::met.brewer(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  if(pal %in% names(MetBrewer::MetPalettes)){
+  palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
   #ou la crée avec le package MoMAColors
-  if(pretty_pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(MoMAColors::moma.colors(palette_name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  if(pal %in% names(MoMAColors::MoMAPalettes)){
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
   # On crée la palette avecle package PrettyCols
-  if(pretty_pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pretty_pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+    palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
   }
 
   # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
