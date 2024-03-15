@@ -316,17 +316,33 @@ many_val = function(data,
     }
   }
 
+  #fonction palette unicolore
+  isColor <- function(x)
+  {
+    res <- try(col2rgb(x), silent = TRUE)
+    return(!"try-error" %in% class(res))
+  }
+
   # On crée la palette avec le package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-  }
+
   #ou la crée avec le package MoMAColors
-  if(pal %in% names(MoMAColors::MoMAPalettes)){
+  } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-  }
+
   # On crée la palette avec le package PrettyCols
-  if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+  } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+
+  # On crée une palette unicolore
+  } else if(isColor(pal) == T){
+    palette <-   rep(pal, nlevels(tab[["list_col"]]))
+
+  } else {
+    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
+  warning("La couleur ou palette mentionnée dans pal n'existe pas")
+
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
