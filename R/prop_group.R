@@ -9,6 +9,7 @@
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.prop "rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
@@ -74,7 +75,7 @@ prop_group <- function(data,
                        facet = NULL,
                        filter_exp = NULL,
                        na.rm.group = T,
-                       # na.rm.facet = T, # à compléter
+                       na.rm.facet = T, # à compléter
                        na.prop = "rm",
                        prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                        reorder = F,
@@ -131,7 +132,8 @@ prop_group <- function(data,
       show_n = show_n,
       show_value = show_value,
       show_lab = show_lab,
-      na.rm.group = na.rm.group
+      na.rm.group = na.rm.group,
+      na.rm.facet = na.rm.facet
     ),
     type = "logical"
   )
@@ -225,6 +227,8 @@ prop_group <- function(data,
   if (na.rm.group == T) {
     data_W <- data_W %>%
       filter(!is.na({{ group }}))
+  }
+  if (na.rm.facet == T) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
@@ -286,11 +290,17 @@ prop_group <- function(data,
   # Ici je crée une copie des données dans data_W_NA
   # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
+  if(na.rm.group == F|na.rm.facet == F){
+    data_W_NA <- data_W
+  }
   if(na.rm.group == F){
-    data_W_NA <- data_W %>%
+    data_W_NA <- data_W_NA %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
+  }
+  if (na.rm.facet == F) {
+    # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
@@ -310,7 +320,7 @@ prop_group <- function(data,
     fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
   }
 
-  if(na.rm.group == F){
+  if(na.rm.group == F|na.rm.facet == F){
     # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
     test.stat <- tryCatch(
       expr = {
@@ -322,7 +332,7 @@ prop_group <- function(data,
       }
     )
   }
-  if(na.rm.group == T){
+  if(na.rm.group == T & na.rm.facet == T){
     test.stat <- tryCatch(
       expr = {
         svychisq(fmla, data_W)
