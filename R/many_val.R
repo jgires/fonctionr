@@ -3,13 +3,13 @@
 #' Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
-#' @param na.vars
 #' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.vars treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the variables according to the proportion.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -20,7 +20,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
@@ -67,35 +67,35 @@
 #' eusilc_many_prop$tab
 #'
 many_val = function(data,
-                    ...,
                     list_vars,
-                     type,
-                     list_vars_lab = NULL,
-                     facet = NULL,
-                     filter_exp = NULL,
-                     # na.rm.facet, #à compléter
-                     na.vars = "rm",
-                     prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
-                     reorder = FALSE,
-                     show_ci = T,
-                     show_n = FALSE,
-                     show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
-                     show_lab = TRUE,
-                     scale = NULL,
-                     digits = 0,
-                     unit = NULL,
-                     dec = ",",
-                     pretty_pal = "Egypt",
-                     direction = 1,
-                     dodge = 0.9,
-                     font ="Roboto",
-                     wrap_width_y = 25,
-                     title = NULL, # Le titre du graphique
-                     subtitle = NULL,
-                     xlab = NULL, # Le nom de l'axe de la variable catégorielle
-                     ylab = NULL,
-                     caption = NULL,
-                     export_path = NULL){
+                    type,
+                    list_vars_lab = NULL,
+                    facet = NULL,
+                    filter_exp = NULL,
+                    ...,
+                    # na.rm.facet, #à compléter
+                    na.vars = "rm",
+                    prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                    reorder = FALSE,
+                    show_ci = T,
+                    show_n = FALSE,
+                    show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                    show_lab = TRUE,
+                    scale = NULL,
+                    digits = 0,
+                    unit = NULL,
+                    dec = ",",
+                    pal = "Egypt",
+                    direction = 1,
+                    dodge = 0.9,
+                    font ="Roboto",
+                    wrap_width_y = 25,
+                    title = NULL, # Le titre du graphique
+                    subtitle = NULL,
+                    xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                    ylab = NULL,
+                    caption = NULL,
+                    export_path = NULL){
 
   # Check des arguments nécessaires
   if(missing(type) == TRUE){

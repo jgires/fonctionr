@@ -3,11 +3,11 @@
 #' Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups to be compared.
 #' @param quali_var The discrete variable that is described in the different groups.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove the NAs in quali_var, group and facet. FALSE if you want to create NA categories for quali_var, group and facet. Default is TRUE.
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
@@ -16,7 +16,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ",".
-#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1. Default is 0.9.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
@@ -83,7 +83,7 @@ distrib_group_discrete <- function(data,
                                    digits = 0,
                                    unit = "",
                                    dec = ",",
-                                   pretty_pal = "Hokusai1",
+                                   pal = "Hokusai1",
                                    direction = 1,
                                    dodge = 0.9,
                                    font ="Roboto",
