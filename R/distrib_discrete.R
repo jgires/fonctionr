@@ -3,10 +3,10 @@
 #' Function describe the distribution of a discrete variable from complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param quali_var The discrete variable that is described.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA in quali_var and observations with NA on facet if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet if applicable. Default is TRUE.
 #' @param probs Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.
 #' @param prop_method Type of proportion method to use to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
@@ -66,10 +66,10 @@
 #' eusilc_dist_group_d$tab
 #'
 distrib_discrete <- function(data, # Données en format srvyr
+                             ...,
                              quali_var, # Variable catégorielle
                              facet = NULL,
                              filter_exp = NULL,
-                             ...,
                              na.rm.group = T,
                              # na.rm.facet = T,
                              # na.var = "rm",

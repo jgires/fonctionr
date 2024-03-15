@@ -3,11 +3,11 @@
 #' Function describe the distribution of a discrete variable in different groups. It can use complex survey data. It produces a table, a graphic and a statistical test.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups to be compared.
 #' @param quali_var The discrete variable that is described in the different groups.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove the NAs in quali_var, group and facet. FALSE if you want to create NA categories for quali_var, group and facet. Default is TRUE.
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
