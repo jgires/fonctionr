@@ -5,12 +5,13 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
-#' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
+#' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute proportions by group.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param na.vars
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param position Position adjustment for geom_bar
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
@@ -80,7 +81,7 @@ many_val_group = function(data,
                           ...,
                           na.rm.group = T,
                           # na.rm.facet = T,# à compléter
-                          # na.var = rm, #à compléter rm = remove, rm.all = remove tous ceux qui ont au moins 1 NA et include, c'est uniquement pour les prop
+                          na.vars = "rm",
                           prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
                           position = "dodge",
                           show_ci = T,
@@ -117,6 +118,7 @@ many_val_group = function(data,
   # Check des autres arguments
   check_arg(
     arg = list(
+      na.vars = na.vars,
       type = type,
       prop_method = prop_method,
       position = position,
@@ -164,6 +166,7 @@ many_val_group = function(data,
   # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median", "prop"))
   match.arg(position, choices = c("dodge", "stack"))
+  match.arg(na.vars, choices = c("rm", "rm.all"))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -228,20 +231,22 @@ many_val_group = function(data,
     }
   }
 
-  # On supprime les NA sur la/les variable(s) entrées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) entrées sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On calcule les effectifs avant filtre
-  before <- data_W %>%
-    summarise(n=unweighted(n()))
-  # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-  for (var in vec_list_vars) {
-    data_W <- data_W %>%
-      filter(!is.na(.data[[var]]))
+  if(na.vars == "rm.all"){
+    # On supprime les NA sur la/les variable(s) entrées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) entrées sont non missing (et pas tout le groupe : ça on s'en fout)
+    # On calcule les effectifs avant filtre
+    before <- data_W %>%
+      summarise(n=unweighted(n()))
+    # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+    for (var in vec_list_vars) {
+      data_W <- data_W %>%
+        filter(!is.na(.data[[var]]))
+    }
+    # On calcule les effectifs après filtre
+    after <- data_W %>%
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimées (pour vérification)
+    message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) entrées")
   }
-  # On calcule les effectifs après filtre
-  after <- data_W %>%
-    summarise(n=unweighted(n()))
-  # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) entrées")
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W %>%
@@ -273,9 +278,9 @@ many_val_group = function(data,
         summarise(
           list_col = i,
           indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(n()),
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
           n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(vartype = "ci")
+          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)
@@ -290,8 +295,8 @@ many_val_group = function(data,
           indice = if (type == "median") {
             survey_median(.data[[i]], na.rm = T, vartype = "ci")
           } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-          n_sample = unweighted(n()),
-          n_weighted = survey_total(vartype = "ci")
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
+          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)

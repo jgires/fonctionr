@@ -4,7 +4,7 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
-#' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.
+#' @param type "mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
