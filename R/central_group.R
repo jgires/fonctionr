@@ -5,12 +5,12 @@
 #' @name central_group
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups to be compared.
 #' @param quanti_exp An expression that define the variable from which the mean/median is computed.
 #' @param type "mean" to compute mean by group ; "median" to compute median by group.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.
 #' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
@@ -63,12 +63,12 @@
 #' eusilc_mean$graph
 #'
 central_group <- function(data,
-                          ...,
                           group,
                           quanti_exp,
                           type,
                           facet = NULL,
                           filter_exp = NULL,
+                          ...,
                           na.rm.group = T,
                           # na.rm.facet = T,## à completer
                           reorder = F,
