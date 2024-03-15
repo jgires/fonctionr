@@ -12,6 +12,7 @@
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
@@ -70,7 +71,7 @@ central_group <- function(data,
                           filter_exp = NULL,
                           ...,
                           na.rm.group = T,
-                          # na.rm.facet = T,## à completer
+                          na.rm.facet = T,
                           reorder = F,
                           show_ci = T,
                           show_n = FALSE,
@@ -120,6 +121,7 @@ central_group <- function(data,
   check_arg(
     arg = list(
       na.rm.group = na.rm.group,
+      na.rm.facet = na.rm.facet,
       reorder = reorder,
       show_ci = show_ci,
       show_n = show_n,
