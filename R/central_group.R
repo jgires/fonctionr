@@ -198,6 +198,8 @@ central_group <- function(data,
   if (na.rm.group == T) {
     data_W <- data_W %>%
       filter(!is.na({{ group }}))
+  }
+  if (na.rm.facet == T) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
@@ -242,11 +244,17 @@ central_group <- function(data,
   # Ici je crée une copie des données dans data_W_NA
   # L'idée est de recoder les NA des 2 variables croisées en level "NA", pour que le test stat s'applique aussi aux NA
   # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
+  if(na.rm.group == F|na.rm.facet == F){
+    data_W_NA <- data_W
+  }
   if(na.rm.group == F){
-    data_W_NA <- data_W %>%
+    data_W_NA <- data_W_NA %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
+  }
+  if (na.rm.facet == F) {
+    # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
@@ -274,12 +282,12 @@ central_group <- function(data,
   }
 
   if(type == "mean"){
-    if(na.rm.group == T & type == "mean"){
+    if(na.rm.group == T & na.rm.facet == T){
       model <- svyglm(fmla, design = data_W)
       test.stat <- regTermTest(model, fmla2)
       test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
     }
-    if(na.rm.group == F & type == "mean"){
+    if(na.rm.group == F|na.rm.facet == F){
       model <- svyglm(fmla, design = data_W_NA)
       test.stat <- regTermTest(model, fmla2)
       test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
@@ -295,10 +303,10 @@ central_group <- function(data,
   #   }
   # }
   if(type == "median"){
-    if(na.rm.group == T){
+    if(na.rm.group == T & na.rm.facet == T){
       test.stat <- svyranktest(fmla, design = data_W, test = "KruskalWallis")
     }
-    if(na.rm.group == F){
+    if(na.rm.group == F|na.rm.facet == F){
       test.stat <- svyranktest(fmla, design = data_W_NA, test = "KruskalWallis")
     }
   }

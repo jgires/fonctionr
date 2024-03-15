@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.10
+
+Date : 2024-03-15
+
+-   Ajout des argument na.rm.facet dans `prop_group()` et `central_group()`.
+-   Possibilité de mettre une couleur unie pour `many_val()`.
+-   Création de l'argument `na.vars` pour `many_val()` et `many_val_group()`.
+
 ## fonctionr 0.2.9
 
 Date : 2024-03-05
@@ -126,9 +134,6 @@ Date : 2024-02-14
     1.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
-
--   Ajouter `n_weight_upp` et `n_weight_low` + harmoniser les noms des colonnes entre fonctions (`n` vs `n_tot`, `n_weighted` vs `n_tot_weighted`...).\
-    *=\> François : je propose l'ordre suivant : les variables de ventilation, l'indicateur, l'indicateur_low, l'indicateur_up, n_sample, n_true_weighted, n_true_weighted_low, n_true_weighted_upp, n_tot_weighted, n_tot_weighted_low, n_tot_weighted_upp.*<!--# Joël : OK donc c'est fait ? -->
 
 #### central_group
 

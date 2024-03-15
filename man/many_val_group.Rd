@@ -17,6 +17,7 @@ many_val_group(
   filter_exp = NULL,
   ...,
   na.rm.group = T,
+  na.vars = "rm",
   prop_method = "beta",
   position = "dodge",
   show_ci = T,
@@ -27,7 +28,7 @@ many_val_group(
   digits = 0,
   unit = NULL,
   dec = ",",
-  pretty_pal = "Egypt",
+  pal = "Egypt",
   direction = 1,
   dodge = 0.9,
   font = "Roboto",
@@ -56,7 +57,7 @@ many_mean_group(..., type = "mean")
 
 \item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
 
-\item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.}
+\item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute proportions by group.}
 
 \item{list_vars_lab}{names of the variables}
 
@@ -88,7 +89,7 @@ many_mean_group(..., type = "mean")
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+\item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 

@@ -15,6 +15,7 @@ many_val(
   facet = NULL,
   filter_exp = NULL,
   ...,
+  na.vars = "rm",
   prop_method = "beta",
   reorder = FALSE,
   show_ci = T,
@@ -25,7 +26,7 @@ many_val(
   digits = 0,
   unit = NULL,
   dec = ",",
-  pretty_pal = "Egypt",
+  pal = "Egypt",
   direction = 1,
   dodge = 0.9,
   font = "Roboto",
@@ -49,7 +50,7 @@ many_mean(..., type = "mean")
 
 \item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
 
-\item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute medians by group.}
+\item{type}{"mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.}
 
 \item{list_vars_lab}{names of the variables}
 
@@ -58,6 +59,8 @@ many_mean(..., type = "mean")
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.vars}{treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
@@ -79,7 +82,7 @@ many_mean(..., type = "mean")
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+\item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 

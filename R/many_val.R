@@ -319,7 +319,7 @@ many_val = function(data,
   #fonction palette unicolore
   isColor <- function(x)
   {
-    res <- try(col2rgb(x), silent = TRUE)
+    res <- try(grDevices::col2rgb(x), silent = TRUE)
     return(!"try-error" %in% class(res))
   }
 
@@ -340,9 +340,8 @@ many_val = function(data,
     palette <-   rep(pal, nlevels(tab[["list_col"]]))
 
   } else {
-    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
-  warning("La couleur ou palette mentionnée dans pal n'existe pas")
-
+  palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
+  warning("La couleur ou palette mentionnée dans pal n'existe pas : la palette par défaut est utilisée")
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot

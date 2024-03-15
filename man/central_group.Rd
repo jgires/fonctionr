@@ -15,6 +15,7 @@ central_group(
   filter_exp = NULL,
   ...,
   na.rm.group = T,
+  na.rm.facet = T,
   reorder = F,
   show_ci = T,
   show_n = FALSE,
@@ -56,6 +57,8 @@ mean_group(..., type = "mean")
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
 \item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.}
+
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
 \item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
 

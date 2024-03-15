@@ -20,7 +20,7 @@ distrib_group_discrete(
   digits = 0,
   unit = "",
   dec = ",",
-  pretty_pal = "Hokusai1",
+  pal = "Hokusai1",
   direction = 1,
   dodge = 0.9,
   font = "Roboto",
@@ -67,7 +67,7 @@ distrib_group_d(...)
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{pretty_pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+\item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
