@@ -3,13 +3,13 @@
 #' Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute proportions by group.
 #' @param list_vars_lab names of the variables
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.vars
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
@@ -22,7 +22,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param pretty_pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
@@ -72,13 +72,13 @@
 #' eusilc_many_mean_group$tab
 #'
 many_val_group = function(data,
-                          ...,
                           group,
                           list_vars,
                           type,
                           list_vars_lab = NULL,
                           facet = NULL,
                           filter_exp = NULL,
+                          ...,
                           na.rm.group = T,
                           # na.rm.facet = T,# à compléter
                           na.vars = "rm",
@@ -92,7 +92,7 @@ many_val_group = function(data,
                           digits = 0,
                           unit = NULL,
                           dec = ",",
-                          pretty_pal = "Egypt",
+                          pal = "Egypt",
                           direction = 1,
                           dodge = 0.9,
                           font ="Roboto",

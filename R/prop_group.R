@@ -3,11 +3,11 @@
 #' Function to compare proportions in different groups from complex survey data. It produces a table, a graphic and a statistical test.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param group A variable defining groups be compared.
 #' @param prop_exp An expression that define the proportion to be computed.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
+#' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.prop "rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp
@@ -69,11 +69,11 @@
 #' eusilc_prop$graph
 #'
 prop_group <- function(data,
-                       ...,
                        group,
                        prop_exp,
                        facet = NULL,
                        filter_exp = NULL,
+                       ...,
                        na.rm.group = T,
                        na.rm.facet = T, # à compléter
                        na.prop = "rm",
