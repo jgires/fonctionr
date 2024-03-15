@@ -276,6 +276,7 @@ check_input <- function(data,
 #' @examples
 #'
 theme_fonctionr <- function(font = font) {
+  load_and_active_fonts()
   theme_minimal() +
   theme(
     panel.grid.minor.y = element_blank(),

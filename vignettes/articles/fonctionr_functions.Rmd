@@ -82,7 +82,7 @@ eusilc_dist_group_d$test.stat
 
 ## median_group() pour décrire les variations d'une moyenne selon des groupes
 
-## many_prop() pour décrire en même temps plusieurs proportions 
+## many_prop() pour décrire en même temps plusieurs proportions
 
 ## many_prop_group() pour décrire en même temps plusieurs proportions selon des groupes
 
@@ -130,6 +130,6 @@ différents formats.
 
 ## L'esthétique des lettres
 
-## Les labels (y compris des variables dans les fonctions many) 
+## Les labels (y compris des variables dans les fonctions many)
 
 # L'export au format xlsx
