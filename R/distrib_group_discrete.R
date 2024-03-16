@@ -9,6 +9,8 @@
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove the NAs in quali_var, group and facet. FALSE if you want to create NA categories for quali_var, group and facet. Default is TRUE.
+#' @param na.rm.facet
+#' @param na.rm.var
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
 #' @param show_lab TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
@@ -74,8 +76,8 @@ distrib_group_discrete <- function(data,
                                    filter_exp = NULL,
                                    ...,
                                    na.rm.group = T,
-                                   # na.rm.facet = T,
-                                   # na.var = T,
+                                   na.rm.facet = T,
+                                   na.rm.var = T,
                                    prop_method = "beta",
                                    show_value = TRUE,
                                    show_lab = TRUE,
@@ -90,13 +92,16 @@ distrib_group_discrete <- function(data,
                                    wrap_width_y = 25,
                                    wrap_width_leg = 25,
                                    legend_ncol = 4,
-                                   title = NULL, # Le titre du graphique
+                                   title = NULL,
                                    subtitle = NULL,
-                                   xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                                   xlab = NULL,
                                    ylab = NULL,
                                    legend_lab = NULL,
                                    caption = NULL,
                                    export_path = NULL) {
+
+
+  # 1. CHECKS DES ARGUMENTS --------------------
 
   # Un check impératif
   if((missing(data) | missing(group) | missing(quali_var)) == TRUE){
@@ -129,6 +134,8 @@ distrib_group_discrete <- function(data,
   check_arg(
     arg = list(
       na.rm.group = na.rm.group,
+      na.rm.facet = na.rm.facet,
+      na.rm.var = na.rm.var,
       show_value = show_value,
       show_lab = show_lab
     ),
@@ -158,7 +165,8 @@ distrib_group_discrete <- function(data,
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
   vec_quali_var <- all.vars(substitute(quali_var))
-  names(vec_quali_var) <- rep("quali_var", length(vec_quali_var))
+  names(vec_quali_var) <- rep("quali_var", length(vec_quali_var)) # On crée un vecteur nommé pour la fonction check_input ci-dessous
+  # On ajoute group
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_quali_var, vec_group)
   # On ajoute facet si non-NULL
@@ -172,9 +180,12 @@ distrib_group_discrete <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici la contition et le stop à proprement parler
+  # Ici le check à proprement parler
   check_input(data,
               vars_input_char)
+
+
+  # 2. PROCESSING DES DONNEES --------------------
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -189,11 +200,18 @@ distrib_group_discrete <- function(data,
       filter({{ filter_exp }})
   }
 
-  # On supprime les NA des 2 variables si na.rm.group == T
+  # On supprime les NA de group si na.rm.group == T
   if(na.rm.group == T){
     data_W <- data_W %>%
-      filter(!is.na({{ group }}) & !is.na({{ quali_var }}))
-    # idem sur la variable de facet si non-NULL
+      filter(!is.na({{ group }}))
+  }
+  # On supprime les NA de quali_var si na.rm.var == T
+  if(na.rm.var == T){
+    data_W <- data_W %>%
+      filter(!is.na({{ quali_var }}))
+  }
+  # idem sur la variable de facet si non-NULL
+  if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
         filter(!is.na({{ facet }}))
@@ -213,19 +231,30 @@ distrib_group_discrete <- function(data,
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
-  # Ici je crée une copie des données dans data_W_NA
-  # L'idée est de recoder les NA des 2 variables croisées en level "NA", pour que le khi2 s'applique aussi aux NA
-  # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
-  if(na.rm.group == F){
-    data_W_NA <- data_W %>%
+
+  # 3. TEST STATISTIQUE --------------------
+
+  # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
+  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
+  if (na.rm.group == F) {
+    data_W <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")),
-             "{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
+      mutate(
+        "{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")),
       )
-    if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
-        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
-        )
+  }
+  # idem sur quali_var
+  if (na.rm.var == F) {
+    data_W <- data_W %>%
+      mutate(
+        "{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
+      )
+  }
+  # idem sur la variable de facet si non-NULL
+  if (na.rm.facet == F) {
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W %>%
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
     }
   }
 
@@ -235,29 +264,42 @@ distrib_group_discrete <- function(data,
     quali_var_fmla <- as.character(substitute(quali_var))
     group_fmla <- as.character(substitute(group))
     fmla <- stats::as.formula(paste("~", group_fmla, "+", quali_var_fmla))
-    if(na.rm.group == F){
-      # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
-      test.stat <- tryCatch(
-        expr = {
-          svychisq(fmla, data_W_NA)
-        },
-      # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
-        error = function(e){
-          "Conditions non remplies"
-        }
+    # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
+    test.stat <- tryCatch(
+      expr = {
+        svychisq(fmla, data_W)
+      },
+    # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
+      error = function(e){
+        "Conditions non remplies"
+      }
+    )
+  }
+
+  # Ici je remets les NA pour les groupes / quali_var / facet => Le fait d'avoir les NA en missing réel est pratique pour construire le graphique ggplot !
+  if (na.rm.group == F) {
+    data_W <- data_W %>%
+      mutate(
+        "{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA")),
       )
-    }
-    if(na.rm.group == T){
-      test.stat <- tryCatch(
-        expr = {
-          svychisq(fmla, data_W)
-        },
-        error = function(e){
-          "Conditions non remplies"
-        }
+  }
+  # idem sur quali_var
+  if (na.rm.var == F) {
+    data_W <- data_W %>%
+      mutate(
+        "{{ quali_var }}" := droplevels(forcats::fct_na_level_to_value({{ quali_var }}, "NA"))
       )
+  }
+  # idem sur la variable de facet si non-NULL
+  if (na.rm.facet == F) {
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W %>%
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA")))
     }
   }
+
+
+  # 4. CALCUL DES FREQUENCES RELATIVES --------------------
 
   # On calcule les fréquences relatives par groupe
   if (quo_is_null(quo_facet)) {
@@ -275,6 +317,9 @@ distrib_group_discrete <- function(data,
       n_weighted = survey_total(vartype = c("ci"))
     )
 
+
+  # 5. CREATION DU GRAPHIQUE --------------------
+
   # On crée la palette avecle package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
   palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
@@ -286,6 +331,10 @@ distrib_group_discrete <- function(data,
   # On crée la palette avecle package PrettyCols
   if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+  }
+  # On crée la palette avec la fonction interne official_pal()
+  if(pal %in% c("OBSS", "IBSA")){
+    palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), direction = direction))
   }
 
   # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
@@ -303,9 +352,6 @@ distrib_group_discrete <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On crée le graphique
 
@@ -444,6 +490,9 @@ distrib_group_discrete <- function(data,
                                   reverse = TRUE)
       )
   }
+
+
+  # 6. RESULTATS --------------------
 
   # On crée l'objet final
   res <- list()

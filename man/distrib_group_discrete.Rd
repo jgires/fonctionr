@@ -13,6 +13,8 @@ distrib_group_discrete(
   filter_exp = NULL,
   ...,
   na.rm.group = T,
+  na.rm.facet = T,
+  na.rm.var = T,
   prop_method = "beta",
   show_value = TRUE,
   show_lab = TRUE,

@@ -15,6 +15,7 @@ many_val(
   facet = NULL,
   filter_exp = NULL,
   ...,
+  na.rm.facet = T,
   na.vars = "rm",
   prop_method = "beta",
   reorder = FALSE,
@@ -59,6 +60,8 @@ many_mean(..., type = "mean")
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
 \item{na.vars}{treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
 

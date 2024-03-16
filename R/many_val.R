@@ -9,6 +9,7 @@
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.vars treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the variables according to the proportion.
@@ -73,13 +74,13 @@ many_val = function(data,
                     facet = NULL,
                     filter_exp = NULL,
                     ...,
-                    # na.rm.facet, #à compléter
+                    na.rm.facet = T,
                     na.vars = "rm",
-                    prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                    prop_method = "beta",
                     reorder = FALSE,
                     show_ci = T,
                     show_n = FALSE,
-                    show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                    show_value = TRUE,
                     show_lab = TRUE,
                     scale = NULL,
                     digits = 0,
@@ -90,12 +91,15 @@ many_val = function(data,
                     dodge = 0.9,
                     font ="Roboto",
                     wrap_width_y = 25,
-                    title = NULL, # Le titre du graphique
+                    title = NULL,
                     subtitle = NULL,
-                    xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                    xlab = NULL,
                     ylab = NULL,
                     caption = NULL,
                     export_path = NULL){
+
+
+  # 1. CHECKS DES ARGUMENTS --------------------
 
   # Check des arguments nécessaires
   if(missing(type) == TRUE){
@@ -108,8 +112,8 @@ many_val = function(data,
   # Check des autres arguments
   check_arg(
     arg = list(
-      na.vars = na.vars,
       type = type,
+      na.vars = na.vars,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
@@ -130,6 +134,7 @@ many_val = function(data,
   )
   check_arg(
     arg = list(
+      na.rm.facet = na.rm.facet,
       reorder = reorder,
       show_ci = show_ci,
       show_n = show_n,
@@ -175,6 +180,8 @@ many_val = function(data,
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
+
+  # On détecte d'abord les variables entrées dans list_vars (détectées précédemment)
   vars_input_char <- vec_list_vars
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
@@ -187,10 +194,12 @@ many_val = function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-
-  # Ici la condition et le stop à proprement parler
+  # Ici le check à proprement parler
   check_input(data,
               vars_input_char)
+
+
+  # 2. PROCESSING DES DONNEES --------------------
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -204,15 +213,16 @@ many_val = function(data,
     data_W <- data_W %>%
       filter({{ filter_exp }})
   }
-
   # On supprime les NA sur la variable de facet si non-NULL
-  if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
-      filter(!is.na({{ facet }}))
+  if (na.rm.facet == T) {
+    if(!quo_is_null(quo_facet)){
+      data_W <- data_W %>%
+        filter(!is.na({{ facet }}))
+    }
   }
 
+  # On supprime les NA sur la/les variable(s) entrées si na.vars == "rm.all" => de cette façon les effectifs sont les mêmes pour tous les indicateurs.
   if(na.vars == "rm.all"){
-    # On supprime les NA sur la/les variable(s) entrées dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) entrées sont non missing (et pas tout le groupe : ça on s'en fout)
     # On calcule les effectifs avant filtre
     before <- data_W %>%
       summarise(n=unweighted(n()))
@@ -236,7 +246,10 @@ many_val = function(data,
         )
   }
 
-  # Si facet
+
+  # 3. CALCUL DES INDICATEURS --------------------
+
+  # Si facet => on groupe déjà data (économie de code)
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       group_by({{ facet }})
@@ -249,9 +262,9 @@ many_val = function(data,
         summarise(
           list_col = i,
           indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
           n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
+          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)
@@ -266,8 +279,8 @@ many_val = function(data,
           indice = if (type == "median") {
             survey_median(.data[[i]], na.rm = T, vartype = "ci")
           } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
-          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas automatiquement supprimés de toutes les variables de vec_list_vars si na.vars = "rm"
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
+          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)
@@ -297,6 +310,9 @@ many_val = function(data,
     tab$list_col <- factor(tab$list_col, levels = vec_list_vars)
   }
 
+
+  # 4. CREATION DU GRAPHIQUE --------------------
+
   # Si reorder = T, on crée un vecteur pour ordonner les levels
   if (reorder == T) {
     levels <- levels(reorder(
@@ -316,18 +332,11 @@ many_val = function(data,
     }
   }
 
-  #fonction palette unicolore
-  isColor <- function(x)
-  {
-    res <- try(grDevices::col2rgb(x), silent = TRUE)
-    return(!"try-error" %in% class(res))
-  }
-
   # On crée la palette avec le package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
-  #ou la crée avec le package MoMAColors
+  # On crée avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
@@ -335,20 +344,21 @@ many_val = function(data,
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
-  # On crée une palette unicolore
-  } else if(isColor(pal) == T){
-    palette <-   rep(pal, nlevels(tab[["list_col"]]))
+  # On crée la palette avec la fonction interne official_pal
+  } else if(pal %in% c("OBSS", "IBSA")){
+    palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
 
-  } else {
-  palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
-  warning("La couleur ou palette mentionnée dans pal n'existe pas : la palette par défaut est utilisée")
+  # On crée une palette unicolore
+  } else if(isColor(pal) == TRUE){
+    palette <- rep(pal, nlevels(tab[["list_col"]]))
+
+  } else { # Si la couleur/palette n'est pas valide => on met la palette par défaut
+    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
+    warning("La couleur ou palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On définit le nom de l'indicateur (proportion, médiane ou moyenne) et l'échelle qui seront affichées dans le graphique ggplot
   if(type == "prop"){
@@ -515,6 +525,9 @@ many_val = function(data,
         position = position_dodge(width = dodge)
       )
   }
+
+
+  # 5. RESULTATS --------------------
 
   # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
   if (type == "prop") {

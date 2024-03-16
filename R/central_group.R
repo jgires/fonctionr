@@ -92,6 +92,8 @@ central_group <- function(data,
                           caption = NULL,
                           export_path = NULL) {
 
+  # 1. CHECKS DES ARGUMENTS --------------------
+
   # Un check impératif
   if(missing(type) == TRUE){
     stop("L'argument type doit être rempli")
@@ -151,11 +153,13 @@ central_group <- function(data,
   quo_filter <- enquo(filter_exp)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On détecte d'abord les variables entrées dans l'expression pour calculer la moyenne/médiane
+  # On crée un vecteur string qui contient toutes les variables entrées
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
+
+  # On détecte d'abord les variables entrées dans l'expression pour calculer la moyenne/médiane
   vec_quanti_exp <- all.vars(substitute(quanti_exp))
-  names(vec_quanti_exp) <- rep("quanti_exp", length(vec_quanti_exp))
-  # On crée ensuite un vecteur string qui contient toutes les variables entrées
+  names(vec_quanti_exp) <- rep("quanti_exp", length(vec_quanti_exp)) # On crée un vecteur nommé pour la fonction check_input ci-dessous
+  # On ajoute groupe
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_quanti_exp, vec_group)
   # On ajoute facet si non-NULL
@@ -169,17 +173,12 @@ central_group <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici la contition et le stop à proprement parler
+  # Ici le check à proprement parler
   check_input(data,
               vars_input_char)
 
-  # Couleur selon médiane ou moyenne
-  if(type == "mean" & is.null(fill)){
-    fill <- "deeppink3"
-  }
-  if(type == "median" & is.null(fill)){
-    fill <- "mediumorchid3"
-  }
+
+  # 2. PROCESSING DES DONNEES --------------------
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -193,14 +192,13 @@ central_group <- function(data,
     data_W <- data_W %>%
       filter({{ filter_exp }})
   }
-
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
     data_W <- data_W %>%
       filter(!is.na({{ group }}))
   }
+  # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
-    # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
         filter(!is.na({{ facet }}))
@@ -208,16 +206,13 @@ central_group <- function(data,
   }
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On détecte les variables entrées dans quanti_exp pour calculer la moyenne/médiane
-  # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
-  vars_quanti_expression <- all.vars(substitute(quanti_exp))
   # On les affiche via message (pour vérification)
-  message("Variable(s) détectée(s) dans quanti_exp : ", paste(vars_quanti_expression, collapse = ", "))
+  message("Variable(s) détectée(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W %>%
     summarise(n=unweighted(n()))
   # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-  for (var in vars_quanti_expression) {
+  for (var in vec_quanti_exp) {
     data_W <- data_W %>%
       filter(!is.na(.data[[var]]))
   }
@@ -241,14 +236,13 @@ central_group <- function(data,
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
-  # Ici je crée une copie des données dans data_W_NA
-  # L'idée est de recoder les NA des 2 variables croisées en level "NA", pour que le test stat s'applique aussi aux NA
-  # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
-  if(na.rm.group == F|na.rm.facet == F){
-    data_W_NA <- data_W
-  }
+
+  # 3. TEST STATISTIQUE --------------------
+
+  # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
+  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if(na.rm.group == F){
-    data_W_NA <- data_W_NA %>%
+    data_W <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
@@ -256,7 +250,7 @@ central_group <- function(data,
   if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
+      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
@@ -282,16 +276,12 @@ central_group <- function(data,
   }
 
   if(type == "mean"){
-    if(na.rm.group == T & na.rm.facet == T){
-      model <- svyglm(fmla, design = data_W)
-      test.stat <- regTermTest(model, fmla2)
-      test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
-    }
-    if(na.rm.group == F|na.rm.facet == F){
-      model <- svyglm(fmla, design = data_W_NA)
-      test.stat <- regTermTest(model, fmla2)
-      test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
-    }
+    model <- svyglm(fmla, design = data_W)
+    test.stat <- regTermTest(model, fmla2)
+    test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
+  }
+  if(type == "median"){
+    test.stat <- svyranktest(fmla, design = data_W, test = "KruskalWallis")
   }
   # /!\ NOTE : ça fonctionne mais j'ai peur d'utiliser eval => solution précédente choisie, qui a tout de même le pb de ne pas garder la formule dans le call
   # if(type == "median"){
@@ -302,14 +292,24 @@ central_group <- function(data,
   #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W_NA, test = "KruskalWallis")))
   #   }
   # }
-  if(type == "median"){
-    if(na.rm.group == T & na.rm.facet == T){
-      test.stat <- svyranktest(fmla, design = data_W, test = "KruskalWallis")
-    }
-    if(na.rm.group == F|na.rm.facet == F){
-      test.stat <- svyranktest(fmla, design = data_W_NA, test = "KruskalWallis")
+
+  # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing réel est pratique pour construire le graphique ggplot !
+  if(na.rm.group == F){
+    data_W <- data_W %>%
+      mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
+      )
+  }
+  if (na.rm.facet == F) {
+    # idem sur la variable de facet si non-NULL
+    if(!quo_is_null(quo_facet)){
+      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
+        )
     }
   }
+
+
+  # 4. CALCUL DES MOYENNES/MEDIANES --------------------
 
   # On calcule l'indicateur par groupe (mean ou median selon la fonction appelée)
   if(quo_is_null(quo_facet)){
@@ -319,7 +319,7 @@ central_group <- function(data,
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-        n_sample = unweighted(n()),
+        n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total
       )
@@ -331,21 +331,37 @@ central_group <- function(data,
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-        n_sample = unweighted(n()),
+        n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total
       ) %>%
-      filter({{ facet }} != total_name | is.na({{ facet }}))
+      filter({{ facet }} != total_name | is.na({{ facet }})) # POURQUOI JE FAIS CA ??? ME RAPPELLE PLUS => ELUCIDER
   }
 
-  # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+
+  # 5. CREATION DU GRAPHIQUE --------------------
+
+  # On crée la palette : avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - 1 (le total étant déjà un niveau)
+  # Si couleur introduite par l'utilisateur
+  if(!is.null(fill) & isColor(fill) == TRUE){
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+  } else { # Si fill est NULL ou si la couleur n'est pas valide => on met la couleur par défaut
+    if(!is.null(fill) & isColor(fill) == FALSE){ # Si la couleur est fausse => warning
+      warning("La couleur indiquée dans fill n'existe pas : la couleur par défaut est utilisée")
+    }
+    if(type == "mean"){
+      palette <- c(rep("deeppink3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+    }
+    if(type == "median"){
+      palette <- c(rep("mediumorchid3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+    }
+  }
 
   # On calcule la valeur max de l'indice, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
 
+  # On crée un vecteur pour ordonner les levels de group selon mean, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
   if (reorder == T) {
-    # On crée un vecteur pour ordonner les levels de group selon mean, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
       NA,
@@ -363,8 +379,8 @@ central_group <- function(data,
     )
   }
 
+  # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
   if (reorder == F) {
-    # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
       NA,
@@ -385,9 +401,6 @@ central_group <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On crée le graphique
 
@@ -557,6 +570,9 @@ central_group <- function(data,
         vjust = 0.4
       )
   }
+
+
+  # 6. RESULTATS --------------------
 
   # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
   if (type == "mean") {

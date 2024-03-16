@@ -4,7 +4,7 @@
 \alias{theme_fonctionr}
 \title{theme_fonctionr}
 \usage{
-theme_fonctionr(font = font)
+theme_fonctionr(font)
 }
 \arguments{
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}

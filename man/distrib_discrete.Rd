@@ -11,7 +11,8 @@ distrib_discrete(
   facet = NULL,
   filter_exp = NULL,
   ...,
-  na.rm.group = T,
+  na.rm.facet = TRUE,
+  na.rm.var = TRUE,
   probs = NULL,
   prop_method = "beta",
   reorder = FALSE,
@@ -47,8 +48,6 @@ distrib_d(...)
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
-
-\item{na.rm.group}{TRUE if you want to remove observations with NA in quali_var and observations with NA on facet if applicable. FALSE if you want to create FALSE if you want to create a NA modality in quali_var and a facet with the NA value in facet if applicable. Default is TRUE.}
 
 \item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.}
 

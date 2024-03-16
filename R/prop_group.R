@@ -77,13 +77,13 @@ prop_group <- function(data,
                        na.rm.group = T,
                        na.rm.facet = T,
                        na.prop = "rm",
-                       prop_method = "beta", # Possibilité de choisir la methode d'ajustement des IC, car empiriquement, j'ai eu des problèmes avec logit
+                       prop_method = "beta",
                        reorder = F,
                        show_ci = T,
                        show_n = FALSE,
-                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                       show_value = TRUE,
                        show_lab = TRUE,
-                       total_name = "Total",#où mettre???
+                       total_name = "Total",
                        scale = 100,
                        digits = 0,
                        unit = "%",
@@ -92,14 +92,17 @@ prop_group <- function(data,
                        dodge = 0.9,
                        font ="Roboto",
                        wrap_width_y = 25,
-                       title = NULL, # Le titre du graphique
+                       title = NULL,
                        subtitle = NULL,
-                       xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                       xlab = NULL,
                        ylab = NULL,
                        caption = NULL,
                        export_path = NULL) {
 
   # start_time <- Sys.time()
+
+
+  # 1. CHECKS DES ARGUMENTS --------------------
 
   # Check des arguments nécessaires
   if((missing(data) | missing(group) | missing(prop_exp)) == TRUE){
@@ -159,11 +162,13 @@ prop_group <- function(data,
   quo_filter <- enquo(filter_exp)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On détecte d'abord les variables entrées dans l'expression pour calculer la proportion
+  # On crée un vecteur string qui contient toutes les variables entrées
   # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
+
+  # On détecte d'abord les variables entrées dans l'expression pour calculer la proportion
   vec_prop_exp <- all.vars(substitute(prop_exp))
-  names(vec_prop_exp) <- rep("prop_exp", length(vec_prop_exp))
-  # On crée ensuite un vecteur string qui contient toutes les variables entrées
+  names(vec_prop_exp) <- rep("prop_exp", length(vec_prop_exp)) # On crée un vecteur nommé pour la fonction check_input ci-dessous
+  # On ajoute group
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_prop_exp, vec_group)
   # On ajoute facet si non-NULL
@@ -177,17 +182,17 @@ prop_group <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici la contition et le stop à proprement parler
+  # Ici le check à proprement parler
   check_input(data,
               vars_input_char)
 
-  # Test que prop_exp est OK
+  # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
   data <- data %>%
     mutate(fonctionr_test_prop_exp = {{ prop_exp }})
   if (!all(data[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
 
   if(na.prop == "rm"){
-    # L'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
+    # Si na.prop == "rm", l'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
     # On regarde donc si la fonction is.na() est utilisée dans l'expression, et on bloque si c'est le cas
     names_expression <- all.names(substitute(prop_exp))
     if("is.na" %in% names_expression){
@@ -195,13 +200,8 @@ prop_group <- function(data,
     }
   }
 
-  # # On extrait les & ou | dans l'expression => interdit car ça pose problème pour le filtrage des NA sur les variables utilisées dans l'expression si plusieurs variables (voir la partie avec "filter(!is.na(fonctionr_express_bin))")
-  # express_check <- str_extract_all((deparse(substitute(prop_exp))), "[\\&\\|]+")[[1]]
-  # if(length(express_check) > 0){
-  #   if(express_check %in% c("&", "&&", "|", "||")){
-  #    stop("L'expression ne peut pas comprendre de conditions multiples")
-  #   }
-  # }
+
+  # 2. PROCESSING DES DONNEES --------------------
 
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
@@ -215,29 +215,21 @@ prop_group <- function(data,
     data_W <- data_W %>%
       filter({{ filter_exp }})
   }
-
-  # /!\ NOTE : méthode de filtrage pas sure ! Remplacée par version avec filtre sur "fonctionr_express_bin" /!\
-  # # On choppe la colonne sur laquelle on calcule la proportion dans l'expression => devient un vecteur string
-  # var_prop <- str_extract((deparse(substitute(prop_exp))), "\\w+\\b")
-  # # Et on filtre le data.frame pour enlever les valeurs manquantes sur cette variable => sinon ambigu : de cette façon les n par groupe sont toujours les effectifs pour lesquels la variable var_prop est non missing (et pas tout le groupe : ça on s'en fout)
-  # data <- data %>%
-  #   filter(!is.na(var_prop))
-
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
     data_W <- data_W %>%
       filter(!is.na({{ group }}))
   }
+  # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
-    # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W %>%
         filter(!is.na({{ facet }}))
     }
   }
 
+  # On supprime les NA sur la/les variable(s) de l'expression si na.prop == "rm" => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
   if(na.prop == "rm"){
-    # On supprime les NA sur la/les variable(s) de l'expression dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ça on s'en fout)
     # On affiche les variables entrées dans l'expression via message (pour vérification) => presentes dans vec_prop_exp créé au début
     message("Variable(s) détectée(s) dans l'expression : ", paste(vec_prop_exp, collapse = ", "))
     # On calcule les effectifs avant filtre
@@ -269,6 +261,7 @@ prop_group <- function(data,
     }
   }
 
+  # Si na.prop == "include", alors on transforme les NA en 0, pour inclure tout l'échantillon au dénominateur
   if(na.prop == "include"){
     data_W <- data_W %>%
       mutate(
@@ -279,32 +272,21 @@ prop_group <- function(data,
       )
   }
 
-  # /!\ NOTE : méthode de filtrage remplacée par version avec filtre sur vars_expression avec boucle for (voir précédent) /!\
-  # # Méthode plus sure de filtrage des NA sur la variable sur laquelle est calculée la proportion
-  # express_na <- data_W %>%
-  #   summarise(na_express = sum(is.na(fonctionr_express_bin)))
-  # message(paste0(express_na[[1]]), " valeur(s) manquante(s) supprimée(s) dans l'expression")
-  # data_W <- data_W %>%
-  #   filter(!is.na(fonctionr_express_bin))
 
-  # Ici je crée une copie des données dans data_W_NA
+  # 3. TEST STATISTIQUE --------------------
+
+  # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
-  # Voir si simplification possible pour ne pas créer 2 objets : data_W & data_W_NA => cela implique de changer la suite : à voir car le fait d'avoir les NA en missing réel est pratique
-  if(na.rm.group == F|na.rm.facet == F){
-    data_W_NA <- data_W
-  }
-  if(na.rm.group == F){
-    data_W_NA <- data_W_NA %>%
+  if (na.rm.group == F) {
+    data_W <- data_W %>%
       # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
-      )
+      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")))
   }
+  # idem sur la variable de facet si non-NULL
   if (na.rm.facet == F) {
-    # idem sur la variable de facet si non-NULL
-    if(!quo_is_null(quo_facet)){
-      data_W_NA <- data_W_NA %>% # On repart de data_W_NA => on enlève séquentiellement les NA de group puis facet
-        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
-        )
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
     }
   }
 
@@ -320,28 +302,34 @@ prop_group <- function(data,
     fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
   }
 
-  if(na.rm.group == F|na.rm.facet == F){
-    # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
-    test.stat <- tryCatch(
-      expr = {
-        svychisq(fmla, data_W_NA)
-      },
-      # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
-      error = function(e){
-        "Conditions non remplies"
-      }
-    )
+  # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
+  test.stat <- tryCatch(
+    expr = {
+      svychisq(fmla, data_W)
+    },
+    # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
+    error = function(e){
+      "Conditions non remplies"
+    }
+  )
+
+  # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing réel est pratique pour construire le graphique ggplot !
+  if(na.rm.group == F){
+    data_W <- data_W %>%
+      mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
+      )
   }
-  if(na.rm.group == T & na.rm.facet == T){
-    test.stat <- tryCatch(
-      expr = {
-        svychisq(fmla, data_W)
-      },
-      error = function(e){
-        "Conditions non remplies"
-      }
-    )
+  if (na.rm.facet == F) {
+    # idem sur la variable de facet si non-NULL
+    if(!quo_is_null(quo_facet)){
+      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
+        )
+    }
   }
+
+
+  # 4. CALCUL DES PROPORTIONS --------------------
 
   # On calcule les proportions par groupe
   if(quo_is_null(quo_facet)){
@@ -349,7 +337,7 @@ prop_group <- function(data,
       group_by({{ group }}) %>%
       cascade(
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_sample = unweighted(n()),
+        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont été supprimés partout dans l'expression et avec "include", ils ont été transformés en 0 => plus de NA
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
@@ -361,7 +349,7 @@ prop_group <- function(data,
       group_by({{ facet }}, {{ group }}) %>%
       cascade(
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_sample = unweighted(n()),
+        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont été supprimés partout dans l'expression et avec "include", ils ont été transformés en 0 => plus de NA
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
@@ -369,14 +357,22 @@ prop_group <- function(data,
       filter({{ facet }} != total_name | is.na({{ facet }}))
   }
 
-  # On crée la palette : avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-  palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+
+  # 5. CREATION DU GRAPHIQUE --------------------
+
+  # On crée la palette : avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - 1 (le total étant déjà un niveau)
+  if(isColor(fill) == TRUE){
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+  } else { # Si la couleur n'est pas valide => on met la couleur par défaut
+    palette <- c(rep("deepskyblue3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+    warning("La couleur indiquée dans fill n'existe pas : la couleur par défaut est utilisée")
+  }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
+  # On crée un vecteur pour ordonner les levels de group selon prop, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
   if (reorder == T) {
-    # On crée un vecteur pour ordonner les levels de group selon prop, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
       NA,
@@ -394,8 +390,8 @@ prop_group <- function(data,
     )
   }
 
+  # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
   if (reorder == F) {
-    # On crée un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       total_name,
       NA,
@@ -586,6 +582,9 @@ prop_group <- function(data,
       )
   }
 
+
+  # 6. RESULTATS --------------------
+
   # On crée l'objet final
   res <- list()
   res$tab <- tab
@@ -594,9 +593,6 @@ prop_group <- function(data,
 
   if (!is.null(export_path)) {
     # L'export en excel
-
-    # # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
-    # print(graph)
 
     # On transforme le test stat en dataframe
     if(all(test.stat != "Conditions non remplies")){

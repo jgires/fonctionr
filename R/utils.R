@@ -265,6 +265,56 @@ check_input <- function(data,
 }
 
 
+#' isColor
+#'
+#' Internal function to check if a string is a valid color
+#'
+#' @param x A string to check
+#'
+#' @noRd
+#'
+
+isColor <- function(x){
+  res <- try(grDevices::col2rgb(x), silent = TRUE)
+  return(!"try-error" %in% class(res))
+}
+
+
+#' official_pal
+#'
+#' Internal function to produce color palettes from different institutions
+#'
+#' @param inst name of the institution
+#' @param n number of colors
+#'
+#' @noRd
+#'
+
+official_pal <- function(inst,
+                         n,
+                         direction = 1){
+
+  if(direction != -1|direction != 1){
+    stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
+  }
+
+  if(inst == "OBSS"){
+    pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
+  }
+  if(inst == "IBSA"){
+    pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
+  }
+
+  palette <- pal_fct(n)
+
+  if(direction == -1){
+    palette <- rev(palette)
+  }
+
+  return(palette)
+}
+
+
 #' theme_fonctionr
 #'
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
@@ -275,8 +325,10 @@ check_input <- function(data,
 #'
 #' @examples
 #'
-theme_fonctionr <- function(font = font) {
+theme_fonctionr <- function(font) {
+
   load_and_active_fonts()
+
   theme_minimal() +
   theme(
     panel.grid.minor.y = element_blank(),

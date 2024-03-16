@@ -18,11 +18,20 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.11
+
+Date : 2024-03-17
+
+-   Réécriture du code de toutes les fonctions (sauf `esth_graph()` et `pivot_longer_survey()`) : simplification + structuration.
+-   Ajout de checks pour vérifier si la couleur/palette est valide.
+-   Logique des na.rm finalisée pour toutes les fonctions (différenciation de `na.rm.group` et `na.rm.facet`, introduction de `na.rm.var` pour `distrib_group_d()` et `distrib_d()`).
+-   Création d'une fonction interne de création de palettes, permettant de produire les palettes de différentes institutions (pour l'instant Vivalis et Perspective, pour tester).
+
 ## fonctionr 0.2.10
 
 Date : 2024-03-15
 
--   Ajout des argument na.rm.facet dans `prop_group()` et `central_group()`.
+-   Ajout des argument `na.rm.facet` dans `prop_group()` et `central_group()`.
 -   Possibilité de mettre une couleur unie pour `many_val()`.
 -   Création de l'argument `na.vars` pour `many_val()` et `many_val_group()`.
 
@@ -103,16 +112,16 @@ Date : 2024-02-14
 
 #### En général
 
+-   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
+
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas ce bug.
 
--   Revoir la logique des `na.rm` =\> voir feuille Excel.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.\
-    **=\> POUR FRANCOIS : caractères illégaux ajoutés dans les explications des commentaires, je crois que ce sont les guillemets français (`")` =\> faire tourner un check pour voir !**
+-   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes et quelques explications d'opérations dont je ne me rappelle pas le but).
 
--   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes).
-
--   Passer le code de chaque fonction en revue à l'occasion de la vérification des commentaires =\> de gros bugs encore découverts ! (copier-coller de fonctions avec de mauvais noms d'arguments, erreurs qui font bugger le `na.rm.group`, etc.)
+-   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
+    *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
 
@@ -121,9 +130,6 @@ Date : 2024-02-14
 -   Fichiers \*.R pas compatibles ASCII =\> tout écrire en anglais.
 
 -   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
-
--   Pour les fonctions qui calculent des proportions : ajouter la possibilité que la proportion soit calculée sur l'ensemble des individus (les `NA` étant comptabilisés dans le dénominateur) =\> Voir fichier excel avec ordre des arguments.\
-    *=\> Fait pour `prop_group()`.*
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
@@ -175,7 +181,7 @@ Date : 2024-02-14
 
 -   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
 
--   Possibilité d'indiquer un vecteur avec une palette de couleur pour coller avec le code couleur de notre institution ?
+-   Possibilité d'indiquer un vecteur avec une palette de couleur ?
 
 ## Notes
 
