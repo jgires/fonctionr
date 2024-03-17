@@ -114,11 +114,11 @@ Date : 2024-02-14
 
 -   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
 
--   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas ce bug.
+-   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs repérées, par ex. à cause de copier-coller, et il manque les descriptions générales des fonctions `many_prop()` et `many_val_group()`). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : <https://r-pkgs.org/man.html>.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
--   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes et quelques explications d'opérations dont je ne me rappelle pas le but).
+-   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes et quelques explications d'opérations dont je ne me rappelle plus le but).
 
 -   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
     *=\> En cours : il faut encore checker le code du graphique ggplot.*
