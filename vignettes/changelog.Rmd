@@ -23,8 +23,8 @@ library(fonctionr)
 Date : 2024-03-17
 
 -   Réécriture du code de toutes les fonctions (sauf `esth_graph()` et `pivot_longer_survey()`) : simplification + structuration.
--   Ajout de checks pour vérifier si la couleur/palette est valide.
--   Logique des na.rm finalisée pour toutes les fonctions (différenciation de `na.rm.group` et `na.rm.facet`, introduction de `na.rm.var` pour `distrib_group_d()` et `distrib_d()`).
+-   Nouvelle logique des na.rm finalisée pour toutes les fonctions (différenciation de `na.rm.group` et `na.rm.facet`, introduction de `na.rm.var` pour `distrib_group_d()` et `distrib_d()`).
+-   Ajout de checks pour vérifier si la couleur/palette est valide : couleur/palette par défaut si la couleur introduite est invalide.
 -   Création d'une fonction interne de création de palettes, permettant de produire les palettes de différentes institutions (pour l'instant Vivalis et Perspective, pour tester).
 
 ## fonctionr 0.2.10
@@ -163,6 +163,7 @@ Date : 2024-02-14
 
 #### En général
 
+-   Faire une fonction commune pour la création de palettes =\> redondance inutile entre les fonctions.
 -   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\

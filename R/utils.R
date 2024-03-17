@@ -294,7 +294,7 @@ official_pal <- function(inst,
                          n,
                          direction = 1){
 
-  if(direction != -1|direction != 1){
+  if(all(direction != -1, direction != 1)){
     stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
   }
 

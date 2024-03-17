@@ -350,18 +350,22 @@ many_val_group = function(data,
   # On crée la palette avec le package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-  }
+
   #ou la crée avec le package MoMAColors
-  if(pal %in% names(MoMAColors::MoMAPalettes)){
+  } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-  }
+
   # On crée la palette avec le package PrettyCols
-  if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+  } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-  }
+
   # On crée la palette avec la fonction interne official_pal()
-  if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% c("OBSS", "IBSA")){
     palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
+
+  } else {
+    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
   }
 
   # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
@@ -439,7 +443,8 @@ many_val_group = function(data,
          caption = caption
     ) +
     guides(fill = guide_legend(ncol = legend_ncol,
-                               reverse = TRUE)) +
+                               reverse = TRUE,
+                               theme = theme(legend.byrow = TRUE))) +
     coord_flip()
 
   # Ajouter les axes

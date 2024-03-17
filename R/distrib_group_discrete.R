@@ -320,21 +320,25 @@ distrib_group_discrete <- function(data,
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette avecle package met.brewer
+  # On crée la palette avec le package MetBrewer
   if(pal %in% names(MetBrewer::MetPalettes)){
-  palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
-  }
-  #ou la crée avec le package MoMAColors
-  if(pal %in% names(MoMAColors::MoMAPalettes)){
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+
+  # On crée la palette avec le package MoMAColors
+  } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
-  }
+
   # On crée la palette avecle package PrettyCols
-  if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+  } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
-  }
+
   # On crée la palette avec la fonction interne official_pal()
-  if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% c("OBSS", "IBSA")){
     palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), direction = direction))
+
+  } else {
+    palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
   }
 
   # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
@@ -379,7 +383,7 @@ distrib_group_discrete <- function(data,
     ) +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
                      limits = levels) +
-    guides(fill = guide_legend(ncol = legend_ncol)) +
+    guides(fill = guide_legend(ncol = legend_ncol, theme = theme(legend.byrow = TRUE))) +
     labs(title = title,
          subtitle = subtitle) +
     coord_flip()

@@ -42,7 +42,7 @@ esth_graph <- function(tab,
                        error_low = NULL,
                        error_upp = NULL,
                        n_var = NULL,
-                       show_value = TRUE, # Possibilité de ne pas vouloir avoir les valeurs sur le graphique
+                       show_value = TRUE,
                        name_total = NULL,
                        scale = 1,
                        digits = 2,
@@ -52,12 +52,14 @@ esth_graph <- function(tab,
                        dodge = 0.9,
                        font ="Roboto",
                        wrap_width_y = 25,
-                       title = NULL, # Le titre du graphique
+                       title = NULL,
                        subtitle = NULL,
-                       xlab = NULL, # Le nom de l'axe de la variable catégorielle
+                       xlab = NULL,
                        ylab = NULL,
-                       caption = NULL
-) {
+                       caption = NULL) {
+
+
+  # 1. CHECKS DES ARGUMENTS --------------------
 
   # Check des arguments nécessaires
   if((missing(tab) | missing(value) | missing(var)) == TRUE){
@@ -116,20 +118,28 @@ esth_graph <- function(tab,
   quo_up <- enquo(error_upp)
   quo_n <- enquo(n_var)
 
+
+  # 2. PROCESSING DES DONNEES --------------------
+
   # On convertit la variable catégorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
       "{{ var }}" := droplevels(as.factor({{ var }}))
     )
 
+
+  # 3. CREATION DU GRAPHIQUE --------------------
+
   # On crée la palette
-  if (!is.null(name_total)) {
-    # Avec le total au début (en gris foncé) puis x fois le bleu selon le nombre de levels - 1 (le total étant déjà un niveau)
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
-  }
-  if (is.null(name_total)) {
-    # Sans (différencier le) total
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]])))
+  # Petit truc dans le cas où il y a un total
+  if (!is.null(name_total)) { total_add <- 1 } else { total_add <- 0 }
+
+  if(isColor(fill) == TRUE){
+    # Avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - total_add (1 s'il y a un total, le total étant déjà un niveau, sinon 0)
+    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
+  } else {
+    palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
+    warning("La couleur indiquée dans pal n'existe pas : la palette par défaut est utilisée")
   }
 
   # Créer max_ggplot
@@ -206,9 +216,6 @@ esth_graph <- function(tab,
   if (sum(is.na(tab[[deparse(substitute(var))]])) == 0)  {
     levels <- levels[!is.na(levels)]
   }
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # Par cohérence avec autres fonctions => si xlab/ylab == "", alors NULL (pour le faire disparaître sur le ggplot)
   if(all(!is.null(xlab), xlab == "")){
@@ -320,6 +327,9 @@ esth_graph <- function(tab,
         vjust = 0.4
       )
   }
+
+
+  # 4. RESULTAT --------------------
 
   return(graph)
 
