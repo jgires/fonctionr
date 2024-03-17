@@ -383,7 +383,7 @@ distrib_group_discrete <- function(data,
     ) +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
                      limits = levels) +
-    guides(fill = guide_legend(ncol = legend_ncol, theme = theme(legend.byrow = TRUE))) +
+    guides(fill = guide_legend(ncol = legend_ncol)) +
     labs(title = title,
          subtitle = subtitle) +
     coord_flip()

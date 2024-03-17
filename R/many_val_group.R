@@ -443,8 +443,7 @@ many_val_group = function(data,
          caption = caption
     ) +
     guides(fill = guide_legend(ncol = legend_ncol,
-                               reverse = TRUE,
-                               theme = theme(legend.byrow = TRUE))) +
+                               reverse = TRUE)) +
     coord_flip()
 
   # Ajouter les axes
