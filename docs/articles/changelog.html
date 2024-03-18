@@ -8,8 +8,8 @@
 <meta name="description" content="fonctionr">
 <title>Changelog • fonctionr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Changelog">
 <meta property="og:description" content="fonctionr">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,6 +82,46 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-2-11">fonctionr 0.2.11<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-11"></a>
+</h2>
+<p>Date : 2024-03-17</p>
+<ul>
+<li>Réécriture du code de toutes les fonctions (sauf
+<code><a href="../reference/esth_graph.html">esth_graph()</a></code> et <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>) :
+simplification + structuration.</li>
+<li>Nouvelle logique des na.rm finalisée pour toutes les fonctions
+(différenciation de <code>na.rm.group</code> et
+<code>na.rm.facet</code>, introduction de <code>na.rm.var</code> pour
+<code><a href="../reference/distrib_group_discrete.html">distrib_group_d()</a></code> et <code><a href="../reference/distrib_discrete.html">distrib_d()</a></code>).</li>
+<li>Ajout de checks pour vérifier si la couleur/palette est valide :
+couleur/palette par défaut si la couleur introduite est invalide.</li>
+<li>Création d’une fonction interne de création de palettes, permettant
+de produire les palettes de différentes institutions (pour l’instant
+Vivalis et Perspective, pour tester).</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="fonctionr-0-2-10">fonctionr 0.2.10<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-10"></a>
+</h2>
+<p>Date : 2024-03-15</p>
+<ul>
+<li>Ajout des argument <code>na.rm.facet</code> dans
+<code><a href="../reference/prop_group.html">prop_group()</a></code> et <code><a href="../reference/central_group.html">central_group()</a></code>.</li>
+<li>Possibilité de mettre une couleur unie pour
+<code><a href="../reference/many_val.html">many_val()</a></code>.</li>
+<li>Création de l’argument <code>na.vars</code> pour
+<code><a href="../reference/many_val.html">many_val()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="fonctionr-0-2-9">fonctionr 0.2.9<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-9"></a>
+</h2>
+<p>Date : 2024-03-05</p>
+<ul>
+<li>Ajout des palettes dans <code><a href="../reference/many_val.html">many_val()</a></code>.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-2-8">fonctionr 0.2.8<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-8"></a>
 </h2>
@@ -201,28 +241,27 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Les couleurs des palettes sont attachées au groupe
+(<code><a href="../reference/many_val_group.html">many_val_group()</a></code>) ou à l’indicateur
+(<code><a href="../reference/many_val.html">many_val()</a></code>), mais pas à la position. De ce fait, lorsque
+<code>reorder = T</code>, l’ordre des couleurs de la palette n’est pas
+respecté <strong>=&gt; changer le comportement ?</strong></p></li>
 <li><p>Bug à l’import de <code>fonctionr</code> du fait de collision
 entre <code>MetBrewer</code>, <code>MoMAColors</code>,
 <code>PrettyCols</code> et les fonctions de base ? Je ne comprends pas
-ce bug.</p></li>
-<li><p>Revoir la logique des <code>na.rm</code> =&gt; voir feuille
-Excel.</p></li>
+le message.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
-vérifier que les explications sont bien correctes (quelques erreurs
-repérées, par ex. à cause de copier-coller, et il manque les
-descriptions générales des fonctions <code><a href="../reference/many_val.html">many_prop()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code>). Il y a également des champs manquants
-(voir warnings de <code>roxygenise()</code>). Voir ici pour savoir les
-différentes options possibles dans la doc : <a href="https://r-pkgs.org/man.html" class="external-link uri">https://r-pkgs.org/man.html</a>.<br><strong>=&gt; POUR FRANCOIS : caractères illégaux ajoutés dans les
-explications des commentaires, je crois que ce sont les guillemets
-français (<code>")</code> =&gt; faire tourner un check pour voir
-!</strong></p></li>
+vérifier que les explications sont bien correctes (quelques erreurs, par
+ex. à cause de copier-coller ou de l’ajout de nouveaux argument avec la
+nouvelle logique des na.rm). Il y a également des champs manquants (voir
+warnings de <code>roxygenise()</code>). Voir ici pour savoir les
+différentes options possibles dans la doc : <a href="#id_0" class="uri">https://r-pkgs.org/man.html</a>.</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
-rappelle ce qu’on a fait (il manque des notes).</p></li>
-<li><p>Passer le code de chaque fonction en revue à l’occasion de la
-vérification des commentaires =&gt; de gros bugs encore découverts !
-(copier-coller de fonctions avec de mauvais noms d’arguments, erreurs
-qui font bugger le <code>na.rm.group</code>, etc.)</p></li>
+rappelle ce qu’on a fait (il manque des notes et quelques explications
+d’opérations dont je ne me rappelle plus le but).</p></li>
+<li><p>Passer le code de chaque fonction en revue pour cleaner /
+harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code du graphique
+ggplot.</em></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 <li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
@@ -232,10 +271,6 @@ anglais.</p></li>
 corriger, traduire, ajouter des guillemets pour les arguments dans les
 checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
 est l’hypothèse nulle).</p></li>
-<li><p>Pour les fonctions qui calculent des proportions : ajouter la
-possibilité que la proportion soit calculée sur l’ensemble des individus
-(les <code>NA</code> étant comptabilisés dans le dénominateur) =&gt;
-Voir fichier excel avec ordre des arguments.<br><em>=&gt; Fait pour <code><a href="../reference/prop_group.html">prop_group()</a></code>.</em></p></li>
 <li><p>Mettre des conditions pour réaliser les tests (n min,
 distribution, variances égales…).</p></li>
 <li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus
@@ -250,14 +285,6 @@ etc.).</li>
 </li>
 <li><p>Les cluster / strates / weights n’apparaissent pas dans le
 message de la console avec les replicates =&gt; pourquoi ?</p></li>
-<li><p>Ajouter <code>n_weight_upp</code> et <code>n_weight_low</code> +
-harmoniser les noms des colonnes entre fonctions (<code>n</code> vs
-<code>n_tot</code>, <code>n_weighted</code> vs
-<code>n_tot_weighted</code>…).<br><em>=&gt; François : je propose l’ordre suivant : les variables de
-ventilation, l’indicateur, l’indicateur_low, l’indicateur_up, n_sample,
-n_true_weighted, n_true_weighted_low, n_true_weighted_upp,
-n_tot_weighted, n_tot_weighted_low,
-n_tot_weighted_upp.</em><!--# Joël : OK donc c'est fait ? --></p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -299,10 +326,8 @@ avec multiples totaux.</p></li>
 <h4 id="en-général-1">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral-1"></a>
 </h4>
 <ul>
-<li>Pour les checks : mieux préciser les variables incriminées ? Ce
-n’est pas le cas pour les checks des variables nécessaires, par ex.
-Elles ne sont pas nombreuses, mais c’est plus sympa pour
-l’utilisateur.</li>
+<li>Faire une fonction commune pour la création de palettes =&gt;
+redondance inutile entre les fonctions.</li>
 <li>Réécrire le code du test pour avoir la formule originale =&gt;
 possible avec <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>, voir code de
 <code><a href="../reference/central_group.html">central_group()</a></code>.</li>
@@ -338,7 +363,7 @@ select, etc.).</em>
 selon quelle valeur (vu qu’il y en a plusieurs) ? Celle du premier level
 de la variable <code>var_distrib</code> ?</p></li>
 <li><p>Possibilité d’indiquer un vecteur avec une palette de couleur
-pour coller avec le code couleur de notre institution ?</p></li>
+?</p></li>
 </ul>
 </div>
 </div>
