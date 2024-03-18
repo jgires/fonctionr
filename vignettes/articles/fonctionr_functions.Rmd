@@ -60,7 +60,7 @@ eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
 eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
-eusilc_dist_group_d <- distrib_d(
+eusilc_dist_d <- distrib_d(
 data = eusilc,
 weight = rb050,
 quali_var = pl030_rec,
@@ -68,15 +68,61 @@ probs = c(.2,.15,.1,.1,.25,.1,.1),
 title = "Distribution of socio-economic status",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
-eusilc_dist_group_d$graph
-eusilc_dist_group_d$tab
-eusilc_dist_group_d$test.stat
+eusilc_dist_d$graph
+eusilc_dist_d$tab
+eusilc_dist_d$test.stat
 
 ```
 
 ## distrib_group_discrete() pour décrire la distribution d'une variable qualitative selon des groupes (une autre variable qualitative)
 
+distrib_group_discrete(), avec distrib_group_d() comme alias, a comme objectif de permettre la distribution de la fréquence des différentes modalités d'une variables qualitative selon une autre variable qualitative, que l'on peut considérer comme des groupes. L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques selon la nationalité. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique permettant de décrire la distribution de la variable pl030_rec selon la variable pb220a dans le dataframe eusilc, avec une le poids rb050,.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pb220a), la modalité de la variable d'intérêt (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité de la variable d'intérêt dans le groupe (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+
+-   Le résultat du test statistique "test.stat". Il s'agit du khi2 de Rao Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (d'intérêt et de groupe) soient indépendantes statistiquement. Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+
+    ```{r}
+    eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                     weight = rb050,
+                                     group = pb220a,
+                                     quali_var = pl030_rec,
+                                     title = "Distribution of socio-economic status according to nationality",
+                                     subtitle = "Example with austrian SILC data from 'laeken' package"
+                                     )
+    eusilc_dist_group_d$graph
+    eusilc_dist_group_d$tab
+    eusilc_dist_group_d$test.stat
+
+    ```
+
 ## prop_group() pour décrire les variations d'une proportion selon des groupes
+
+prop_group() a comme objectif de permettre de comparer la distribution d'une variable dichotomitique (c'est-à-dire une proportion) selon une variable dichotomique qu'on peut considérer comme des groupes. L'exemple ci-dessous montre la proportion d'individus qui bénéficient d'une allocation de chômage selon les différents statuts socio-économiques. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique comparant la part de personnes precevant une allocation de chômage (py090n \> 0) selon la variable pb220a dans le dataframe eusilc, avec une le poids rb050,.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite. Le graphique comprend aussi une barre "total" reprenant l'estimation de la proportion pour l'ensemble de la population.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pb220a), l'estimation de la proportion de la population répondant au critère repris selon le groupe (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^2] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95% On y retrouve aussi une ligne avec toute ces informations pour le total.
+
+-   Le résultat du test statistique "test.stat". Il s'agit du khi2 de Rao Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (la variable dichotomique et de groupe) soient indépendantes statistiquement. Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+
+    ```{r}
+    eusilc_prop <- prop_group(eusilc,
+                              group = pl030_rec,
+                              prop_exp = py090n > 0,
+                              weight = rb050,
+                              title = "% of ind. receiving unemployment benefits in their hh",
+                              subtitle = "Example with austrian SILC data from 'laeken' package"
+    )
+    eusilc_prop$graph
+    eusilc_prop$tab
+    eusilc_prop$test.stat
+
+    ```
+
+[^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
 
 ## mean_group() pour décrire les variations d'une moyenne selon des groupes
 
