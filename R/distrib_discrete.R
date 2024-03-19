@@ -176,6 +176,11 @@ distrib_discrete <- function(data,
   check_input(data,
               vars_input_char)
 
+  # Un check sur quali_var
+  if(length(vec_quali_var) != 1){
+    stop("quali_var ne doit comprendre qu'une seule variable")
+  }
+
 
   # 2. PROCESSING DES DONNEES --------------------
 
