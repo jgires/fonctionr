@@ -336,7 +336,7 @@ esth_graph() est une fonction qui permet aisément de construire une graphique s
 ## Mettre un exemple ? Lequel? J'avais pensé à des Ginis, mais cela demande de charger d'autres packages.Ou alors des rapport interquantiles. 
 ```
 
-## pivot_longer_suvey()
+## pivot_longer_survey()
 
 # Le tableau récapitulait des arguments
 
