@@ -33,6 +33,8 @@ La suite de ce manuel se déroule de la manière suivante. Dans un premier temps
 
 # L'objectif des différentes fonctions
 
+## distrib_continuous() pour décrire la distribution d'une variable quantitative
+
 ## distrib_discrete() pour décrire la distribution d'une variable qualitative
 
 distrib_discrete(), avec distrib_d() comme alias, a comme objectif de permettre la distribution de la fréquence des différentes modalités d'une variables qualitative. L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques. Dans l'exemple ci-dessous[^1], la fonction distrib_d() décrit la distribution de la variable pl030_rec dans le dataframe eusilc, avec une le poids rb050, et produit une liste comprenant un graphique, un tableau et un test statistique.
@@ -178,7 +180,7 @@ many_prop() a comme objectif de permettre d'estimer simultanément plusieurs pro
 
 -   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la proportion (list_col), l'estimation de cette proportion pour la variable (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la proportion (list_col), l'estimation de cette proportion pour la variable (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^3] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
     ```{r}
 
@@ -203,13 +205,15 @@ many_prop() a comme objectif de permettre d'estimer simultanément plusieurs pro
     eusilc_many_prop$tab
     ```
 
+[^3]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
+
 ## many_mean() pour décrire en même temps plusieurs proportions
 
 many_mean() a comme objectif de permettre d'estimer simultanément plusieurs moyennes. Il s'agit d'un alias de many_val, avec type = "mean". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
 
 -   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la proportion (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les moyennes sont calculées (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
     ```{r}
 
@@ -232,16 +236,16 @@ many_median() a comme objectif de permettre d'estimer simultanément plusieurs m
 
 -   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la proportion (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les médianes sont calculées (list_col), l'estimation de la médiane pour la variable (median), les bornes inférieure (median_low) et supérieure (median_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
     ```{r}
 
     # Computation, taking sample design into account
     eusilc_many_median <- many_median(eusilc,
-                                  list_vars = c(py010n, py050n, py090n),
-                                  list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
+                                  list_vars = c(py010n, eqIncome),
+                                  list_vars_lab = c("salaires","Revenu equivalent"),
                                   weight = rb050,
-                                  title = "Income from wage, independant worker and unemployement benefits",
+                                  title = "Median income from wage and equivalent income",
     subtitle = "Example with austrian SILC data from 'laeken' package"
     )
     eusilc_many_median$graph
@@ -250,13 +254,87 @@ many_median() a comme objectif de permettre d'estimer simultanément plusieurs m
 
 ## many_prop_group() pour décrire en même temps plusieurs proportions selon des groupes
 
+many_prop_group() a comme objectif de permettre d'estimer simultanément plusieurs proportions selon une variable qualitative, que l'on peut considérer comme des groupes. L'exemple ci-dessous montre ainsi la proportion de travailleurs et d'autrichiens selon le sexe. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique et un tableau reprenant ces deux proportions. Bien que l'exemple repris ici semble quelque peu artificiel, l'intérêt de cette fonction est de visualiser rapidement un nombre important de proportions, par exemple dans l'accès à certains items. Il s'agit d'un alias de many_val_group(), avec type = "prop". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la variable de groupe (ici rb090), le nom de la proportion (list_col), l'estimation de cette proportion pour la variable (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^4] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+
+[^4]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
+
+```{r}
+# Computation, taking sample design into account
+eusilc_many_prop_group <- many_prop_group(eusilc,
+                                          group = rb090,
+                                          list_vars = c(worker,austrian),
+                                          list_vars_lab = c("% of workers","% of Austrian"),
+                                          weight = rb050,
+                                    title = "Proportion of workers and Autrian by sex",
+                                    subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_many_prop_group$graph
+eusilc_many_prop_group$tab
+```
+
 ## many_mean_group() pour décrire en même temps plusieurs moyenne selon des groupes
+
+many_mean_group() a comme objectif de permettre d'estimer simultanément plusieurs moyennes selon une variable qualitative, que l'on peut considérer comme des groupes. Il s'agit d'un alias de many_val_group, avec type = "mean". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la variable de groupe (ici rb090), le nom des variables sur lesquelles sont calculées les moyennes (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+
+```{r}
+# Computation, taking sample design into account
+eusilc_many_mean_group <- many_mean_group(eusilc,
+                                          group = rb090,
+                                          list_vars = c(py010n, py050n, py090n),
+                                          list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
+                                          weight = rb050,
+                              title = "Income from wage, independant worker and unemployement benefits by sex",
+subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_many_mean_group$graph
+eusilc_many_mean_group$tab
+```
 
 ## many_median_group() pour décrire en même temps plusieurs médianes selon des groupes
 
-## esth_graph() pour réaliser un graphique reprenant la même esthétique que les autres fonction à partir d'un tableau de résultat
+many_median_group() a comme objectif de permettre d'estimer simultanément plusieurs médianes. Il s'agit d'un alias de many_val_group, avec type = "median". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
+
+-   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les médianes sont calculées (list_col), l'estimation de la médiane pour la variable (median), les bornes inférieure (median_low) et supérieure (median_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+
+    ```{r}
+    # Computation, taking sample design into account
+    eusilc_many_median_group <- many_median_group(eusilc,
+                                                  group = rb090,
+                                                  list_vars = c(py010n, eqIncome),
+                                                  list_vars_lab = c("salaires","Revenu equivalent"),
+                                  weight = rb050,
+                                  title = "Median income from wage and equivalent income",
+                                  subtitle = "Example with austrian SILC data from 'laeken' package"
+    )
+    eusilc_many_median_group$graph
+    eusilc_many_median_group$tab
+    ```
 
 ## theme_fonctionr() pour appliquer le thème de fonctionr à des graphiques de ggplot2
+
+theme_fonctionr() est une fonction qui permet d'appliquer le theme gggplot de fonctionr à un objet de ggplot2. Cette fonction a un intérêt si l'on veut appliquer l'esthétique de fonctionr à un autre graphique.
+
+```{r}
+##Faut-il mettre un example ici? C'est pas compliqué mais est-ce nécessaire?
+```
+
+## esth_graph() pour réaliser un graphique reprenant la même esthétique que les autres fonction à partir d'un tableau de résultat
+
+esth_graph() est une fonction qui permet aisément de construire une graphique similaire à ceux produit par les autres fonction mais directement à partir d'une tableau de résultats calculés précédemment. Cette fonction a un intérêt si l'on veut appliquer l'esthétique graphique de fonctionr mais à des indicateurs qui ne sont pas calculés par une autre fonction (proportion, moyenne, médiane). Par rapport à theme_fonctionr(), esth_graph() permet aisément d'intégrer plusieurs éléments que l'on retrouve dans d'autres graphiques produits par fonctionr() : valeurs de l'indicateur, bornes d'intervalle de confiance, nombres d'individus dans l'échantillon. La logique d'esth_graph est aussi différente de celle de theme_fonctionr(), la première fonction fonction produit un graphique à partir d'une table, alors que la seconde applique un thème à un graphique existant.
+
+```{r}
+## Mettre un exemple ? Lequel? J'avais pensé à des Ginis, mais cela demande de charger d'autres packages.Ou alors des rapport interquantiles. 
+```
 
 ## pivot_longer_suvey()
 
@@ -266,7 +344,7 @@ intro : même structure avec des argument revenant à chaque fois. Ex. l'argumen
 
 TABLEAU
 
-Pour des raisons pédagogiques, les arguments sont abordés succèssivement par types : la base de données, les arguments indispensables, les arguments ayant une influence sur les calculs, les arguments esthétiques,
+Pour des raisons pédagogiques, les arguments sont abordés successivement par types : la base de données, les arguments indispensables, les arguments ayant une influence sur les calculs, les arguments esthétiques,
 
 # Les arguments liés à la base de données utilisée
 
