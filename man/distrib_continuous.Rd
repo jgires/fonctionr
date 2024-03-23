@@ -7,15 +7,19 @@
 distrib_continuous(
   data,
   quanti_exp,
-  type,
+  type = "median",
   facet = NULL,
-  quantiles = c(0.25, 0.5, 0.75),
+  quantiles = seq(0.1, 0.9, 0.1),
   filter_exp = NULL,
   ...,
   na.rm.facet = T,
   limits = NULL,
   bw = 1,
-  show_ci = T,
+  resolution = 1024,
+  show_ci_lines = T,
+  show_ci_area = F,
+  show_center = T,
+  show_segments = F,
   show_n = FALSE,
   show_value = TRUE,
   show_lab = TRUE,
@@ -48,8 +52,6 @@ distrib_continuous(
 
 \item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
-
 \item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
 \item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
@@ -75,6 +77,8 @@ distrib_continuous(
 \item{caption}{Caption of the graphic.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
+
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
 }
 \value{
 A list that contains a table, a graphic and a statistical test

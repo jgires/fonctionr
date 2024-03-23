@@ -26,6 +26,7 @@ Imports:
     stringr,
     survey,
     tidyr,
+    tibble,
     broom,
     showtext,
     sysfonts,
