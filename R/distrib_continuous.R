@@ -312,7 +312,8 @@ distrib_continuous <- function(data,
         x = x,
         y = y
       ),
-      color = border
+      color = border,
+      linewidth = 1
     ) +
     geom_ribbon(
       aes(
