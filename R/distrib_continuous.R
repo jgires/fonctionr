@@ -204,7 +204,7 @@ distrib_continuous <- function(data,
       )
   }
 
-  # On isolé les quantiles avec leurs coordonnées y de densité (pour les afficher avec le ggplot)
+  # On isole les quantiles avec leurs coordonnées y de densité (pour les afficher avec le ggplot)
   quant_seg <- df_dens %>%
     filter(segment == TRUE)
 
