@@ -340,15 +340,23 @@ esth_graph() est une fonction qui permet aisément de construire une graphique s
 
 # Le tableau récapitulait des arguments
 
-intro : même structure avec des argument revenant à chaque fois. Ex. l'argument group revient dans toutes les fonctions qui comparent des groupes. Mais certains arguments diffèrent.
+Comme nous l'avons vu, la majorité des fonctions de fonctionr se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous arborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique et que l'on peut diviser en cinq sous-catégories : les arguments esthétiques de base (qui ont une influence centrale sur le graphique), les arguments esthétiques graphiques (barres et couleurs), les arguments esthétiques de chiffres (unités, décimales, etc.), les arguments esthétiques de lettres (police, etc.), les arguments de labels. Un dernier argument, traitant de l'export de l'objet créé par les fonctions de fonctionr sera aussi abordé.
 
 TABLEAU
 
-Pour des raisons pédagogiques, les arguments sont abordés successivement par types : la base de données, les arguments indispensables, les arguments ayant une influence sur les calculs, les arguments esthétiques,
-
 # Les arguments liés à la base de données utilisée
 
-différents formats.
+data est l'argument le plus important car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexe, il peut s'agir d'un objet survey ou d'un objet srvyr, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est aussi possible que l'objet survey ou srvyr soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage (VERIFIER QUE C'EST BIEN POSSIBLE AVEC UN OBJET SURVEY).
+
+Il est également possible que data soit un dataframe. Dans ce cas, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, fonctionr peut être utilisé pour l'analyse des sondages complexe mais aussi des sondages aléatoires simple. Il est aussi possible que fonctionr crée un objet de sondage complexe à partit d'un dataframe. Dans ce cas, le dataframe doit être indiqué dans data et les autres arguments (poids, strates, etc.) doivent être indiquées dans l'argument ... qui se trouve plus loin. EXPLIQUER QUE CELA NE FONCTIONNE PAS POUR LES REPLICATES? A VERIFIER.
+
+survey, srvyr, classique ou replicates.
+
+pourquoi ... est après
+
+tab dans esth_graph()
+
+EXEMPLES
 
 # Les arguments indispensables
 
