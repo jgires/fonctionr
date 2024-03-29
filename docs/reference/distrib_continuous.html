@@ -62,20 +62,27 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">distrib_continuous</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">quanti_exp</span>,</span>
-<span>  <span class="va">type</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"median"</span>,</span>
 <span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span><span class="op">)</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  na.rm.facet <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  show_ci <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  limits <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bw <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fl">1024</span>,</span>
+<span>  show_ci_lines <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  show_ci_area <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  show_center <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  show_segments <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  show_n <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_lab <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  dec <span class="op">=</span> <span class="st">","</span>,</span>
-<span>  pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#c94d33"</span>, <span class="st">"#ffe3bf"</span><span class="op">)</span>,</span>
+<span>  border <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -114,10 +121,6 @@
 
 <dt>na.rm.facet</dt>
 <dd><p>TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.</p></dd>
-
-
-<dt>show_ci</dt>
-<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.</p></dd>
 
 
 <dt>show_n</dt>
@@ -170,6 +173,10 @@
 
 <dt>export_path</dt>
 <dd><p>Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.</p></dd>
+
+
+<dt>show_ci</dt>
+<dd><p>TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.</p></dd>
 
 </dl></div>
     <div class="section level2">
