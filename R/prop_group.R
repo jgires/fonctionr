@@ -253,12 +253,6 @@ prop_group <- function(data,
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
         fonctionr_express_bin = {{ prop_exp }}
       )
-    # On convertit également la variable de facet en facteur si facet non-NULL
-    if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
-        mutate(
-          "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-    }
   }
 
   # Si na.prop == "include", alors on transforme les NA en 0, pour inclure tout l'échantillon au dénominateur
@@ -270,6 +264,13 @@ prop_group <- function(data,
                                        {{ prop_exp }},
                                        0)
       )
+  }
+
+  # On convertit également la variable de facet en facteur si facet non-NULL
+  if(!quo_is_null(quo_facet)){
+    data_W <- data_W %>%
+      mutate(
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
 
