@@ -340,46 +340,110 @@ esth_graph() est une fonction qui permet aisément de construire une graphique s
 
 # Le tableau récapitulait des arguments
 
-Comme nous l'avons vu, la majorité des fonctions de fonctionr se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous arborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique et que l'on peut diviser en cinq sous-catégories : les arguments esthétiques de base (qui ont une influence centrale sur le graphique), les arguments esthétiques graphiques (barres et couleurs), les arguments esthétiques de chiffres (unités, décimales, etc.), les arguments esthétiques de lettres (police, etc.), les arguments de labels. Un dernier argument, traitant de l'export de l'objet créé par les fonctions de fonctionr sera aussi abordé.
+Comme nous l'avons vu, la majorité des fonctions de fonctionr se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique et que l'on peut diviser en cinq sous-catégories : les arguments esthétiques de base (qui ont une influence centrale sur le graphique), les arguments esthétiques graphiques (barres et couleurs), les arguments esthétiques de chiffres (unités, décimales, etc.), les arguments esthétiques de lettres (police, etc.), les arguments de labels. Un dernier argument, traitant de l'export de l'objet créé par les fonctions de fonctionr sera aussi abordé.
 
 TABLEAU
 
 # Les arguments liés à la base de données utilisée
 
-data est l'argument le plus important car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexe, il peut s'agir d'un objet survey ou d'un objet srvyr, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est aussi possible que l'objet survey ou srvyr soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage (VERIFIER QUE C'EST BIEN POSSIBLE AVEC UN OBJET SURVEY).
+data est l'argument le plus important car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexe, il peut s'agir d'un objet survey ou d'un objet srvyr, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est aussi possible que l'objet survey ou srvyr soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage.
 
-Il est également possible que data soit un dataframe. Dans ce cas, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, fonctionr peut être utilisé pour l'analyse des sondages complexe mais aussi des sondages aléatoires simple. Il est aussi possible que fonctionr crée un objet de sondage complexe à partit d'un dataframe. Dans ce cas, le dataframe doit être indiqué dans data et les autres arguments (poids, strates, etc.) doivent être indiquées dans l'argument ... qui se trouve plus loin. EXPLIQUER QUE CELA NE FONCTIONNE PAS POUR LES REPLICATES? A VERIFIER.
+Il est également possible que data soit un dataframe. Dans ce cas, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, fonctionr peut être utilisé pour l'analyse des sondages complexe mais aussi des sondages aléatoires simple. fonctionr peut aussi créer un objet de sondage complexe à partit d'un dataframe. Dans ce cas, le dataframe doit être indiqué dans data et les autres arguments (poids, strates, etc.) doivent être indiquées dans l'argument ... qui se trouve plus loin. L'argument ... ne se trouve pas directement après l'argument data pour permettre d'indiquer plusieurs arguments (group, prop_exp, facet...) sans devoir mentionner explicitement le nom de l'argument (par exemple ne pas devoir écrire systématiquement group = db040). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des replicate weights. Si l'ont veut intégrer des replicates weights, il est nécessaire de créer d'abord un objet survey ou srvyr et d'utiliser cet objet dans fonctionr.
 
-survey, srvyr, classique ou replicates.
-
-pourquoi ... est après
-
-tab dans esth_graph()
+Pour la fonction esth_graph, il n'y a pas d'argument data, mais un argument tab qui doit correspondre à la table avec les indicateurs. Il s'appelle tab car il est similaire à l'objet tab produit par la plupart des fonctions de fonctionr.
 
 EXEMPLES
 
 # Les arguments indispensables
 
-## expressions et variables
+Les arguments indispensable sont des arguments qui sont nécessaire au bon fonctionnement de la fonction et qui ne peuvent prendre aucune valeur par défaut.
 
-# Les arguments ayant une influence sur les résultats
+Ces arguments sont principalement de différents types : variables qualitatives, expressions ou listes de variables.
 
-## expressions et variables, le retour
+-   group et quali_var sont des variables qualitatives. Les variables indiquées pour ces arguments sont ainsi transformées en facteurs pour leur usage dans la fonction.
 
-## Le traitement des NA
+-   prop_exp et quanti_exp sont des expressions. C'est-à-dire que ces arguments peuvent être des variables (un variable binaire 0-1 pour prop_exp et une variable numérique pour quanti_exp) ou une expression qui produit une variable (binaire pour prop_exp et quantitative pour quanti_exp). Ainsi, il n'est pas nécessaire de préparer à l'avance la variable binaire ou la quantitative, elle peut être calculée directement dans les fonctions prop_group et central_group. Précisons que seuls les variables de la base de données et les valeurs numérique sont autorisées dans les expressions, les objets extérieurs à la table (par exemple un seuil contenu dans un objet) ne sont pas reconnu par ces fonctions. Dans fonctionr, tous les arguments qui terminent par \_exp sont des expressions.
 
-## prop_method
+-   list_vars doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions many_val et many_val_group. Pour many_prop et many_prop_group, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour many_mean, many_mean_group, many_median et many_median_group, les variables doivent être numériques.
+
+Juste après list_vars, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans la table (tab) et le graphique (graph) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation.
+
+L'argument type est utilisé pour les fonctions "alias" mean_group et median_group ; many_prop, many_mean et many_median ; many_prop_group, many_mean_group et many_median_group à partir des fonctions respectives central_group, many_val et many_val_group. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias".
+
+Pour esth_graph(), les arguments var et value sont obligatoires et ils indiquent respectivement les colonnes dans tab avec nom de l'indicateur et sa valeur.
+
+EXEMPLES dont expressions.
+
+# Les arguments clés : pas obligatoires mais influençant les résultats
+
+Les arguments clés sont des arguments qui ne sont pas indispensable mais qui influencent les résultats. Ils ont une valeur par défaut, souvent NULL. On y retrouve plusieurs types d'arguments.
+
+-   facet est une variable qualitative qui produit des facets dans la table et le graphique. Comme group et quali_var, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facets ne sont pas produites.
+
+-   filter_exp est une expression qui permet de filtrer les données de manière à produire la table, le graphique et le test, le cas échéant, sur une partie de l'échantillon. Comme il s'agit d'une expression, il est possible de mettre en oeuvre des conditions de filtres complexe et multiples, par exemple sélectionner uniquement les personnes âgées de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Comme recommandé (REF), le filtrage des données est réalisé après la production de l'objet srvyr par la fonction. Ici aussi, seuls les variables de la base de données et les valeurs numérique sont autorisées dans les expressions, pas les objets extérieurs à la table. Par défaut, les données ne sont pas filtrées.
+
+-   na.rm.group, na.rm.facet, na.rm.var indiquent la manière dont les éventuels NA dans les variables de groupe, de facet et dans quali_var sont traités. Si l'argument est TRUE, les NA seront retirés pour les calculs. Si l'argument est FALSE, une modalité spécifique est créée pour les NA. Dans ce cas, dans le graphique ils prennent toujours la couleur gris (grey) dans le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour estimer les indicateurs totaux, le cas échéant. Par défaut, l'argument prend la valeur FALSE, c'est-à-dire que les NA sont supprimés des analyses.
+
+-   na.prop indique la manière dont les éventuels NA sont dans les variables introduites dans prop_exp sont traités. Si l'argument prend la valeur "rm", tous les NA présent dans au moins une des variable faisant partie de prop_exp sont exclus avant de procéder aux calculs. De cette manière la proportion est calculée uniquement sur les observations "valides". Dans ce cas, pour des raisons évidentes, il n'est pas possible d'introduire des conditions avec la valeur NA dans prop_exp (p. ex. on ne peut pas calculer la proportion de personnes dont le statut professionnel est NA). Si l'argument prend la valeur "include" les NA ne sont pas retirés avant de procéder aux calculs et la proportion est calculée sur l'ensemble des observations, NA compris. Cela peut être utile quand NA n'indique pas une valeur manquante mais une situation spécifique. Par exemple, dans une variable mesurant les points obtenu par des étudiants à un examen si le NA indique que l'étudiant était absent, on peut vouloir calculer la proportion d'étudiant ayant au moins 12/20 en conservant les absents au dénominateur, ce qui est possible avec na.prop = "include". Par défaut na.prop prend la valeur "rm". Précisons que pour central_group() et ses alias mean_group() et median_group(), il n'y a pas d'argument permettant de choisir le traitement des NA dans quanti_exp. Les observations comprenant au moins un NA dans une variable indiquée dans quanti_exp sont exclues des calculs, car il n'y a pas d'autres possibilité qui soit pertinente.
+
+-   na.vars indique la manière dont les NA doivent être traités dans les différentes variables de many_val et many_val_group. Si l'argument prend la valeur "rm", les NA sont exclus séparément dans chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculée, mais que l'on conserve un maximum d'observations. Si l'argument prend la valeur "rm.all", les observations qui comprennent au moins un NA dans une des variables de list_vars sont exclues. Cette manière de procéder exclut plus d'observation mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut na.vars prend la valeur "rm".
+
+-   probs est un vecteur utilisé dans distrib_discrete() pour indiquer la distribution des proportions dans chaque modalité reprise dans l'hypothèse nulle sur base de laquelle le test du khi2 d'adéquation est calculé. Par défaut ce vecteur vaut NULL et le test du khi2 d'adéquation n'est pas calculé.
+
+-   prop_method est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans [l'argument method de la fonction svyciprop() du package survey](https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html). Par défaut, c'est la méthode "beta" qui est utilisées.
 
 # Les arguments esthétiques
 
-## Ce qu'on montre ou non dans le graphique
+Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogique, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d\'esthétique des chiffres, d'esthétique des lettres et les labels.
+
+## L'esthétique de base
+
+-   reorder est un argument qui en prenant la valeur TRUE permet de réordonner les barres selon leur valeur décroissante. Si reorder = FALSE, les barres ne sont pas réordonnées et c'est l'ordre des levels de la variable qui est utilisé pour ordonner les barre. La barre NA quand elle existe (par exemple avec na.rm.group = FALSE) et la barre Total ne sont jamais réordonnées et sont toujours positionnées dans le bas du graphique. en cas de facet les barres sont réordonnées sur base de chaque barre médiane. Par exemple, si l'on utilise des facet dans prop_group(), on regarder pour chaque groupe quelle est la barre médiane parmi les différentes et puis on va ordonner les groupes sur bases de ces médianes. Par défaut, reorder prend la valeur de FALSE. reorder n'est pas disponible dans distrib_group_discrete et many_val_group et ses alias (many_prop_group, many_mean_group et many_median_group) car pour ces variables, il y a plusieurs proportions ou indicateurs et il est difficile de choisir sur lequel ou laquelle réordonner. Dans ce cas, c'est l'ordre des levels des facteurs qui est utilisé.
+
+-   position est un argument qui ne se trouve uniquement dans many_val_group et qui peut prendre les valeurs de "dodge" et de "stack". Avec "dodge", les barres de sont pas empilées. Avec "stack", les barres sont empilées dans chaque groupe, ce qui peut avoir un intérêt quand les variables ont vocation à être additionnées, par exemple avec des revenus selon différentes sources qui peuvent former un revenu total. "dodge" est la valeur par défaut.
+
+-   show_ci, show_n, show_value et show_lab sont des argument similaires qui peuvent prendre les valeurs TRUE et FALSE. Les valeur TRUE permettent de montrer les élements suivants : l'intervalle de confiance (show_ci), le nombre de personnes dans l'échantillon qui est à la base de l'estimation (show_value) et les titres et sous-titres du graphiques, des axes et de la légende (show). Les valeurs FALSE permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentaiton graphique adéquate show_ci n'est pas un argument de la fonction distrib_group_discrete(). Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (tab). C'est aussi le cas pour many_val_group et ses alias quand position = "stack", les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans distrib_group_discrete(), pour des raisons de lisibilité, seuls les valeurs supérieurs à 2% sont indiquées sur le graphique. Par défaut, show_ci, show_value\_ et show_lab ont la valeur de TRUE et show_n a la valeur de FALSE, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels.
+
+-    total_name indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+
+-   Pour la fonction esth_graph(), les arguments sont un peu différents, à l'exception de reorder et show_value. error_low, error_upp et n_var permettent d'indiquer les colonnes dans tab où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur NULL, ce qui conduit à ne pas montrer ces éléments dans le graphique. name_total permet d'indiquer le nom du total dans tab de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
 
 ## L'esthétique graphique
 
+-   Les couleurs des barres peuvent être indiquées dans les arguments fill et pal. fill est utilisé pour les graphiques monochrome (prop_group(), central_group() et ses alias, distrib_discrete() et esth_graph()). Les couleurs de base de R ou un code couleur hexadécimal. pal est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages MetBrewer, MoMAColors ou PrettyCols. L'argument direction permet d'inverser le sens de la palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens opposé. Pour many_val() et ses alias, pal peut prendre aussi une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des NA et des totaux, quand ils sont présents sont toujours gris (grey) et gris foncé (grey40) et ne sont pas modifiable par les arguments fill ou pal. Par défaut, des couleurs ou des pallettes de couleurs différentes (EST-CE VRAI POUR TOUTES LES FONCTIONS MANY?) ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques.
+
+-   dodge indique l'épaisseur des barres et peut aller de 0 (barre invisible car d'épaisseur nulle) à 1 (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de 0.9.
+
 ## L'esthétique des chiffres
+
+L'esthétique des chiffres concernent la manière dont l'estimation de l'indicateur est affichée sur le graphique. Ainsi, ces argument n'ont une utilité que si show_value = TRUE.
+
+-   scale est un argument qui n'est utilisé que dans les graphique exprimant des proportion. Il indique le dénominateur par lequel il faut interpréter le chiffre. Par défaut, il a une valeur de 100 pour interpréter les chiffres mentionnés en pourcentage. Par exemple on peut donner une valeur de 1000 pour interpréter les chiffres en pour mille ou une valeur de 1 pour interpréter les chiffres comme de simple proportions.
+
+-   digits indique le nombre de décimales qui doivent être affichées pour les valeurs sur le graphique. Par défaut, digit vaut 0, ce qui conduit à ne pas afficher de décimale.
+
+-   unit indique l'unité à indiquer sur le graphique. Pour distrib_discrete(), prop_group, many_prop() et many_prop_group(), l'unité par défaut est "%". Pour les autres l'argument par défaut prend une valeur vide, c'est-à-dire une absence d'unité indiquée sur le graphique. N'importe quel caractère ou chaine de caractère peut être utilisée : "€", "m²", etc.
+
+-   dec indique le caractère qui doit être utilisé pour marqué la décimale dans les chiffes. Cet argument n'est utile que quand digits \> 0. Par défaut, la virgule est utilisée comme c'est le cas dans le monde francophone.
 
 ## L'esthétique des lettres
 
-## Les labels (y compris des variables dans les fonctions many)
+-   font indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Actuellement trois polices sont directement incluses dans le package : Roboto, Montserrat and Gotham Narrow. Pour toutes les fonctions la police par défaut est Roboto.
+
+-   wrap_width_y et wrap_width_leg indique le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende légende. Ces valeurs sont par défaut de 25 caractères. wrap_width_leg n'est présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias. Précisons aussi que le \_y renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation coord_flip() qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour distrib_discrete() ou de la liste des variables pour many_val et many_val_group et leurs alias.
+
+-   legend_ncol indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. legend_ncol n'est aussi présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias.
+
+## Les labels 
+
+Les arguments de label ne sont utilisés que si show_lab = TRUE. Si show_lab = FALSE, aucun des labels ci-dessous n'est indiqué.
+
+-   title, subtitle, xlab, ylab, legend_lab et caption indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que xlab et ylab font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation coord_flip() qui a lieu dans les fonctions. legend_lab n'est présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias. Le caption étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument caption permet d'ajouter un texte en dessous de la mention de p valeur du test statistique.
+
+-   Il est possible de ne pas indiquer de texte explicite pour les arguments de label tout en indiquant show_lab = TRUE. Dans ce cas, il n'y a pas de titre, pas de sous-titre et pas de caption (autre que la p valeur du test statistique), mais il y a un xlab, un ylab et, pour les graphiques avec légende, un legend_lab. Chacun de ces texte reprend les noms de la variable ou de l'expression qui est, pour xlab, précédé d'une précision : "Moyenne : ... ", "Distribution : ..."
+
+-   Il est possible d'indiquer certains label et d'autre non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit d'indiquer show_lab = TRUE et de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour xlab, ylab et legend_lab, cette manière de procéder ne fonctionne pas car en l'absence de texte explicite (et avec show_lab = TRUE), le label automatique sera écrit sur le graphique. Si l'on souhaite ne pas avoir au moins un de ces labels mais en avoir d'autres, il faut alors indiquer, respectivement, xlab = "", ylab = "" ou legend_lab = "". L'utilisation de xlab = NULL, ylab = NULL ou legend_lab = NULL conduira à l'écriture du texte automatique.
+
+-   Comme argument de label, on peut aussi mentionner l'argument lists_vars_lab que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label. Cependant, par rapport aux autres labels, cet argument a aussi une influence sur la table produite (tab) car ce sont les labels de variables qui seront repris dans le tableau, alors ques les autres labels, comme tous les arguments esthétiques n'influencent que le graphique et non le tableau.
 
 # L'export au format xlsx

@@ -130,6 +130,11 @@ insérer dans le graphique.</p></li>
 <h2 id="lobjectif-des-différentes-fonctions">L’objectif des différentes fonctions<a class="anchor" aria-label="anchor" href="#lobjectif-des-diff%C3%A9rentes-fonctions"></a>
 </h2>
 <div class="section level3">
+<h3 id="distrib_continuous-pour-décrire-la-distribution-dune-variable-quantitative">distrib_continuous() pour décrire la distribution d’une variable
+quantitative<a class="anchor" aria-label="anchor" href="#distrib_continuous-pour-d%C3%A9crire-la-distribution-dune-variable-quantitative"></a>
+</h3>
+</div>
+<div class="section level3">
 <h3 id="distrib_discrete-pour-décrire-la-distribution-dune-variable-qualitative">distrib_discrete() pour décrire la distribution d’une variable
 qualitative<a class="anchor" aria-label="anchor" href="#distrib_discrete-pour-d%C3%A9crire-la-distribution-dune-variable-qualitative"></a>
 </h3>
@@ -564,12 +569,20 @@ desquels le graphique est construit. Les différentes colonnes reprennent
 respectivement : le nom de la proportion (list_col), l’estimation de
 cette proportion pour la variable (prop), les bornes inférieure
 (prop_low) et supérieure (prop_upp) de l’intervalle de confiance de
-cette estimation à un niveau de confiance de 95%, le nombre de personnes
-dans l’échantillon appartenant à la modalité de la variable d’intérêt au
-sein du groupe (n_sample), l’estimation du nombre de personnes dans la
-population (n_weighted), et les bornes inférieure (n_weighted_low) et
-supérieure (n_weighted_upp) de l’intervalle de confiance de cette
-estimation à un niveau de confiance de 95%.</p>
+cette estimation à un niveau de confiance de 95%, l’estimation du nombre
+de personnes dans la population pour lesquelles le critère de proportion
+est vérifié (n_true_weighted), et les bornes inférieure
+(n_true_weighted_low) et supérieure (n_true_weighted_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%, l’estimation du nombre total de personnes dans la population
+pour lesquelles les données sont valides<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Les personnes exclues, parce que, par exemple, la
+variable dichotomique prend une valeur de NA et que l’on a décidé de ne
+pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de
+manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit
+égal à prop.&lt;/p&gt;"><sup>3</sup></a> (n_tot_weighted), et
+les bornes inférieure (n_tot_weighted_low) et supérieure
+(n_tot_weighted_upp) de l’intervalle de confiance de cette estimation à
+un niveau de confiance de 95%.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Recoding variables</span></span>
@@ -622,15 +635,16 @@ aussi être modifié par la suite.</p></li>
 <p>Le tableau “tab” reprend les chiffres sur base desquels le
 graphique est construit. Le tableau “tab” reprend les chiffres sur base
 desquels le graphique est construit. Les différentes colonnes reprennent
-respectivement : le nom de la proportion (list_col), l’estimation de la
-moyenne pour la variable (mean), les bornes inférieure (mean_low) et
-supérieure (mean_upp) de l’intervalle de confiance de cette estimation à
-un niveau de confiance de 95%, le nombre de personnes dans l’échantillon
-appartenant à la modalité de la variable d’intérêt au sein du groupe
-(n_sample), l’estimation du nombre de personnes dans la population
-(n_weighted), et les bornes inférieure (n_weighted_low) et supérieure
-(n_weighted_upp) de l’intervalle de confiance de cette estimation à un
-niveau de confiance de 95%.</p>
+respectivement : le nom des variables sur lesquelles les moyennes sont
+calculées (list_col), l’estimation de la moyenne pour la variable
+(mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%, le nombre de personnes dans l’échantillon appartenant à la
+modalité de la variable d’intérêt au sein du groupe (n_sample),
+l’estimation du nombre de personnes dans la population (n_weighted), et
+les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
@@ -675,38 +689,38 @@ aussi être modifié par la suite.</p></li>
 <p>Le tableau “tab” reprend les chiffres sur base desquels le
 graphique est construit. Le tableau “tab” reprend les chiffres sur base
 desquels le graphique est construit. Les différentes colonnes reprennent
-respectivement : le nom de la proportion (list_col), l’estimation de la
-moyenne pour la variable (mean), les bornes inférieure (mean_low) et
-supérieure (mean_upp) de l’intervalle de confiance de cette estimation à
-un niveau de confiance de 95%, le nombre de personnes dans l’échantillon
-appartenant à la modalité de la variable d’intérêt au sein du groupe
-(n_sample), l’estimation du nombre de personnes dans la population
-(n_weighted), et les bornes inférieure (n_weighted_low) et supérieure
-(n_weighted_upp) de l’intervalle de confiance de cette estimation à un
-niveau de confiance de 95%.</p>
+respectivement : le nom des variables sur lesquelles les médianes sont
+calculées (list_col), l’estimation de la médiane pour la variable
+(median), les bornes inférieure (median_low) et supérieure (median_upp)
+de l’intervalle de confiance de cette estimation à un niveau de
+confiance de 95%, le nombre de personnes dans l’échantillon appartenant
+à la modalité de la variable d’intérêt au sein du groupe (n_sample),
+l’estimation du nombre de personnes dans la population (n_weighted), et
+les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Computation, taking sample design into account</span></span>
 <span><span class="va">eusilc_many_median</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val.html">many_median</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
-<span>                              list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
-<span>                              list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>,<span class="st">"revenus d'une activité indépendant"</span>,<span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
+<span>                              list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">eqIncome</span><span class="op">)</span>,</span>
+<span>                              list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>,<span class="st">"Revenu equivalent"</span><span class="op">)</span>,</span>
 <span>                              weight <span class="op">=</span> <span class="va">rb050</span>,</span>
-<span>                              title <span class="op">=</span> <span class="st">"Income from wage, independant worker and unemployement benefits"</span>,</span>
+<span>                              title <span class="op">=</span> <span class="st">"Median income from wage and equivalent income"</span>,</span>
 <span>subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Variable(s) entrées : py010n, py050n, py090n</span></span>
+<span><span class="co">#&gt; Variable(s) entrées : py010n, eqIncome</span></span>
 <span><span class="co">#&gt; Input: data.frame</span></span>
 <span><span class="co">#&gt; Sampling design -&gt; ids:  `1`, weights:  rb050</span></span>
 <span><span class="va">eusilc_many_median</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_median</span><span class="op">$</span><span class="va">tab</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
 <span><span class="co">#&gt;   list_col       median median_low median_upp n_sample n_weighted n_weighted_low</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> salaires        <span style="text-decoration: underline;">2</span>559.      <span style="text-decoration: underline;">1</span>917.      <span style="text-decoration: underline;">3</span>167.    <span style="text-decoration: underline;">12</span>107   6<span style="text-decoration: underline;">757</span>264.       6<span style="text-decoration: underline;">702</span>061.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> revenus d'une…     0          0        406.    <span style="text-decoration: underline;">12</span>107   6<span style="text-decoration: underline;">757</span>264.       6<span style="text-decoration: underline;">702</span>061.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> allocation de…     0          0        734.    <span style="text-decoration: underline;">12</span>107   6<span style="text-decoration: underline;">757</span>264.       6<span style="text-decoration: underline;">702</span>061.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Revenu equiva… <span style="text-decoration: underline;">18</span>099.     <span style="text-decoration: underline;">17</span>942.     <span style="text-decoration: underline;">18</span>284.    <span style="text-decoration: underline;">14</span>827   8<span style="text-decoration: underline;">182</span>222        8<span style="text-decoration: underline;">161</span>124.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
 </li>
 </ul>
@@ -715,95 +729,594 @@ niveau de confiance de 95%.</p>
 <h3 id="many_prop_group-pour-décrire-en-même-temps-plusieurs-proportions-selon-des-groupes">many_prop_group() pour décrire en même temps plusieurs proportions
 selon des groupes<a class="anchor" aria-label="anchor" href="#many_prop_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-proportions-selon-des-groupes"></a>
 </h3>
+<p>many_prop_group() a comme objectif de permettre d’estimer
+simultanément plusieurs proportions selon une variable qualitative, que
+l’on peut considérer comme des groupes. L’exemple ci-dessous montre
+ainsi la proportion de travailleurs et d’autrichiens selon le sexe.
+Ainsi dans l’exemple, la fonction produit une liste comprenant un
+graphique et un tableau reprenant ces deux proportions. Bien que
+l’exemple repris ici semble quelque peu artificiel, l’intérêt de cette
+fonction est de visualiser rapidement un nombre important de
+proportions, par exemple dans l’accès à certains items. Il s’agit d’un
+alias de many_val_group(), avec type = “prop”. Pour des raisons
+évidents, cette fonction ne calcule aucun test statistique.</p>
+<ul>
+<li><p>Le graphique “graph” permet une visualisation facile et
+directement utilisable dans une publication des différentes avec des
+intervalle de confiance. Il s’agit d’un objet de ggplot2 qui peut donc
+aussi être modifié par la suite.</p></li>
+<li><p>Le tableau “tab” reprend les chiffres sur base desquels le
+graphique est construit. Le tableau “tab” reprend les chiffres sur base
+desquels le graphique est construit. Les différentes colonnes reprennent
+respectivement : la variable de groupe (ici rb090), le nom de la
+proportion (list_col), l’estimation de cette proportion pour la variable
+(prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%, l’estimation du nombre de personnes dans la population pour
+lesquelles le critère de proportion est vérifié (n_true_weighted), et
+les bornes inférieure (n_true_weighted_low) et supérieure
+(n_true_weighted_upp) de l’intervalle de confiance de cette estimation à
+un niveau de confiance de 95%, l’estimation du nombre total de personnes
+dans la population pour lesquelles les données sont valides<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Les personnes exclues, parce que, par exemple, la
+variable dichotomique prend une valeur de NA et que l’on a décidé de ne
+pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de
+manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit
+égal à prop.&lt;/p&gt;"><sup>4</sup></a>
+(n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et
+supérieure (n_tot_weighted_upp) de l’intervalle de confiance de cette
+estimation à un niveau de confiance de 95%.</p></li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
+<span><span class="va">eusilc_many_prop_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span>                                          group <span class="op">=</span> <span class="va">rb090</span>,</span>
+<span>                                          list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">worker</span>,<span class="va">austrian</span><span class="op">)</span>,</span>
+<span>                                          list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"% of workers"</span>,<span class="st">"% of Austrian"</span><span class="op">)</span>,</span>
+<span>                                          weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>                                    title <span class="op">=</span> <span class="st">"Proportion of workers and Autrian by sex"</span>,</span>
+<span>                                    subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Variable(s) entrées : worker, austrian</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  `1`, weights:  rb050</span></span>
+<span><span class="va">eusilc_many_prop_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_many_prop_group</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 12</span></span></span>
+<span><span class="co">#&gt;   rb090  list_col       prop prop_low prop_upp n_sample n_true_weighted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> male   % of workers  0.495    0.483    0.507     <span style="text-decoration: underline;">7</span>267        1<span style="text-decoration: underline;">969</span>092.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> female % of workers  0.366    0.355    0.377     <span style="text-decoration: underline;">7</span>560        1<span style="text-decoration: underline;">536</span>897.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> male   % of Austrian 0.739    0.729    0.749     <span style="text-decoration: underline;">7</span>267        2<span style="text-decoration: underline;">942</span>211.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> female % of Austrian 0.766    0.756    0.776     <span style="text-decoration: underline;">7</span>560        3<span style="text-decoration: underline;">219</span>916.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: n_true_weighted_low &lt;dbl&gt;, n_true_weighted_upp &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   n_tot_weighted &lt;dbl&gt;, n_tot_weighted_low &lt;dbl&gt;, n_tot_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="many_mean_group-pour-décrire-en-même-temps-plusieurs-moyenne-selon-des-groupes">many_mean_group() pour décrire en même temps plusieurs moyenne selon
 des groupes<a class="anchor" aria-label="anchor" href="#many_mean_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-moyenne-selon-des-groupes"></a>
 </h3>
+<p>many_mean_group() a comme objectif de permettre d’estimer
+simultanément plusieurs moyennes selon une variable qualitative, que
+l’on peut considérer comme des groupes. Il s’agit d’un alias de
+many_val_group, avec type = “mean”. Pour des raisons évidents, cette
+fonction ne calcule aucun test statistique.</p>
+<ul>
+<li><p>Le graphique “graph” permet une visualisation facile et
+directement utilisable dans une publication des différentes avec des
+intervalle de confiance. Il s’agit d’un objet de ggplot2 qui peut donc
+aussi être modifié par la suite.</p></li>
+<li><p>Le tableau “tab” reprend les chiffres sur base desquels le
+graphique est construit. Le tableau “tab” reprend les chiffres sur base
+desquels le graphique est construit. Les différentes colonnes reprennent
+respectivement : la variable de groupe (ici rb090), le nom des variables
+sur lesquelles sont calculées les moyennes (list_col), l’estimation de
+la moyenne pour la variable (mean), les bornes inférieure (mean_low) et
+supérieure (mean_upp) de l’intervalle de confiance de cette estimation à
+un niveau de confiance de 95%, le nombre de personnes dans l’échantillon
+appartenant à la modalité de la variable d’intérêt au sein du groupe
+(n_sample), l’estimation du nombre de personnes dans la population
+(n_weighted), et les bornes inférieure (n_weighted_low) et supérieure
+(n_weighted_upp) de l’intervalle de confiance de cette estimation à un
+niveau de confiance de 95%.</p></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
+<span><span class="va">eusilc_many_mean_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span>                                          group <span class="op">=</span> <span class="va">rb090</span>,</span>
+<span>                                          list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
+<span>                                          list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>,<span class="st">"revenus d'une activité indépendant"</span>,<span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
+<span>                                          weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>                              title <span class="op">=</span> <span class="st">"Income from wage, independant worker and unemployement benefits by sex"</span>,</span>
+<span>subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Variable(s) entrées : py010n, py050n, py090n</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  `1`, weights:  rb050</span></span>
+<span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
+<span><span class="co">#&gt;   rb090  list_col      mean mean_low mean_upp n_sample n_weighted n_weighted_low</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> male   salaires    <span style="text-decoration: underline;">12</span>445.   <span style="text-decoration: underline;">12</span>098.   <span style="text-decoration: underline;">12</span>791.     <span style="text-decoration: underline;">5</span>844   3<span style="text-decoration: underline;">237</span>897.       3<span style="text-decoration: underline;">171</span>916.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> female salaires     <span style="text-decoration: underline;">6</span>136.    <span style="text-decoration: underline;">5</span>900.    <span style="text-decoration: underline;">6</span>372.     <span style="text-decoration: underline;">6</span>263   3<span style="text-decoration: underline;">519</span>368.       3<span style="text-decoration: underline;">451</span>545.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> male   revenus d'…  <span style="text-decoration: underline;">1</span>539.    <span style="text-decoration: underline;">1</span>368.    <span style="text-decoration: underline;">1</span>711.     <span style="text-decoration: underline;">5</span>844   3<span style="text-decoration: underline;">237</span>897.       3<span style="text-decoration: underline;">171</span>916.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> female revenus d'…   689.     600.     778.     <span style="text-decoration: underline;">6</span>263   3<span style="text-decoration: underline;">519</span>368.       3<span style="text-decoration: underline;">451</span>545.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> male   allocation…   420.     371.     468.     <span style="text-decoration: underline;">5</span>844   3<span style="text-decoration: underline;">237</span>897.       3<span style="text-decoration: underline;">171</span>916.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> female allocation…   431.     386.     476.     <span style="text-decoration: underline;">6</span>263   3<span style="text-decoration: underline;">519</span>368.       3<span style="text-decoration: underline;">451</span>545.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="many_median_group-pour-décrire-en-même-temps-plusieurs-médianes-selon-des-groupes">many_median_group() pour décrire en même temps plusieurs médianes
 selon des groupes<a class="anchor" aria-label="anchor" href="#many_median_group-pour-d%C3%A9crire-en-m%C3%AAme-temps-plusieurs-m%C3%A9dianes-selon-des-groupes"></a>
 </h3>
-</div>
-<div class="section level3">
-<h3 id="esth_graph-pour-réaliser-un-graphique-reprenant-la-même-esthétique-que-les-autres-fonction-à-partir-dun-tableau-de-résultat">esth_graph() pour réaliser un graphique reprenant la même esthétique
-que les autres fonction à partir d’un tableau de résultat<a class="anchor" aria-label="anchor" href="#esth_graph-pour-r%C3%A9aliser-un-graphique-reprenant-la-m%C3%AAme-esth%C3%A9tique-que-les-autres-fonction-%C3%A0-partir-dun-tableau-de-r%C3%A9sultat"></a>
-</h3>
+<p>many_median_group() a comme objectif de permettre d’estimer
+simultanément plusieurs médianes. Il s’agit d’un alias de
+many_val_group, avec type = “median”. Pour des raisons évidents, cette
+fonction ne calcule aucun test statistique.</p>
+<ul>
+<li><p>Le graphique “graph” permet une visualisation facile et
+directement utilisable dans une publication des différentes avec des
+intervalle de confiance. Il s’agit d’un objet de ggplot2 qui peut donc
+aussi être modifié par la suite.</p></li>
+<li>
+<p>Le tableau “tab” reprend les chiffres sur base desquels le
+graphique est construit. Le tableau “tab” reprend les chiffres sur base
+desquels le graphique est construit. Les différentes colonnes reprennent
+respectivement : le nom des variables sur lesquelles les médianes sont
+calculées (list_col), l’estimation de la médiane pour la variable
+(median), les bornes inférieure (median_low) et supérieure (median_upp)
+de l’intervalle de confiance de cette estimation à un niveau de
+confiance de 95%, le nombre de personnes dans l’échantillon appartenant
+à la modalité de la variable d’intérêt au sein du groupe (n_sample),
+l’estimation du nombre de personnes dans la population (n_weighted), et
+les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de
+l’intervalle de confiance de cette estimation à un niveau de confiance
+de 95%.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
+<span><span class="va">eusilc_many_median_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_median_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span>                                              group <span class="op">=</span> <span class="va">rb090</span>,</span>
+<span>                                              list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">eqIncome</span><span class="op">)</span>,</span>
+<span>                                              list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>,<span class="st">"Revenu equivalent"</span><span class="op">)</span>,</span>
+<span>                              weight <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>                              title <span class="op">=</span> <span class="st">"Median income from wage and equivalent income"</span>,</span>
+<span>                              subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Variable(s) entrées : py010n, eqIncome</span></span>
+<span><span class="co">#&gt; Input: data.frame</span></span>
+<span><span class="co">#&gt; Sampling design -&gt; ids:  `1`, weights:  rb050</span></span>
+<span><span class="va">eusilc_many_median_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_many_median_group</span><span class="op">$</span><span class="va">tab</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 9</span></span></span>
+<span><span class="co">#&gt;   rb090 list_col median median_low median_upp n_sample n_weighted n_weighted_low</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> male  salaires <span style="text-decoration: underline;">12</span>302.     <span style="text-decoration: underline;">11</span>316.     <span style="text-decoration: underline;">13</span>118.     <span style="text-decoration: underline;">5</span>844   3<span style="text-decoration: underline;">237</span>897.       3<span style="text-decoration: underline;">171</span>916.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fema… salaires     0          0        999.     <span style="text-decoration: underline;">6</span>263   3<span style="text-decoration: underline;">519</span>368.       3<span style="text-decoration: underline;">451</span>545.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> male  Revenu … <span style="text-decoration: underline;">18</span>928.     <span style="text-decoration: underline;">18</span>743.     <span style="text-decoration: underline;">19</span>170.     <span style="text-decoration: underline;">7</span>267   3<span style="text-decoration: underline;">979</span>572.       3<span style="text-decoration: underline;">912</span>677.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> fema… Revenu … <span style="text-decoration: underline;">17</span>368.     <span style="text-decoration: underline;">17</span>122.     <span style="text-decoration: underline;">17</span>568.     <span style="text-decoration: underline;">7</span>560   4<span style="text-decoration: underline;">202</span>650.       4<span style="text-decoration: underline;">134</span>543.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
+</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="theme_fonctionr-pour-appliquer-le-thème-de-fonctionr-à-des-graphiques-de-ggplot2">theme_fonctionr() pour appliquer le thème de fonctionr à des
 graphiques de ggplot2<a class="anchor" aria-label="anchor" href="#theme_fonctionr-pour-appliquer-le-th%C3%A8me-de-fonctionr-%C3%A0-des-graphiques-de-ggplot2"></a>
 </h3>
+<p>theme_fonctionr() est une fonction qui permet d’appliquer le theme
+gggplot de fonctionr à un objet de ggplot2. Cette fonction a un intérêt
+si l’on veut appliquer l’esthétique de fonctionr à un autre
+graphique.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">##Faut-il mettre un example ici? C'est pas compliqué mais est-ce nécessaire?</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="pivot_longer_suvey">pivot_longer_suvey()<a class="anchor" aria-label="anchor" href="#pivot_longer_suvey"></a>
+<h3 id="esth_graph-pour-réaliser-un-graphique-reprenant-la-même-esthétique-que-les-autres-fonction-à-partir-dun-tableau-de-résultat">esth_graph() pour réaliser un graphique reprenant la même esthétique
+que les autres fonction à partir d’un tableau de résultat<a class="anchor" aria-label="anchor" href="#esth_graph-pour-r%C3%A9aliser-un-graphique-reprenant-la-m%C3%AAme-esth%C3%A9tique-que-les-autres-fonction-%C3%A0-partir-dun-tableau-de-r%C3%A9sultat"></a>
+</h3>
+<p>esth_graph() est une fonction qui permet aisément de construire une
+graphique similaire à ceux produit par les autres fonction mais
+directement à partir d’une tableau de résultats calculés précédemment.
+Cette fonction a un intérêt si l’on veut appliquer l’esthétique
+graphique de fonctionr mais à des indicateurs qui ne sont pas calculés
+par une autre fonction (proportion, moyenne, médiane). Par rapport à
+theme_fonctionr(), esth_graph() permet aisément d’intégrer plusieurs
+éléments que l’on retrouve dans d’autres graphiques produits par
+fonctionr() : valeurs de l’indicateur, bornes d’intervalle de confiance,
+nombres d’individus dans l’échantillon. La logique d’esth_graph est
+aussi différente de celle de theme_fonctionr(), la première fonction
+fonction produit un graphique à partir d’une table, alors que la seconde
+applique un thème à un graphique existant.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Mettre un exemple ? Lequel? J'avais pensé à des Ginis, mais cela demande de charger d'autres packages.Ou alors des rapport interquantiles. </span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="pivot_longer_survey">pivot_longer_survey()<a class="anchor" aria-label="anchor" href="#pivot_longer_survey"></a>
 </h3>
 </div>
 </div>
 <div class="section level2">
 <h2 id="le-tableau-récapitulait-des-arguments">Le tableau récapitulait des arguments<a class="anchor" aria-label="anchor" href="#le-tableau-r%C3%A9capitulait-des-arguments"></a>
 </h2>
-<p>intro : même structure avec des argument revenant à chaque fois. Ex.
-l’argument group revient dans toutes les fonctions qui comparent des
-groupes. Mais certains arguments diffèrent.</p>
+<p>Comme nous l’avons vu, la majorité des fonctions de fonctionr se
+ressemblent. La plupart des arguments se retrouvent dans plusieurs
+fonctions. Le tableau ci-dessous reprend la totalité des argument en
+indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L’ordre
+repris est celui des fonctions et les couleurs regroupent les arguments
+selon leur “catégorie”. Cette dernière a une visée pédagogique et
+regroupe ensemble des arguments dont le rôle est similaire. Dans la
+suite, nous aborderons successivement les arguments liés à la base de
+donnée utilisée, les arguments indispensables qui doivent
+obligatoirement être mentionnés, les arguments clés (c’est-à-dire pas
+obligatoire mais ayant une influence sur les résultats) et les arguments
+esthétiques - qui influencent le graphique et que l’on peut diviser en
+cinq sous-catégories : les arguments esthétiques de base (qui ont une
+influence centrale sur le graphique), les arguments esthétiques
+graphiques (barres et couleurs), les arguments esthétiques de chiffres
+(unités, décimales, etc.), les arguments esthétiques de lettres (police,
+etc.), les arguments de labels. Un dernier argument, traitant de
+l’export de l’objet créé par les fonctions de fonctionr sera aussi
+abordé.</p>
 <p>TABLEAU</p>
-<p>Pour des raisons pédagogiques, les arguments sont abordés
-succèssivement par types : la base de données, les arguments
-indispensables, les arguments ayant une influence sur les calculs, les
-arguments esthétiques,</p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-liés-à-la-base-de-données-utilisée">Les arguments liés à la base de données utilisée<a class="anchor" aria-label="anchor" href="#les-arguments-li%C3%A9s-%C3%A0-la-base-de-donn%C3%A9es-utilis%C3%A9e"></a>
 </h2>
-<p>différents formats.</p>
+<p>data est l’argument le plus important car il indique la base de
+donnée à utiliser. Comme l’objectif du package est de permettre une
+analyse des sondages complexe, il peut s’agir d’un objet survey ou d’un
+objet srvyr, qui contiennent les différentes informations sur le plan de
+sondage (poids, strates, PSU…). Il est aussi possible que l’objet survey
+ou srvyr soit un objet avec avec des <em>replicate weights</em> pour
+utiliser les méthodes de rééchantillonnage pour estimer la variance
+d’échantillonnage.</p>
+<p>Il est également possible que data soit un dataframe. Dans ce cas,
+les fonctions font l’hypothèse d’un sondage aléatoire simple. Ainsi,
+fonctionr peut être utilisé pour l’analyse des sondages complexe mais
+aussi des sondages aléatoires simple. fonctionr peut aussi créer un
+objet de sondage complexe à partit d’un dataframe. Dans ce cas, le
+dataframe doit être indiqué dans data et les autres arguments (poids,
+strates, etc.) doivent être indiquées dans l’argument … qui se trouve
+plus loin. L’argument … ne se trouve pas directement après l’argument
+data pour permettre d’indiquer plusieurs arguments (group, prop_exp,
+facet…) sans devoir mentionner explicitement le nom de l’argument (par
+exemple ne pas devoir écrire systématiquement group = db040). Cette
+manière de procéder fonctionne pour les sondages complexes classiques
+mais pas pour les sondages complexes intégrant des replicate weights. Si
+l’ont veut intégrer des replicates weights, il est nécessaire de créer
+d’abord un objet survey ou srvyr et d’utiliser cet objet dans
+fonctionr.</p>
+<p>Pour la fonction esth_graph, il n’y a pas d’argument data, mais un
+argument tab qui doit correspondre à la table avec les indicateurs. Il
+s’appelle tab car il est similaire à l’objet tab produit par la plupart
+des fonctions de fonctionr.</p>
+<p>EXEMPLES</p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
 </h2>
-<div class="section level3">
-<h3 id="expressions-et-variables">expressions et variables<a class="anchor" aria-label="anchor" href="#expressions-et-variables"></a>
-</h3>
-</div>
+<p>Les arguments indispensable sont des arguments qui sont nécessaire au
+bon fonctionnement de la fonction et qui ne peuvent prendre aucune
+valeur par défaut.</p>
+<p>Ces arguments sont principalement de différents types : variables
+qualitatives, expressions ou listes de variables.</p>
+<ul>
+<li><p>group et quali_var sont des variables qualitatives. Les variables
+indiquées pour ces arguments sont ainsi transformées en facteurs pour
+leur usage dans la fonction.</p></li>
+<li><p>prop_exp et quanti_exp sont des expressions. C’est-à-dire que ces
+arguments peuvent être des variables (un variable binaire 0-1 pour
+prop_exp et une variable numérique pour quanti_exp) ou une expression
+qui produit une variable (binaire pour prop_exp et quantitative pour
+quanti_exp). Ainsi, il n’est pas nécessaire de préparer à l’avance la
+variable binaire ou la quantitative, elle peut être calculée directement
+dans les fonctions prop_group et central_group. Précisons que seuls les
+variables de la base de données et les valeurs numérique sont autorisées
+dans les expressions, les objets extérieurs à la table (par exemple un
+seuil contenu dans un objet) ne sont pas reconnu par ces fonctions. Dans
+fonctionr, tous les arguments qui terminent par _exp sont des
+expressions.</p></li>
+<li><p>list_vars doit être un vecteur reprenant l’ensemble des variables
+reprises dans les fonctions many_val et many_val_group. Pour many_prop
+et many_prop_group, les variables doivent être binaires (il aurait été
+trop compliqué d’introduire ici des expressions) et pour many_mean,
+many_mean_group, many_median et many_median_group, les variables doivent
+être numériques.</p></li>
+</ul>
+<p>Juste après list_vars, il y a un argument esthétique de label des
+noms des variables. Cet argument doit être un vecteur reprenant les noms
+des variables telles que l’on souhaite qu’elles apparaissent dans la
+table (tab) et le graphique (graph) produits par la fonction. Bien qu’il
+ne s’agisse pas d’un argument indispensable, nous avons décidé de le
+placer juste après list_vars pour faciliter l’utilisation.</p>
+<p>L’argument type est utilisé pour les fonctions “alias” mean_group et
+median_group ; many_prop, many_mean et many_median ; many_prop_group,
+many_mean_group et many_median_group à partir des fonctions respectives
+central_group, many_val et many_val_group. Il ne doit pas être utilisé
+par l’utilisateur s’il utilise les fonctions “alias”.</p>
+<p>Pour esth_graph(), les arguments var et value sont obligatoires et
+ils indiquent respectivement les colonnes dans tab avec nom de
+l’indicateur et sa valeur.</p>
+<p>EXEMPLES dont expressions.</p>
 </div>
 <div class="section level2">
-<h2 id="les-arguments-ayant-une-influence-sur-les-résultats">Les arguments ayant une influence sur les résultats<a class="anchor" aria-label="anchor" href="#les-arguments-ayant-une-influence-sur-les-r%C3%A9sultats"></a>
+<h2 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
+résultats<a class="anchor" aria-label="anchor" href="#les-arguments-cl%C3%A9s-pas-obligatoires-mais-influen%C3%A7ant-les-r%C3%A9sultats"></a>
 </h2>
-<div class="section level3">
-<h3 id="expressions-et-variables-le-retour">expressions et variables, le retour<a class="anchor" aria-label="anchor" href="#expressions-et-variables-le-retour"></a>
-</h3>
-</div>
-<div class="section level3">
-<h3 id="le-traitement-des-na">Le traitement des NA<a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
-</h3>
-</div>
-<div class="section level3">
-<h3 id="prop_method">prop_method<a class="anchor" aria-label="anchor" href="#prop_method"></a>
-</h3>
-</div>
+<p>Les arguments clés sont des arguments qui ne sont pas indispensable
+mais qui influencent les résultats. Ils ont une valeur par défaut,
+souvent NULL. On y retrouve plusieurs types d’arguments.</p>
+<ul>
+<li><p>facet est une variable qualitative qui produit des facets dans la
+table et le graphique. Comme group et quali_var, la variable indiquée
+pour cet argument est transformée en facteur pour leur usage dans la
+fonction. Par défaut, les facets ne sont pas produites.</p></li>
+<li><p>filter_exp est une expression qui permet de filtrer les données
+de manière à produire la table, le graphique et le test, le cas échéant,
+sur une partie de l’échantillon. Comme il s’agit d’une expression, il
+est possible de mettre en oeuvre des conditions de filtres complexe et
+multiples, par exemple sélectionner uniquement les personnes âgées de
+moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui
+sont célibataires. Comme recommandé (REF), le filtrage des données est
+réalisé après la production de l’objet srvyr par la fonction. Ici aussi,
+seuls les variables de la base de données et les valeurs numérique sont
+autorisées dans les expressions, pas les objets extérieurs à la table.
+Par défaut, les données ne sont pas filtrées.</p></li>
+<li><p>na.rm.group, na.rm.facet, na.rm.var indiquent la manière dont les
+éventuels NA dans les variables de groupe, de facet et dans quali_var
+sont traités. Si l’argument est TRUE, les NA seront retirés pour les
+calculs. Si l’argument est FALSE, une modalité spécifique est créée pour
+les NA. Dans ce cas, dans le graphique ils prennent toujours la couleur
+gris (grey) dans le graphique, pour pointer leur spécificité. Dans le
+cas où ils sont retirés, ils ne sont pas pris en compte pour estimer les
+indicateurs totaux, le cas échéant. Par défaut, l’argument prend la
+valeur FALSE, c’est-à-dire que les NA sont supprimés des
+analyses.</p></li>
+<li><p>na.prop indique la manière dont les éventuels NA sont dans les
+variables introduites dans prop_exp sont traités. Si l’argument prend la
+valeur “rm”, tous les NA présent dans au moins une des variable faisant
+partie de prop_exp sont exclus avant de procéder aux calculs. De cette
+manière la proportion est calculée uniquement sur les observations
+“valides”. Dans ce cas, pour des raisons évidentes, il n’est pas
+possible d’introduire des conditions avec la valeur NA dans prop_exp
+(p. ex. on ne peut pas calculer la proportion de personnes dont le
+statut professionnel est NA). Si l’argument prend la valeur “include”
+les NA ne sont pas retirés avant de procéder aux calculs et la
+proportion est calculée sur l’ensemble des observations, NA compris.
+Cela peut être utile quand NA n’indique pas une valeur manquante mais
+une situation spécifique. Par exemple, dans une variable mesurant les
+points obtenu par des étudiants à un examen si le NA indique que
+l’étudiant était absent, on peut vouloir calculer la proportion
+d’étudiant ayant au moins 12/20 en conservant les absents au
+dénominateur, ce qui est possible avec na.prop = “include”. Par défaut
+na.prop prend la valeur “rm”. Précisons que pour central_group() et ses
+alias mean_group() et median_group(), il n’y a pas d’argument permettant
+de choisir le traitement des NA dans quanti_exp. Les observations
+comprenant au moins un NA dans une variable indiquée dans quanti_exp
+sont exclues des calculs, car il n’y a pas d’autres possibilité qui soit
+pertinente.</p></li>
+<li><p>na.vars indique la manière dont les NA doivent être traités dans
+les différentes variables de many_val et many_val_group. Si l’argument
+prend la valeur “rm”, les NA sont exclus séparément dans chaque
+variable. Il en résulte que l’échantillon ne sera pas toujours le même
+pour chacune des variables calculée, mais que l’on conserve un maximum
+d’observations. Si l’argument prend la valeur “rm.all”, les observations
+qui comprennent au moins un NA dans une des variables de list_vars sont
+exclues. Cette manière de procéder exclut plus d’observation mais permet
+d’avoir un échantillon identique pour toutes les variables. Par défaut
+na.vars prend la valeur “rm”.</p></li>
+<li><p>probs est un vecteur utilisé dans distrib_discrete() pour
+indiquer la distribution des proportions dans chaque modalité reprise
+dans l’hypothèse nulle sur base de laquelle le test du khi2 d’adéquation
+est calculé. Par défaut ce vecteur vaut NULL et le test du khi2
+d’adéquation n’est pas calculé.</p></li>
+<li><p>prop_method est un argument qui permet de choisir le type de
+correction pour l’estimation des intervalles de confiance d’une
+proportion, notamment pour éviter d’avoir des bornes inférieures à 0 ou
+supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans <a href="https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html" class="external-link">l’argument
+method de la fonction svyciprop() du package survey</a>. Par défaut,
+c’est la méthode “beta” qui est utilisées.</p></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-esthétiques">Les arguments esthétiques<a class="anchor" aria-label="anchor" href="#les-arguments-esth%C3%A9tiques"></a>
 </h2>
+<p>Les arguments esthétiques sont des arguments qui affectent uniquement
+le graphique produit et pas la table, ni le test statistique. Pour des
+raisons pédagogique, nous aborderons successivement les arguments
+d’esthétique de base, d’esthétique graphique, d'esthétique des chiffres,
+d’esthétique des lettres et les labels.</p>
 <div class="section level3">
-<h3 id="ce-quon-montre-ou-non-dans-le-graphique">Ce qu’on montre ou non dans le graphique<a class="anchor" aria-label="anchor" href="#ce-quon-montre-ou-non-dans-le-graphique"></a>
+<h3 id="lesthétique-de-base">L’esthétique de base<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-de-base"></a>
 </h3>
+<ul>
+<li><p>reorder est un argument qui en prenant la valeur TRUE permet de
+réordonner les barres selon leur valeur décroissante. Si reorder =
+FALSE, les barres ne sont pas réordonnées et c’est l’ordre des levels de
+la variable qui est utilisé pour ordonner les barre. La barre NA quand
+elle existe (par exemple avec na.rm.group = FALSE) et la barre Total ne
+sont jamais réordonnées et sont toujours positionnées dans le bas du
+graphique. en cas de facet les barres sont réordonnées sur base de
+chaque barre médiane. Par exemple, si l’on utilise des facet dans
+prop_group(), on regarder pour chaque groupe quelle est la barre médiane
+parmi les différentes et puis on va ordonner les groupes sur bases de
+ces médianes. Par défaut, reorder prend la valeur de FALSE. reorder
+n’est pas disponible dans distrib_group_discrete et many_val_group et
+ses alias (many_prop_group, many_mean_group et many_median_group) car
+pour ces variables, il y a plusieurs proportions ou indicateurs et il
+est difficile de choisir sur lequel ou laquelle réordonner. Dans ce cas,
+c’est l’ordre des levels des facteurs qui est utilisé.</p></li>
+<li><p>position est un argument qui ne se trouve uniquement dans
+many_val_group et qui peut prendre les valeurs de “dodge” et de “stack”.
+Avec “dodge”, les barres de sont pas empilées. Avec “stack”, les barres
+sont empilées dans chaque groupe, ce qui peut avoir un intérêt quand les
+variables ont vocation à être additionnées, par exemple avec des revenus
+selon différentes sources qui peuvent former un revenu total. “dodge”
+est la valeur par défaut.</p></li>
+<li><p>show_ci, show_n, show_value et show_lab sont des argument
+similaires qui peuvent prendre les valeurs TRUE et FALSE. Les valeur
+TRUE permettent de montrer les élements suivants : l’intervalle de
+confiance (show_ci), le nombre de personnes dans l’échantillon qui est à
+la base de l’estimation (show_value) et les titres et sous-titres du
+graphiques, des axes et de la légende (show). Les valeurs FALSE
+permettent de ne pas montrer sur le graphique ces différents éléments.
+Faute de représentaiton graphique adéquate show_ci n’est pas un argument
+de la fonction distrib_group_discrete(). Pour cette fonction, il est pas
+possible de représenter les intervalles de confiance sur le graphique,
+mais ils sont bien calculé dans la table (tab). C’est aussi le cas pour
+many_val_group et ses alias quand position = “stack”, les intervalles de
+confiance ne sont pas représentés sur le graphique. Précisons aussi que
+dans distrib_group_discrete(), pour des raisons de lisibilité, seuls les
+valeurs supérieurs à 2% sont indiquées sur le graphique. Par défaut,
+show_ci, show_value_ et show_lab ont la valeur de TRUE et show_n a la
+valeur de FALSE, de manière à montrer sur le graphique les intervalles
+de confiance, les valeurs des estimations et les noms des axes, mais pas
+le nombre d’individus dans l’échantillon. Nous aborderons en détail le
+contenu par défaut des labels des axes dans la partie abordant les
+labels.</p></li>
+<li><p>total_name indique le nom qui doit être mentionné à côté de la
+barre du total dans le graphique. Par défaut, il s’agit de “Total”, mais
+l’utilisateur peut indiquer autre chose de plus spécifique.</p></li>
+<li><p>Pour la fonction esth_graph(), les arguments sont un peu
+différents, à l’exception de reorder et show_value. error_low, error_upp
+et n_var permettent d’indiquer les colonnes dans tab où se trouvent les
+bornes inférieures et supérieures des barres d’erreurs et le nombre de
+personnes dans l’échantillon. Par défaut, ces arguments ont une valeur
+NULL, ce qui conduit à ne pas montrer ces éléments dans le graphique.
+name_total permet d’indiquer le nom du total dans tab de manière à ce
+que cette valeur soit mise en évidence (couleur et position) dans le
+graphique.</p></li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
 </h3>
+<ul>
+<li><p>Les couleurs des barres peuvent être indiquées dans les arguments
+fill et pal. fill est utilisé pour les graphiques monochrome
+(prop_group(), central_group() et ses alias, distrib_discrete() et
+esth_graph()). Les couleurs de base de R ou un code couleur hexadécimal.
+pal est utilisé pour les graphiques avec plusieurs couleurs. pal doit
+reprendre le nom d’une palette des packages MetBrewer, MoMAColors ou
+PrettyCols. L’argument direction permet d’inverser le sens de la
+palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens
+opposé. Pour many_val() et ses alias, pal peut prendre aussi une couleur
+unie (couleur de R ou code hexadécimal) si l’utilisateur souhaite un
+graphique monochrome. Les couleurs des NA et des totaux, quand ils sont
+présents sont toujours gris (grey) et gris foncé (grey40) et ne sont pas
+modifiable par les arguments fill ou pal. Par défaut, des couleurs ou
+des pallettes de couleurs différentes (EST-CE VRAI POUR TOUTES LES
+FONCTIONS MANY?) ont été choisies pour chaque fonctions différente, y
+compris les alias, pour éviter la confusion des graphiques.</p></li>
+<li><p>dodge indique l’épaisseur des barres et peut aller de 0 (barre
+invisible car d’épaisseur nulle) à 1 (barre se touchant car ne laissant
+aucun espace entre elles). La valeur par défaut est de 0.9.</p></li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
 </h3>
+<p>L’esthétique des chiffres concernent la manière dont l’estimation de
+l’indicateur est affichée sur le graphique. Ainsi, ces argument n’ont
+une utilité que si show_value = TRUE.</p>
+<ul>
+<li><p>scale est un argument qui n’est utilisé que dans les graphique
+exprimant des proportion. Il indique le dénominateur par lequel il faut
+interpréter le chiffre. Par défaut, il a une valeur de 100 pour
+interpréter les chiffres mentionnés en pourcentage. Par exemple on peut
+donner une valeur de 1000 pour interpréter les chiffres en pour mille ou
+une valeur de 1 pour interpréter les chiffres comme de simple
+proportions.</p></li>
+<li><p>digits indique le nombre de décimales qui doivent être affichées
+pour les valeurs sur le graphique. Par défaut, digit vaut 0, ce qui
+conduit à ne pas afficher de décimale.</p></li>
+<li><p>unit indique l’unité à indiquer sur le graphique. Pour
+distrib_discrete(), prop_group, many_prop() et many_prop_group(),
+l’unité par défaut est “%”. Pour les autres l’argument par défaut prend
+une valeur vide, c’est-à-dire une absence d’unité indiquée sur le
+graphique. N’importe quel caractère ou chaine de caractère peut être
+utilisée : “€”, “m²”, etc.</p></li>
+<li><p>dec indique le caractère qui doit être utilisé pour marqué la
+décimale dans les chiffes. Cet argument n’est utile que quand digits
+&gt; 0. Par défaut, la virgule est utilisée comme c’est le cas dans le
+monde francophone.</p></li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
 </h3>
+<ul>
+<li><p>font indique la police qui est utilisée pour l’ensemble du texte
+dans le graphique. Actuellement trois polices sont directement incluses
+dans le package : Roboto, Montserrat and Gotham Narrow. Pour toutes les
+fonctions la police par défaut est Roboto.</p></li>
+<li><p>wrap_width_y et wrap_width_leg indique le nombre de caractères
+avant d’aller à la ligne, pour respectivement les différent labels de
+l’axe des ordonnées et les différents labels de la légende légende. Ces
+valeurs sont par défaut de 25 caractères. wrap_width_leg n’est présent
+que pour les graphiques ayant une légende : distrib_group_discrete() et
+many_val_group et ses alias. Précisons aussi que le _y renvoie à l’axe
+des y tel qu’il est situé sur le graphique, après la transformation
+coord_flip() qui a lieu dans les fonctions. Ainsi, il s’agit souvent des
+groupes, de la variable qualitative pour distrib_discrete() ou de la
+liste des variables pour many_val et many_val_group et leurs
+alias.</p></li>
+<li><p>legend_ncol indique le nombre maximum de colonnes dans la
+légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes
+dans la légende s’ajuste au nombre maximum de colonnes. legend_ncol
+n’est aussi présent que pour les graphiques ayant une légende :
+distrib_group_discrete() et many_val_group et ses alias.</p></li>
+</ul>
 </div>
 <div class="section level3">
-<h3 id="les-labels-y-compris-des-variables-dans-les-fonctions-many">Les labels (y compris des variables dans les fonctions many)<a class="anchor" aria-label="anchor" href="#les-labels-y-compris-des-variables-dans-les-fonctions-many"></a>
+<h3 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
 </h3>
+<p>Les arguments de label ne sont utilisés que si show_lab = TRUE. Si
+show_lab = FALSE, aucun des labels ci-dessous n’est indiqué.</p>
+<ul>
+<li><p>title, subtitle, xlab, ylab, legend_lab et caption indiquent les
+textes à reprendre comme titre du graphique, sous-titre du graphique,
+titre de l’axe des abscisses, titre de l’axe des ordonnées, titre de la
+légende et de <em>caption</em> (la petite légende en bas à droite du
+graphique). Précisons que xlab et ylab font référence aux axes tels
+qu’ils sont situés sur le graphique, c’est-à-dire après la
+transformation coord_flip() qui a lieu dans les fonctions. legend_lab
+n’est présent que pour les graphiques ayant une légende :
+distrib_group_discrete() et many_val_group et ses alias. Le caption
+étant souvent déjà utilisé pour indiquer la p valeur du test
+statistique, l’utilisation de l’argument caption permet d’ajouter un
+texte en dessous de la mention de p valeur du test statistique.</p></li>
+<li><p>Il est possible de ne pas indiquer de texte explicite pour les
+arguments de label tout en indiquant show_lab = TRUE. Dans ce cas, il
+n’y a pas de titre, pas de sous-titre et pas de caption (autre que la p
+valeur du test statistique), mais il y a un xlab, un ylab et, pour les
+graphiques avec légende, un legend_lab. Chacun de ces texte reprend les
+noms de la variable ou de l’expression qui est, pour xlab, précédé d’une
+précision : “Moyenne : …”, “Distribution : …”</p></li>
+<li><p>Il est possible d’indiquer certains label et d’autre non, par
+exemple si l’on souhaite un titre mais pas de sous-titre. Il suffit
+d’indiquer show_lab = TRUE et de ne compléter que les arguments de
+labels que l’on souhaite voir écrits sur le graphique. Cependant, pour
+xlab, ylab et legend_lab, cette manière de procéder ne fonctionne pas
+car en l’absence de texte explicite (et avec show_lab = TRUE), le label
+automatique sera écrit sur le graphique. Si l’on souhaite ne pas avoir
+au moins un de ces labels mais en avoir d’autres, il faut alors
+indiquer, respectivement, xlab = ““, ylab =”” ou legend_lab = ““.
+L’utilisation de xlab = NULL, ylab = NULL ou legend_lab = NULL conduira
+à l’écriture du texte automatique.</p></li>
+<li><p>Comme argument de label, on peut aussi mentionner l’argument
+lists_vars_lab que l’on a déjà expliqué plus haut et qui peut être aussi
+considéré comme un label. Cependant, par rapport aux autres labels, cet
+argument a aussi une influence sur la table produite (tab) car ce sont
+les labels de variables qui seront repris dans le tableau, alors ques
+les autres labels, comme tous les arguments esthétiques n’influencent
+que le graphique et non le tableau.</p></li>
+</ul>
 </div>
 </div>
 <div class="section level2">
