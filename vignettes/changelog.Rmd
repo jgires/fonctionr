@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.12
+
+Date : 2024-04-04
+
+-   Création de `distrib_continuous()` et `distrib_group_continuous()`.
+
+-   Modification du thème `theme_fonctionr()` pour qu'il soit plus adapté aux nouvelles fonctions.
+
 ## fonctionr 0.2.11
 
 Date : 2024-03-17

@@ -275,12 +275,12 @@ many_val_group = function(data,
 
   # 3. CALCUL DES INDICATEURS --------------------
 
-  # Si facet
+  # Si non facet
   if (quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       group_by({{ group }})
   }
-  # Si non facet
+  # Si facet
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       group_by({{ facet }}, {{ group }})

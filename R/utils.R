@@ -329,17 +329,20 @@ theme_fonctionr <- function(font) {
 
   load_and_active_fonts()
 
-  theme_minimal() +
+  theme <- theme_minimal() +
   theme(
     panel.grid.minor.y = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_blank(),
     panel.grid.major.x = element_line(color = "#dddddd"),
     text = element_text(family = font),
-    axis.line = element_line(color = "black"),
-    axis.ticks = element_blank(),
-    #axis.ticks = element_line(color = "black"),
+    axis.line.x = element_line(color = "black"),
+    axis.line.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.ticks.x = element_line(color = "black"),
     axis.text = element_text(color = "black"),
     plot.margin = margin(10, 15, 10, 10)
   )
+
+  return(theme)
 }

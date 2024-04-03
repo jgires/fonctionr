@@ -163,29 +163,32 @@ distrib_continuous <- function(data,
     subdensity = T,
     weights = if (is.null(var_weights)) {
       NULL
-    } else if (!is.null(var_weights)) data_W$variables[[as.character(var_weights)]], # On introduit la variable de pondération identifiée dans var_weights
+    } else if (!is.null(var_weights)) data_W$variables[[as.character(var_weights)]] / sum(data_W$variables[[as.character(var_weights)]]), # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
     na.rm = T
   )
 
-  # On calcule les quantiles avec survey et on les stocke dans un vecteur
+  # print(sum(data_W$variables[[as.character(var_weights)]]/sum(data_W$variables[[as.character(var_weights)]])))
+
+  # On calcule les quantiles avec survey et on les stocke dans un data.frame
   estQuant_W <- as.data.frame(svyquantile(~quanti_exp_flattened,
     design = data_W,
     quantiles = quantiles,
     ci = T,
     na.rm = T
-  )[[1]])
+  )[[1]]) %>%
+    add_rownames(var = "probs")
 
-  # On crée un data.frame, et on crée les groupes de quantiles (à quel quantile x appartient) en croisant x avec le vecteur de quantiles
+  # On crée un data.frame avec les densités, et on crée les classes de quantiles (à quel quantile x appartient) en croisant x avec le vecteur de quantiles
   df_dens <- data.frame(
     x = estDensity$x,
-    y = estDensity$y / sum(estDensity$y),
+    y = estDensity$y,
     quantFct = findInterval(estDensity$x, estQuant_W$quantile) + 1,
     segment = NA # Pour pouvoir identifier les quantiles que j'ajoute ci-dessous
   )
 
-  # sum(df_dens$y)
+  # print(sum(df_dens$y))
 
-  # Il faut qu'il y ait dans l'estimation de la densité les valeurs EXACTES des quantiles, pour que le ggplot coupe exactement aux quantiles !
+  # Il faut qu'il y ait dans l'estimation de la densité les valeurs EXACTES des quantiles, pour que le ggplot puisse couper exactement aux quantiles !
   # => Je les ajoute avec add_case, en estimant y avec approx()
   # Je le fais dans une boucle, pour avoir tous les quantiles.
   # SOLUTION INSPIRéE DE CE CODE : https://stackoverflow.com/questions/74560448/how-fill-geom-ribbon-with-different-colour-in-r
@@ -307,19 +310,19 @@ distrib_continuous <- function(data,
   graph <- ggplot(
     data = df_dens[is.na(df_dens$central), ] # Sans les valeurs centrales, sinon ggplot les plot avec couleur NA
   ) +
+    geom_ribbon(
+      aes(
+        x = x, ymin = 0, ymax = y, fill = quantFct
+      ),
+      alpha = 1
+    ) +
     geom_line(
       aes(
         x = x,
         y = y
       ),
       color = border,
-      linewidth = 1
-    ) +
-    geom_ribbon(
-      aes(
-        x = x, ymin = 0, ymax = y, fill = quantFct
-      ),
-      alpha = 1
+      linewidth = .7
     ) +
     scale_x_continuous(
       breaks = c(limits[1], estQuant_W$quantile, limits[2]),
@@ -488,7 +491,6 @@ distrib_continuous <- function(data,
       labs(x = NULL,
            y = NULL)
   }
-
 
 
   # 6. RESULTATS --------------------
