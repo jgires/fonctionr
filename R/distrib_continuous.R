@@ -151,7 +151,25 @@ distrib_continuous <- function(data,
   }
 
 
-  # 3. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
+  # 3. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
+
+  if (!quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ facet }})
+  }
+
+  # Calcul de la moyenne ou médiane et ses IC
+  tab <- data_W %>%
+    summarise(
+      indice = if (type == "median") {
+        survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
+      } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+      n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
+      n_weighted = survey_total(vartype = "ci")
+    )
+
+
+  # 4. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
 
   # On identifie la variable de pondération inclue dans dotdotdot (...) pour la passer aussi à la densité
   var_weights <- substitute(...())$weights
@@ -163,7 +181,8 @@ distrib_continuous <- function(data,
     subdensity = T,
     weights = if (is.null(var_weights)) {
       NULL
-    } else if (!is.null(var_weights)) data_W$variables[[as.character(var_weights)]] / sum(data_W$variables[[as.character(var_weights)]]), # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
+    # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
+    } else if (!is.null(var_weights)) data_W$variables[[as.character(var_weights)]] / sum(data_W$variables[[as.character(var_weights)]]),
     na.rm = T
   )
 
@@ -239,24 +258,6 @@ distrib_continuous <- function(data,
           slice(-n()) # Et la dernière si elle coupée
     }
   }
-
-
-  # 4. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
-
-  if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
-      group_by({{ facet }})
-  }
-
-  # Calcul de la moyenne ou médiane et ses IC
-  tab <- data_W %>%
-    summarise(
-      indice = if (type == "median") {
-        survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-      } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-      n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
-      n_weighted = survey_total(vartype = "ci")
-    )
 
   # On estime la densité de la moyenne ou médiane et ses CI
   df_dens <- df_dens |>

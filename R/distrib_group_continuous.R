@@ -60,12 +60,13 @@ distrib_group_continuous <- function(data,
                                show_n = FALSE,
                                show_value = TRUE,
                                show_lab = TRUE,
+                               reorder = F,
                                digits = 0,
                                scale = .9,
                                unit = "",
                                dec = ",",
                                pal = c("skyblue4", "skyblue"),
-                               palette_moustache = c("#e7868d", "#ffcf9e"),
+                               palette_moustache = c("#EB9BA0", "#FAD7B1"),
                                border = NA,
                                font ="Roboto",
                                title = NULL,
@@ -168,7 +169,40 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # 3. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
+  # 3. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
+
+  # Si non facet
+  if (quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ group }})
+  }
+  # Si facet
+  if (!quo_is_null(quo_facet)) {
+    data_W <- data_W %>%
+      group_by({{ facet }}, {{ group }})
+  }
+
+  # On calcule l'indicateur par groupe (mean ou median selon la fonction appelée)
+  if (quo_is_null(quo_facet)) {
+    tab <- data_W %>%
+      summarise(
+        indice = if (type == "median") {
+          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+        n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
+        n_weighted = survey_total(vartype = "ci")
+      )
+  }
+
+  if (reorder == T) {
+    tab_order <- tab %>%
+      arrange(desc(indice)) %>%
+      mutate(order = row_number()) %>%
+      select(group = {{ group }}, order)
+  }
+
+
+  # 4. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
 
   # On identifie la variable de pondération inclue dans dotdotdot (...) pour la passer aussi à la densité
   var_weights <- substitute(...())$weights
@@ -179,7 +213,7 @@ distrib_group_continuous <- function(data,
   quant_seg <- tibble()
   boxplot_df <- tibble()
   # On crée un vecteur sur lequel on va boucler => ce sont les levels de group (qui est un facteur)
-  vec_group.i <- levels(data_W$variables[[deparse(substitute(group))]])
+  vec_group.i <- rev(levels(data_W$variables[[deparse(substitute(group))]]))
 
   for(group.i in seq_along(vec_group.i)){
 
@@ -194,7 +228,8 @@ distrib_group_continuous <- function(data,
       subdensity = T,
       weights = if (is.null(var_weights)) {
         NULL
-      } else if (!is.null(var_weights)) data_W_group$variables[[as.character(var_weights)]] / sum(data_W_group$variables[[as.character(var_weights)]]), # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
+      # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
+      } else if (!is.null(var_weights)) data_W_group$variables[[as.character(var_weights)]] / sum(data_W_group$variables[[as.character(var_weights)]]),
       na.rm = T
     )
 
@@ -207,10 +242,10 @@ distrib_group_continuous <- function(data,
       ci = T,
       na.rm = T
     )[[1]]) %>%
-      tibble::rownames_to_column(var = "probs") %>%
+      tibble::rownames_to_column(var = "probs") %>% # On crée une colonne qui contient le quantile
       mutate(
-        group = vec_group.i[group.i],
-        level = group.i
+        group = vec_group.i[group.i], # Pour savoir quel groupe
+        level = group.i # Pour savoir quel level (en valeur numérique)
       )
 
     # On crée un data.frame avec les densités, et on crée les classes de quantiles (à quel quantile x appartient) en croisant x avec le vecteur de quantiles
@@ -232,8 +267,8 @@ distrib_group_continuous <- function(data,
     for (i in seq_along(quantiles)) {
       df_dens_group <- df_dens_group |>
         tibble::add_case(
-          group = vec_group.i[group.i], # Pour savoir quel groupe
-          level = group.i, # Pour savoir quel level (en valeur numérique)
+          group = vec_group.i[group.i],
+          level = group.i,
           x = estQuant_W_group$quantile[i],
           y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i])$y,
           quantFct = i,
@@ -286,7 +321,7 @@ distrib_group_continuous <- function(data,
         names_transform = as.numeric
       ) %>%
       mutate(
-        moustache_prob = ifelse(
+        moustache_prob = ifelse( # On fait l'inverse que précédemment : on retrouve les proportions à partir des quantiles
           probs > .5,
           1 - ((1 - probs) * 2),
           1 - (probs * 2)
@@ -297,6 +332,11 @@ distrib_group_continuous <- function(data,
           "begin"
         )
       )
+    if (reorder == T) {
+      boxplot_df <- boxplot_df %>%
+        left_join(tab_order, by = "group") %>%
+        mutate(level = order)
+    }
     boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent être en caractère
     boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile) %>% mutate(across(everything(), as.character))
     boxplot_df <- boxplot_df_begin %>%
@@ -311,51 +351,30 @@ distrib_group_continuous <- function(data,
 
   }
 
-  # Je transforme l'appartenance au quantile en facteur, pour le ggplot
+  # On calcule y_ridges, pour ploter chaque densité de groupe à un y différent sur des multiples de 1 (0, 1, 2, 3, ..., n)
+  if (reorder == T) {
+    df_dens <- df_dens %>%
+      left_join(tab_order, by = "group") %>%
+      mutate(level = order)
+  }
   df_dens <- df_dens %>%
     group_by(group) %>%
     mutate(y_ridges = (y / max(y)) * scale) %>%
     ungroup() %>%
     mutate(
       y_ridges = y_ridges + (level - 1),
-      quantFct = as.factor(quantFct)
+      quantFct = as.factor(quantFct) # Je transforme l'appartenance au quantile en facteur, pour le ggplot
     )
 
   # On isole les quantiles avec leurs coordonnées y de densité (pour les afficher avec le ggplot)
   quant_seg <- df_dens %>%
     filter(segment == TRUE)
 
-
-  # 4. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
-
-  # Si non facet
-  if (quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
-      group_by({{ group }})
-  }
-  # Si facet
-  if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
-      group_by({{ facet }}, {{ group }})
-  }
-
-  # On calcule l'indicateur par groupe (mean ou median selon la fonction appelée)
-  if (quo_is_null(quo_facet)) {
-    tab <- data_W %>%
-      summarise(
-        indice = if (type == "median") {
-          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-        n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
-        n_weighted = survey_total(vartype = "ci")
-      )
-  }
-
-  # On inclut les levels => nécessaire pour ggplot
+  # On inclut les levels à tab => nécessaire pour ggplot
   tab_level <- df_dens %>%
     group_by(group) %>%
     summarise(level = first(level)) %>%
-    rename("{{ group }}" := group)
+    rename("{{ group }}" := group) # Pour la jointure
   tab <- tab %>%
     left_join(tab_level)
 
@@ -395,9 +414,9 @@ distrib_group_continuous <- function(data,
   ) +
     geom_ribbon(
       aes(
-        x = x, ymin = level - 1, ymax = y_ridges,
+        x = x, ymin = level - 1, ymax = y_ridges, # ymin à level - 1 car commence à 0
         fill = quantFct,
-        group = interaction(group, quantFct)
+        group = interaction(group, quantFct) # Ici le groupe doit être l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
       ),
       alpha = 1
     ) +
@@ -426,16 +445,16 @@ distrib_group_continuous <- function(data,
       expand = expansion(mult = c(0.005, 0.05))
     ) +
     scale_fill_manual(
-      values = palette
+      values = palette,
+      guide = "none"
     ) +
     theme_fonctionr(font = font) +
     theme(
-      legend.position = 'none'
+      legend.position = "bottom"
     ) +
     labs(title = title,
          subtitle = subtitle
     )
-
 
   # Ajouter les segments des quantiles
   if (show_segments == T) {
@@ -452,7 +471,7 @@ distrib_group_continuous <- function(data,
   # Ajouter les moustaches
   if (moustache == T) {
     graph <- graph +
-      ggnewscale::new_scale_fill() +
+      ggnewscale::new_scale_fill() + # Ici je suis obligé de réinitialiser une nouvelle palette avec le package ggnewscale => je vois pas d'autre moyen facile
       geom_rect(
         data = boxplot_df,
         aes(
@@ -462,7 +481,8 @@ distrib_group_continuous <- function(data,
         alpha = 1
       ) +
       scale_fill_manual(
-        values = pal_moustache
+        values = pal_moustache,
+        name = "Proportion d'observations"
       )
   }
 
@@ -577,7 +597,7 @@ distrib_group_continuous <- function(data,
       }
       if(is.null(ylab)){
         graph <- graph +
-          labs(y = "Densité")
+          labs(y = paste0(deparse(substitute(group))))
       }
     }
     if(all(!is.null(ylab), ylab == "")){
@@ -615,7 +635,7 @@ distrib_group_continuous <- function(data,
   # On crée l'objet final
   res <- list()
   res$dens <- df_dens[, c("group", "x", "y", "quantFct")]
-  res$tab <- tab[, !names(tab) %in% c("level")]
+  res$tab <- tab#[, !names(tab) %in% c("level")]
   res$quant <- estQuant_W
   res$graph <- graph
   res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
