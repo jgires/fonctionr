@@ -312,7 +312,8 @@ distrib_group_continuous <- function(data,
     }
   }
 
-  # On restructure boxplot_df pour ggplot => on calcule xbegin & xend par proportion + par groupe, pour indiquer à quelles valeurs de x commencent et finissent chaque "moustache"
+  # On restructure boxplot_df pour ggplot
+  # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer à quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
   if (show_moustache == T) {
     boxplot_df <- boxplot_df %>%
       pivot_longer(
@@ -574,6 +575,25 @@ distrib_group_continuous <- function(data,
     #     linewidth = 1,
     #     alpha = .6
     #   )
+  }
+
+  if (show_value == T) {
+    graph<-graph  +
+      geom_text(
+        data = tab,
+        aes(
+          x = indice,
+          y = level - 1,
+          label = paste0(stringr::str_replace(round(indice,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
+                         unit),
+          family = font),
+        size = 3,
+        vjust = -1,
+        color = "black",
+        alpha = 0.9)
   }
 
   # Ajouter les axes

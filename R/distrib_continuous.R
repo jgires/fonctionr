@@ -447,12 +447,33 @@ distrib_continuous <- function(data,
     graph <- graph +
       geom_segment(
         data = central[central$central == "indice", ],
-        aes(x = x,
-            y = 0,
-            yend = y),
+        aes(
+          x = x,
+          y = 0,
+          yend = y
+        ),
         linewidth = 1,
         alpha = .6
       )
+  }
+
+  if (show_value == T) {
+    graph<-graph  +
+      geom_text(
+        data = central[central$central == "indice", ],
+        aes(
+          x = x,
+          y = y,
+          label = paste0(stringr::str_replace(round(x,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
+                         unit),
+          family = font),
+        size = 3,
+        vjust = -1,
+        color = "black",
+        alpha = 0.9)
   }
 
   # Ajouter les axes
