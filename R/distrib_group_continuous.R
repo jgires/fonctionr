@@ -43,32 +43,33 @@ distrib_group_continuous <- function(data,
                                quanti_exp,
                                type = "median",
                                facet = NULL,
-                               quantiles = seq(.1, .9, .1),
-                               moustache_probs = c(.95, .8, .5),
                                filter_exp = NULL,
                                ...,
-                               na.rm.group = T,
-                               na.rm.facet = T,
-                               limits = NULL,
+                               na.rm.group = TRUE,
+                               na.rm.facet = TRUE,
+                               quantiles = seq(.1, .9, .1),
+                               moustache_probs = c(.95, .8, .5),
                                bw = 1,
                                resolution = 512,
-                               moustache = TRUE,
-                               show_ci_lines = T,
-                               show_ci_area = F,
-                               show_center = T,
-                               show_segments = F,
+                               height = .8,
+                               limits = NULL,
+                               reorder = FALSE,
+                               show_center = TRUE,
+                               show_ci = TRUE,
+                               show_ci_area = FALSE,
+                               show_quant_lines = FALSE,
+                               show_moustache = TRUE,
                                show_n = FALSE,
                                show_value = TRUE,
                                show_lab = TRUE,
-                               reorder = F,
                                digits = 0,
-                               scale = .9,
                                unit = "",
                                dec = ",",
                                pal = c("skyblue4", "skyblue"),
-                               palette_moustache = c("#EB9BA0", "#FAD7B1"),
-                               border = NA,
+                               pal_moustache = c("#EB9BA0", "#FAD7B1"),
+                               color = NA,
                                font ="Roboto",
+                               wrap_width_y = 25,
                                title = NULL,
                                subtitle = NULL,
                                xlab = NULL,
@@ -288,8 +289,8 @@ distrib_group_continuous <- function(data,
     # On rbind progressivement les df de quantiles des différents groupe
     estQuant_W <- rbind(estQuant_W, estQuant_W_group)
 
-    # On fait les calculs nécessaires pour créer les boites à moustaches
-    if (moustache == T) {
+    # On fait les calculs nécessaires pour créer les boites à show_moustaches
+    if (show_moustache == T) {
 
       # On calcule les quantiles à partir des proportions indiquées dans moustache_probs
       moustache_quant <- c(0 + ((1-moustache_probs)/2), 1 - ((1-moustache_probs)/2))
@@ -312,7 +313,7 @@ distrib_group_continuous <- function(data,
   }
 
   # On restructure boxplot_df pour ggplot => on calcule xbegin & xend par proportion + par groupe, pour indiquer à quelles valeurs de x commencent et finissent chaque "moustache"
-  if (moustache == T) {
+  if (show_moustache == T) {
     boxplot_df <- boxplot_df %>%
       pivot_longer(
         cols = !c(group, level),
@@ -359,7 +360,7 @@ distrib_group_continuous <- function(data,
   }
   df_dens <- df_dens %>%
     group_by(group) %>%
-    mutate(y_ridges = (y / max(y)) * scale) %>%
+    mutate(y_ridges = (y / max(y)) * height) %>%
     ungroup() %>%
     mutate(
       y_ridges = y_ridges + (level - 1),
@@ -393,8 +394,8 @@ distrib_group_continuous <- function(data,
   }
 
   # Palette pour les moustaches, selon le nombre de proportions dans moustache_probs
-  if (moustache == T) {
-    pal_moustache <- grDevices::colorRampPalette(palette_moustache)(length(moustache_probs))
+  if (show_moustache == T) {
+    pal_mous_calc <- grDevices::colorRampPalette(pal_moustache)(length(moustache_probs))
   }
 
   # Les limites de la variable quanti si non indiquée par l'utilisateur => pour ggplot
@@ -426,7 +427,7 @@ distrib_group_continuous <- function(data,
         y = y_ridges,
         group = group
       ),
-      color = border,
+      color = color,
       linewidth = .7
     ) +
     scale_x_continuous(
@@ -440,8 +441,8 @@ distrib_group_continuous <- function(data,
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_y_continuous(
-      breaks = unique(df_dens$level - 1),
-      labels = unique(df_dens$group),
+      breaks = unique(df_dens$level - .8),
+      labels = stringr::str_wrap(unique(df_dens$group), width = wrap_width_y),
       expand = expansion(mult = c(0.005, 0.05))
     ) +
     scale_fill_manual(
@@ -457,7 +458,7 @@ distrib_group_continuous <- function(data,
     )
 
   # Ajouter les segments des quantiles
-  if (show_segments == T) {
+  if (show_quant_lines == T) {
     graph <- graph +
       geom_segment(
         data = quant_seg,
@@ -469,7 +470,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les moustaches
-  if (moustache == T) {
+  if (show_moustache == T) {
     graph <- graph +
       ggnewscale::new_scale_fill() + # Ici je suis obligé de réinitialiser une nouvelle palette avec le package ggnewscale => je vois pas d'autre moyen facile
       geom_rect(
@@ -481,7 +482,7 @@ distrib_group_continuous <- function(data,
         alpha = 1
       ) +
       scale_fill_manual(
-        values = pal_moustache,
+        values = pal_mous_calc,
         name = "Proportion d'observations"
       )
   }
@@ -531,7 +532,7 @@ distrib_group_continuous <- function(data,
   # }
 
   # Ajouter les limites des IC
-  if (show_ci_lines == T) {
+  if (show_ci == T) {
     graph <- graph +
       geom_errorbarh(
         data = tab,

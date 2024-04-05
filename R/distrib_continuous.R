@@ -41,17 +41,17 @@ distrib_continuous <- function(data,
                           quanti_exp,
                           type = "median",
                           facet = NULL,
-                          quantiles = seq(.1, .9, .1),
                           filter_exp = NULL,
                           ...,
-                          na.rm.facet = T,
-                          limits = NULL,
+                          na.rm.facet = TRUE,
+                          quantiles = seq(.1, .9, .1),
                           bw = 1,
                           resolution = 1024,
-                          show_ci_lines = T,
-                          show_ci_area = F,
-                          show_center = T,
-                          show_segments = F,
+                          limits = NULL,
+                          show_center = TRUE,
+                          show_ci = TRUE,
+                          show_ci_area = FALSE,
+                          show_quant_lines = FALSE,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_lab = TRUE,
@@ -59,7 +59,7 @@ distrib_continuous <- function(data,
                           unit = "",
                           dec = ",",
                           pal = c("#c94d33", "#ffe3bf"),
-                          border = NA,
+                          color = NA,
                           font ="Roboto",
                           title = NULL,
                           subtitle = NULL,
@@ -322,7 +322,7 @@ distrib_continuous <- function(data,
         x = x,
         y = y
       ),
-      color = border,
+      color = color,
       linewidth = .7
     ) +
     scale_x_continuous(
@@ -387,7 +387,7 @@ distrib_continuous <- function(data,
   }
 
   # Ajouter les segments des quantiles
-  if (show_segments == T) {
+  if (show_quant_lines == T) {
     graph <- graph +
       geom_segment(
         data = quant_seg,
@@ -411,7 +411,7 @@ distrib_continuous <- function(data,
     }
 
   # Ajouter les limites des IC
-  if (show_ci_lines == T) {
+  if (show_ci == T) {
     # graph <- graph +
     #   geom_errorbarh(
     #     data = tab,
