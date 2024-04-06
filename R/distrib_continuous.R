@@ -48,8 +48,9 @@ distrib_continuous <- function(data,
                           bw = 1,
                           resolution = 1024,
                           limits = NULL,
-                          show_center = TRUE,
-                          show_ci = TRUE,
+                          # show_mid_point = TRUE,
+                          show_mid_line = TRUE,
+                          show_ci_lines = TRUE,
                           show_ci_area = FALSE,
                           show_quant_lines = FALSE,
                           show_n = FALSE,
@@ -58,7 +59,7 @@ distrib_continuous <- function(data,
                           digits = 0,
                           unit = "",
                           dec = ",",
-                          pal = c("#c94d33", "#ffe3bf"),
+                          pal = c("#003e57", "#009ad6"),
                           color = NA,
                           font ="Roboto",
                           title = NULL,
@@ -368,6 +369,31 @@ distrib_continuous <- function(data,
       )
     )
 
+  # Ajouter les segments des quantiles
+  if (show_quant_lines == T) {
+    graph <- graph +
+      geom_segment(
+        data = quant_seg,
+        aes(x = x,
+            y = 0,
+            yend = y),
+        # linetype = "dotted"
+        alpha = .15
+      )
+  }
+
+  # Ajouter l'aire des CI
+  if (show_ci_area == T) {
+    graph <- graph +
+      geom_ribbon(
+        data = central,
+        aes(
+          x = x, ymin = 0, ymax = y
+        ),
+        alpha = .25
+      )
+  }
+
   # Ajouter le nombre d'individus au besoin
   if (show_n == TRUE) {
     graph <- graph +
@@ -386,32 +412,8 @@ distrib_continuous <- function(data,
       )
   }
 
-  # Ajouter les segments des quantiles
-  if (show_quant_lines == T) {
-    graph <- graph +
-      geom_segment(
-        data = quant_seg,
-        aes(x = x,
-            y = 0,
-            yend = y),
-        linetype = "dotted"
-      )
-  }
-
-  # Ajouter l'aire des CI
-  if (show_ci_area == T) {
-    graph <- graph +
-      geom_ribbon(
-        data = central,
-        aes(
-          x = x, ymin = 0, ymax = y
-        ),
-        alpha = .25
-      )
-    }
-
   # Ajouter les limites des IC
-  if (show_ci == T) {
+  if (show_ci_lines == T) {
     # graph <- graph +
     #   geom_errorbarh(
     #     data = tab,
@@ -426,27 +428,21 @@ distrib_continuous <- function(data,
 
     graph <- graph +
       geom_segment(
-        data = central[central$central == "indice_low" | central$central == "indice_upp", ],
+        data = central[(central$central == "indice_low" | central$central == "indice_upp") & !is.na(central$central), ],
         aes(x = x,
             y = 0,
             yend = y),
         linetype = "dashed",
+        linewidth = 1,
         alpha = .4
       )
   }
 
-  # Ajouter la tendance centrale
-  if (show_center == T) {
-    # graph <- graph +
-    #   geom_point(
-    #     data = tab,
-    #     aes(x = indice,
-    #         y = 0)
-    #   )
-
+  # Ajouter la ligne de la tendance centrale
+  if (show_mid_line == T) {
     graph <- graph +
       geom_segment(
-        data = central[central$central == "indice", ],
+        data = central[central$central == "indice" & !is.na(central$central), ],
         aes(
           x = x,
           y = 0,
@@ -457,10 +453,20 @@ distrib_continuous <- function(data,
       )
   }
 
+  # # Ajouter le point de la tendance centrale
+  # if (show_mid_point == T) {
+  #   graph <- graph +
+  #     geom_point(
+  #       data = tab,
+  #       aes(x = indice,
+  #           y = 0)
+  #     )
+  # }
+
   if (show_value == T) {
-    graph<-graph  +
+    graph <- graph  +
       geom_text(
-        data = central[central$central == "indice", ],
+        data = central[central$central == "indice" & !is.na(central$central), ],
         aes(
           x = x,
           y = y,

@@ -54,8 +54,10 @@ distrib_group_continuous <- function(data,
                                height = .8,
                                limits = NULL,
                                reorder = FALSE,
-                               show_center = TRUE,
-                               show_ci = TRUE,
+                               show_mid_point = TRUE,
+                               show_mid_line = FALSE,
+                               show_ci_errorbar = TRUE,
+                               show_ci_lines = FALSE,
                                show_ci_area = FALSE,
                                show_quant_lines = FALSE,
                                show_moustache = TRUE,
@@ -65,7 +67,7 @@ distrib_group_continuous <- function(data,
                                digits = 0,
                                unit = "",
                                dec = ",",
-                               pal = c("skyblue4", "skyblue"),
+                               pal = "#e0dfe0",
                                pal_moustache = c("#EB9BA0", "#FAD7B1"),
                                color = NA,
                                font ="Roboto",
@@ -298,15 +300,15 @@ distrib_group_continuous <- function(data,
 
       # On calcule les quantiles du group.i avec survey et on les stocke dans un data.frame
       boxplot_group <- as.data.frame(svyquantile(~quanti_exp_flattened,
-       design = data_W_group,
-       quantiles = moustache_quant, # On indique les quantiles calculés
-       ci = F,
-       na.rm = T
-     )[[1]]) %>%
-       mutate(
-         group = vec_group.i[group.i],
-         level = group.i
-       )
+        design = data_W_group,
+        quantiles = moustache_quant, # On indique les quantiles calculés
+        ci = F,
+        na.rm = T
+      )[[1]]) %>%
+        mutate(
+          group = vec_group.i[group.i],
+          level = group.i
+        )
       # On rbind progressivement les df de quantiles des différents groupe
       boxplot_df <- rbind(boxplot_df, boxplot_group)
     }
@@ -340,7 +342,7 @@ distrib_group_continuous <- function(data,
         mutate(level = order)
     }
     boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent être en caractère
-    boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile) %>% mutate(across(everything(), as.character))
+    boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile)   %>% mutate(across(everything(), as.character))
     boxplot_df <- boxplot_df_begin %>%
       left_join(boxplot_df_end) %>%
       mutate(
@@ -379,6 +381,75 @@ distrib_group_continuous <- function(data,
     rename("{{ group }}" := group) # Pour la jointure
   tab <- tab %>%
     left_join(tab_level)
+
+  central <- tibble()
+  # On estime la densité de la moyenne ou médiane et ses CI
+  for(group.i in seq_along(vec_group.i)){
+    df_dens_central <- df_dens |>
+      filter(group == vec_group.i[group.i])
+
+    # print(vec_group.i[group.i])
+    # print(tab$indice_low[tab[[1]] == vec_group.i[group.i]])
+    # print(tab$indice[tab[[1]] == vec_group.i[group.i]])
+    # print(tab$indice_upp[tab[[1]] == vec_group.i[group.i]])
+
+    df_dens_central <- df_dens_central %>%
+      mutate(central = NA) %>%
+      tibble::add_case(
+        group = vec_group.i[group.i],
+        level = group.i,
+        x = tab$indice[tab[[1]] == vec_group.i[group.i]],
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice[tab[[1]] == vec_group.i[group.i]])$y,
+        central = "indice"
+      ) %>%
+      tibble::add_case(
+        group = vec_group.i[group.i],
+        level = group.i,
+        x = tab$indice_low[tab[[1]] == vec_group.i[group.i]],
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_low[tab[[1]] == vec_group.i[group.i]])$y,
+        central = "indice_low"
+      ) %>%
+      tibble::add_case(
+        group = vec_group.i[group.i],
+        level = group.i,
+        x = tab$indice_upp[tab[[1]] == vec_group.i[group.i]],
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_upp[tab[[1]] == vec_group.i[group.i]])$y,
+        central = "indice_upp"
+      )
+
+    # On rbind progressivement les df de densité des différents groupes
+    central <- rbind(central, df_dens_central)
+  }
+
+  # On crée un df agrégé avec une ligne par groupe qui comprend des colonnes avec l'indice + bornes des CI
+  central_CI <- central |>
+    filter(!is.na(central)) %>%
+    select(-level, -y, -quantFct, -segment, -y_ridges) %>%
+    pivot_wider(
+      names_from = "central",
+      values_from = "x"
+      )
+
+  if (reorder == T) {
+    central_CI <- select(central_CI, -order)
+    central <- central |>
+      select(-order) %>%
+      left_join(tab_order, by = "group") %>%
+      mutate(level = order)
+  }
+
+  # On identifie toutes les valeurs de densité comprises dans les IC PAR GROUPE => permet de créer une région PAR GROUPE sur le ggplot
+  central <- central |>
+    left_join(central_CI) %>%
+    group_by(group) %>%
+    mutate(
+      y_ridges = (y / max(y)) * height
+    ) %>%
+    filter(x >= indice_low & x <= indice_upp) %>%
+    ungroup() %>%
+    mutate(
+      y_ridges = y_ridges + (level - 1)
+    )
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
@@ -458,6 +529,33 @@ distrib_group_continuous <- function(data,
          subtitle = subtitle
     )
 
+  # Pour caption
+
+  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+
+  graph <- graph +
+    labs(
+      caption = paste0(
+        "Test stat à implémenter !",
+        caption
+      )
+    )
+
+  # Ajouter l'aire des CI
+  if (show_ci_area == T) {
+    graph <- graph +
+      geom_ribbon(
+        data = central,
+        aes(
+          x = x, ymin = level - 1, ymax = y_ridges,
+          group = group
+        ),
+        alpha = .25
+      )
+  }
+
   # Ajouter les segments des quantiles
   if (show_quant_lines == T) {
     graph <- graph +
@@ -466,7 +564,37 @@ distrib_group_continuous <- function(data,
         aes(x = x,
             y = level - 1,
             yend = y_ridges),
-        linetype = "dotted"
+        # linetype = "dotted",
+        alpha = .15
+      )
+  }
+
+  # Ajouter la ligne de la tendance centrale
+  if (show_mid_line == T) {
+    graph <- graph +
+      geom_segment(
+        data = central[(central$central == "indice") & !is.na(central$central), ],
+        aes(x = x,
+            y = level - 1,
+            yend = y_ridges,
+            group = group),
+        linewidth = 1,
+        alpha = .6
+      )
+  }
+
+  # Ajouter les limites des IC (segment)
+  if (show_ci_lines == T) {
+    graph <- graph +
+      geom_segment(
+        data = central[(central$central == "indice_low" | central$central == "indice_upp") & !is.na(central$central), ],
+        aes(x = x,
+            y = level - 1,
+            yend = y_ridges,
+            group = group),
+        linetype = "dashed",
+        linewidth = .7,
+        alpha = .4
       )
   }
 
@@ -488,20 +616,6 @@ distrib_group_continuous <- function(data,
       )
   }
 
-  # Pour caption
-
-  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
-    caption <- paste0("\n", caption)
-  }
-
-  graph <- graph +
-    labs(
-      caption = paste0(
-        "Test stat à implémenter !",
-        caption
-      )
-    )
-
   # # Ajouter le nombre d'individus au besoin
   # if (show_n == TRUE) {
   #   graph <- graph +
@@ -520,20 +634,8 @@ distrib_group_continuous <- function(data,
   #     )
   # }
 
-  # # Ajouter l'aire des CI
-  # if (show_ci_area == T) {
-  #   graph <- graph +
-  #     geom_ribbon(
-  #       data = central,
-  #       aes(
-  #         x = x, ymin = 0, ymax = y
-  #       ),
-  #       alpha = .25
-  #     )
-  # }
-
-  # Ajouter les limites des IC
-  if (show_ci == T) {
+  # Ajouter les limites des IC (errorbar)
+  if (show_ci_errorbar == T) {
     graph <- graph +
       geom_errorbarh(
         data = tab,
@@ -545,38 +647,19 @@ distrib_group_continuous <- function(data,
         alpha = 0.5,
         height = .2
       )
-
-    # graph <- graph +
-    #   geom_segment(
-    #     data = central[central$central == "indice_low" | central$central == "indice_upp", ],
-    #     aes(x = x,
-    #         y = 0,
-    #         yend = y),
-    #     linetype = "dashed",
-    #     alpha = .4
-    #   )
   }
 
-  # Ajouter la tendance centrale
-  if (show_center == T) {
+  # Ajouter le point de la tendance centrale
+  if (show_mid_point == T) {
     graph <- graph +
       geom_point(
         data = tab,
         aes(x = indice,
             y = level - 1)
       )
-
-    # graph <- graph +
-    #   geom_segment(
-    #     data = central[central$central == "indice", ],
-    #     aes(x = x,
-    #         y = 0,
-    #         yend = y),
-    #     linewidth = 1,
-    #     alpha = .6
-    #   )
   }
 
+  # Afficher la valeur de la tendance centrale
   if (show_value == T) {
     graph<-graph  +
       geom_text(
@@ -660,6 +743,7 @@ distrib_group_continuous <- function(data,
   res$quant <- estQuant_W
   res$graph <- graph
   res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
+  res$central <- central
 
   return(res)
 
