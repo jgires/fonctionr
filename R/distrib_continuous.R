@@ -390,7 +390,8 @@ distrib_continuous <- function(data,
         aes(
           x = x, ymin = 0, ymax = y
         ),
-        alpha = .25
+        fill = "darkorange",
+        alpha = .3
       )
   }
 

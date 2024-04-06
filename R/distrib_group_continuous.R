@@ -552,7 +552,8 @@ distrib_group_continuous <- function(data,
           x = x, ymin = level - 1, ymax = y_ridges,
           group = group
         ),
-        alpha = .25
+        fill = "darkorange",
+        alpha = .3
       )
   }
 
