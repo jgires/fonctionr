@@ -172,7 +172,64 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # 3. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
+  # 3. TEST STATISTIQUE --------------------
+
+  # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
+  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
+  if(na.rm.group == F){
+    data_W <- data_W %>%
+      # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
+      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
+      )
+  }
+  if (na.rm.facet == F) {
+    # idem sur la variable de facet si non-NULL
+    if(!quo_is_null(quo_facet)){
+      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
+        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
+        )
+    }
+  }
+
+  # On réalise les tests statistiques
+  # Solutions trouvées ici :
+  # https://stackoverflow.com/questions/27261232/passing-argument-to-lm-in-r-within-function
+  # https://stackoverflow.com/questions/72384740/passing-data-variables-to-r-formulas
+  # https://stackoverflow.com/questions/52856711/use-function-arguments-in-lm-formula-within-function-environment
+  # Pour regTermTest => expliqué par Lumley himself : https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r
+  quanti_exp_fmla <- "quanti_exp_flattened" # Un string car on a créé la variable "en dur" dans la fonction
+  if(quo_is_null(quo_facet)){
+    group_fmla <- as.character(substitute(group))
+    fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
+    fmla2 <- stats::as.formula(paste("~", group_fmla))
+  }
+  # Avec facet : prévoir une boucle pour chacune des modalité de facet => A FAIRE PLUS TARD
+  if(!quo_is_null(quo_facet)){
+    group_fmla <- as.character(substitute(facet))
+    fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
+    fmla2 <- stats::as.formula(paste("~", group_fmla))
+  }
+
+  if(type == "mean"){
+    model <- svyglm(fmla, design = data_W)
+    test.stat <- regTermTest(model, fmla2)
+    test.stat[["call"]] <- paste(quanti_exp_fmla, " ~ ", group_fmla)
+  }
+  if(type == "median"){
+    test.stat <- svyranktest(fmla, design = data_W, test = "KruskalWallis")
+  }
+  # /!\ NOTE : ça fonctionne mais j'ai peur d'utiliser eval => solution précédente choisie, qui a tout de même le pb de ne pas garder la formule dans le call
+  # if(type == "median"){
+  #   if(na.rm.group == T){
+  #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W, test = "KruskalWallis")))
+  #   }
+  #   if(na.rm.group == F){
+  #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W_NA, test = "KruskalWallis")))
+  #   }
+  # }
+
+
+  # 4. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
 
   # Si non facet
   if (quo_is_null(quo_facet)) {
@@ -205,7 +262,7 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # 4. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
+  # 5. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
 
   # On identifie la variable de pondération inclue dans dotdotdot (...) pour la passer aussi à la densité
   var_weights <- substitute(...())$weights
@@ -362,9 +419,9 @@ distrib_group_continuous <- function(data,
       mutate(level = order)
   }
   df_dens <- df_dens %>%
-    group_by(group) %>%
+    # group_by(group) %>%
     mutate(y_ridges = (y / max(y)) * height) %>%
-    ungroup() %>%
+    # ungroup() %>%
     mutate(
       y_ridges = y_ridges + (level - 1),
       quantFct = as.factor(quantFct) # Je transforme l'appartenance au quantile en facteur, pour le ggplot
@@ -441,10 +498,10 @@ distrib_group_continuous <- function(data,
   # On identifie toutes les valeurs de densité comprises dans les IC PAR GROUPE => permet de créer une région PAR GROUPE sur le ggplot
   central <- central |>
     left_join(central_CI) %>%
-    group_by(group) %>%
     mutate(
       y_ridges = (y / max(y)) * height
     ) %>%
+    group_by(group) %>%
     filter(x >= indice_low & x <= indice_upp) %>%
     ungroup() %>%
     mutate(
@@ -452,7 +509,7 @@ distrib_group_continuous <- function(data,
     )
 
 
-  # 5. CREATION DU GRAPHIQUE --------------------
+  # 6. CREATION DU GRAPHIQUE --------------------
 
   # La palette divergente => varie selon que le nombre de quantiles soit pair ou impair
   if(length(estQuant_W_group$quantile) %% 2 == 0){
@@ -535,13 +592,24 @@ distrib_group_continuous <- function(data,
     caption <- paste0("\n", caption)
   }
 
-  graph <- graph +
-    labs(
-      caption = paste0(
-        "Test stat à implémenter !",
-        caption
+  if (type == "mean") {
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "GLM : ", scales::pvalue(test.stat$p[1], add_p = T),
+          caption
+        )
       )
-    )
+  }
+  if (type == "median") {
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "Kruskal Wallis : ", scales::pvalue(test.stat$p.value[1], add_p = T),
+          caption
+        )
+      )
+  }
 
   # Ajouter l'aire des CI
   if (show_ci_area == T) {
@@ -719,7 +787,7 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # 6. RESULTATS --------------------
+  # 7. RESULTATS --------------------
 
   # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
   if (type == "mean") {
@@ -748,4 +816,11 @@ distrib_group_continuous <- function(data,
 
   return(res)
 
+}
+
+
+#' @rdname distrib_group_c
+#' @export
+distrib_group_c <- function(...) {
+  distrib_group_continuous(...)
 }

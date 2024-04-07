@@ -18,8 +18,8 @@ distrib_continuous(
   bw = 1,
   resolution = 1024,
   limits = NULL,
-  show_center = TRUE,
-  show_ci = TRUE,
+  show_mid_line = TRUE,
+  show_ci_lines = TRUE,
   show_ci_area = FALSE,
   show_quant_lines = FALSE,
   show_n = FALSE,
@@ -28,7 +28,7 @@ distrib_continuous(
   digits = 0,
   unit = "",
   dec = ",",
-  pal = c("#c94d33", "#ffe3bf"),
+  pal = c("#003e57", "#009ad6"),
   color = NA,
   font = "Roboto",
   title = NULL,
@@ -56,8 +56,10 @@ distrib_group_continuous(
   height = 0.8,
   limits = NULL,
   reorder = FALSE,
-  show_center = TRUE,
-  show_ci = TRUE,
+  show_mid_point = TRUE,
+  show_mid_line = FALSE,
+  show_ci_errorbar = TRUE,
+  show_ci_lines = FALSE,
   show_ci_area = FALSE,
   show_quant_lines = FALSE,
   show_moustache = TRUE,
@@ -67,7 +69,7 @@ distrib_group_continuous(
   digits = 0,
   unit = "",
   dec = ",",
-  pal = c("skyblue4", "skyblue"),
+  pal = "#e0dfe0",
   pal_moustache = c("#EB9BA0", "#FAD7B1"),
   color = NA,
   font = "Roboto",
@@ -94,8 +96,6 @@ distrib_group_continuous(
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
 \item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
-
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
 
 \item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
@@ -124,6 +124,8 @@ distrib_group_continuous(
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 
 \item{group}{A variable defining groups to be compared.}
+
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
 }
 \value{
 A list that contains a table, a graphic and a statistical test

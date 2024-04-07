@@ -59,7 +59,7 @@ distrib_continuous <- function(data,
                           digits = 0,
                           unit = "",
                           dec = ",",
-                          pal = c("#003e57", "#009ad6"),
+                          pal = c("#00708C", "mediumturquoise"),
                           color = NA,
                           font ="Roboto",
                           title = NULL,
@@ -548,4 +548,11 @@ distrib_continuous <- function(data,
 
   return(res)
 
+}
+
+
+#' @rdname distrib_c
+#' @export
+distrib_c <- function(...) {
+  distrib_continuous(...)
 }
