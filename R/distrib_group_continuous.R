@@ -70,6 +70,7 @@ distrib_group_continuous <- function(data,
                                pal = "#e0dfe0",
                                pal_moustache = c("#EB9BA0", "#FAD7B1"),
                                color = NA,
+                               alpha = 1,
                                font ="Roboto",
                                wrap_width_y = 25,
                                title = NULL,
@@ -80,6 +81,75 @@ distrib_group_continuous <- function(data,
                                export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
+
+  # Un check impératif
+  if((missing(data) | missing(group) | missing(quanti_exp)) == TRUE){
+    stop("Les arguments data, group et quanti_exp doivent être remplis")
+  }
+
+  # Check des autres arguments
+  check_arg(
+    arg = list(
+      type = type,
+      unit = unit,
+      dec = dec,
+      color = color,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      pal = pal,
+      pal_moustache = pal_moustache
+    ),
+    type = "character",
+    short = F
+  )
+  check_arg(
+    arg = list(
+      na.rm.group = na.rm.group,
+      reorder = reorder,
+      show_mid_point = show_mid_point,
+      show_mid_line = show_mid_line,
+      show_ci_errorbar = show_ci_errorbar,
+      show_ci_lines = show_ci_lines,
+      show_ci_area = show_ci_area,
+      show_quant_lines = show_quant_lines,
+      show_moustache = show_moustache,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      bw = bw,
+      resolution = resolution,
+      height = height,
+      digits = digits,
+      alpha = alpha,
+      wrap_width_y = wrap_width_y
+    ),
+    type = "numeric"
+  )
+  check_arg(
+    arg = list(
+      quantiles = quantiles,
+      moustache_probs = moustache_probs,
+      limits = limits
+    ),
+    type = "numeric",
+    short = F
+  )
+
+  # Check que les arguments avec choix précis sont les bons
+  match.arg(type, choices = c("mean", "median"))
 
   # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
@@ -510,6 +580,13 @@ distrib_group_continuous <- function(data,
 
 
   # 6. CREATION DU GRAPHIQUE --------------------
+  if(!is.null(pal) & all(isColor(pal)) == TRUE){
+    # Si condition remplie on ne fait rien => on garde la palette
+  } else {
+    # Sinon on met la couleur par défaut
+    message("Une couleur indiquée dans pal n'existe pas : la couleur par défaut est utilisée")
+    pal <- "#e0dfe0"
+  }
 
   # La palette divergente => varie selon que le nombre de quantiles soit pair ou impair
   if(length(estQuant_W_group$quantile) %% 2 == 0){
@@ -534,9 +611,6 @@ distrib_group_continuous <- function(data,
     limits <- c(lim_min, lim_max)
   }
 
-  # On calcule la valeur max de la densité, pour l'écart des geom_text dans le ggplot
-  max_ggplot <- max(df_dens$y_ridges)
-
   # Le graphique ggplot
 
   graph <- ggplot(
@@ -548,7 +622,7 @@ distrib_group_continuous <- function(data,
         fill = quantFct,
         group = interaction(group, quantFct) # Ici le groupe doit être l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
       ),
-      alpha = 1
+      alpha = alpha
     ) +
     geom_line(
       aes(
@@ -559,6 +633,15 @@ distrib_group_continuous <- function(data,
       color = color,
       linewidth = .7
     ) +
+    # geom_line(
+    #   aes(
+    #     x = x,
+    #     y = level - 1,
+    #     group = group
+    #   ),
+    #   color = color,
+    #   linewidth = .7
+    # ) +
     scale_x_continuous(
       labels = scales::label_dollar(
         accuracy = 1/10^digits, # On transforme le nombre de digits en un format compatible avec accuracy
@@ -570,7 +653,7 @@ distrib_group_continuous <- function(data,
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_y_continuous(
-      breaks = unique(df_dens$level - .8),
+      breaks = unique(df_dens$level - 1),
       labels = stringr::str_wrap(unique(df_dens$group), width = wrap_width_y),
       expand = expansion(mult = c(0.005, 0.05))
     ) +
@@ -684,24 +767,6 @@ distrib_group_continuous <- function(data,
         name = "Proportion d'observations"
       )
   }
-
-  # # Ajouter le nombre d'individus au besoin
-  # if (show_n == TRUE) {
-  #   graph <- graph +
-  #     geom_text(
-  #       data = quantile_n,
-  #       aes(
-  #         y = 0 + (0.01 * max_ggplot),
-  #         x = coord_x + (0.001 * limits[2]), # Pour ajouter des labels avec les effectifs
-  #         label = paste0("n=", n),
-  #         family = font),
-  #       size = 3,
-  #       alpha = 0.5,
-  #       hjust = 0, # Justifié à droite
-  #       vjust = 1,
-  #       angle = 90 # pour incliner
-  #     )
-  # }
 
   # Ajouter les limites des IC (errorbar)
   if (show_ci_errorbar == T) {

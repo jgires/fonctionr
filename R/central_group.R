@@ -343,10 +343,10 @@ central_group <- function(data,
 
   # On crée la palette : avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - 1 (le total étant déjà un niveau)
   # Si couleur introduite par l'utilisateur
-  if(!is.null(fill) & isColor(fill) == TRUE){
+  if(!is.null(fill) & all(isColor(fill)) == TRUE){
     palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
   } else { # Si fill est NULL ou si la couleur n'est pas valide => on met la couleur par défaut
-    if(!is.null(fill) & isColor(fill) == FALSE){ # Si la couleur est fausse => warning
+    if(!is.null(fill) & all(isColor(fill)) == FALSE){ # Si la couleur est fausse => warning
       warning("La couleur indiquée dans fill n'existe pas : la couleur par défaut est utilisée")
     }
     if(type == "mean"){

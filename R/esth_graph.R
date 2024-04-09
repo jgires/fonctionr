@@ -134,7 +134,7 @@ esth_graph <- function(tab,
   # Petit truc dans le cas où il y a un total
   if (!is.null(name_total)) { total_add <- 1 } else { total_add <- 0 }
 
-  if(isColor(fill) == TRUE){
+  if(all(isColor(fill)) == TRUE){
     # Avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - total_add (1 s'il y a un total, le total étant déjà un niveau, sinon 0)
     palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
   } else {

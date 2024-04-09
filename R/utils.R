@@ -194,14 +194,16 @@ check_arg <- function(arg,
       if(short == T){
         if (!length(arg[[check_i]]) == 1) stop(paste("L'argument", names(arg)[[check_i]], "n'a pas la bonne longueur (max 1)"), call. = FALSE)
       }
-      if(type == "character"){
-        if (!is.character(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (caractère)"), call. = FALSE)
-      }
-      if(type == "logical"){
-        if (!is.logical(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (logique)"), call. = FALSE)
-      }
-      if(type == "numeric"){
-        if (!is.numeric(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (numérique)"), call. = FALSE)
+      if(all(!is.na(arg[[check_i]]))){
+        if(type == "character"){
+          if (!is.character(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (caractère)"), call. = FALSE)
+        }
+        if(type == "logical"){
+          if (!is.logical(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (logique)"), call. = FALSE)
+        }
+        if(type == "numeric"){
+          if (!is.numeric(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (numérique)"), call. = FALSE)
+        }
       }
     }
   }
@@ -274,9 +276,16 @@ check_input <- function(data,
 #' @noRd
 #'
 
-isColor <- function(x){
-  res <- try(grDevices::col2rgb(x), silent = TRUE)
-  return(!"try-error" %in% class(res))
+# Solution trouvée ici : https://stackoverflow.com/questions/13289009/check-if-character-string-is-a-valid-color-representation
+# isColor <- function(x){
+#   res <- try(grDevices::col2rgb(x), silent = TRUE)
+#   return(!"try-error" %in% class(res))
+# }
+isColor <- function(x) {
+  sapply(x, function(X) {
+    tryCatch(is.matrix(col2rgb(X)),
+             error = function(e) FALSE)
+  })
 }
 
 

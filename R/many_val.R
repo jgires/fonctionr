@@ -349,7 +349,7 @@ many_val = function(data,
     palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
 
   # On crée une palette unicolore
-  } else if(isColor(pal) == TRUE){
+  } else if(all(isColor(pal)) == TRUE){
     palette <- rep(pal, nlevels(tab[["list_col"]]))
 
   } else { # Si la couleur/palette n'est pas valide => on met la palette par défaut

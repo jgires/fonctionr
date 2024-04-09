@@ -281,7 +281,7 @@ distrib_discrete <- function(data,
   # 5. CREATION DU GRAPHIQUE --------------------
 
   # On crée la palette : x fois la couleur selon le nombre de levels
-  if(isColor(fill) == TRUE){
+  if(all(isColor(fill)) == TRUE){
     palette <- c(rep(fill, nlevels(tab[[deparse(substitute(quali_var))]])))
   } else { # Si la couleur n'est pas valide => on met la couleur par défaut
     palette <- c(rep("sienna2", nlevels(tab[[deparse(substitute(quali_var))]])))
