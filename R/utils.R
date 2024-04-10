@@ -306,7 +306,7 @@ check_input <- function(data,
 # }
 isColor <- function(x) {
   sapply(x, function(X) {
-    tryCatch(is.matrix(col2rgb(X)),
+    tryCatch(is.matrix(grDevices::col2rgb(X)),
              error = function(e) FALSE)
   })
 }
