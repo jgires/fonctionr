@@ -13,15 +13,15 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
-# Introduction : l'objectif général du Package et des différentes fonctions
+# Introduction : l'objectif général du package et des différentes fonctions
 
-L'objectif de fonctionr est de faciliter grandement l'analyse des données issues de sondages complexes, en particulier pour la description de variables et le croisement bivariés.
+L'objectif de `fonctionr` est de faciliter grandement l'analyse des données issues de sondages complexes, en particulier pour la description de variables et le croisement bivariés.
 
-Plusieurs package permettent traiter des données issues de sondages complexes, c'est en particulier le cas de survey qui permet de réaliser des analyses de estimations sur base de ce type de données et de srvyr qui permet d'appliquer les verbes de dplyr à des sondages complexes, mais aucun de ces deux packages ne permet de réaliser des graphiques prêts à la publications, et ils ne permettent pas de réaliser dans une seule fonction à la fois des estimations d'indicateurs et des tests statistiques.
+Plusieurs package permettent traiter des données issues de sondages complexes, c'est en particulier le cas de `survey` qui permet de réaliser des analyses de estimations sur base de ce type de données et de `srvyr` qui permet d'appliquer les verbes de `dplyr` à des sondages complexes, mais aucun de ces deux packages ne permet de réaliser des graphiques prêts à la publications, et ils ne permettent pas de réaliser dans une seule fonction à la fois des estimations d'indicateurs et des tests statistiques.
 
-fonctionr se base sur ces deux packages et sur ggplot2 pour faciliter grandement le travail du chercheur en produisant directement en une seule fonction (pour chaque type de variable ou de croisement entre variable) : un tableau de résultat avec les indicateurs, les effectifs et leurs intervalles de confiance ; un graphique prêt à être publié et le plus souvent un test statistique le plus approprié au croisement étudié. Il est aussi possible de directement exporter ces trois résultats dans un fichier xlsx.
+`fonctionr` se base sur ces deux packages et sur `ggplot2` pour faciliter grandement le travail du chercheur en produisant directement en une seule fonction (pour chaque type de variable ou de croisement entre variable) : un tableau de résultat avec les indicateurs, les effectifs et leurs intervalles de confiance ; un graphique prêt à être publié et le plus souvent un test statistique le plus approprié au croisement étudié. Il est aussi possible de directement exporter ces trois résultats dans un fichier xlsx.
 
-La suite de ce manuel se déroule de la manière suivante. Dans un premier temps on décrira les différentes fonctions, ce qu'elles produisent et dans quels cas elles peuvent être utilisées. Dans un deuxième temps, on présente un tableau récapitulatif des arguments. En effet, de nombreux arguments revenant dans plusieurs fonctions, il est plus facile de présenter la structure globale de ceux-ci que de se répéter dans chaque fonction. Les arguments peuvent aussi être classés en différents type, ce qui permet d'aborder successivement certaines. Ainsi, nous aborderons successivement :
+La suite de ce manuel se déroule de la manière suivante. Dans un premier temps on décrira les différentes fonctions, ce qu'elles produisent et dans quels cas elles peuvent être utilisées. Dans un deuxième temps, on présente un tableau récapitulatif des arguments. De nombreux arguments revenant dans plusieurs fonctions, il est plus facile de présenter la structure globale de ceux-ci que de se répéter dans chaque fonction. Les arguments peuvent aussi être classés en différents type, ce qui permet d'aborder successivement certaines. Ainsi, nous aborderons successivement :
 
 -   la question du type de base de données utilisées;
 
@@ -33,19 +33,29 @@ La suite de ce manuel se déroule de la manière suivante. Dans un premier temps
 
 # L'objectif des différentes fonctions
 
-## distrib_continuous() pour décrire la distribution d'une variable quantitative
+La plupart des fonctions permettent, à partir de données issues d'un sondage complexe ou simple, de produire une liste comprenant un graphique, un tableau de d'indicateurs et les résultat d'un texte statistique.
 
-## distrib_discrete() pour décrire la distribution d'une variable qualitative
+-   Le graphique "graph" permet une visualisation des indicateurs avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite. Le graphique se veut suffisamment finalisée pour être directement utilisable dans une publication.
 
-distrib_discrete(), avec distrib_d() comme alias, a comme objectif de permettre la distribution de la fréquence des différentes modalités d'une variables qualitative. L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques. Dans l'exemple ci-dessous[^1], la fonction distrib_d() décrit la distribution de la variable pl030_rec dans le dataframe eusilc, avec une le poids rb050, et produit une liste comprenant un graphique, un tableau et un test statistique.
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent généralement le nom de l'indicateur, de la modalité et des éventuelles facettes, les valeurs des indicateurs, leurs bornes d'intervalle de confiance, le nombre de personnes dans l'échantillon dans chaque catégorie, l'estimation du nombre de personnes dans la population dans chaque catégorie et les bornes de l'intervalle de confiance de cette estimation.
+
+-   Le résultat d'un test statistique quand il y en a un qui est pertinent.
+
+La plupart des fonction permettent aussi d'exporter directement ces trois résultats dans un format excell.
+
+Dans la suite de cette partie, nous pass fonctions en indiquant quels sont les objectifs de chaque fonction et leurs spécificité.
+
+## `distrib_discrete()` et `distrib_d()`
+
+`distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution de la fréquence des différentes modalités d'une variables qualitative.
+
+Dans l'exemple ci-dessous[^1], la fonction `distrib_d()` décrit la distribution des différents statuts socio-économiques (variable pl030_rec) dans le dataframe eusilc, avec une le poids rb050.
 
 [^1]: Précisons que dans cet exemple simple, il n'y a pas de plan de sondage qui est mentionné. Seule la variable de pondération est introduite. Nous aborderons ce point ultérieurement.
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+-   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Il comprend les colonnes suivantes : le nom de la modalité (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la modalité (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
-
--   Le résultat du test statistique "test.stat". Il s'ait du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle, la répartition de la population selon le vecteur mentionné dans probs, c'est-à-dire, ici, 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'était mentionné dans probs, aucun test n'aurait été effectué. Si le vecteur n'avait pas une somme de 1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+-   Le résultat du test statistique "test.stat". Il s'ait du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle, la répartition de la population selon le vecteur mentionné dans l'argument probs, c'est-à-dire, ici, 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'était mentionné dans probs, aucun test n'aurait été effectué. Si le vecteur n'avait pas une somme de 1, il aurait été ajusté pour avoir une telle somme. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
 
 ```{r}
 # Loading of data
@@ -65,7 +75,7 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 library(fonctionr)
 eusilc_dist_d <- distrib_d(
 data = eusilc,
-weight = rb050,
+weights = rb050,
 quali_var = pl030_rec,
 probs = c(.2,.15,.1,.1,.25,.1,.1),
 title = "Distribution of socio-economic status",
@@ -77,73 +87,69 @@ eusilc_dist_d$test.stat
 
 ```
 
-## distrib_group_discrete() pour décrire la distribution d'une variable qualitative selon des groupes (une autre variable qualitative)
+## `distrib_group_discrete()` et `distrib_group_d()`
 
-distrib_group_discrete(), avec distrib_group_d() comme alias, a comme objectif de permettre la distribution de la fréquence des différentes modalités d'une variables qualitative selon une autre variable qualitative, que l'on peut considérer comme des groupes. L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques selon la nationalité. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique permettant de décrire la distribution de la variable pl030_rec selon la variable pb220a dans le dataframe eusilc, avec une le poids rb050,.
+`distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution de la fréquence des différentes modalités d'une variables qualitative selon une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des fréquences. Faut de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques (pl030_rec) selon la nationalité (pb220a).
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pb220a), la modalité de la variable d'intérêt (pl030_rec), l'estimation de la proportion de la population appartenant à la modalité de la variable d'intérêt dans le groupe (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population appartenant à la modalité (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+```{r}
+eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                 weights = rb050,
+                                 group = pb220a,
+                                 quali_var = pl030_rec,
+                                 title = "Distribution of socio-economic status according to nationality",
+                                 subtitle = "Example with austrian SILC data from 'laeken' package"
+                                 )
+eusilc_dist_group_d$graph
+eusilc_dist_group_d$tab
+eusilc_dist_group_d$test.stat
 
--   Le résultat du test statistique "test.stat". Il s'agit du khi2 khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (d'intérêt et de groupe) soient indépendantes statistiquement. Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+```
 
-    ```{r}
-    eusilc_dist_group_d <- distrib_group_d(eusilc,
-                                     weight = rb050,
-                                     group = pb220a,
-                                     quali_var = pl030_rec,
-                                     title = "Distribution of socio-economic status according to nationality",
-                                     subtitle = "Example with austrian SILC data from 'laeken' package"
-                                     )
-    eusilc_dist_group_d$graph
-    eusilc_dist_group_d$tab
-    eusilc_dist_group_d$test.stat
+## `prop_group()`
 
-    ```
+`prop_group()` compare la distribution d'une variable dichotomitique (c'est-à-dire une proportion) selon une variable qualitative qu'on peut considérer comme des groupes.
 
-## prop_group() pour décrire les variations d'une proportion selon des groupes
-
-prop_group() a comme objectif de permettre de comparer la distribution d'une variable dichotomitique (c'est-à-dire une proportion) selon une variable qualitative qu'on peut considérer comme des groupes. L'exemple ci-dessous montre la proportion d'individus qui bénéficient d'une allocation de chômage selon les différents statuts socio-économiques. Dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique comparant la part de personnes percevant une allocation de chômage (py090n \> 0) selon la variable pl030_rec dans le dataframe eusilc, avec le poids rb050.
-
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des proportions avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite. Le graphique comprend aussi une barre "total" reprenant l'estimation de la proportion pour l'ensemble de la population.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pl030_rec), l'estimation de la proportion de la population répondant au critère repris selon le groupe (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^2] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%. On y retrouve aussi une ligne avec toute ces informations pour le total.
-
--   Le résultat du test statistique "test.stat". Il s'agit du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (la variable dichotomique et de groupe) soient indépendantes statistiquement. Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
-
-    ```{r}
-    eusilc_prop <- prop_group(eusilc,
-                              group = pl030_rec,
-                              prop_exp = py090n > 0,
-                              weight = rb050,
-                              title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
-                              subtitle = "Example with austrian SILC data from 'laeken' package"
-    )
-    eusilc_prop$graph
-    eusilc_prop$tab
-    eusilc_prop$test.stat
-
-    ```
+Par rapport aux autres fonctions, le graphique et le tableau contiennent une modalité "Total" qui reprend l'estimation de la proportion pour l'ensemble de la population de référence. Dans le tableau, on retrouve tant l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted) accompagné de ses bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance à un niveau de confiance de 95% que l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^2] (n_tot_weighted) accompagné de ses bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance.
 
 [^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
 
-## mean_group() pour décrire les variations d'une moyenne selon des groupes
+Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle, le fait que les deux variables qualitatives (la varible dichotomique et de groupe) soient statistiquement indépendantes .
 
-mean_group() a comme objectif de permettre de comparer la moyenne d'une variable quantitative selon une variable qualitative qu'on peut considérer comme des groupes. L'exemple ci-dessous montre le revenu équivalent mensuel moyen selon les différents statuts socio-économiques. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique comparant le revenu équivalent mensuel moyen selon la variable pl030_rec dans le dataframe eusilc, avec le poids rb050. En réalité mean_group est un alias de central_group(), mais avec l'argument type = "mean".
+L'exemple ci-dessous compare la proportion d'individus qui bénéficient d'une allocation de chômage (py090n \> 0) selon les différents statuts socio-économiques (pl030_rec).
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des moyennes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite. Le graphique comprend aussi une barre "total" reprenant l'estimation de la valeur moyenne pour l'ensemble de la population.
+```{r}
+eusilc_prop <- prop_group(eusilc,
+                          group = pl030_rec,
+                          prop_exp = py090n > 0,
+                          weights = rb050,
+                          title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop$graph
+eusilc_prop$tab
+eusilc_prop$test.stat
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pl030_rec), l'estimation de la moyenne du revenu équivalent selon le groupe (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population pour chaque groupe (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%. On y retrouve aussi une ligne avec toute ces informations pour le total.
+```
 
--   Le résultat du test statistique "test.stat". Il s'agit du test de Wald. Ce test est réalisé avec comme hypothèse nulle, le fait que les coefficients d'une régression linéaire de la variable qualitative (les groupes) sur la variable quantitative soient nuls (**A VERIFIER**). Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+## `central_group()`, `mean_group()` et `median_group()`
+
+`central_group()` compare la valeur centrale d'une variable quantitative selon une variable qualitative qu'on peut considérer comme des groupes. Deux valeurs centrales sont possibles : la moyenne (quand l'argument type = "mean" ou pour l'alias `mean_group()`) et la médiane (quand l'argument type = "median" ou pour l'alias `median_group()`).
+
+Pour `mean_group()`, le test statistique effectué est un test de Wald[^3]. Ce test est réalisé avec comme hypothèse nulle, le fait que les coefficients d'une régression linéaire de la variable qualitative (les groupes) sur la variable quantitative soient nuls. Pour `median_group()`, le test statistique effectué est celui de Kruskal Wallis.
+
+[^3]: Voir : <https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r>
+
+L'exemple ci-dessous compare le revenu équivalent mensuel moyen (eqIncome / 12) selon les différents statuts socio-économiques (pl030_rec).
 
 ```{r}
 
 eusilc_mean <- mean_group(eusilc,
                           group = pl030_rec,   
-                          quanti_exp = eqIncome / 12,
-                          weight = rb050,
-                          title = "Mean of equivalised income in household by socio-economic status",
+                          quanti_exp = eqIncome,
+                          weights = rb050,
+                          title = "Mean of annual equivalised income in household by socio-economic status",
                           subtitle = "Example with austrian SILC data from 'laeken' package")
 eusilc_mean$graph
 eusilc_mean$tab
@@ -151,138 +157,32 @@ eusilc_mean$test.stat
 
 ```
 
-## median_group() pour décrire les variations d'une moyenne selon des groupes
+## `many_val()`, `many_prop()`, `many_mean()` et `many_median()`
 
-median_group() a comme objectif de permettre de comparer la médiane d'une variable quantitative selon une variable qualitative qu'on peut considérer comme des groupes. L'exemple ci-dessous montre le revenu équivalent mensuel median selon les différents statuts socio-économiques. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique, un tableau et un test statistique comparant le revenu équivalent mensuel median selon la variable pl030_rec dans le dataframe eusilc, avec le poids rb050. En réalité median_group est un alias de central_group(), mais avec l'argument type = "median".
+`many_val()` calcule les proportions (quand l'argument type = "prop" ou pour l'alias `many_prop()`), moyennes (quand l'argument type = "mean" ou pour l'alias `many_mean()`) ou médianes (quand l'argument type = "median" ou pour l'alias `many_median()`) simultanément pour plusieurs variables différentes. Dans le tableau, pour `many_prop()`, on distingue l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted) de l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides (n_tot_weighted),comme pour `prop_group()`. Pour des raisons évidentes, ces fonctions ne calculent aucun test statistique.
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication de la distribution des medianes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite. Le graphique comprend aussi une barre "total" reprenant l'estimation de la valeur médiane pour l'ensemble de la population.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la modalité de la variable du groupe (pl030_rec), l'estimation de la medianne du revenu équivalent selon le groupe (median), les bornes inférieure (median_low) et supérieure (median_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population pour chaque groupe (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%. On y retrouve aussi une ligne avec toute ces informations pour le total. **EXPLIQUER l'ESTIMATION DES IC POUR MEDIAN**
-
--   Le résultat du test statistique "test.stat". Il s'agit du test de Kruskal Wallis. **EXPLIQUER? NE FAUDRAIT-IL PAS UTILESER PLUTOT LE TEST DU MEDIAN PROPOSE PAR SURVEY svyranktest(test = "median")?** Ce test prend en compte le plan d'échantillonnage complexe le cas échéant. Notons aussi que la p valeur du test est aussi mentionnée sur le graphique.
+L'exemple ci-dessous compare les revenus mensuels moyens de l'emploi salarié, d'une activité d'indépendant et d'une allocation de chômage dans la totalité de la population.
 
 ```{r}
 
-eusilc_median <- median_group(eusilc,
-                          group = pl030_rec,   
-                          quanti_exp = eqIncome / 12,
-                          weight = rb050,
-                          title = "Median of equivalised income in household by socio-economic status",
-                          subtitle = "Example with austrian SILC data from 'laeken' package")
-eusilc_median$graph
-eusilc_median$tab
-eusilc_median$test.stat
-```
-
-## many_prop() pour décrire en même temps plusieurs proportions
-
-many_prop() a comme objectif de permettre d'estimer simultanément plusieurs proportions. L'exemple ci-dessous montre ainsi la proportion de travailleurs et d'autrichiens. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique et un tableau reprenant ces deux proportions. Bien que l'exemple repris ici semble quelque peu artificiel, l'intérêt de cette fonction est de visualiser rapidement un nombre important de proportions, par exemple dans l'accès à certains items. Il a aussi plus d'intérêt quand on y intègre une variable de facet (voir ci-dessous). Il s'agit d'un alias de many_val, avec type = "prop". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
-
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom de la proportion (list_col), l'estimation de cette proportion pour la variable (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^3] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
-
-    ```{r}
-
-    # Recoding variables
-    eusilc$worker <- 0
-    eusilc$worker[eusilc$pl030 == "1"]<-1
-    eusilc$worker[eusilc$pl030 == "2"]<-1
-    eusilc$austrian<-0
-    eusilc$austrian[eusilc$pb220a == "AT"]<-1
-
-    # Computation, taking sample design into account
-    eusilc_many_prop <- many_prop(eusilc,
-                                  list_vars = c(worker,austrian),
-                                  list_vars_lab = c("% of workers","% of Austrian"),
-                                  strata = db040,
-                                  ids = db030,
-                                  weight = rb050,
-                                  title = "Proportion of workers and Autrian",
-    subtitle = "Example with austrian SILC data from 'laeken' package"
-    )
-    eusilc_many_prop$graph
-    eusilc_many_prop$tab
-    ```
-
-[^3]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
-
-## many_mean() pour décrire en même temps plusieurs proportions
-
-many_mean() a comme objectif de permettre d'estimer simultanément plusieurs moyennes. Il s'agit d'un alias de many_val, avec type = "mean". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
-
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les moyennes sont calculées (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
-
-    ```{r}
-
-
-    # Computation, taking sample design into account
-    eusilc_many_mean <- many_mean(eusilc,
-                                  list_vars = c(py010n, py050n, py090n),
-                                  list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
-                                  weight = rb050,
-                                  title = "Income from wage, independant worker and unemployement benefits",
-    subtitle = "Example with austrian SILC data from 'laeken' package"
-    )
-    eusilc_many_mean$graph
-    eusilc_many_mean$tab
-    ```
-
-## many_median() pour décrire en même temps plusieurs proportions
-
-many_median() a comme objectif de permettre d'estimer simultanément plusieurs medianes. Il s'agit d'un alias de many_val, avec type = "median". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
-
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les médianes sont calculées (list_col), l'estimation de la médiane pour la variable (median), les bornes inférieure (median_low) et supérieure (median_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
-
-    ```{r}
-
-    # Computation, taking sample design into account
-    eusilc_many_median <- many_median(eusilc,
-                                  list_vars = c(py010n, eqIncome),
-                                  list_vars_lab = c("salaires","Revenu equivalent"),
-                                  weight = rb050,
-                                  title = "Median income from wage and equivalent income",
-    subtitle = "Example with austrian SILC data from 'laeken' package"
-    )
-    eusilc_many_median$graph
-    eusilc_many_median$tab
-    ```
-
-## many_prop_group() pour décrire en même temps plusieurs proportions selon des groupes
-
-many_prop_group() a comme objectif de permettre d'estimer simultanément plusieurs proportions selon une variable qualitative, que l'on peut considérer comme des groupes. L'exemple ci-dessous montre ainsi la proportion de travailleurs et d'autrichiens selon le sexe. Ainsi dans l'exemple, la fonction produit une liste comprenant un graphique et un tableau reprenant ces deux proportions. Bien que l'exemple repris ici semble quelque peu artificiel, l'intérêt de cette fonction est de visualiser rapidement un nombre important de proportions, par exemple dans l'accès à certains items. Il s'agit d'un alias de many_val_group(), avec type = "prop". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
-
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la variable de groupe (ici rb090), le nom de la proportion (list_col), l'estimation de cette proportion pour la variable (prop), les bornes inférieure (prop_low) et supérieure (prop_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted), et les bornes inférieure (n_true_weighted_low) et supérieure (n_true_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides[^4] (n_tot_weighted), et les bornes inférieure (n_tot_weighted_low) et supérieure (n_tot_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
-
-[^4]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur de NA et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans n_tot_weighted de manière à ce que le ratio entre n_true_weighted et n_tot_weighted soit égal à prop.
-
-```{r}
 # Computation, taking sample design into account
-eusilc_many_prop_group <- many_prop_group(eusilc,
-                                          group = rb090,
-                                          list_vars = c(worker,austrian),
-                                          list_vars_lab = c("% of workers","% of Austrian"),
-                                          weight = rb050,
-                                    title = "Proportion of workers and Autrian by sex",
-                                    subtitle = "Example with austrian SILC data from 'laeken' package"
+eusilc_many_mean <- many_mean(eusilc,
+                              list_vars = c(py010n, py050n, py090n),
+                              list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
+                              weights = rb050,
+                              unit = "€",
+                              title = "Income from wage, independant worker and unemployement benefits",
+subtitle = "Example with austrian SILC data from 'laeken' package"
 )
-eusilc_many_prop_group$graph
-eusilc_many_prop_group$tab
+eusilc_many_mean$graph
+eusilc_many_mean$tab
 ```
 
-## many_mean_group() pour décrire en même temps plusieurs moyenne selon des groupes
+## `many_val_group()`, `many_prop_group()`, `many_mean_group()` et `many_median_group()`
 
-many_mean_group() a comme objectif de permettre d'estimer simultanément plusieurs moyennes selon une variable qualitative, que l'on peut considérer comme des groupes. Il s'agit d'un alias de many_val_group, avec type = "mean". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
+`many_val_group()` compare des proportions (quand l'argument type = "prop" ou pour l'alias `many_prop_group()`), moyennes (quand l'argument type = "mean" ou pour l'alias `many_mean_group()`) ou médianes (quand l'argument type = "median" ou pour l'alias `many_median_group()`) simultanément pour plusieurs variables différentes et selon une variable qualitative qui peut être considérée comme des groupes. Dans le tableau, pour `many_prop_group()`, on distingue l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (n_true_weighted) de l'estimation du nombre total de personnes dans la population pour lesquelles les données sont valides (n_tot_weighted),comme pour `prop_group()` et `many_prop()`. Pour des raisons évidentes, ces fonctions ne calculent également aucun test statistique.
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
-
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : la variable de groupe (ici rb090), le nom des variables sur lesquelles sont calculées les moyennes (list_col), l'estimation de la moyenne pour la variable (mean), les bornes inférieure (mean_low) et supérieure (mean_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+L'exemple ci-dessous compare les revenus mensuels moyens de l'emploi salarié, d'une activité d'indépendant et d'une allocation de chômage des femmes et des hommes.
 
 ```{r}
 # Computation, taking sample design into account
@@ -290,7 +190,8 @@ eusilc_many_mean_group <- many_mean_group(eusilc,
                                           group = rb090,
                                           list_vars = c(py010n, py050n, py090n),
                                           list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
-                                          weight = rb050,
+                                          weights = rb050,
+                                          unit = "€",
                               title = "Income from wage, independant worker and unemployement benefits by sex",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
@@ -298,61 +199,80 @@ eusilc_many_mean_group$graph
 eusilc_many_mean_group$tab
 ```
 
-## many_median_group() pour décrire en même temps plusieurs médianes selon des groupes
+## `distrib_continuous()` et `distrib_c()`
 
-many_median_group() a comme objectif de permettre d'estimer simultanément plusieurs médianes. Il s'agit d'un alias de many_val_group, avec type = "median". Pour des raisons évidents, cette fonction ne calcule aucun test statistique.
+## `distrib_group_continuous()` et `distrib_group_c()`
 
--   Le graphique "graph" permet une visualisation facile et directement utilisable dans une publication des différentes avec des intervalle de confiance. Il s'agit d'un objet de ggplot2 qui peut donc aussi être modifié par la suite.
+## `theme_fonctionr()`
 
--   Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Le tableau "tab" reprend les chiffres sur base desquels le graphique est construit. Les différentes colonnes reprennent respectivement : le nom des variables sur lesquelles les médianes sont calculées (list_col), l'estimation de la médiane pour la variable (median), les bornes inférieure (median_low) et supérieure (median_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité de la variable d'intérêt au sein du groupe (n_sample), l'estimation du nombre de personnes dans la population (n_weighted), et les bornes inférieure (n_weighted_low) et supérieure (n_weighted_upp) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%.
+`theme_fonctionr()` est une fonction qui permet d'appliquer le thème de `fonctionr` à un objet de `ggplot2`. Cette fonction a un intérêt si l'on veut par exemple, uniformiser l'esthétique de tous les graphiques pour une publication.
 
-    ```{r}
-    # Computation, taking sample design into account
-    eusilc_many_median_group <- many_median_group(eusilc,
-                                                  group = rb090,
-                                                  list_vars = c(py010n, eqIncome),
-                                                  list_vars_lab = c("salaires","Revenu equivalent"),
-                                  weight = rb050,
-                                  title = "Median income from wage and equivalent income",
-                                  subtitle = "Example with austrian SILC data from 'laeken' package"
-    )
-    eusilc_many_median_group$graph
-    eusilc_many_median_group$tab
-    ```
+## `esth_graph()`
 
-## theme_fonctionr() pour appliquer le thème de fonctionr à des graphiques de ggplot2
+`esth_graph()` est une fonction qui permet aisément de construire une graphique similaire à ceux produit par les autres fonction mais directement à partir d'une tableau de résultats calculé précédemment. Cette fonction a un intérêt si l'on veut appliquer l'esthétique graphique de `fonctionr` mais à des indicateurs qui ne sont pas calculés par une autre fonction de `fonctionr`. Par rapport à `theme_fonctionr()`, `esth_graph()` permet aisément d'intégrer plusieurs éléments que l'on retrouve dans d'autres graphiques produits par `fonctionr` : valeurs de l'indicateur, bornes d'intervalle de confiance, nombres d'individus dans l'échantillon. La logique d'`esth_graph()` est aussi différente de celle de `theme_fonctionr()` : la première fonction produit un graphique à partir d'une table, alors que la seconde applique un thème à un graphique existant.
 
-theme_fonctionr() est une fonction qui permet d'appliquer le theme gggplot de fonctionr à un objet de ggplot2. Cette fonction a un intérêt si l'on veut appliquer l'esthétique de fonctionr à un autre graphique.
-
-```{r}
-##Faut-il mettre un example ici? C'est pas compliqué mais est-ce nécessaire?
-```
-
-## esth_graph() pour réaliser un graphique reprenant la même esthétique que les autres fonction à partir d'un tableau de résultat
-
-esth_graph() est une fonction qui permet aisément de construire une graphique similaire à ceux produit par les autres fonction mais directement à partir d'une tableau de résultats calculés précédemment. Cette fonction a un intérêt si l'on veut appliquer l'esthétique graphique de fonctionr mais à des indicateurs qui ne sont pas calculés par une autre fonction (proportion, moyenne, médiane). Par rapport à theme_fonctionr(), esth_graph() permet aisément d'intégrer plusieurs éléments que l'on retrouve dans d'autres graphiques produits par fonctionr() : valeurs de l'indicateur, bornes d'intervalle de confiance, nombres d'individus dans l'échantillon. La logique d'esth_graph est aussi différente de celle de theme_fonctionr(), la première fonction fonction produit un graphique à partir d'une table, alors que la seconde applique un thème à un graphique existant.
-
-```{r}
-## Mettre un exemple ? Lequel? J'avais pensé à des Ginis, mais cela demande de charger d'autres packages.Ou alors des rapport interquantiles. 
-```
-
-## pivot_longer_survey()
+## `pivot_longer_survey()`
 
 # Le tableau récapitulait des arguments
 
-Comme nous l'avons vu, la majorité des fonctions de fonctionr se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique et que l'on peut diviser en cinq sous-catégories : les arguments esthétiques de base (qui ont une influence centrale sur le graphique), les arguments esthétiques graphiques (barres et couleurs), les arguments esthétiques de chiffres (unités, décimales, etc.), les arguments esthétiques de lettres (police, etc.), les arguments de labels. Un dernier argument, traitant de l'export de l'objet créé par les fonctions de fonctionr sera aussi abordé.
+Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique et que l'on peut diviser en cinq sous-catégories : les arguments esthétiques de base (qui ont une influence centrale sur le graphique), les arguments esthétiques graphiques (barres et couleurs), les arguments esthétiques de chiffres (unités, décimales, etc.), les arguments esthétiques de lettres (police, etc.), les arguments de labels. Un dernier argument, traitant de l'export de l'objet créé par les fonctions de `fonctionr` sera aussi abordé.
 
 TABLEAU
 
 # Les arguments liés à la base de données utilisée
 
-data est l'argument le plus important car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexe, il peut s'agir d'un objet survey ou d'un objet srvyr, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est aussi possible que l'objet survey ou srvyr soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage.
+data est l'argument le plus important car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexe, il peut s'agir d'un objet `survey` ou d'un objet `srvyr`, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est aussi possible que l'objet `survey` ou `srvyr` soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage.
 
-Il est également possible que data soit un dataframe. Dans ce cas, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, fonctionr peut être utilisé pour l'analyse des sondages complexe mais aussi des sondages aléatoires simple. fonctionr peut aussi créer un objet de sondage complexe à partit d'un dataframe. Dans ce cas, le dataframe doit être indiqué dans data et les autres arguments (poids, strates, etc.) doivent être indiquées dans l'argument ... qui se trouve plus loin. L'argument ... ne se trouve pas directement après l'argument data pour permettre d'indiquer plusieurs arguments (group, prop_exp, facet...) sans devoir mentionner explicitement le nom de l'argument (par exemple ne pas devoir écrire systématiquement group = db040). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des replicate weights. Si l'ont veut intégrer des replicates weights, il est nécessaire de créer d'abord un objet survey ou srvyr et d'utiliser cet objet dans fonctionr.
+Il est également possible que data soit un dataframe. Dans ce cas, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, `fonctionr` peut être utilisé pour l'analyse des sondages complexe mais aussi des sondages aléatoires simple. `fonctionr` peut aussi créer un objet de sondage complexe à partit d'un dataframe. Dans ce cas, le dataframe doit être indiqué dans data et les autres arguments (poids, strates, etc.) doivent être indiquées dans l'argument ... qui se trouve plus loin. L'argument ... ne se trouve pas directement après l'argument data pour permettre d'indiquer plusieurs arguments (group, prop_exp, facet...) sans devoir mentionner explicitement le nom de l'argument (par exemple ne pas devoir écrire systématiquement group = db040). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des *replicate weights*. Si l'ont veut intégrer des *replicates weights*, il est nécessaire de créer d'abord un objet `survey` ou `srvyr` et d'utiliser cet objet dans `fonctionr`.
 
-Pour la fonction esth_graph, il n'y a pas d'argument data, mais un argument tab qui doit correspondre à la table avec les indicateurs. Il s'appelle tab car il est similaire à l'objet tab produit par la plupart des fonctions de fonctionr.
+Pour la fonction `esth_graph()`, il n'y a pas d'argument data, mais un argument tab qui doit correspondre à la table avec les indicateurs. Il s'appelle tab car il est similaire à l'objet tab produit par la plupart des fonctions de `fonctionr`.
 
-EXEMPLES
+Les exemples ci-dessous montre trois manière différentes de prendre en compte un même plan de sondage : en l'indiquant directement dans la fonction de `fonctionr`, en créant d'abord un objet `survey` et en créant d'abord un objet `srvyr`.
+
+```{r}
+
+### Un exemple où on indique directement dans la fonction de fonctionr les différents éléments du plan de sondage
+eusilc_prop_1 <- prop_group(eusilc,
+                          group = pl030_rec,
+                          prop_exp = py090n > 0,
+                          strata = db040,
+                          ids = db030,
+                          weights = rb050,
+                          title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_1$graph
+
+### Un exemple où utilise un objet survey
+library(survey)
+
+eusilc_survey<-svydesign(id = ~db030,strat=~db040, weight= ~rb050, data = eusilc)
+
+eusilc_prop_2 <- prop_group(eusilc_survey,
+                            group = pl030_rec,
+                            prop_exp = py090n > 0,
+                            title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
+                            subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_2$graph
+
+
+### Un exemple où utilise un objet srvyr
+library(srvyr)
+eusilc_srvyr<-as_survey_design(eusilc,
+                               ids = db030,
+                               strata = db040,
+                               weights = rb050)
+eusilc_prop_3 <- prop_group(eusilc_srvyr,
+                            group = pl030_rec,
+                            prop_exp = py090n > 0,
+                            title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
+                            subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_3$graph
+
+
+```
 
 # Les arguments indispensables
 
@@ -362,17 +282,32 @@ Ces arguments sont principalement de différents types : variables qualitatives,
 
 -   group et quali_var sont des variables qualitatives. Les variables indiquées pour ces arguments sont ainsi transformées en facteurs pour leur usage dans la fonction.
 
--   prop_exp et quanti_exp sont des expressions. C'est-à-dire que ces arguments peuvent être des variables (un variable binaire 0-1 pour prop_exp et une variable numérique pour quanti_exp) ou une expression qui produit une variable (binaire pour prop_exp et quantitative pour quanti_exp). Ainsi, il n'est pas nécessaire de préparer à l'avance la variable binaire ou la quantitative, elle peut être calculée directement dans les fonctions prop_group et central_group. Précisons que seuls les variables de la base de données et les valeurs numérique sont autorisées dans les expressions, les objets extérieurs à la table (par exemple un seuil contenu dans un objet) ne sont pas reconnu par ces fonctions. Dans fonctionr, tous les arguments qui terminent par \_exp sont des expressions.
+-   prop_exp et quanti_exp sont des expressions. C'est-à-dire que ces arguments peuvent être des variables (un variable binaire 0-1 pour prop_exp et une variable numérique pour quanti_exp) ou une expression qui produit une variable (binaire pour prop_exp et quantitative pour quanti_exp). Ainsi, il n'est pas nécessaire de préparer à l'avance la variable binaire ou la quantitative, elle peut être calculée directement dans les fonctions `prop_group()` et `central_group()`. Précisons que seuls les variables de la base de données et les valeurs numérique sont autorisées dans les expressions, les objets extérieurs à la table (par exemple un seuil contenu dans un objet) ne sont pas reconnu par ces fonctions. Dans `fonctionr`, tous les arguments qui terminent par \_exp sont des expressions.
 
--   list_vars doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions many_val et many_val_group. Pour many_prop et many_prop_group, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour many_mean, many_mean_group, many_median et many_median_group, les variables doivent être numériques.
+-   list_vars doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions `many_val()` et `many_val_group()`. Pour `many_prop()` et `many_prop_group()`, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour `many_mean()`, `many_mean_group()`, `many_median()` et `many_median_group()`, les variables doivent être numériques.
 
-Juste après list_vars, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans la table (tab) et le graphique (graph) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation.
+Juste après list_vars, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans le tableau (tab) et le graphique (graph) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation.
 
-L'argument type est utilisé pour les fonctions "alias" mean_group et median_group ; many_prop, many_mean et many_median ; many_prop_group, many_mean_group et many_median_group à partir des fonctions respectives central_group, many_val et many_val_group. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias".
+L'argument type est utilisé pour les fonctions "alias" `mean_group()` et `median_group()` ; `many_prop()`, `many_mean()` et `many_median()` ; `many_prop_group()`, `many_mean_group()` et `many_median_group()` à partir des fonctions respectives `central_group()`, `many_val()` et `many_val_group()`. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias".
 
-Pour esth_graph(), les arguments var et value sont obligatoires et ils indiquent respectivement les colonnes dans tab avec nom de l'indicateur et sa valeur.
+Pour `esth_graph()`, les arguments var et value sont obligatoires et ils indiquent respectivement les colonnes dans tab avec nom de l'indicateur et sa valeur.
 
-EXEMPLES dont expressions.
+Dans l'exemple ci-dessous, on calcule directement le revenu équivalent mensuel à partir de la variable de revenu annuel qu'on divise par 12.
+
+```{r}
+
+eusilc_mean <- mean_group(eusilc,
+                          group = pl030_rec,   
+                          quanti_exp = eqIncome / 12,
+                          weights = rb050,
+                          unit= "€",
+                          title = "Mean of monthly equivalised income in household by socio-economic status",
+                          subtitle = "Example with austrian SILC data from 'laeken' package")
+eusilc_mean$graph
+eusilc_mean$tab
+eusilc_mean$test.stat
+
+```
 
 # Les arguments clés : pas obligatoires mais influençant les résultats
 
@@ -394,7 +329,7 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
 
 # Les arguments esthétiques
 
-Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogique, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d\'esthétique des chiffres, d'esthétique des lettres et les labels.
+Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogique, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d'esthétique des chiffres, d'esthétique des lettres et les labels.
 
 ## L'esthétique de base
 
@@ -404,7 +339,7 @@ Les arguments esthétiques sont des arguments qui affectent uniquement le graphi
 
 -   show_ci, show_n, show_value et show_lab sont des argument similaires qui peuvent prendre les valeurs TRUE et FALSE. Les valeur TRUE permettent de montrer les élements suivants : l'intervalle de confiance (show_ci), le nombre de personnes dans l'échantillon qui est à la base de l'estimation (show_value) et les titres et sous-titres du graphiques, des axes et de la légende (show). Les valeurs FALSE permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentaiton graphique adéquate show_ci n'est pas un argument de la fonction distrib_group_discrete(). Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (tab). C'est aussi le cas pour many_val_group et ses alias quand position = "stack", les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans distrib_group_discrete(), pour des raisons de lisibilité, seuls les valeurs supérieurs à 2% sont indiquées sur le graphique. Par défaut, show_ci, show_value\_ et show_lab ont la valeur de TRUE et show_n a la valeur de FALSE, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels.
 
--    total_name indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+-   total_name indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
 
 -   Pour la fonction esth_graph(), les arguments sont un peu différents, à l'exception de reorder et show_value. error_low, error_upp et n_var permettent d'indiquer les colonnes dans tab où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur NULL, ce qui conduit à ne pas montrer ces éléments dans le graphique. name_total permet d'indiquer le nom du total dans tab de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
 
@@ -434,15 +369,15 @@ L'esthétique des chiffres concernent la manière dont l'estimation de l'indicat
 
 -   legend_ncol indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. legend_ncol n'est aussi présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias.
 
-## Les labels 
+## Les labels
 
 Les arguments de label ne sont utilisés que si show_lab = TRUE. Si show_lab = FALSE, aucun des labels ci-dessous n'est indiqué.
 
 -   title, subtitle, xlab, ylab, legend_lab et caption indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que xlab et ylab font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation coord_flip() qui a lieu dans les fonctions. legend_lab n'est présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias. Le caption étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument caption permet d'ajouter un texte en dessous de la mention de p valeur du test statistique.
 
--   Il est possible de ne pas indiquer de texte explicite pour les arguments de label tout en indiquant show_lab = TRUE. Dans ce cas, il n'y a pas de titre, pas de sous-titre et pas de caption (autre que la p valeur du test statistique), mais il y a un xlab, un ylab et, pour les graphiques avec légende, un legend_lab. Chacun de ces texte reprend les noms de la variable ou de l'expression qui est, pour xlab, précédé d'une précision : "Moyenne : ... ", "Distribution : ..."
+-   Il est possible de ne pas indiquer de texte explicite pour les arguments de label tout en indiquant show_lab = TRUE. Dans ce cas, il n'y a pas de titre, pas de sous-titre et pas de caption (autre que la p valeur du test statistique), mais il y a un xlab, un ylab et, pour les graphiques avec légende, un legend_lab. Chacun de ces texte reprend les noms de la variable ou de l'expression qui est, pour xlab, précédé d'une précision : "Moyenne : ...", "Distribution : ..."
 
--   Il est possible d'indiquer certains label et d'autre non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit d'indiquer show_lab = TRUE et de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour xlab, ylab et legend_lab, cette manière de procéder ne fonctionne pas car en l'absence de texte explicite (et avec show_lab = TRUE), le label automatique sera écrit sur le graphique. Si l'on souhaite ne pas avoir au moins un de ces labels mais en avoir d'autres, il faut alors indiquer, respectivement, xlab = "", ylab = "" ou legend_lab = "". L'utilisation de xlab = NULL, ylab = NULL ou legend_lab = NULL conduira à l'écriture du texte automatique.
+-   Il est possible d'indiquer certains label et d'autre non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit d'indiquer show_lab = TRUE et de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour xlab, ylab et legend_lab, cette manière de procéder ne fonctionne pas car en l'absence de texte explicite (et avec show_lab = TRUE), le label automatique sera écrit sur le graphique. Si l'on souhaite ne pas avoir au moins un de ces labels mais en avoir d'autres, il faut alors indiquer, respectivement, xlab = "", ylab ="" ou legend_lab = "". L'utilisation de xlab = NULL, ylab = NULL ou legend_lab = NULL conduira à l'écriture du texte automatique.
 
 -   Comme argument de label, on peut aussi mentionner l'argument lists_vars_lab que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label. Cependant, par rapport aux autres labels, cet argument a aussi une influence sur la table produite (tab) car ce sont les labels de variables qui seront repris dans le tableau, alors ques les autres labels, comme tous les arguments esthétiques n'influencent que le graphique et non le tableau.
 
