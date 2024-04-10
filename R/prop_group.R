@@ -186,6 +186,10 @@ prop_group <- function(data,
   check_input(data,
               vars_input_char)
 
+  # On convertit d'abord en objet srvyr
+  # NOTE : on le fait à ce moment du script car on a besoin d'avoir un objet srvyr pour faire le mutate à l'étape d'après !
+  data_W <- convert_to_srvyr(data, ...)
+
   # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
   data <- data %>%
     mutate(fonctionr_test_prop_exp = {{ prop_exp }})
@@ -202,9 +206,6 @@ prop_group <- function(data,
 
 
   # 2. PROCESSING DES DONNEES --------------------
-
-  # On convertit d'abord en objet srvyr
-  data_W <- convert_to_srvyr(data, ...)
 
   # On ne garde que les colonnes entrées en input
   data_W <- data_W %>%

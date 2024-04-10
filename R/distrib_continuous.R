@@ -71,6 +71,66 @@ distrib_continuous <- function(data,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
+  # Un check impératif
+  if((missing(data) | missing(quanti_exp)) == TRUE){
+    stop("Les arguments data et quanti_exp doivent être remplis")
+  }
+
+  # Check des autres arguments
+  check_arg(
+    arg = list(
+      type = type,
+      unit = unit,
+      dec = dec,
+      color = color,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      xlab = xlab,
+      ylab = ylab,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      pal = pal
+    ),
+    type = "character",
+    short = F
+  )
+  check_arg(
+    arg = list(
+      show_mid_line = show_mid_line,
+      show_ci_lines = show_ci_lines,
+      show_ci_area = show_ci_area,
+      show_quant_lines = show_quant_lines,
+      show_n = show_n,
+      show_value = show_value,
+      show_lab = show_lab
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      bw = bw,
+      resolution = resolution,
+      digits = digits
+    ),
+    type = "numeric"
+  )
+  check_arg(
+    arg = list(
+      quantiles = quantiles,
+      limits = limits
+    ),
+    type = "numeric",
+    short = F
+  )
+
+  # Check que les arguments avec choix précis sont les bons
+  match.arg(type, choices = c("mean", "median"))
+
   # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
@@ -285,6 +345,14 @@ distrib_continuous <- function(data,
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
+
+  if(all(isColor(pal)) == TRUE){
+    # Si condition remplie on ne fait rien => on garde la palette
+  } else {
+    # Sinon on met la couleur par défaut
+    message("Une couleur indiquée dans pal n'existe pas : la palette de couleurs par défaut est utilisée")
+    pal <- c("#00708C", "mediumturquoise")
+  }
 
   # La palette divergente => varie selon que le nombre de quantiles soit pair ou impair
   if(length(estQuant_W$quantile) %% 2 == 0){

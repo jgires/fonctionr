@@ -228,6 +228,29 @@ check_bin <- function(data,
 }
 
 
+#' check_prob
+#'
+#' Internal function to check if probs are between 0 & 1
+#'
+#' @param data A dataframe in which to check
+#' @param vec_list_vars A vector containing names of columns
+#'
+#' @noRd
+#'
+
+check_prob <- function(arg) {
+  for(check_i in seq_along(arg)){
+    if(!is.null(arg[[check_i]])){
+      if(all(!is.na(arg[[check_i]]))){
+        min_check <- (min(arg[[check_i]]))
+        max_check <- (max(arg[[check_i]]))
+        if (!(min_check >= 0 & max_check <= 1)) stop(paste("L'argument", names(arg)[[check_i]], "doit contenir des valeurs entre 0 et 1"), call. = FALSE)
+      }
+    }
+  }
+}
+
+
 #' check_input
 #'
 #' Internal function to check if input variables exist in data

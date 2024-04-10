@@ -87,6 +87,12 @@ distrib_group_continuous <- function(data,
     stop("Les arguments data, group et quanti_exp doivent être remplis")
   }
 
+  # On empêche une hauteur de plus de 1 si palette multicolore (ça déconne si chevauchement)
+  if(height > 1 & length(pal) > 1){
+    message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redéfinie à .8")
+    height <- .8
+  }
+
   # Check des autres arguments
   check_arg(
     arg = list(
@@ -146,6 +152,14 @@ distrib_group_continuous <- function(data,
     ),
     type = "numeric",
     short = F
+  )
+
+  # Check des probs
+  check_prob(
+    arg = list(
+      quantiles = quantiles,
+      moustache_probs = moustache_probs
+    )
   )
 
   # Check que les arguments avec choix précis sont les bons
@@ -580,7 +594,7 @@ distrib_group_continuous <- function(data,
 
 
   # 6. CREATION DU GRAPHIQUE --------------------
-  if(!is.null(pal) & all(isColor(pal)) == TRUE){
+  if(all(isColor(pal)) == TRUE){
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par défaut
