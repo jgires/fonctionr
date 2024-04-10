@@ -191,9 +191,9 @@ prop_group <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
-  data <- data %>%
+  data_W <- data_W %>%
     mutate(fonctionr_test_prop_exp = {{ prop_exp }})
-  if (!all(data[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
+  if (!all(data_W$variables[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit être une expression produisant des TRUE-FALSE ou être une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
 
   if(na.prop == "rm"){
     # Si na.prop == "rm", l'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ça ne marche pas !
