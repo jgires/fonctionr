@@ -153,21 +153,13 @@ Date : 2024-02-14
 
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
 
--   Ajouter la panoplie de checks !
-
 **distrib_group_c**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
 
--   Rendre possible le fait que le fill des ridges soit transparent (ajouter une condition pour faire le rendu des `geom_ribbon`).
-
--   Optimiser : ajouter des conditions pour éviter certains calculs inutiles selon les arguments.
-
 -   Ajouter l'export excel.
 
--   Ajouter la panoplie de checks !
-
--   Dans les checks : interdire le dégradé de couleur lorsque chevauchement des ridges (lorsque height \> 1). Le bug est lié à la manière dont les `geom_ribbon` sont positionnées sur le ggplot.
+-   Faire en sorte que le nom du group soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable.
 
 #### central_group
 

@@ -886,13 +886,13 @@ distrib_group_continuous <- function(data,
 
   # On crée l'objet final
   res <- list()
-  res$dens <- df_dens[, c("group", "x", "y", "quantFct")]
-  res$tab <- tab#[, !names(tab) %in% c("level")]
-  res$quant <- estQuant_W
+  res$dens <- df_dens[, c("group", "x", "y", "quantFct", "y_ridges")]
+  res$tab <- tab[, !names(tab) %in% c("level")]
+  res$quant <- estQuant_W[, !names(estQuant_W) %in% c("level", "se")]
   res$graph <- graph
-  res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
-  res$central <- central
-
+  if (show_moustache == T) {
+    res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
+  }
   return(res)
 
 }
