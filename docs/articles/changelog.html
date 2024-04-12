@@ -299,10 +299,9 @@ message de la console avec les replicates =&gt; pourquoi ?</p></li>
 </ul>
 <p><strong>distrib_c</strong></p>
 <ul>
-<li><p>Ajouter le test stat univarié avec comme H0 mu dans la
-population. Apparemment la fonction n’est pas pré-programmée dans
-<code>survey</code>, il faut la faire soi-même.</p></li>
-<li><p>Ajouter la panoplie de checks !</p></li>
+<li>Ajouter le test stat univarié avec comme H0 mu dans la population.
+Apparemment la fonction n’est pas pré-programmée dans
+<code>survey</code>, il faut la faire soi-même.</li>
 </ul>
 <p><strong>distrib_group_c</strong></p>
 <ul>
@@ -310,17 +309,10 @@ population. Apparemment la fonction n’est pas pré-programmée dans
 groupe. De ce fait, il n’apparaît pas toujours en dernier, notamment
 lorsque <code>reorder = T</code>. Régler ça (pas cohérent avec les
 autres fonctions).</p></li>
-<li><p>Rendre possible le fait que le fill des ridges soit transparent
-(ajouter une condition pour faire le rendu des
-<code>geom_ribbon</code>).</p></li>
-<li><p>Optimiser : ajouter des conditions pour éviter certains calculs
-inutiles selon les arguments.</p></li>
 <li><p>Ajouter l’export excel.</p></li>
-<li><p>Ajouter la panoplie de checks !</p></li>
-<li><p>Dans les checks : interdire le dégradé de couleur lorsque
-chevauchement des ridges (lorsque height &gt; 1). Le bug est lié à la
-manière dont les <code>geom_ribbon</code> sont positionnées sur le
-ggplot.</p></li>
+<li><p>Faire en sorte que le nom du group soit toujours le même dans les
+sorties de la liste (pour le moment, parfois “group”, parfois le nom de
+la variable.</p></li>
 </ul>
 </div>
 <div class="section level4">

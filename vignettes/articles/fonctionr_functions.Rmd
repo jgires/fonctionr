@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-L'objectif de `fonctionr` est de faciliter l'analyse de données issues de sondages complexes, dont la manipulation est parfois laborieuse. `fonctionr` a été développé dans l'idée de réduire la taille du code à écrire pour produire les résulats descriptifs et d'analyses bivariées les plus courants.
+L'objectif de `fonctionr` est de faciliter l'analyse de données issues de sondages complexes, dont la manipulation est parfois laborieuse. `fonctionr` a été développé dans l'idée de réduire la taille du code à écrire pour produire les résultats descriptifs et d'analyses bivariées les plus courants.
 
 Le package a également été construit pour pouvoir utiliser directement les résultats produits dans un rapport. Ainsi, `fonctionr` produit en une seule fonction : un tableau de résultats avec les indicateurs voulus, les effectifs et leurs intervalles de confiance ; un graphique prêt à être publié et le plus souvent un test statistique le plus approprié aux variables étudiées. Il est aussi possible de directement exporter ces trois résultats dans un fichier Excel.
 
@@ -296,11 +296,24 @@ Les arguments indispensable sont des arguments qui sont nécessaire au bon fonct
 
 -   `list_vars` doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions `many_val()` et `many_val_group()`. Pour `many_prop()` et `many_prop_group()`, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour `many_mean()`, `many_mean_group()`, `many_median()` et `many_median_group()`, les variables doivent être numériques.
 
-Juste après `list_vars`, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans le dataframe de résultat (`tab`) et le graphique (`graph`) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation des fonctions. <!--# J'enlèverais -->
+Juste après `list_vars`, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans le dataframe de résultat (`tab`) et le graphique (`graph`) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation des fonctions.
 
 L'argument `type` est prédéfini pour les fonctions "alias" `mean_group()` et `median_group()` ; `many_prop()`, `many_mean()` et `many_median()` ; `many_prop_group()`, `many_mean_group()` et `many_median_group()` à partir des fonctions respectives `central_group()`, `many_val()` et `many_val_group()`. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias".
 
 Pour `esth_graph()`, les arguments `var` et `value` sont obligatoires et ils indiquent respectivement les colonnes dans `tab` avec nom de l'indicateur et sa valeur.
+
+Dans l'exemple ci-dessous, on calcule la proportion des répondant qui travaillent et dont le salaire net annuel était inférieur à 12000€. On peut ainsi introduire des expressions complexe dans les fonctions.
+
+```{r}
+eusilc_prop_NA_excl <- prop_group(eusilc,
+                          group = rb090,
+                          prop_exp = (pl030 =="1"|pl030 =="2") & py010n < 12000,
+                          weights = rb050,
+                          title = "% of the population that works and whose wage is less than 12000€ net",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_NA_excl$graph
+```
 
 # Les arguments clés : pas obligatoires mais influençant les résultats
 
@@ -312,13 +325,57 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
 
 -   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés pour les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses.
 
+Dans l'exemple ci-dessous, on compare la distribution des statuts socio-professionnels entre régions, en y ajoutant une modalité NA pour le statut (il s'agit des personnes de moins de 16 ans qui ne sont pas interrogées), en filtrant les données pour ne conserver que les personnes de plus de 11 ans et introduisant la variable sexe comme facette. Comme nous le verrons, la couleur des NA est toujours grise et ne dépend pas de la palette de couleur, de manière à les identifier spécifiquement.
+
+```{r}
+
+eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                 group = db040,
+                                 quali_var = pl030_rec,
+                                 na.rm.var = FALSE,
+                                 facet = rb090,
+                                 filter_exp = age >11,
+                                 weights = rb050,
+                                 title = "Distribution of socio-economic status according to region and gender",
+                                 subtitle = "Example with austrian SILC data from 'laeken' package"
+                                 )
+eusilc_dist_group_d$graph
+```
+
 -   `na.prop` indique la manière dont les éventuels `NA` sont traités dans les variables introduites dans `prop_exp`. Si l'argument prend la valeur `"rm"`, tous les `NA` présents dans au moins une des variable faisant partie de `prop_exp` sont exclus avant de procéder aux calculs. De cette manière, la proportion est calculée uniquement sur les observations "valides". Dans ce cas, pour des raisons évidentes, il n'est pas possible d'utiliser la fonction `is.na()` dans `prop_exp` (on ne peut pas calculer la proportion de personnes dont le statut professionnel est `NA` si on a supprimé les `NA`). Si l'argument prend la valeur `"include"`, les `NA` ne sont pas retirés avant de procéder aux calculs et la proportion est calculée sur l'ensemble des observations, `NA` compris. Cela peut être utile quand les `NA` n'indiquent pas une valeur manquante mais une situation spécifique. Par exemple, dans une variable mesurant les points obtenu par des étudiants à un examen, le `NA` peut indiquer que l'étudiant était absent ; on peut donc vouloir calculer la proportion d'étudiants ayant au moins 12/20 en conservant les absents au dénominateur, ce qui est possible avec `na.prop = "include"`. Par défaut, `na.prop` prend la valeur `"rm"`. Précisons que pour `central_group()` et ses alias `mean_group()` et `median_group()`, il n'y a pas d'argument permettant de choisir le traitement des `NA` dans `quanti_exp`. Les observations comprenant au moins un `NA` dans une variable indiquée dans `quanti_exp` sont automatiquement exclues des calculs, car il n'y a pas d'autres possibilité qui soit pertinente.
 
--   `na.vars` indique la manière dont les `NA` doivent être traités dans les différentes variables de `many_val()` et `many_val_group()`. Si l'argument prend la valeur `"rm"`, les `NA` sont exclus séparément dans chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculée, mais que l'on conserve un maximum d'observations. Si l'argument prend la valeur `"rm.all"`, les observations qui comprennent au moins un `NA` dans n'importe quelle des variables de `list_vars` sont exclues. Cette manière de procéder exclut plus d'observations mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut, `na.vars` prend la valeur `"rm"`.
+Les deux graphiques ci-dessous comparent la part de travailleurs selon le sexe en excluant ou en incluant les NA. Les taux du second graphique sont plus faible, car dans celui-ci les personnes n'ayant pas de statut socio-professionnel (ex. les enfants) sont comptabilisés dans le dénominateur.
+
+```{r}
+
+eusilc_prop_NA_excl <- prop_group(eusilc,
+                          group = rb090,
+                          prop_exp = pl030 =="1"|pl030 =="2" ,
+                          weights = rb050,
+                          na.prop = "rm",
+                          title = "% workers according to sex NA excluded",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_NA_excl$graph
+
+eusilc_prop_NA_incl <- prop_group(eusilc,
+                          group = rb090,
+                          prop_exp = pl030 =="1"|pl030 =="2" ,
+                          weights = rb050,
+                          na.prop = "include",
+                          title = "% workers according to sex, NA included",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+eusilc_prop_NA_incl$graph
+```
+
+-   `na.vars` indique la manière dont les `NA` doivent être traités dans les différentes variables de `many_val()` et `many_val_group()`. Si l'argument prend la valeur `"rm"`, les `NA` sont exclus séparément dans chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculée, mais que l'on conserve un maximum d'observations. Si l'argument prend la valeur `"rm.all"`, les observations qui comprennent au moins un `NA` dans n'importe quelle des variables de `list_vars` sont exclues. Cette manière de procéder exclut plus d'observations mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut, `na.vars` prend la valeur `"rm"`. <!--# François : Je me demande s'il ne faut pas mettre un exemple sur na.vars ici, mais je n'en vois pas de bien à partir du jeu de données SILC Autriche -->
 
 -   `probs` est un vecteur utilisé dans `distrib_discrete()` pour indiquer les proportions de l'hypothèse nulle sur base desquelles le test du khi2 d'adéquation est calculé. Par défaut, le test du khi2 d'adéquation n'est pas calculé.
 
--   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans [l'argument method de la fonction svyciprop() du package survey](https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html). Par défaut, c'est la méthode `"beta"` qui est utilisée.
+-   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans l'argument method de `svyciprop()` du package `survey`[^4]. Par défaut, c'est la méthode `"beta"` qui est utilisée.
+
+[^4]: Voir : <https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html>
 
 # Les arguments esthétiques
 
@@ -326,52 +383,165 @@ Les arguments esthétiques sont des arguments qui affectent uniquement le graphi
 
 ## L'esthétique de base
 
--   reorder est un argument qui en prenant la valeur TRUE permet de réordonner les barres selon leur valeur décroissante. Si reorder = FALSE, les barres ne sont pas réordonnées et c'est l'ordre des levels de la variable qui est utilisé pour ordonner les barre. La barre NA quand elle existe (par exemple avec na.rm.group = FALSE) et la barre Total ne sont jamais réordonnées et sont toujours positionnées dans le bas du graphique. en cas de facet les barres sont réordonnées sur base de chaque barre médiane. Par exemple, si l'on utilise des facet dans prop_group(), on regarder pour chaque groupe quelle est la barre médiane parmi les différentes et puis on va ordonner les groupes sur bases de ces médianes. Par défaut, reorder prend la valeur de FALSE. reorder n'est pas disponible dans distrib_group_discrete et many_val_group et ses alias (many_prop_group, many_mean_group et many_median_group) car pour ces variables, il y a plusieurs proportions ou indicateurs et il est difficile de choisir sur lequel ou laquelle réordonner. Dans ce cas, c'est l'ordre des levels des facteurs qui est utilisé.
+-   `reorder` est un argument qui en prenant la valeur `TRUE` permet de réordonner les barres selon leur valeur décroissante. Si `reorder = FALSE`, les barres ne sont pas réordonnées et c'est l'ordre des levels de la variable qui est utilisé pour ordonner les barre. La barre NA quand elle existe (par exemple avec `na.rm.group = FALSE`) et la barre Total ne sont jamais réordonnées et sont toujours positionnées dans le bas du graphique. en cas de facettes les barres sont réordonnées sur base de chaque barre médiane. Par exemple, si l'on utilise des facettes dans `prop_group()`, la fonction identifie, pour chaque groupe, quelle est la barre médiane parmi les différentes et puis elle va ordonner les groupes sur bases de ces médianes. Par défaut, `reorder` prend la valeur de `FALSE`. `reorder` n'est pas disponible dans `distrib_group_discrete()` et `many_val_group()` et ses alias (`many_prop_group()`, `many_mean_group()` et `many_median_group()`), car pour ces variables il y a plusieurs proportions ou indicateurs et il est difficile de choisir sur lequel ou laquelle réordonner. Dans ce cas, c'est l'ordre des levels des facteurs qui est utilisé.
 
--   position est un argument qui ne se trouve uniquement dans many_val_group et qui peut prendre les valeurs de "dodge" et de "stack". Avec "dodge", les barres de sont pas empilées. Avec "stack", les barres sont empilées dans chaque groupe, ce qui peut avoir un intérêt quand les variables ont vocation à être additionnées, par exemple avec des revenus selon différentes sources qui peuvent former un revenu total. "dodge" est la valeur par défaut.
+Dans l'exemple ci-dessous, les revenus moyens des statut socio-économique sont réordonnées. Comme il y a des facettes, c'est le médian de chaque catégorie qui est utilisée pour construire. Par exemple, la catégorie "Permanently disabled" se situe en troisième position, car sa valeur médiane (15199€) se entre entre le médian de la catégorie "Student" (15097€) et de la catégorie "Working part time" (16511€).
 
--   show_ci, show_n, show_value et show_lab sont des argument similaires qui peuvent prendre les valeurs TRUE et FALSE. Les valeur TRUE permettent de montrer les élements suivants : l'intervalle de confiance (show_ci), le nombre de personnes dans l'échantillon qui est à la base de l'estimation (show_value) et les titres et sous-titres du graphiques, des axes et de la légende (show). Les valeurs FALSE permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentaiton graphique adéquate show_ci n'est pas un argument de la fonction distrib_group_discrete(). Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (tab). C'est aussi le cas pour many_val_group et ses alias quand position = "stack", les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans distrib_group_discrete(), pour des raisons de lisibilité, seuls les valeurs supérieurs à 2% sont indiquées sur le graphique. Par défaut, show_ci, show_value\_ et show_lab ont la valeur de TRUE et show_n a la valeur de FALSE, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels.
+```{r}
+eusilc_mean_reorder <- mean_group(eusilc,
+                                  group = pl030_rec,
+                                  quanti_exp = eqIncome,
+                                  facet = pb220a,
+                                  weights = rb050,
+                                  reorder = TRUE,
+                                  unit = "€",
+                                  title = "Mean of eq. income by status and nationality",
+                                  subtitle = "Example with austrian SILC data from 'laeken' package") 
+eusilc_mean_reorder$graph
+```
 
--   total_name indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+-   `position` est un argument qui ne se trouve uniquement dans `many_val_group()` et qui peut prendre les valeurs de `"dodge"` et de `"stack"`. Avec `"dodge"`, les barres ne sont pas empilées. Avec `"stack"`, les barres sont empilées dans chaque groupe. Cette option peut avoir un intérêt quand les variables ont vocation à être additionnées, par exemple avec des revenus selon différentes sources qui peuvent former un revenu total. `"dodge"` est la valeur par défaut.
 
--   Pour la fonction esth_graph(), les arguments sont un peu différents, à l'exception de reorder et show_value. error_low, error_upp et n_var permettent d'indiquer les colonnes dans tab où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur NULL, ce qui conduit à ne pas montrer ces éléments dans le graphique. name_total permet d'indiquer le nom du total dans tab de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
+Dans l'exemple ci-dessous, il est pertinent d'empiler les barres indiquant les différents revenus pour visualiser le revenu total. Cependant, dans ce cas, on peut plus indiquer les intervalles de confiance sur le graphique.
+
+```{r}
+#Exemple avec Stack 
+eusilc_many_mean_group_2 <- many_mean_group(eusilc,
+                                            group = rb090,
+                                            list_vars = c(py010n, py050n, py090n),
+                                            list_vars_lab = c("salaires","revenus d'une activité indépendant","allocation de chômage"),
+                                            weights = rb050,
+                                            position = "stack",
+                                            title = "Income from different sources according to sex",
+                                            subtitle = "Example with austrian SILC data from 'laeken' package" 
+                                            ) 
+eusilc_many_mean_group_2$graph
+```
+
+-   `show_ci`, `show_n`, `show_value` et `show_lab` sont des argument similaires qui peuvent prendre les valeurs `TRUE` et `FALSE`. Les valeur `TRUE` permettent de montrer les éléments suivants : l'intervalle de confiance (`show_ci`), le nombre de personnes dans l'échantillon (`show_n`), l'estimation de l'indicateur (`show_value`) et les titres et sous-titres du graphiques, des axes et de la légende (`show_lab`). Les valeurs `FALSE` permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentation graphique adéquate `show_ci` n'est pas un argument de la fonction `distrib_group_discrete()`. Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (`tab`). C'est aussi le cas pour `many_val_group()` et ses alias quand `position = "stack"`, les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans `distrib_group_discrete()`, pour des raisons de lisibilité, seuls les valeurs supérieures à 2% sont indiquées sur le graphique. Par défaut, `show_ci`, `show_value` et `show_lab` ont la valeur de `TRUE` et `show_n` a la valeur de `FALSE`, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels.
+
+-   `total_name` indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+
+Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changer le nom du "Total".
+
+```{r}
+eusilc_prop <- prop_group(eusilc,
+                          group = db040,
+                          prop_exp = pl030 =="1" | pl030 =="2",
+                          weights = rb050,
+                          show_ci = FALSE,
+                          show_n = TRUE,
+                          show_value = FALSE,
+                          show_lab = FALSE,
+                          total_name = "Total Austria"
+                          ) 
+eusilc_prop$graph
+```
+
+-   Pour la fonction `esth_graph()`, les arguments sont un peu différents, à l'exception de `reorder` et `show_value`. `error_low`, `error_upp` et `n_var` permettent d'indiquer les colonnes dans `tab` où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur `NULL`, ce qui conduit à ne pas montrer ces éléments dans le graphique. `name_total` permet d'indiquer le nom du total dans `tab` de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
 
 ## L'esthétique graphique
 
--   Les couleurs des barres peuvent être indiquées dans les arguments fill et pal. fill est utilisé pour les graphiques monochrome (prop_group(), central_group() et ses alias, distrib_discrete() et esth_graph()). Les couleurs de base de R ou un code couleur hexadécimal. pal est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages MetBrewer, MoMAColors ou PrettyCols. L'argument direction permet d'inverser le sens de la palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens opposé. Pour many_val() et ses alias, pal peut prendre aussi une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des NA et des totaux, quand ils sont présents sont toujours gris (grey) et gris foncé (grey40) et ne sont pas modifiable par les arguments fill ou pal. Par défaut, des couleurs ou des pallettes de couleurs différentes (EST-CE VRAI POUR TOUTES LES FONCTIONS MANY?) ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques.
+-   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`. `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()` et `esth_graph()`). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`. `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens opposé. Pour `many_val()` et ses alias, pal peut prendre aussi une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou pal. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques (**EST-CE VRAI POUR TOUTES LES FONCTIONS MANY?**).
 
--   dodge indique l'épaisseur des barres et peut aller de 0 (barre invisible car d'épaisseur nulle) à 1 (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de 0.9.
+-   `dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
+
+Dans l'exemple ci-dessous, on utilise une autre palette de couleur et des barres plus fines.
+
+```{r}
+eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                       group = db040,
+                                       quali_var = pl030_rec,
+                                       weights = rb050,
+                                       pal = "VanGogh2",
+                                       dodge = .7,
+                                       title = "Distribution of socio-economic status according to region",
+                                       subtitle = "Example with austrian SILC data from 'laeken' package"
+                                       )
+eusilc_dist_group_d$graph 
+```
 
 ## L'esthétique des chiffres
 
-L'esthétique des chiffres concernent la manière dont l'estimation de l'indicateur est affichée sur le graphique. Ainsi, ces argument n'ont une utilité que si show_value = TRUE.
+L'esthétique des chiffres concernent la manière dont l'estimation de l'indicateur est affichée sur le graphique. Ainsi, ces argument n'ont une utilité que si `show_value = TRUE`.
 
--   scale est un argument qui n'est utilisé que dans les graphique exprimant des proportion. Il indique le dénominateur par lequel il faut interpréter le chiffre. Par défaut, il a une valeur de 100 pour interpréter les chiffres mentionnés en pourcentage. Par exemple on peut donner une valeur de 1000 pour interpréter les chiffres en pour mille ou une valeur de 1 pour interpréter les chiffres comme de simple proportions.
+-   `scale` est un argument qui n'est utilisé que dans les graphique exprimant des proportion. Il indique le dénominateur par lequel il faut interpréter le chiffre. Par défaut, `scale = 100` pour interpréter les chiffres mentionnés en pourcentage. Par exemple on peut donner une valeur de `1000` pour interpréter les chiffres en pour mille ou une valeur de `1` pour interpréter les chiffres comme de simple proportions.
 
--   digits indique le nombre de décimales qui doivent être affichées pour les valeurs sur le graphique. Par défaut, digit vaut 0, ce qui conduit à ne pas afficher de décimale.
+-   `digits` indique le nombre de décimales qui doivent être affichées pour les valeurs sur le graphique. Par défaut, `digit = 0`, ce qui conduit à ne pas afficher de décimale.
 
--   unit indique l'unité à indiquer sur le graphique. Pour distrib_discrete(), prop_group, many_prop() et many_prop_group(), l'unité par défaut est "%". Pour les autres l'argument par défaut prend une valeur vide, c'est-à-dire une absence d'unité indiquée sur le graphique. N'importe quel caractère ou chaine de caractère peut être utilisée : "€", "m²", etc.
+-   `unit` indique l'unité à indiquer sur le graphique. Pour `distrib_discrete()`, `prop_group()`, `many_prop()` et `many_prop_group(`), par défaut `unit = "%"`. Pour les autres fonction, par défaut `unit = NULL`, c'est-à-dire une absence d'unité indiquée sur le graphique. N'importe quel caractère ou chaîne de caractère peut être utilisée : `"€"`, `"m²"`, etc.
 
--   dec indique le caractère qui doit être utilisé pour marqué la décimale dans les chiffes. Cet argument n'est utile que quand digits \> 0. Par défaut, la virgule est utilisée comme c'est le cas dans le monde francophone.
+-   `dec` indique le caractère qui doit être utilisé pour marqué la décimale dans les chiffes. Cet argument n'est utile que quand `digits` est supérieur à 0. Par défaut, `dec = ","`, parce que la virgule est le caractère le plus utilisé pour marqué la décimale dans le monde francophone.
+
+Dans l'exemple ci-dessous, on compare la proportion de travailleurs par région, mais en l'exprimant en pour mille et non en pour cent, en adaptant l'unité (‰), en conservant un chiffre après la virgule et en utilisant le point comme caractère pour la décimale et non la virgule.
+
+```{r}
+eusilc_prop <- prop_group(eusilc,
+                          group = db040,
+                          prop_exp = pl030 =="1" | pl030 =="2",
+                          weights = rb050,
+                          scale = 1000,
+                          digits = 1,
+                          unit = "‰",
+                          dec = ".",
+                          title = "Proportion of workers by region, in ‰",
+                          subtitle = "Example with austrian SILC data from 'laeken' package"
+                          )
+eusilc_prop$graph
+```
 
 ## L'esthétique des lettres
 
--   font indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Actuellement trois polices sont directement incluses dans le package : Roboto, Montserrat and Gotham Narrow. Pour toutes les fonctions la police par défaut est Roboto.
+-   `font` indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Actuellement trois polices sont directement incluses dans `fonctionr` : `"Roboto"`, `"Montserrat"` et `"Gotham Narrow"`. Par défaut, `font = "Roboto"`.
 
--   wrap_width_y et wrap_width_leg indique le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende légende. Ces valeurs sont par défaut de 25 caractères. wrap_width_leg n'est présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias. Précisons aussi que le \_y renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation coord_flip() qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour distrib_discrete() ou de la liste des variables pour many_val et many_val_group et leurs alias.
+-   `wrap_width_y` et `wrap_width_leg` indique le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` et ses alias. Précisons aussi que le \_y renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
 
--   legend_ncol indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. legend_ncol n'est aussi présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias.
+-   `legend_ncol` indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. `legend_ncol` n'est aussi présent que pour les graphiques ayant une légende : `distrib_group_discrete(`) et `many_val_group()` et ses alias.
+
+Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende.
+
+```{r}
+eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                       group = db040,
+                                       quali_var = pl030_rec,
+                                       weights = rb050,
+                                       font = "Montserrat",
+                                       wrap_width_y = 10,
+                                       wrap_width_leg = 15,
+                                       legend_ncol = 3,
+                                       title = "Distribution of socio-economic status according to region",
+                                       subtitle = "Example with austrian SILC data from 'laeken' package"
+                                       )
+eusilc_dist_group_d$graph
+```
 
 ## Les labels
 
-Les arguments de label ne sont utilisés que si show_lab = TRUE. Si show_lab = FALSE, aucun des labels ci-dessous n'est indiqué.
+Les arguments de label ne sont utilisés que si `show_lab = TRUE`. Si `show_lab = FALSE`, aucun des labels ci-dessous n'est indiqué.
 
--   title, subtitle, xlab, ylab, legend_lab et caption indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que xlab et ylab font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation coord_flip() qui a lieu dans les fonctions. legend_lab n'est présent que pour les graphiques ayant une légende : distrib_group_discrete() et many_val_group et ses alias. Le caption étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument caption permet d'ajouter un texte en dessous de la mention de p valeur du test statistique.
+-   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption` indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que `xlab` et `ylab` font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation `coord_flip()` qui a lieu dans les fonctions. `legend_lab` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` et ses alias. Le caption étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument `caption` permet d'ajouter un texte en dessous de la mention de p valeur du test statistique.
 
--   Il est possible de ne pas indiquer de texte explicite pour les arguments de label tout en indiquant show_lab = TRUE. Dans ce cas, il n'y a pas de titre, pas de sous-titre et pas de caption (autre que la p valeur du test statistique), mais il y a un xlab, un ylab et, pour les graphiques avec légende, un legend_lab. Chacun de ces texte reprend les noms de la variable ou de l'expression qui est, pour xlab, précédé d'une précision : "Moyenne : ...", "Distribution : ..."
+-   Il est possible de ne pas indiquer de texte explicite pour les arguments de label tout en indiquant `show_lab = TRUE`. Dans ce cas, il n'y a pas de titre, pas de sous-titre et pas de *caption* (autre que la p valeur du test statistique), mais il y a un `xlab`, un `ylab` et, pour les graphiques avec légende, un `legend_lab`. Chacun de ces texte reprend les noms de la variable ou de l'expression qui est, pour `xlab`, précédé d'une précision : "Moyenne : ...", "Distribution : ..."
 
--   Il est possible d'indiquer certains label et d'autre non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit d'indiquer show_lab = TRUE et de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour xlab, ylab et legend_lab, cette manière de procéder ne fonctionne pas car en l'absence de texte explicite (et avec show_lab = TRUE), le label automatique sera écrit sur le graphique. Si l'on souhaite ne pas avoir au moins un de ces labels mais en avoir d'autres, il faut alors indiquer, respectivement, xlab = "", ylab ="" ou legend_lab = "". L'utilisation de xlab = NULL, ylab = NULL ou legend_lab = NULL conduira à l'écriture du texte automatique.
+-   Il est possible d'indiquer certains label et d'autre non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit d'indiquer `show_lab = TRUE` et de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour `xlab`, `ylab` et `legend_lab`, cette manière de procéder ne fonctionne pas car en l'absence de texte explicite (et avec `show_lab = TRUE`), le label par défaut, basé sur le nom des variables, sera écrit sur le graphique. Si l'on souhaite ne pas avoir au moins un de ces labels mais en avoir d'autres, il faut alors indiquer, respectivement, `xlab = ""`, `ylab =""` ou `legend_lab = ""`. L'utilisation de `xlab = NULL`, `ylab = NULL` ou `legend_lab = NULL` conduira à l'écriture du label par défaut.
 
--   Comme argument de label, on peut aussi mentionner l'argument lists_vars_lab que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label. Cependant, par rapport aux autres labels, cet argument a aussi une influence sur la table produite (tab) car ce sont les labels de variables qui seront repris dans le tableau, alors ques les autres labels, comme tous les arguments esthétiques n'influencent que le graphique et non le tableau.
+-   Comme argument de label, on peut aussi mentionner l'argument `lists_vars_lab` que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label. Cependant, par rapport aux autres labels, cet argument a aussi une influence sur le dataframe produit (`tab`) car ce sont les labels de variables qui seront repris dans le tableau, alors que les autres labels, comme tous les arguments esthétiques n'influencent que le graphique et non le data.frame.
+
+Dans l'exemple ci-dessous, on introduit manuellement pour les titres, sous-titres, caption et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en ayant pas de titre pour l'axe des ordonnées.
+
+```{r}
+#Exemple général avec un axe qu'on ne montre pas mais les autres qui sont montrés 
+eusilc_dist_group_d <- distrib_group_d(eusilc,
+                                       group = db040,
+                                       quali_var = pl030_rec,
+                                       weights = rb050,
+                                       title = "Distribution of socio-economic status according to region",
+                                       subtitle = "Example with austrian SILC data from 'laeken' package",
+                                       ylab ="",
+                                       legend_lab = "Status",
+                                       caption = "Source : EU-SILC"
+                                       )
+eusilc_dist_group_d$graph
+```
 
 # L'export au format xlsx
