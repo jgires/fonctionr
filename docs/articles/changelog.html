@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
@@ -88,7 +88,7 @@
 <p>Date : 2024-04-04</p>
 <ul>
 <li><p>Création de <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
-<code><a href="../reference/distrib_continuous.html">distrib_group_continuous()</a></code>.</p></li>
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>.</p></li>
 <li><p>Modification du thème <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> pour qu’il
 soit plus adapté aux nouvelles fonctions.</p></li>
 </ul>
@@ -299,10 +299,9 @@ message de la console avec les replicates =&gt; pourquoi ?</p></li>
 </ul>
 <p><strong>distrib_c</strong></p>
 <ul>
-<li><p>Ajouter le test stat univarié avec comme H0 mu dans la
-population. Apparemment la fonction n’est pas pré-programmée dans
-<code>survey</code>, il faut la faire soi-même.</p></li>
-<li><p>Ajouter la panoplie de checks !</p></li>
+<li>Ajouter le test stat univarié avec comme H0 mu dans la population.
+Apparemment la fonction n’est pas pré-programmée dans
+<code>survey</code>, il faut la faire soi-même.</li>
 </ul>
 <p><strong>distrib_group_c</strong></p>
 <ul>
@@ -310,17 +309,10 @@ population. Apparemment la fonction n’est pas pré-programmée dans
 groupe. De ce fait, il n’apparaît pas toujours en dernier, notamment
 lorsque <code>reorder = T</code>. Régler ça (pas cohérent avec les
 autres fonctions).</p></li>
-<li><p>Rendre possible le fait que le fill des ridges soit transparent
-(ajouter une condition pour faire le rendu des
-<code>geom_ribbon</code>).</p></li>
-<li><p>Optimiser : ajouter des conditions pour éviter certains calculs
-inutiles selon les arguments.</p></li>
 <li><p>Ajouter l’export excel.</p></li>
-<li><p>Ajouter la panoplie de checks !</p></li>
-<li><p>Dans les checks : interdire le dégradé de couleur lorsque
-chevauchement des ridges (lorsque height &gt; 1). Le bug est lié à la
-manière dont les <code>geom_ribbon</code> sont positionnées sur le
-ggplot.</p></li>
+<li><p>Faire en sorte que le nom du group soit toujours le même dans les
+sorties de la liste (pour le moment, parfois “group”, parfois le nom de
+la variable.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -458,7 +450,7 @@ différentes.</p></li>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer>
