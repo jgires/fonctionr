@@ -9,9 +9,11 @@ distrib_group_continuous(
   group,
   quanti_exp,
   type = "median",
+  facet = NULL,
   filter_exp = NULL,
   ...,
   na.rm.group = TRUE,
+  na.rm.facet = TRUE,
   quantiles = seq(0.1, 0.9, 0.1),
   moustache_probs = c(0.95, 0.8, 0.5),
   bw = 1,
@@ -55,15 +57,19 @@ distrib_group_continuous(
 
 \item{type}{"mean" to compute mean as the central value by group ; "median" to compute median as the central value by group.}
 
+\item{facet}{A supprimer?}
+
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
 \item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.}
 
+\item{na.rm.facet}{Argument à supprimer?}
+
 \item{quantiles}{quantiles to be computed in the distributions. Default are deciles.}
 
-\item{moustache_probs}{a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50%, 80% and 95% of the population closest to the median.}
+\item{moustache_probs}{a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.}
 
 \item{bw}{Default is 1.}
 
@@ -79,11 +85,11 @@ distrib_group_continuous(
 
 \item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is FALSE}
 
-\item{show_ci_errorbar}{TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
+\item{show_ci_errorbar}{TRUE if you want to show confidence interval of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
 
-\item{show_ci_lines}{TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is FALSE}
+\item{show_ci_lines}{TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is FALSE}
 
-\item{show_ci_area}{TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
+\item{show_ci_area}{TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
 
 \item{show_quant_lines}{TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.}
 
@@ -101,9 +107,9 @@ distrib_group_continuous(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{pal}{color of the density curve. Default is "#e0dfe0".}
+\item{pal}{color of the density curve.}
 
-\item{pal_moustache}{A vector with the colors for the moustache. Default is c("#EB9BA0", "#FAD7B1").}
+\item{pal_moustache}{A vector with the colors for the moustache.}
 
 \item{color}{Default is NA}
 

@@ -6,16 +6,18 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param quanti_exp An expression that define the variable to be described.
-#' @param type "mean" to compute mean as the central value ; "median" to compute median as the central valu.
+#' @param type "mean" to compute mean as the central value ; "median" to compute median as the central value.
+#' @param facet A supprimer?
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
+#' @param na.rm.facet A supprimer?
 #' @param quantiles quantiles to be computed in the distribution. Default are deciles.
 #' @param bw Default is 1.
 #' @param resolution Resolution of the density curve. Default is 1024.
 #' @param limits Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.
 #' @param show_mid_line TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.
-#' @param show_ci_lines TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
-#' @param show_ci_area TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
+#' @param show_ci_lines TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
+#' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
 #' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each quantile FALSE if you do not want to show the numbers. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
@@ -46,10 +48,10 @@
 distrib_continuous <- function(data,
                           quanti_exp,
                           type = "median",
-                          # facet = NULL,
+                          facet = NULL,
                           filter_exp = NULL,
                           ...,
-                          #na.rm.facet = TRUE,
+                          na.rm.facet = TRUE,
                           quantiles = seq(.1, .9, .1),
                           bw = 1,
                           resolution = 1024,

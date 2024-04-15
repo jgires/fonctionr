@@ -8,11 +8,13 @@
 #' @param group A variable defining groups to be compared.
 #' @param quanti_exp An expression that define the variable the variable to be described.
 #' @param type "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group.
+#' @param facet A supprimer?
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
+#' @param na.rm.facet Argument à supprimer?
 #' @param quantiles quantiles to be computed in the distributions. Default are deciles.
-#' @param moustache_probs a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50%, 80% and 95% of the population closest to the median.
+#' @param moustache_probs a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.
 #' @param bw Default is 1.
 #' @param resolution Resolution of the density curve. Default is 512.
 #' @param height height of the curves. Default is
@@ -20,9 +22,9 @@
 #' @param reorder TRUE if you want to reorder the groups according to the mean/median (depending on type). NA value, in case if na.rm.group = FALSE, is not included in the reorder (A VERIFIER).
 #' @param show_mid_point TRUE if you want to show the mean or median (depending on type) as a point on the graphic. FALSE if you do not want to show it. Default is TRUE.
 #' @param show_mid_line TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is FALSE
-#' @param show_ci_errorbar TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
-#' @param show_ci_lines TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is FALSE
-#' @param show_ci_area TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
+#' @param show_ci_errorbar TRUE if you want to show confidence interval of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
+#' @param show_ci_lines TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is FALSE
+#' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
 #' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
 #' @param show_moustache TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
@@ -31,8 +33,8 @@
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ",".
-#' @param pal color of the density curve. Default is "#e0dfe0".
-#' @param pal_moustache A vector with the colors for the moustache. Default is c("#EB9BA0", "#FAD7B1").
+#' @param pal color of the density curve.
+#' @param pal_moustache A vector with the colors for the moustache.
 #' @param color Default is NA
 #' @param alpha Transparence of the density curve. Default is 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
@@ -58,11 +60,11 @@ distrib_group_continuous <- function(data,
                                group,
                                quanti_exp,
                                type = "median",
-                               # facet = NULL,
+                               facet = NULL,
                                filter_exp = NULL,
                                ...,
                                na.rm.group = TRUE,
-                               # na.rm.facet = TRUE,
+                               na.rm.facet = TRUE,
                                quantiles = seq(.1, .9, .1),
                                moustache_probs = c(.95, .8, .5),
                                bw = 1,

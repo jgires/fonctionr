@@ -8,8 +8,10 @@ distrib_continuous(
   data,
   quanti_exp,
   type = "median",
+  facet = NULL,
   filter_exp = NULL,
   ...,
+  na.rm.facet = TRUE,
   quantiles = seq(0.1, 0.9, 0.1),
   bw = 1,
   resolution = 1024,
@@ -40,11 +42,15 @@ distrib_continuous(
 
 \item{quanti_exp}{An expression that define the variable to be described.}
 
-\item{type}{"mean" to compute mean as the central value ; "median" to compute median as the central valu.}
+\item{type}{"mean" to compute mean as the central value ; "median" to compute median as the central value.}
+
+\item{facet}{A supprimer?}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
+
+\item{na.rm.facet}{A supprimer?}
 
 \item{quantiles}{quantiles to be computed in the distribution. Default are deciles.}
 
@@ -56,9 +62,9 @@ distrib_continuous(
 
 \item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.}
 
-\item{show_ci_lines}{TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
+\item{show_ci_lines}{TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
 
-\item{show_ci_area}{TRUE if you want to show confidence interval (confidence level of 95%) of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
+\item{show_ci_area}{TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
 
 \item{show_quant_lines}{TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.}
 
