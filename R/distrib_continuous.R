@@ -1,4 +1,4 @@
-#' distrib_continuous
+#' distrib_#' distrib_continuous
 #'
 #' Function to describe a continuous variable from complex survey data
 #'
@@ -350,6 +350,10 @@ distrib_continuous <- function(data,
   # On identifie toutes les valeurs de densité comprises dans les IC => permet de créer une région sur le ggplot
   central <- df_dens |>
     filter(x >= tab$indice_low & x <= tab$indice_upp)
+
+  # On enlève les lignes créées pour la moyenne ou médiane et ses CI du df de densité => pas nécessaire, et dupliqué potentiels avec certains quantiles
+  df_dens <- df_dens %>%
+    filter(is.na(central))
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
