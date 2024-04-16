@@ -139,6 +139,11 @@ distrib_continuous <- function(data,
   # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median"))
 
+  # Check que limit ne contient que 2 valeurs
+  if(!is.null(limits) & length(limits) != 2){
+    stop("limits doit être un vecteur contenant 2 valeurs (min et max)")
+  }
+
   # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
@@ -260,11 +265,11 @@ distrib_continuous <- function(data,
   # On calcule les quantiles avec survey et on les stocke dans un data.frame
   estQuant_W <- as.data.frame(svyquantile(~quanti_exp_flattened,
     design = data_W,
-    quantiles = quantiles,
+    quantiles = unique(quantiles),
     ci = T,
     na.rm = T
   )[[1]]) %>%
-    add_rownames(var = "probs")
+    tibble::rownames_to_column(var = "probs")
 
   # On crée un data.frame avec les densités, et on crée les classes de quantiles (à quel quantile x appartient) en croisant x avec le vecteur de quantiles
   df_dens <- data.frame(
@@ -280,17 +285,17 @@ distrib_continuous <- function(data,
   # => Je les ajoute avec add_case, en estimant y avec approx()
   # Je le fais dans une boucle, pour avoir tous les quantiles.
   # SOLUTION INSPIRéE DE CE CODE : https://stackoverflow.com/questions/74560448/how-fill-geom-ribbon-with-different-colour-in-r
-  for(i in seq_along(quantiles)){
+  for(i in seq_along(unique(quantiles))){
     df_dens <- df_dens |>
       tibble::add_case(
         x = estQuant_W$quantile[i],
-        y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i])$y,
+        y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i], ties = "mean")$y,
         quantFct = i,
         segment = TRUE
       ) %>%
       tibble::add_case(
         x = estQuant_W$quantile[i],
-        y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i])$y,
+        y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i], ties = "mean")$y,
         quantFct = i+1
       )
   }
@@ -333,17 +338,17 @@ distrib_continuous <- function(data,
     mutate(central = NA) %>%
     tibble::add_case(
       x = tab$indice,
-      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice)$y,
+      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice, ties = "mean")$y,
       central = "indice"
     ) %>%
     tibble::add_case(
       x = tab$indice_low,
-      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_low)$y,
+      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_low, ties = "mean")$y,
       central = "indice_low"
     ) %>%
     tibble::add_case(
       x = tab$indice_upp,
-      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_upp)$y,
+      y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_upp, ties = "mean")$y,
       central = "indice_upp"
     )
 
@@ -351,9 +356,9 @@ distrib_continuous <- function(data,
   central <- df_dens |>
     filter(x >= tab$indice_low & x <= tab$indice_upp)
 
-  # On enlève les lignes créées pour la moyenne ou médiane et ses CI du df de densité => pas nécessaire, et dupliqué potentiels avec certains quantiles
-  df_dens <- df_dens %>%
-    filter(is.na(central))
+  # # On enlève les lignes créées pour la moyenne ou médiane et ses CI du df de densité => pas nécessaire, et dupliqué potentiels avec certains quantiles
+  # df_dens <- df_dens %>%
+  #   filter(is.na(central))
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
@@ -621,7 +626,7 @@ distrib_continuous <- function(data,
 
   # On crée l'objet final
   res <- list()
-  res$dens <- df_dens[,c("x", "y", "quantFct")]
+  res$dens <- df_dens[,c("x", "y", "quantFct", "central")]
   res$tab <- tab
   res$quant <- estQuant_W
   res$graph <- graph

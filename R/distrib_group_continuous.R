@@ -87,12 +87,6 @@ distrib_group_continuous <- function(data,
     stop("Les arguments data, group et quanti_exp doivent être remplis")
   }
 
-  # On empêche une hauteur de plus de 1 si palette multicolore (ça déconne si chevauchement)
-  if(height > 1 & length(pal) > 1){
-    message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redéfinie à .8")
-    height <- .8
-  }
-
   # Check des autres arguments
   check_arg(
     arg = list(
@@ -165,10 +159,22 @@ distrib_group_continuous <- function(data,
   # Check que les arguments avec choix précis sont les bons
   match.arg(type, choices = c("mean", "median"))
 
+  # Check que limit ne contient que 2 valeurs
+  if(!is.null(limits) & length(limits) != 2){
+    stop("limits doit être un vecteur contenant 2 valeurs (min et max)")
+  }
+
+  # On empêche une hauteur de plus de 1 si palette multicolore (ça déconne si chevauchement)
+  if(height > 1 & length(pal) > 1){
+    message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redéfinie à .8")
+    height <- .8
+  }
+
   # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
+  quo_group <- enquo(group)
 
   # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
   # On crée un vecteur string qui contient toutes les variables entrées
@@ -382,7 +388,7 @@ distrib_group_continuous <- function(data,
     # On calcule les quantiles du group.i avec survey et on les stocke dans un data.frame
     estQuant_W_group <- as.data.frame(svyquantile(~quanti_exp_flattened,
       design = data_W_group,
-      quantiles = quantiles,
+      quantiles = unique(quantiles),
       ci = T,
       na.rm = T
     )[[1]]) %>%
@@ -408,13 +414,13 @@ distrib_group_continuous <- function(data,
     # => Je les ajoute avec add_case, en estimant y avec approx()
     # Je le fais dans une boucle, pour avoir tous les quantiles.
     # SOLUTION INSPIRéE DE CE CODE : https://stackoverflow.com/questions/74560448/how-fill-geom-ribbon-with-different-colour-in-r
-    for (i in seq_along(quantiles)) {
+    for (i in seq_along(unique(quantiles))) {
       df_dens_group <- df_dens_group |>
         tibble::add_case(
           group = vec_group.i[group.i],
           level = group.i,
           x = estQuant_W_group$quantile[i],
-          y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i])$y,
+          y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i], ties = "mean")$y,
           quantFct = i,
           segment = TRUE
         ) %>%
@@ -422,7 +428,7 @@ distrib_group_continuous <- function(data,
           group = vec_group.i[group.i],
           level = group.i,
           x = estQuant_W_group$quantile[i],
-          y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i])$y,
+          y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i], ties = "mean")$y,
           quantFct = i + 1
         )
     }
@@ -436,7 +442,7 @@ distrib_group_continuous <- function(data,
     if (show_moustache == T) {
 
       # On calcule les quantiles à partir des proportions indiquées dans moustache_probs
-      moustache_quant <- c(0 + ((1-moustache_probs)/2), 1 - ((1-moustache_probs)/2))
+      moustache_quant <- c(0 + ((1-unique(moustache_probs))/2), 1 - ((1-unique(moustache_probs))/2))
       moustache_quant <- moustache_quant[order(moustache_quant)]
 
       # On calcule les quantiles du group.i avec survey et on les stocke dans un data.frame
@@ -485,7 +491,7 @@ distrib_group_continuous <- function(data,
     boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent être en caractère
     boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile)   %>% mutate(across(everything(), as.character))
     boxplot_df <- boxplot_df_begin %>%
-      left_join(boxplot_df_end) %>%
+      left_join(boxplot_df_end, by = c("group", "level", "moustache_prob")) %>%
       mutate(
         moustache_prob = as.character(moustache_prob), # On met moustache_prob en caractère pour le fill sur le ggplot
         across(
@@ -521,7 +527,7 @@ distrib_group_continuous <- function(data,
     summarise(level = first(level)) %>%
     rename("{{ group }}" := group) # Pour la jointure
   tab <- tab %>%
-    left_join(tab_level)
+    left_join(tab_level, by = names(select(., {{group}}))) # SOLUTION TROUVéE ICI : https://stackoverflow.com/questions/48449799/join-datasets-using-a-quosure-as-the-by-argument
 
   central <- tibble()
   # On estime la densité de la moyenne ou médiane et ses CI
@@ -540,27 +546,30 @@ distrib_group_continuous <- function(data,
         group = vec_group.i[group.i],
         level = group.i,
         x = tab$indice[tab[[1]] == vec_group.i[group.i]],
-        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice[tab[[1]] == vec_group.i[group.i]])$y,
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice[tab[[1]] == vec_group.i[group.i]], ties = "mean")$y,
         central = "indice"
       ) %>%
       tibble::add_case(
         group = vec_group.i[group.i],
         level = group.i,
         x = tab$indice_low[tab[[1]] == vec_group.i[group.i]],
-        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_low[tab[[1]] == vec_group.i[group.i]])$y,
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_low[tab[[1]] == vec_group.i[group.i]], ties = "mean")$y,
         central = "indice_low"
       ) %>%
       tibble::add_case(
         group = vec_group.i[group.i],
         level = group.i,
         x = tab$indice_upp[tab[[1]] == vec_group.i[group.i]],
-        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_upp[tab[[1]] == vec_group.i[group.i]])$y,
+        y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_upp[tab[[1]] == vec_group.i[group.i]], ties = "mean")$y,
         central = "indice_upp"
       )
 
     # On rbind progressivement les df de densité des différents groupes
     central <- rbind(central, df_dens_central)
   }
+
+  # car central = df_dens avec les indices de centralité en plus
+  df_dens <- central
 
   # On crée un df agrégé avec une ligne par groupe qui comprend des colonnes avec l'indice + bornes des CI
   central_CI <- central |>
@@ -581,7 +590,7 @@ distrib_group_continuous <- function(data,
 
   # On identifie toutes les valeurs de densité comprises dans les IC PAR GROUPE => permet de créer une région PAR GROUPE sur le ggplot
   central <- central |>
-    left_join(central_CI) %>%
+    left_join(central_CI, by = "group") %>%
     mutate(
       y_ridges = (y / max(y)) * height
     ) %>%
@@ -616,7 +625,16 @@ distrib_group_continuous <- function(data,
 
   # Palette pour les moustaches, selon le nombre de proportions dans moustache_probs
   if (show_moustache == T) {
-    pal_mous_calc <- grDevices::colorRampPalette(pal_moustache)(length(moustache_probs))
+
+    if(all(isColor(pal_moustache)) == TRUE){
+      # Si condition remplie on ne fait rien => on garde la palette
+    } else {
+      # Sinon on met la couleur par défaut
+      message("Une couleur indiquée dans pal_moustache n'existe pas : la couleur par défaut est utilisée")
+      pal_moustache <- c("#EB9BA0", "#FAD7B1")
+    }
+
+    pal_mous_calc <- grDevices::colorRampPalette(pal_moustache)(length(unique(moustache_probs)))
   }
 
   # Les limites de la variable quanti si non indiquée par l'utilisateur => pour ggplot
@@ -632,6 +650,7 @@ distrib_group_continuous <- function(data,
     data = df_dens,
   ) +
     geom_ribbon(
+      data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
       aes(
         x = x, ymin = level - 1, ymax = y_ridges, # ymin à level - 1 car commence à 0
         fill = quantFct,
@@ -887,7 +906,7 @@ distrib_group_continuous <- function(data,
 
   # On crée l'objet final
   res <- list()
-  res$dens <- df_dens[, c("group", "x", "y", "quantFct", "y_ridges")]
+  res$dens <- df_dens[, c("group", "x", "y", "quantFct", "y_ridges", "central")]
   res$tab <- tab[, !names(tab) %in% c("level")]
   res$quant <- estQuant_W[, !names(estQuant_W) %in% c("level", "se")]
   res$graph <- graph

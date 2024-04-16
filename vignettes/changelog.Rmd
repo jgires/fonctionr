@@ -159,7 +159,7 @@ Date : 2024-02-14
 
 -   Ajouter l'export excel.
 
--   Faire en sorte que le nom du group soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable.
+-   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
 
 #### central_group
 
@@ -183,7 +183,7 @@ Date : 2024-02-14
 
 #### En général
 
--   Faire une fonction commune pour la création de palettes =\> redondance inutile entre les fonctions.
+-   Faire une fonction commune pour la création de palettes + checks =\> redondance inutile entre les fonctions.
 -   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
