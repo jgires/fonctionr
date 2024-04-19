@@ -86,29 +86,29 @@ distrib_group_continuous(
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{quanti_exp}{An expression that define the variable from which the mean/median is computed.}
+\item{quanti_exp}{An expression that define the variable the variable to be described.}
 
-\item{type}{"mean" to compute mean by group ; "median" to compute median by group.}
+\item{type}{"mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..}
 
-\item{facet}{A variable defining the faceting group.}
+\item{facet}{A supprimer?}
 
 \item{filter_exp}{An expression that filters the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+\item{na.rm.facet}{Argument à supprimer?}
 
-\item{quantiles}{quantiles to be computed in the distribution. Default are deciles.}
+\item{quantiles}{quantiles to be computed in the distributions. Default are deciles.}
 
 \item{bw}{Default is 1.}
 
-\item{resolution}{Resolution of the density curve. Default is 1024.}
+\item{resolution}{Resolution of the density curve. Default is 512}
 
 \item{limits}{Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.}
 
-\item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+\item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is FALSE}
 
-\item{show_ci_lines}{TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
+\item{show_ci_lines}{TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is FALSE}
 
 \item{show_ci_area}{TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
 
@@ -126,9 +126,9 @@ distrib_group_continuous(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{pal}{color of the density curve. maybe one color or a vector with several colors.}
+\item{pal}{color of the density areas. Can be one or sereval colors to create a palette.}
 
-\item{color}{to be completed}
+\item{color}{color of the density curve. Has to be one color.}
 
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
 
@@ -146,7 +146,25 @@ distrib_group_continuous(
 
 \item{group}{A variable defining groups to be compared.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.}
+
+\item{moustache_probs}{a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.}
+
+\item{height}{Height of the curves. Default is 0.8}
+
+\item{reorder}{TRUE if you want to reorder the groups according to the mean/median (depending on type). NA value, in case if na.rm.group = FALSE, is not included in the reorder (A VERIFIER).}
+
+\item{show_mid_point}{TRUE if you want to show the mean or median (depending on type) as a point on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+
+\item{show_ci_errorbar}{TRUE if you want to show confidence interval of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
+
+\item{show_moustache}{TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+
+\item{pal_moustache}{color of the moustache. Can be one or sereval colors to create a palette.}
+
+\item{alpha}{Transparence of the density curve. Default is 1.}
+
+\item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25}
 }
 \value{
 A list that contains a table (tab), a graphic (garph) and a density table (dens) and a quantile table (quant)

@@ -18,7 +18,7 @@ make_surface(
   title = NULL,
   subtitle = NULL,
   caption = NULL,
-  wrap_lab = 15
+  wrap_lab = 20
 )
 }
 \arguments{

@@ -25,8 +25,8 @@
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ",".
-#' @param pal color of the density curve. maybe one color or a vector with several colors.
-#' @param color to be completed
+#' @param pal color of the density area. maybe one color or a vector with several colors.
+#' @param color color of the density line.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.

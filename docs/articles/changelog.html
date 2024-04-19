@@ -88,7 +88,7 @@
 <p>Date : 2024-04-04</p>
 <ul>
 <li><p>Création de <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
-<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>.</p></li>
+<code><a href="../reference/distrib_continuous.html">distrib_group_continuous()</a></code>.</p></li>
 <li><p>Modification du thème <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> pour qu’il
 soit plus adapté aux nouvelles fonctions.</p></li>
 </ul>
@@ -310,9 +310,11 @@ groupe. De ce fait, il n’apparaît pas toujours en dernier, notamment
 lorsque <code>reorder = T</code>. Régler ça (pas cohérent avec les
 autres fonctions).</p></li>
 <li><p>Ajouter l’export excel.</p></li>
-<li><p>Faire en sorte que le nom du group soit toujours le même dans les
-sorties de la liste (pour le moment, parfois “group”, parfois le nom de
-la variable.</p></li>
+<li><p>Faire en sorte que le nom du groupe soit toujours le même dans
+les sorties de la liste (pour le moment, parfois “group”, parfois le nom
+de la variable) =&gt; implique de changer l’argument <code>by =</code>
+des <code>left_join()</code> dans le script, et donc le nommage des
+colonnes.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -354,8 +356,8 @@ avec multiples totaux.</p></li>
 <h4 id="en-général-1">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral-1"></a>
 </h4>
 <ul>
-<li>Faire une fonction commune pour la création de palettes =&gt;
-redondance inutile entre les fonctions.</li>
+<li>Faire une fonction commune pour la création de palettes + checks
+=&gt; redondance inutile entre les fonctions.</li>
 <li>Réécrire le code du test pour avoir la formule originale =&gt;
 possible avec <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>, voir code de
 <code><a href="../reference/central_group.html">central_group()</a></code>.</li>

@@ -212,9 +212,42 @@ eusilc_many_mean_group$graph
 kable(eusilc_many_mean_group$tab)
 ```
 
-## `distrib_continuous()` et `distrib_c()`
+## `distrib_continuous()`
 
-## `distrib_group_continuous()` et `distrib_group_c()`
+`distrib_continuous()`, avec `distrib_c()` comme alias, calcule la distribution d'une variable continue. L'objet produit est une liste qui comprend quatre éléments. En plus de `graph` et de `tab` que l'on retrouve dans les autres fonction, l'objet `dens` reprend la densité et peut être utilisée pour reproduire un graphique de densité, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a pas de test statistique calculé.
+
+L'exemple ci-dessous décrit la distribution de l'âge.
+
+```{r}
+distrib_age<- distrib_c(eusilc,
+                           age)
+
+distrib_age$dens
+distrib_age$tab
+distrib_age$quant
+distrib_age$graph
+
+```
+
+## `distrib_group_continuous()` 
+
+`distrib_group_continuous()`, avec `distrib_group_c()` comme alias, calcule la distribution d'une variables continue selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Comme pour `distrib_continous()`, la fonction produit une liste contenant un graphique (`graph`), une densité (`dens`), une table (`tab`), les quantiles retenus (quant). Cependant, on y trouve aussi une moustache (`moustache`) qui reprend chaque fois les bornes reprenant chaque fois une proportion de la population autour de la médiane. Un test statistique est aussi implémenté. Comme pour `central_group()`, si l'utilisateur choisi de calculer la médiane (le choix par défaut), le test statistique effectué est celui de Kruskal Wallis ; s'il ou elle choisi de calculer la moyenne, test statistique effectué est un test de Wald.
+
+L'exemple ci-dessous compare la distribution des revenus équivalents selon le statut socio-économique. Comme pour `central_group()`, il est possible d'utiliser une expression quantitative au lieu d'une variable. Ici, c'est le revenu équivalent annuel divisé par 12 qui est retenu pour qu'il soit exprimé en montant mensuel.
+
+```{r}
+distrib_income<- distrib_group_c(eusilc,
+                                 pl030_rec,
+                                 eqIncome/12,
+                                 limits = c(0,5000),
+                                 type = "mean")
+
+distrib_income$graph
+distrib_income$dens
+distrib_income$tab
+distrib_income$quant
+distrib_income$moustache
+```
 
 ## `theme_fonctionr()`
 
