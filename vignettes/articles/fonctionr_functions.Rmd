@@ -229,7 +229,7 @@ distrib_age$graph
 
 ```
 
-## `distrib_group_continuous()` 
+## `distrib_group_continuous()`
 
 `distrib_group_continuous()`, avec `distrib_group_c()` comme alias, calcule la distribution d'une variables continue selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Comme pour `distrib_continous()`, la fonction produit une liste contenant un graphique (`graph`), une densité (`dens`), une table (`tab`), les quantiles retenus (quant). Cependant, on y trouve aussi une moustache (`moustache`) qui reprend chaque fois les bornes reprenant chaque fois une proportion de la population autour de la médiane. Un test statistique est aussi implémenté. Comme pour `central_group()`, si l'utilisateur choisi de calculer la médiane (le choix par défaut), le test statistique effectué est celui de Kruskal Wallis ; s'il ou elle choisi de calculer la moyenne, test statistique effectué est un test de Wald.
 
