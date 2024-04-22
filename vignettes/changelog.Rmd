@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.2.13
+
+Date : 2024-04-20
+
+-   Création de `make_surface()` comme fonction indépendante utilisable sur n'importe quel tableau de résultats.
+
+-   Ajout de la possibilité d'afficher le résultat d'un test statistique dans `esth_graph()`.
+
 ## fonctionr 0.2.12
 
 Date : 2024-04-04
@@ -152,6 +160,7 @@ Date : 2024-02-14
 **distrib_c**
 
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
+-   Ajouter la possibilité de facets.
 
 **distrib_group_c**
 
@@ -160,6 +169,8 @@ Date : 2024-02-14
 -   Ajouter l'export excel.
 
 -   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
+
+-   Ajouter la possibilité de facets.
 
 #### central_group
 
@@ -173,9 +184,17 @@ Date : 2024-02-14
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 
+### make_surface
+
+-   Ajouter les checks (penser le cas spécifique de `pvalue`).
+
+-   Ajouter la possibilité de facets.
+
 **esth_graph**
 
 -   Changer le nom.
+
+-   Ajouter le check pour l'argument `pvalue`.
 
 -   Régler le pb si multiples `NA` + voir si un pb se pose avec multiples totaux.
 
@@ -230,3 +249,4 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 -   Densité par groupe (pour variable continue)
 :::
+

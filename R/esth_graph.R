@@ -41,6 +41,7 @@ esth_graph <- function(tab,
                        reorder = F,
                        error_low = NULL,
                        error_upp = NULL,
+                       pvalue = NULL,
                        n_var = NULL,
                        show_value = TRUE,
                        name_total = NULL,
@@ -250,10 +251,30 @@ esth_graph <- function(tab,
     ) +
     labs(title = title,
          subtitle = subtitle,
-         caption = caption,
          y = xlab,
          x = ylab) +
     coord_flip()
+
+  # Pour caption
+
+  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+  if (!is.null(pvalue)) {
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "H0 : ", scales::pvalue(pvalue, add_p = T),
+          caption
+        )
+      )
+  }
+  if (is.null(pvalue)) {
+    graph <- graph +
+      labs(
+        caption = caption
+      )
+  }
 
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {

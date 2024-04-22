@@ -1,136 +1,237 @@
 #' make_surface
 #'
-#' @param data
-#' @param IC
+#'
+#' @param tab
+#' @param var
+#' @param value
+#' @param error_low
+#' @param error_upp
+#' @param pvalue
+#' @param compare
+#' @param reorder
+#' @param show_ci
 #' @param space
+#' @param position
 #' @param digits
 #' @param unit
 #' @param pal
+#' @param bg
 #' @param direction
-#' @param reorder
 #' @param title
 #' @param subtitle
-#' @param position
-#' @param last_del
 #' @param caption
-#' @param wrap_lab
+#' @param wrap_width_lab
 #'
 #' @return
+#' @import dplyr
+#' @import ggplot2
 #' @export
 #'
 #' @examples
-make_surface <- function(data,
-                           IC = TRUE,
-                           space = NULL,
-                           reorder = F,
-                           position = "mid",
-                           digits = 0,
-                           unit = NULL,
-                           pal = "Kandinsky",
-                           direction = 1,
-                           last_del = 1,
-                           title = NULL,
-                           subtitle = NULL,
-                           caption = NULL,
-                           wrap_lab = 20) {
+make_surface <- function(tab,
+                         var,
+                         value,
+                         error_low = NULL,
+                         error_upp = NULL,
+                         pvalue = NULL,
+                         compare = F,
+                         reorder = F,
+                         show_ci = TRUE,
+                         space = NULL,
+                         position = "mid",
+                         digits = 0,
+                         unit = NULL,
+                         pal = "Kandinsky",
+                         bg = "snow2",
+                         direction = 1,
+                         title = NULL,
+                         subtitle = NULL,
+                         caption = NULL,
+                         wrap_width_lab = 20) {
 
-  data <- head(data, -last_del)
+  # 1. CHECKS DES ARGUMENTS --------------------
 
+  # Check des arguments nécessaires
+  if((missing(tab) | missing(var) | missing(value)) == TRUE){
+    stop("Les arguments tab, var et value doivent être remplis")
+  }
+
+
+  # 2. PROCESSING DES DONNEES --------------------
+
+  # On convertit la variable catégorielle en facteur si pas facteur
+  tab <- tab %>%
+    mutate(
+      "{{ var }}" := droplevels(as.factor({{ var }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs
+    )
+
+  # On réordonne si reorder == T
   if (reorder == T) {
-    data[[1]] <- reorder(data[[1]], data[[2]])
-    data <- data[order(data[[2]]), ]
+    tab <- tab %>%
+      mutate(
+        "{{ var }}" := fct_reorder({{ var }}, {{ value }})
+      ) %>%
+      arrange({{ value }}) # Il est nécessaire de trier le tableau, puisque le petit algorithme que j'ai écrit pour créer les positions des geom_tile pour le ggplot s'exécute dans l'ordre du tableau !
   }
 
-  if (IC == F) {
-    data$label <- paste0(stringr::str_wrap(data[[1]], wrap_lab), "\n", round(data[[2]], digits), unit)
+  if (show_ci == F) {
+    tab <- tab %>%
+      mutate(
+        indice_sqrt = sqrt({{ value }}) # La valeur à la racine carrée (car la valeur en surface = racine carrée X racine carrée)
+      )
   }
 
-  if (IC == T) {
-    data$label <- paste0(stringr::str_wrap(data[[1]], wrap_lab), "\n", round(data[[2]], digits), unit, " (", round(data[[3]], digits), ";", round(data[[4]], digits), ")")
+  if (show_ci == T) {
+    tab <- tab %>%
+      mutate(
+        indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont activés, la base du calcul des coordonnées = l'intervalle de confiance supérieur, car il dessine les plus grandes surfaces
+      )
   }
 
-  if (IC == F) {
-    data$indice_sqrt <- sqrt(data[[2]])
-  }
-  if (IC == T) {
-    data$indice_sqrt <- sqrt(data[[4]])
-  }
 
+  # 3. CREATION DES POSITIONS POUR LES SURFACES --------------------
+
+  # On calcule un espace par défaut, si rien n'est indiqué
   if (is.null(space)) {
-    space <- .15 * min(data$indice_sqrt, na.rm = T)
+    space <- .15 * min(tab$indice_sqrt, na.rm = T)
   }
 
-  data$xmin <- NA
-  data$xmax <- NA
-  data$xmin[1] <- 0
-  data <- data %>% tibble::add_row() # On ajoute une ligne
+  # L'algorithme pour créer les positions des geom_tile pour le ggplot
+  tab$xmin <- NA
+  tab$xmax <- NA
+  tab$xmin[1] <- 0
+  tab <- tab %>% tibble::add_row() # On ajoute une ligne
 
-  for (i in seq_along(head(data, -1)[[1]])) {
-    data$xmin[i + 1] <- data$xmin[i] + data$indice_sqrt[i]
-    data$xmax[i] <- data$xmin[i + 1]
+  for (i in seq_along(head(tab, -1)[[deparse(substitute(var))]])) {
+    tab$xmin[i + 1] <- tab$xmin[i] + tab$indice_sqrt[i]
+    tab$xmax[i] <- tab$xmin[i + 1]
 
-    data$xmin[i + 1] <- data$xmin[i + 1] + space
+    tab$xmin[i + 1] <- tab$xmin[i + 1] + space
   }
-  data <- head(data, -1) # On supprime la dernière ligne
-  data$xmean <- (data$xmin + data$xmax) / 2
+  tab <- head(tab, -1) # On supprime la ligne ajoutée
+  tab$xmean <- (tab$xmin + tab$xmax) / 2
 
-  names(data)[1] <- "group"
-  names(data)[2] <- "indice"
-  names(data)[3] <- "indice_low"
-  names(data)[4] <- "indice_upp"
 
-  print(data)
+  # 4. CREATION DU GRAPHIQUE --------------------
 
-  graph <- data %>%
+  # On crée la palette avec le package MetBrewer
+  if(pal %in% names(MetBrewer::MetPalettes)){
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+
+    # On crée la palette avec le package MoMAColors
+  } else if(pal %in% names(MoMAColors::MoMAPalettes)){
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+
+    # On crée la palette avecle package PrettyCols
+  } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+    palette <- as.character(PrettyCols::prettycols(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+
+    # On crée la palette avec la fonction interne official_pal()
+  } else if(pal %in% c("OBSS", "IBSA")){
+    palette <- as.character(official_pal(inst = pal, n = length(tab[[deparse(substitute(var))]]), direction = direction))
+
+  } else {
+    palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
+  }
+
+  # On crée le graphique
+
+  graph <- tab %>%
     ggplot(
       aes(
-        color = group
+        color = {{ var }}
       )
     ) +
-    # geom_hline(
-    #   yintercept = c(sqrt(space_quant$tab$indice[[1]]) / 2, -sqrt(space_quant$tab$indice[[1]]) / 2),
-    #   alpha = .2
-    # ) +
     geom_tile(
       aes(
         x = xmean,
-        y = if (position == "mid") { 0
+        y = if (position == "mid") {
+          0
         } else if (position == "bottom") indice_sqrt / 2,
-        width = sqrt(indice),
-        height = sqrt(indice)
+        width = sqrt({{ value }}),
+        height = sqrt({{ value }})
       ),
       fill = "white",
       linewidth = .75
     ) +
-    geom_text(
-      aes(
-        x = xmean,
-        y = if (position == "mid") { 0
-        } else if (position == "bottom") indice_sqrt / 2,
-        label = label
-      )
-    ) +
-    scale_color_manual(values = MetBrewer::met.brewer(pal, length(data$group), direction = direction)) +
+    scale_color_manual(values = palette) +
     scale_x_continuous(expand = c(0.01, 0.01)) +
     theme_void() +
     theme(
       legend.position = "none",
-      plot.background = element_rect(fill = "snow2", color = NA)
+      plot.background = element_rect(fill = bg, color = NA)
     ) +
     # guides(fill="none") +
     labs(
       title = title,
-      subtitle = subtitle,
-      caption = caption
+      subtitle = subtitle
     ) +
     coord_fixed(ratio = 1)
 
-  if(IC == T){
+  # Pour caption
+
+  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer à la ligne par rapport au test stat
+    caption <- paste0("\n", caption)
+  }
+  if (!is.null(pvalue)) {
+    graph <- graph +
+      labs(
+        caption = paste0(
+          "H0 : ", scales::pvalue(pvalue, add_p = T),
+          caption
+        )
+      )
+  }
+  if (is.null(pvalue)) {
+    graph <- graph +
+      labs(
+        caption = caption
+        )
+  }
+
+  # Comparaison avec la surface minimale
+  if (compare == T) {
     graph <- graph +
       geom_tile(
         aes(
           x = xmean,
-          y = if (position == "mid") { 0
+          y = if (position == "mid") {
+            0
+          } else if (position == "bottom") indice_sqrt / 2,
+          width = sqrt(min({{ value }})),
+          height = sqrt(min({{ value }}))
+        ),
+        alpha = .1,
+        fill = "black",
+        linewidth = NA,
+      )
+  }
+
+  # Les labels
+  graph <- graph +
+    geom_text(
+      aes(
+        x = xmean,
+        y = if (position == "mid") {
+          0
+        } else if (position == "bottom") indice_sqrt / 2,
+        label = if (show_ci == TRUE) {
+          paste0(
+            stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit, " (", round({{ error_low }}, digits), ";", round({{ error_upp }}, digits), ")"), wrap_width_lab)
+          )
+        } else if (show_ci == FALSE) paste0(stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit), wrap_width_lab))
+      )
+    )
+
+  # Les IC si show_ci = T
+  if (show_ci == T) {
+    graph <- graph +
+      geom_tile(
+        aes(
+          x = xmean,
+          y = if (position == "mid") {
+            0
           } else if (position == "bottom") indice_sqrt / 2,
           width = indice_sqrt,
           height = indice_sqrt
@@ -143,10 +244,11 @@ make_surface <- function(data,
       geom_tile(
         aes(
           x = xmean,
-          y = if (position == "mid") { 0
+          y = if (position == "mid") {
+            0
           } else if (position == "bottom") indice_sqrt / 2,
-          width = sqrt(indice_low),
-          height = sqrt(indice_low)
+          width = sqrt({{ error_low }}),
+          height = sqrt({{ error_low }})
         ),
         alpha = .3,
         fill = NA,
