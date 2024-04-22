@@ -4,7 +4,7 @@
 \name{distrib_continuous}
 \alias{distrib_continuous}
 \alias{distrib_group_continuous}
-\title{distrib_#' distrib_continuous}
+\title{distrib_continuous}
 \usage{
 distrib_continuous(
   data,

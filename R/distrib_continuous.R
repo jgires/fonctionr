@@ -1,4 +1,4 @@
-#' distrib_#' distrib_continuous
+#' distrib_continuous
 #'
 #' Function to describe a continuous variable from complex survey data
 #'
