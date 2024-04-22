@@ -229,7 +229,7 @@ distrib_age$graph
 
 ```
 
-## `distrib_group_continuous()` 
+## `distrib_group_continuous()`
 
 `distrib_group_continuous()`, avec `distrib_group_c()` comme alias, calcule la distribution d'une variables continue selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Comme pour `distrib_continous()`, la fonction produit une liste contenant un graphique (`graph`), une densité (`dens`), une table (`tab`), les quantiles retenus (quant). Cependant, on y trouve aussi une moustache (`moustache`) qui reprend chaque fois les bornes reprenant chaque fois une proportion de la population autour de la médiane. Un test statistique est aussi implémenté. Comme pour `central_group()`, si l'utilisateur choisi de calculer la médiane (le choix par défaut), le test statistique effectué est celui de Kruskal Wallis ; s'il ou elle choisi de calculer la moyenne, test statistique effectué est un test de Wald.
 
@@ -329,9 +329,9 @@ Les arguments indispensable sont des arguments qui sont nécessaire au bon fonct
 
 -   `list_vars` doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions `many_val()` et `many_val_group()`. Pour `many_prop()` et `many_prop_group()`, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour `many_mean()`, `many_mean_group()`, `many_median()` et `many_median_group()`, les variables doivent être numériques.
 
-Juste après `list_vars`, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans le dataframe de résultat (`tab`) et le graphique (`graph`) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après list_vars pour faciliter l'utilisation des fonctions.
+Juste après `list_vars`, il y a un argument esthétique de label des noms des variables. Cet argument doit être un vecteur reprenant les noms des variables telles que l'on souhaite qu'elles apparaissent dans le dataframe de résultat (`tab`) et le graphique (`graph`) produits par la fonction. Bien qu'il ne s'agisse pas d'un argument indispensable, nous avons décidé de le placer juste après `list_vars` pour faciliter l'utilisation des fonctions. Pour cet argument, les guillements doivent être utilisé pour indiquer les labels des variables.
 
-L'argument `type` est prédéfini pour les fonctions "alias" `mean_group()` et `median_group()` ; `many_prop()`, `many_mean()` et `many_median()` ; `many_prop_group()`, `many_mean_group()` et `many_median_group()` à partir des fonctions respectives `central_group()`, `many_val()` et `many_val_group()`. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias".
+L'argument `type` est prédéfini pour les fonctions "alias" `mean_group()` et `median_group()` ; `many_prop()`, `many_mean()` et `many_median()` ; `many_prop_group()`, `many_mean_group()` et `many_median_group()` à partir des fonctions respectives `central_group()`, `many_val()` et `many_val_group()`. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias". L'argument `type` est aussi utilisé pour `distrib_continuous()` et `distrib_group_continuous()` pour indiquer quel type de valeur centrale doit être calculée et indiquée sur le graphique, "mean" pour la moyenne et "median" pour la médiane. Par défaut, c'est la médiane qui est calculée et indiquée.
 
 Pour `esth_graph()`, les arguments `var` et `value` sont obligatoires et ils indiquent respectivement les colonnes dans `tab` avec nom de l'indicateur et sa valeur.
 
@@ -355,6 +355,20 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
 -   `facet` est une variable qualitative qui produit des facettes dans le dataframe de résultats `tab` et dans le graphique `ggplot2`. Comme `group` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites.
 
 -   `filter_exp` est une expression qui permet de filtrer les données de manière à produire les résultats sur une partie de l'échantillon. Comme il s'agit d'une expression, il est possible de mettre en oeuvre des conditions de filtres complexe et multiples, par exemple sélectionner uniquement les personnes âgées de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Le filtrage des données est réalisé après la définition du plan de sondage par la fonction, pour que le filtrage ne modifie pas celui-ci. Ici aussi, seuls les variables de la base de données, les opérateurs et les valeurs numérique sont autorisés dans les expressions.
+
+-   `probs` est un vecteur utilisé dans `distrib_discrete()` pour indiquer les proportions de l'hypothèse nulle sur base desquelles le test du khi2 d'adéquation est calculé. Par défaut, le test du khi2 d'adéquation n'est pas calculé.
+
+-   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans l'argument method de `svyciprop()` du package `survey`[^4]. Par défaut, c'est la méthode `"beta"` qui est utilisée.
+
+-   `quantile` est un argument qui permet de choisir, sous forme d'un vecteur, les quantiles à calculer et à indiquer sur le graphique dans `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, ce sont les déciles qui sont calculés.
+
+-   `moustache_probs` est un argument qui permet de déterminer les quantiles pour calculer et indiquer la "moustache" sur le graphique dans `distrib_group_continuous()`. La moustache est une représentations graphique qui reprend différentes proportions della populations la plus proche de la médiane. Le vecteur doit reprendre d'abord les proportions les plus importantes et puis les proportions les plus limitées. Les valeurs par défaut sont 0.95, 0.80 et 0.50 de manière à représenter pour chaque groupe 95%, 80% et 50% de la population la plus centrale.
+
+[^4]: Voir : <https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html>
+
+## Le traitement des NA
+
+Le traitement des NA a nécessité d'importantes réflexions pour arriver des solutions pratiques pour ne pas nécessiter de traintement importants avant d'appliquer les fonctions mais suffisament flexibles pour permettre différentes possibilités. Nous avons décidé de laisser des possibilités différentes selon les variables dans lesquelles se trouvent les NA : groupes, variables d'intérêts, expressions, etc.
 
 -   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés pour les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses.
 
@@ -404,12 +418,6 @@ eusilc_prop_NA_incl$graph
 
 -   `na.vars` indique la manière dont les `NA` doivent être traités dans les différentes variables de `many_val()` et `many_val_group()`. Si l'argument prend la valeur `"rm"`, les `NA` sont exclus séparément dans chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculée, mais que l'on conserve un maximum d'observations. Si l'argument prend la valeur `"rm.all"`, les observations qui comprennent au moins un `NA` dans n'importe quelle des variables de `list_vars` sont exclues. Cette manière de procéder exclut plus d'observations mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut, `na.vars` prend la valeur `"rm"`. <!--# François : Je me demande s'il ne faut pas mettre un exemple sur na.vars ici, mais je n'en vois pas de bien à partir du jeu de données SILC Autriche -->
 
--   `probs` est un vecteur utilisé dans `distrib_discrete()` pour indiquer les proportions de l'hypothèse nulle sur base desquelles le test du khi2 d'adéquation est calculé. Par défaut, le test du khi2 d'adéquation n'est pas calculé.
-
--   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans l'argument method de `svyciprop()` du package `survey`[^4]. Par défaut, c'est la méthode `"beta"` qui est utilisée.
-
-[^4]: Voir : <https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html>
-
 # Les arguments esthétiques
 
 Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogique, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d'esthétique des chiffres, d'esthétique des lettres et les labels.
@@ -455,7 +463,7 @@ eusilc_many_mean_group_2$graph
 
 -   `total_name` indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
 
-Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changer le nom du "Total".
+Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changé le nom du "Total".
 
 ```{r}
 eusilc_prop <- prop_group(eusilc,
@@ -469,6 +477,38 @@ eusilc_prop <- prop_group(eusilc,
                           total_name = "Total Austria"
                           ) 
 eusilc_prop$graph
+
+```
+
+-   `bw`
+-   Certains arguments sont spécifiques aux fonctions distrib_continous() et distrib_group_continous(). C'est notamment le cas de bw qui indique le degré de "lissage" de la densité. Une valeur plus élevée conduira à plus lisser la densité et masquera davantages les variations locales alors qu'une valeur plus faible montrera les détails dans la variations de le courbe, même s'ils ne sont pas statistiquement significatifs.
+-    `resolution`
+-   `height` indique la hauteur des courbes de densité dans `distrib_group_continuous()`. Une valeur plus élevée mènent à des courbes plus hautes qui peuvent éventuellement se chevaucher. La valeur par défaut est 0.8.
+-   `limits` indique les limites de l'axe des abscisse du graphique pour `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, il n'y a pas de limites, ce qui revient à montrer sur le graphique la totalité de la distribution. Cependant, cela peut poser problème pour des distributions assymétriques avec quelques valeurs extrêmes, par exemple pour les variables de revenu. `limits` permet de zoomer sur la partie du graphique la plus intéressante qui reprend la majorité des observations. Précisons qu'il ne s'agit pas d'un filtre, mais d'un zoom : les déciles, valeurs centrales et moustaches sont toujours calculées sur l'ensemble de la distribution. En cas d'utilisation de zoom important, il est conseillé d'utiliser une résolution plus élevée.
+-   D'autres arguments de type show sont spécifiques aux fonctions `distrib_continuous()` et `distrib_group_continuous()`. C'est le cas de `show_mid_line`, `show_ci_lines`, `show_ci_area`, `show_quant_lines` qui ne se retrouvent que dans ces deux fonctions et `show_mid_point`, `show_ci_errorbar` et `show_moustache` qui sont spécifiques à `distrib_group_continuous()`. Les arguments `show_mid_point` et `show_mid_line` permettent de montrer la valeur centrale, médiane ou moyenne, sous la forme d'un point ou d'une ligne. Les arguments `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur de lignes en pointillée ou d'une aire colorée. `show_quant_lines` permet de tracer des lignes pour les valeurs des quantiles sur le graphique. Enfin, `show_moustache` permet de montrer la moustache. Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne et ses intervalles de confiance par des lignes pointillées et ne trace pas de ligne pour les quantiles. Par défaut, `distrib_group_continuous()` indique les valeurs centrales par des points et leurs intervalles de confiance par des barres d'erreurs, et ne dessine pas d'autres éléments que la moustache sur le graphique .
+
+Dans l'exemple ci-dessous nous comparons les revenus du travail des travailleuses et travailleurs à temps partiel en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales (mais pas toujours statistiquement significatives). Notez que l'expression pour produire la variable permet un calcul relativement complexe puisqu'on estime le revenu du travail mensuel en addition le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12 pour obtenir un montant mensualisé.
+
+```{r}
+
+distrib_income_2<- distrib_group_c(eusilc,
+                                   rb090,
+                                   (py010n+py050n)/12,
+                                   filter_exp = pl030 == 2,
+                                   bw = .3,
+                                   resolution = 100,
+                                   height = 1,
+                                   limits = c(-500,3000),
+                                   show_mid_point = T,
+                                   show_mid_line = T,
+                                   show_ci_errorbar = T,
+                                   show_ci_lines = T,
+                                   show_ci_area = T,
+                                   show_quant_lines = T, 
+                                   show_moustache = T)
+
+distrib_income_2$graph
+
 ```
 
 -   Pour la fonction `esth_graph()`, les arguments sont un peu différents, à l'exception de `reorder` et `show_value`. `error_low`, `error_upp` et `n_var` permettent d'indiquer les colonnes dans `tab` où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur `NULL`, ce qui conduit à ne pas montrer ces éléments dans le graphique. `name_total` permet d'indiquer le nom du total dans `tab` de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
