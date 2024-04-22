@@ -249,4 +249,3 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 -   Densité par groupe (pour variable continue)
 :::
-

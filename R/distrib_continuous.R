@@ -320,8 +320,10 @@ distrib_continuous <- function(data,
       summarise(n = unweighted(n()))
 
     # On joint les coordonnées x du début des classes de quantile aux effectifs par quantile
-    vec_mean_quant <- c(min(data_W$variables[["quanti_exp_flattened"]], na.rm = T), estQuant_W$quantile)
-    quantile_n$coord_x <- vec_mean_quant
+    vec_bord_inf_quant <- c(min(data_W$variables[["quanti_exp_flattened"]], na.rm = T), estQuant_W$quantile)
+    vec_bord_sup_quant <- c(estQuant_W$quantile, max(data_W$variables[["quanti_exp_flattened"]], na.rm = T))
+    quantile_n$coord_x <- vec_bord_inf_quant
+    quantile_n$coord_max <- vec_bord_sup_quant
 
     # Si l'utilisateur indique des limites, alors on supprime les effectifs de toutes les classes de quantile pas affichées en entier
     if(!is.null(limits)){
@@ -329,7 +331,7 @@ distrib_continuous <- function(data,
         filter(coord_x > limits[1]) # Les premières classes si elles sont coupées
       if(max(data_W$variables[["quanti_exp_flattened"]], na.rm = T) > limits[2])
         quantile_n <- quantile_n %>%
-          slice(-n()) # Et la dernière si elle coupée
+          filter(coord_max < limits[2]) # Et les dernières si elles sont coupées
     }
   }
 
