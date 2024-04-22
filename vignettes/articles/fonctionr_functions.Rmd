@@ -222,7 +222,7 @@ L'exemple ci-dessous décrit la distribution de l'âge.
 distrib_age<- distrib_c(eusilc,
                            age)
 
-distrib_age$dens
+head(distrib_age$dens)
 distrib_age$tab
 distrib_age$quant
 distrib_age$graph
@@ -242,11 +242,12 @@ distrib_income<- distrib_group_c(eusilc,
                                  limits = c(0,5000),
                                  type = "mean")
 
-distrib_income$graph
-distrib_income$dens
+head(distrib_income$dens)
 distrib_income$tab
-distrib_income$quant
-distrib_income$moustache
+head(distrib_income$quant)
+head(distrib_income$moustache)
+distrib_income$graph
+
 ```
 
 ## `theme_fonctionr()`
@@ -459,7 +460,7 @@ eusilc_many_mean_group_2 <- many_mean_group(eusilc,
 eusilc_many_mean_group_2$graph
 ```
 
--   `show_ci`, `show_n`, `show_value` et `show_lab` sont des argument similaires qui peuvent prendre les valeurs `TRUE` et `FALSE`. Les valeur `TRUE` permettent de montrer les éléments suivants : l'intervalle de confiance (`show_ci`), le nombre de personnes dans l'échantillon (`show_n`), l'estimation de l'indicateur (`show_value`) et les titres et sous-titres du graphiques, des axes et de la légende (`show_lab`). Les valeurs `FALSE` permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentation graphique adéquate `show_ci` n'est pas un argument de la fonction `distrib_group_discrete()`. Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (`tab`). C'est aussi le cas pour `many_val_group()` et ses alias quand `position = "stack"`, les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans `distrib_group_discrete()`, pour des raisons de lisibilité, seuls les valeurs supérieures à 2% sont indiquées sur le graphique. Par défaut, `show_ci`, `show_value` et `show_lab` ont la valeur de `TRUE` et `show_n` a la valeur de `FALSE`, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels.
+-   `show_ci`, `show_n`, `show_value` et `show_lab` sont des argument similaires qui peuvent prendre les valeurs `TRUE` et `FALSE`. Les valeur `TRUE` permettent de montrer les éléments suivants : l'intervalle de confiance (`show_ci`), le nombre de personnes dans l'échantillon (`show_n`), l'estimation de l'indicateur (`show_value`) et les titres et sous-titres du graphiques, des axes et de la légende (`show_lab`). Les valeurs `FALSE` permettent de ne pas montrer sur le graphique ces différents éléments. Faute de représentation graphique adéquate `show_ci` n'est pas un argument de la fonction `distrib_group_discrete()`. Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans la table (`tab`). C'est aussi le cas pour `many_val_group()` et ses alias quand `position = "stack"`, les intervalles de confiance ne sont pas représentés sur le graphique. Précisons aussi que dans `distrib_group_discrete()`, pour des raisons de lisibilité, seuls les valeurs supérieures à 2% sont indiquées sur le graphique. Par défaut, `show_ci`, `show_value` et `show_lab` ont la valeur de `TRUE` et `show_n` a la valeur de `FALSE`, de manière à montrer sur le graphique les intervalles de confiance, les valeurs des estimations et les noms des axes, mais pas le nombre d'individus dans l'échantillon. Nous aborderons en détail le contenu par défaut des labels des axes dans la partie abordant les labels. Pour `distrib_continuous()` le nombre de personne dans l'échantillon est indiqué pour chaque quantile dans la courbe de distribution. On n'indique pas ce nombre pour les quantiles que ne sont pas complètement représentés quand on utilise l'argument `limits`.
 
 -   `total_name` indique le nom qui doit être mentionné à côté de la barre du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
 
@@ -480,14 +481,17 @@ eusilc_prop$graph
 
 ```
 
--   `bw`
--   Certains arguments sont spécifiques aux fonctions distrib_continous() et distrib_group_continous(). C'est notamment le cas de bw qui indique le degré de "lissage" de la densité. Une valeur plus élevée conduira à plus lisser la densité et masquera davantages les variations locales alors qu'une valeur plus faible montrera les détails dans la variations de le courbe, même s'ils ne sont pas statistiquement significatifs.
--    `resolution`
--   `height` indique la hauteur des courbes de densité dans `distrib_group_continuous()`. Une valeur plus élevée mènent à des courbes plus hautes qui peuvent éventuellement se chevaucher. La valeur par défaut est 0.8.
--   `limits` indique les limites de l'axe des abscisse du graphique pour `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, il n'y a pas de limites, ce qui revient à montrer sur le graphique la totalité de la distribution. Cependant, cela peut poser problème pour des distributions assymétriques avec quelques valeurs extrêmes, par exemple pour les variables de revenu. `limits` permet de zoomer sur la partie du graphique la plus intéressante qui reprend la majorité des observations. Précisons qu'il ne s'agit pas d'un filtre, mais d'un zoom : les déciles, valeurs centrales et moustaches sont toujours calculées sur l'ensemble de la distribution. En cas d'utilisation de zoom important, il est conseillé d'utiliser une résolution plus élevée.
--   D'autres arguments de type show sont spécifiques aux fonctions `distrib_continuous()` et `distrib_group_continuous()`. C'est le cas de `show_mid_line`, `show_ci_lines`, `show_ci_area`, `show_quant_lines` qui ne se retrouvent que dans ces deux fonctions et `show_mid_point`, `show_ci_errorbar` et `show_moustache` qui sont spécifiques à `distrib_group_continuous()`. Les arguments `show_mid_point` et `show_mid_line` permettent de montrer la valeur centrale, médiane ou moyenne, sous la forme d'un point ou d'une ligne. Les arguments `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur de lignes en pointillée ou d'une aire colorée. `show_quant_lines` permet de tracer des lignes pour les valeurs des quantiles sur le graphique. Enfin, `show_moustache` permet de montrer la moustache. Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne et ses intervalles de confiance par des lignes pointillées et ne trace pas de ligne pour les quantiles. Par défaut, `distrib_group_continuous()` indique les valeurs centrales par des points et leurs intervalles de confiance par des barres d'erreurs, et ne dessine pas d'autres éléments que la moustache sur le graphique .
+Certains arguments sont spécifiques aux fonctions `distrib_continous()` et `distrib_group_continous()`.
 
-Dans l'exemple ci-dessous nous comparons les revenus du travail des travailleuses et travailleurs à temps partiel en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales (mais pas toujours statistiquement significatives). Notez que l'expression pour produire la variable permet un calcul relativement complexe puisqu'on estime le revenu du travail mensuel en addition le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12 pour obtenir un montant mensualisé.
+-   bw indique le degré de "lissage" de la densité. Une valeur plus élevée conduira à plus lisser la densité et masquera davantages les variations locales alors qu'une valeur plus faible montrera les détails dans la variations de le courbe, même s'ils ne sont pas statistiquement significatifs. `resolution` indique la "finesse" de la courbe de densité. Avec une résolution plus faible, il y aura moins de points et on verra les petites droites reliant les points de densité. Ces deux arguments, bien qu\'esthétiques, influencent aussi l'objet `dens` produit par les fonctions.
+
+-   `height` indique la hauteur des courbes de densité dans `distrib_group_continuous()`. Une valeur plus élevée mènent à des courbes plus hautes qui peuvent éventuellement se chevaucher. La valeur par défaut est 0.8.
+
+-   `limits` indique les limites de l'axe des abscisse du graphique . Par défaut, il n'y a pas de limites, ce qui revient à montrer sur le graphique la totalité de la distribution. Cependant, cela peut poser problème pour des distributions asymétriques avec quelques valeurs extrêmes, par exemple pour les variables de revenu. `limits` permet de zoomer sur la partie du graphique la plus intéressante qui reprend la majorité des observations. Précisons qu'il ne s'agit pas d'un filtre, mais d'un zoom : les déciles, valeurs centrales et moustaches sont toujours calculées sur l'ensemble de la distribution. En cas d'utilisation de zoom important, il est conseillé d'utiliser une résolution plus élevée.
+
+-   D'autres arguments de type show sont spécifiques à ces deux fonctions. C'est le cas de `show_mid_line`, `show_ci_lines`, `show_ci_area`, `show_quant_lines` qui se retrouvent dans les deux fonctions de distribution continue et `show_mid_point`, `show_ci_errorbar` et `show_moustache` qui sont spécifiques à `distrib_group_continuous()`. Les arguments `show_mid_point` et `show_mid_line` permettent de montrer la valeur centrale, médiane ou moyenne, sous la forme d'un point ou d'une ligne. Les arguments `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur de lignes en pointillée ou d'une aire colorée. `show_quant_lines` permet de tracer des lignes pour les valeurs des quantiles sur le graphique. Enfin, `show_moustache` permet de montrer la moustache. Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne et ses intervalles de confiance par des lignes pointillées et ne trace pas de ligne pour les quantiles. Par défaut, `distrib_group_continuous()` indique les valeurs centrales par des points et leurs intervalles de confiance par des barres d'erreurs, et ne dessine pas d'autres éléments que la moustache sur le graphique .
+
+Dans l'exemple ci-dessous nous comparons les revenus du travail des travailleuses et travailleurs à temps partiel en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales (mais pas toujours statistiquement significatives). `resolution` étant plus faible, o,n peut déceler les droites qui composent les deux courbes de fréquence. `height` étant plus élevé, les deux courbes se superposent légèrement. limits permet de se concentrer sur la plage de valeur (de -500€ à 3500€) qui contient la grande majorité des observations. Dans le graphique, on a indique la médiane sous la forme d'un point et d'une ligne. Ses intervalles de confiance sont aussi indiqués par une barre d'erreur (au niveau de l'axe des X), deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que que le revenu du travail menseul est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
 
 ```{r}
 
@@ -495,17 +499,17 @@ distrib_income_2<- distrib_group_c(eusilc,
                                    rb090,
                                    (py010n+py050n)/12,
                                    filter_exp = pl030 == 2,
-                                   bw = .3,
+                                   bw = 1.3,
                                    resolution = 100,
-                                   height = 1,
-                                   limits = c(-500,3000),
+                                   height = .8,
+                                   limits = c(-500,3500),
                                    show_mid_point = T,
                                    show_mid_line = T,
                                    show_ci_errorbar = T,
                                    show_ci_lines = T,
                                    show_ci_area = T,
                                    show_quant_lines = T, 
-                                   show_moustache = T)
+                                   show_moustache = F)
 
 distrib_income_2$graph
 
@@ -515,9 +519,9 @@ distrib_income_2$graph
 
 ## L'esthétique graphique
 
--   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`. `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()` et `esth_graph()`). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`. `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens opposé. Pour `many_val()` et ses alias, pal peut prendre aussi une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou pal. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques (**EST-CE VRAI POUR TOUTES LES FONCTIONS MANY?**).
-
 -   `dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
+
+-   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`. `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()` et `esth_graph()`). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`. `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le 1, par défaut, par -1 pour avoir le sens opposé. Pour `many_val()` et ses alias, pal peut prendre aussi une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou pal. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques.
 
 Dans l'exemple ci-dessous, on utilise une autre palette de couleur et des barres plus fines.
 
@@ -532,6 +536,23 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
                                        subtitle = "Example with austrian SILC data from 'laeken' package"
                                        )
 eusilc_dist_group_d$graph 
+```
+
+-   Dans `distrib_continuous()` et `distrib_group_continuous()`, `pal` peut soit prendre la valeur d'une couleur, soit un vecteur reprenant plusieurs couleurs. Dans le cas d'une seule couleur, les graphiques seront monochrome, dans le cas de plusieurs couleurs, une palette de couleur est créée en passant par les différentes couleurs indiquées pour colorer les différents quantiles, la première couleur indiquant la coloration des premiers et derniers quantiles, et la dernière couleur indiquant la coloration du quantile central. En cas d'une pair de catégories, par exemple pour des déciles ou des quartiles, les deux catégories centrales prennent des couleurs différentes et légèrement dégradées et c'est celle du haut qui prend la couleur indiquée en dernière position du vecteur `pal`. Précisons que le vecteur de `pal` doit être un vecteur de couleur de R ou de codes hexadécimaux, mais pas une des palettes des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` utilisées dans `pal` pour les autres fonctions. Par défaut `distrib_continuous()` utilise un dégradé de bleu pour les quantiles et `distrib_group_continuous()` colorie les courbes de densité en gris, de manière à ne pas surcharger le graphique avec les quantiles. Ces deux fonction ont aussi l'argument `color` qui permet de tracer la ligne de la courbe de densité dans une couleur particulière. Par défaut cette ligne n'est pas colorée, seule l'aire sous la courbe l'est.
+
+-   `distrib_group_continuous()` comprend aussi l'argument `pal_moustache` qui détermine les couleurs de la moustache et `alpha` qui détermine la transparence de la couleur de la densité. `pal_moustache` fonctionne comme `pal` et peut comprendre une couleur unie ou un vecteur de couleur. Mais logiquement, il n'est pas pertinent de représenter une moustache monochrome. Comme pour pour `pal`, il n'est pas nécessaire de définir chaque teinte de couleur individuellement, puisque la fonction produit une palette de couleur comprenant tous les dégradés nécessaires. `alpha` peut prendre une valeur allant de 0 (couleur totalement transparente et donc invisible) à 1 (couleur sans transparence). Avoir un certain degré de transparence est particulièrement utile si les différentes courbes se superposent (quand `height` est élevé).
+
+Dans l'exemple ci-dessous, on utilise trois couleurs pour construire la palette qui va colorier l'aire de la densité et on trace la courbe de densité en rouge.
+
+```{r}
+distrib_age_2<- distrib_c(eusilc,
+                          age,
+                          color = "red",
+                          pal = c("yellow2","green3","blue"),
+                          show_n = T, 
+                          limits = c(10,100))
+
+distrib_age_2$graph
 ```
 
 ## L'esthétique des chiffres

@@ -5,24 +5,30 @@
 \title{make_surface}
 \usage{
 make_surface(
-  data,
-  IC = TRUE,
-  space = NULL,
+  tab,
+  var,
+  value,
+  error_low = NULL,
+  error_upp = NULL,
+  pvalue = NULL,
+  compare = F,
   reorder = F,
+  show_ci = TRUE,
+  space = NULL,
   position = "mid",
   digits = 0,
   unit = NULL,
   pal = "Kandinsky",
+  bg = "snow2",
   direction = 1,
-  last_del = 1,
   title = NULL,
   subtitle = NULL,
   caption = NULL,
-  wrap_lab = 20
+  wrap_width_lab = 20
 )
 }
 \arguments{
-\item{wrap_lab}{}
+\item{wrap_width_lab}{}
 }
 \description{
 make_surface

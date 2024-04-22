@@ -83,6 +83,18 @@
     
     
 <div class="section level2">
+<h2 id="fonctionr-0-2-13">fonctionr 0.2.13<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-13"></a>
+</h2>
+<p>Date : 2024-04-20</p>
+<ul>
+<li><p>Création de <code><a href="../reference/make_surface.html">make_surface()</a></code> comme fonction
+indépendante utilisable sur n’importe quel tableau de
+résultats.</p></li>
+<li><p>Ajout de la possibilité d’afficher le résultat d’un test
+statistique dans <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="fonctionr-0-2-12">fonctionr 0.2.12<a class="anchor" aria-label="anchor" href="#fonctionr-0-2-12"></a>
 </h2>
 <p>Date : 2024-04-04</p>
@@ -302,6 +314,7 @@ message de la console avec les replicates =&gt; pourquoi ?</p></li>
 <li>Ajouter le test stat univarié avec comme H0 mu dans la population.
 Apparemment la fonction n’est pas pré-programmée dans
 <code>survey</code>, il faut la faire soi-même.</li>
+<li>Ajouter la possibilité de facets.</li>
 </ul>
 <p><strong>distrib_group_c</strong></p>
 <ul>
@@ -315,6 +328,7 @@ les sorties de la liste (pour le moment, parfois “group”, parfois le nom
 de la variable) =&gt; implique de changer l’argument <code>by =</code>
 des <code>left_join()</code> dans le script, et donc le nommage des
 colonnes.</p></li>
+<li><p>Ajouter la possibilité de facets.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -341,13 +355,23 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 lorsque <code>position == "stack"</code>
 </li>
 </ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="make_surface">make_surface<a class="anchor" aria-label="anchor" href="#make_surface"></a>
+</h3>
+<ul>
+<li><p>Ajouter les checks (penser le cas spécifique de
+<code>pvalue</code>).</p></li>
+<li><p>Ajouter la possibilité de facets.</p></li>
+</ul>
 <p><strong>esth_graph</strong></p>
 <ul>
 <li><p>Changer le nom.</p></li>
+<li><p>Ajouter le check pour l’argument <code>pvalue</code>.</p></li>
 <li><p>Régler le pb si multiples <code>NA</code> + voir si un pb se pose
 avec multiples totaux.</p></li>
 </ul>
-</div>
 </div>
 <div class="section level3">
 <h3 id="améliorations">Améliorations<a class="anchor" aria-label="anchor" href="#am%C3%A9liorations"></a>

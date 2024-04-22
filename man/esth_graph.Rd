@@ -12,6 +12,7 @@ esth_graph(
   reorder = F,
   error_low = NULL,
   error_upp = NULL,
+  pvalue = NULL,
   n_var = NULL,
   show_value = TRUE,
   name_total = NULL,
