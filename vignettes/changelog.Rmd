@@ -172,6 +172,10 @@ Date : 2024-02-14
 
 -   Ajouter la possibilité de facets.
 
+-   Bug avec `color`, la ligne du geom_line est parfois coupée ?
+
+-   Mal pensé : `pal_moustache` fonctionne comme `pal` et peut comprendre une couleur unie ou un vecteur de couleur. Mais logiquement, il n'est pas pertinent de représenter une moustache monochrome.
+
 #### central_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
