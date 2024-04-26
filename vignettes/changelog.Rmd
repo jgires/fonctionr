@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.0
+
+Date : 2024-04-26
+
+-   La documentation a été complétée pour que le package puisse être utilisé par des personnes tierces. Le package commence à être diffusable.
+
+-   Le bug avec la ligne du geom_line qui est coupée pour `distrib_group_continuous()` est réglé.
+
 ## fonctionr 0.2.13
 
 Date : 2024-04-20
@@ -171,8 +179,6 @@ Date : 2024-02-14
 -   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
 
 -   Ajouter la possibilité de facets.
-
--   Bug avec `color`, la ligne du geom_line est parfois coupée ?
 
 -   Mal pensé : `pal_moustache` fonctionne comme `pal` et peut comprendre une couleur unie ou un vecteur de couleur. Mais logiquement, il n'est pas pertinent de représenter une moustache monochrome.
 

@@ -358,7 +358,8 @@ distrib_group_continuous <- function(data,
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
-      )
+      ) %>%
+      ungroup()
   }
 
   if (reorder == T) {
@@ -676,6 +677,7 @@ distrib_group_continuous <- function(data,
       alpha = alpha
     ) +
     geom_line(
+      data = df_dens[!is.na(df_dens$y_ridges), ],
       aes(
         x = x,
         y = y_ridges,
@@ -935,7 +937,7 @@ distrib_group_continuous <- function(data,
 }
 
 
-#' @rdname distrib_group_c
+#' @rdname distrib_group_continuous
 #' @export
 distrib_group_c <- function(...) {
   distrib_group_continuous(...)

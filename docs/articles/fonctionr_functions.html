@@ -97,20 +97,6 @@ quels cas elles peuvent être utilisées. Dans un deuxième temps, on
 présente un tableau récapitulatif des arguments. De nombreux arguments
 revenant dans plusieurs fonctions, il est plus facile de présenter la
 structure globale de ceux-ci que de se répéter pour chaque fonction.</p>
-<div style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px">
-<p><strong>Note de développement:</strong> Cette version de
-<code>fonctionr</code> est encore une version de développement. Elle est
-néanmoins pleinement fonctionnelle et a passé l’épreuve de nombreux
-tests, au cours desquels des solutions ont été apportées aux problèmes
-posés par des structures de données diverses. La mise à disposition
-publique du package nous permettra de bénéficier de retours plus larges
-concernant des problèmes que nous n’aurions pas anticipés. Néanmoins,
-dans un but de continuité d’utilisation, la logique d’utilisation de
-<code>fonctionr</code> restera globalement la même. Seuls quelques
-éléments seront encore possiblement modifiés ou harmonisés dans un
-avenir proche (nom d’arguments, arguments supplémentaires…), sans que
-cela impacte l’utilisation du programme.</p>
-</div>
 <div class="section level2">
 <h2 id="présentation-des-différentes-fonctions">Présentation des différentes fonctions<a class="anchor" aria-label="anchor" href="#pr%C3%A9sentation-des-diff%C3%A9rentes-fonctions"></a>
 </h2>
@@ -534,7 +520,7 @@ femmes et des hommes.</p>
 <h3 id="distrib_continuous">
 <code>distrib_continuous()</code><a class="anchor" aria-label="anchor" href="#distrib_continuous"></a>
 </h3>
-<p><code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code>, avec <code>distrib_c()</code>
+<p><code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code>, avec <code><a href="../reference/distrib_continuous.html">distrib_c()</a></code>
 comme alias, calcule la distribution d’une variable continue. L’objet
 produit est une liste qui comprend quatre éléments. En plus de
 <code>graph</code> et de <code>tab</code> que l’on retrouve dans les
@@ -544,7 +530,7 @@ Dans cette fonction, il n’y a pas de test statistique calculé
 <!--# A terme si => à changer à ce moment là -->.</p>
 <p>L’exemple ci-dessous décrit la distribution de l’âge.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu">distrib_c</span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
@@ -581,7 +567,7 @@ Dans cette fonction, il n’y a pas de test statistique calculé
 <code>distrib_group_continuous()</code><a class="anchor" aria-label="anchor" href="#distrib_group_continuous"></a>
 </h3>
 <p><code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, avec
-<code>distrib_group_c()</code> comme alias, calcule la distribution
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_c()</a></code> comme alias, calcule la distribution
 d’une variables continue selon les modalités d’une variable qualitative,
 que l’on peut considérer comme des groupes. Comme pour
 <code>distrib_continous()</code>, la fonction produit une liste
@@ -602,7 +588,7 @@ quantitative au lieu d’une variable. Ici, c’est le revenu équivalent
 annuel divisé par 12 qui est retenu pour qu’il soit exprimé en montant
 mensuel.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_income</span> <span class="op">&lt;-</span> <span class="fu">distrib_group_c</span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">distrib_income</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">pl030_rec</span>,</span>
 <span>  <span class="va">eqIncome</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5000</span><span class="op">)</span>,</span>
@@ -1248,7 +1234,7 @@ moustache. Notez que que le revenu du travail mensuel est directement
 calculé dans l’expression en additionnant le salaire avec le revenu
 d’une activité indépendante avant de diviser le tout par 12.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu">distrib_group_c</span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">rb090</span>,</span>
 <span>  <span class="op">(</span><span class="va">py010n</span> <span class="op">+</span> <span class="va">py050n</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="fl">2</span>,</span>
@@ -1371,7 +1357,7 @@ particulièrement utile si les différentes courbes se superposent (quand
 la palette qui va colorier l’aire de la densité et on trace la courbe de
 densité en rouge.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu">distrib_c</span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">age</span>,</span>
 <span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yellow2"</span>, <span class="st">"green3"</span>, <span class="st">"blue"</span><span class="op">)</span>,</span>

@@ -343,7 +343,8 @@ prop_group <- function(data,
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
-      )
+      ) %>%
+      ungroup()
   }
   # Version avec facet
   if(!quo_is_null(quo_facet)){
@@ -356,7 +357,8 @@ prop_group <- function(data,
         n_tot_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total = colonne "Total"
       ) %>%
-      filter({{ facet }} != total_name | is.na({{ facet }}))
+      filter({{ facet }} != total_name | is.na({{ facet }})) %>%
+      ungroup()
   }
 
 

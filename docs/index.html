@@ -72,9 +72,15 @@
 <!-- badges: end -->
 <p><code>fonctionr</code> est un package R qui a pour but de produire facilement des statistiques descriptives complètes à partir de données individuelles issues de sondages avec un design complexe. Le package inclut des fonctions permettant de produire les résultats les plus usuels (comparaison de proportions, de moyennes, de médianes, de distributions), en tenant compte du plan d’échantillonnage réel grâce au package <code>survey</code>.</p>
 <p><code>fonctionr</code> a l’objectif de faciliter l’inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l’enquête. <code>fonctionr</code> produit également des graphiques des résultats à l’aide de <code>ggplot2</code>, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication. Vous trouverez sur cette page une rapide introduction à <code>fonctionr</code> ; pour plus de détails, voir le manuel.</p>
-<div style="border:1px; width: 85%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
-<p>Pour comprendre plus en profondeur notre package et toutes ses possibilités, nous renvoyons l’utilisateur au <a href="https://jgires.github.io/fonctionr/articles/fonctionr_functions.html" class="external-link">Manuel d’utilisation</a> qui constitue un manuel décrivant dans le détail les différentes fonctions de <code>fonctionr</code>.</p>
+<div style="border:0px; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
+<p>Pour comprendre plus en profondeur notre package et ses différentes possibilités, nous renvoyons l’utilisateur au <a href="https://jgires.github.io/fonctionr/articles/fonctionr_functions.html" class="external-link">Manuel d’utilisation</a> qui constitue un manuel décrivant dans le détail les différentes fonctions de <code>fonctionr</code>.</p>
 </div>
+<div style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px">
+<p><strong>Note de développement:</strong> Cette version de <code>fonctionr</code> est encore une version de développement. Elle est néanmoins pleinement fonctionnelle et a passé l’épreuve de nombreux tests, au cours desquels des solutions ont été apportées aux problèmes posés par des structures de données diverses. La mise à disposition publique du package nous permettra de bénéficier de retours plus larges concernant des problèmes que nous n’aurions pas anticipés. Néanmoins, dans un but de continuité d’utilisation, la logique d’utilisation de <code>fonctionr</code> restera globalement la même. Seuls quelques éléments seront encore possiblement modifiés ou harmonisés dans un avenir proche (nom d’arguments, arguments supplémentaires…), sans que cela impacte l’utilisation du programme.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>Vous pouvez installer le package <code>fonctionr</code> depuis <a href="https://github.com/" class="external-link">GitHub</a>. Pour cela, il vous faut d’abord installer et charger le package <code>devtools</code> :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Installer devtools si celui-ci n'est pas installé et charger le package</span></span>
@@ -83,6 +89,7 @@
 <span></span>
 <span><span class="co"># Installer fonctionr</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jgires/fonctionr"</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="utilisation">Utilisation<a class="anchor" aria-label="anchor" href="#utilisation"></a>
 </h2>

@@ -275,7 +275,8 @@ distrib_discrete <- function(data,
       prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
       n_sample = unweighted(n()),
       n_weighted = survey_total(vartype = "ci")
-    )
+    ) %>%
+    ungroup()
 
 
   # 5. CREATION DU GRAPHIQUE --------------------

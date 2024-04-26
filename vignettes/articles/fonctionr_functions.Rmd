@@ -15,10 +15,6 @@ Le package a également été construit pour pouvoir utiliser directement les r�
 
 Ce guide se structure de la manière suivante. Dans un premier temps on décrit les différentes fonctions, ce qu'elles produisent et dans quels cas elles peuvent être utilisées. Dans un deuxième temps, on présente un tableau récapitulatif des arguments. De nombreux arguments revenant dans plusieurs fonctions, il est plus facile de présenter la structure globale de ceux-ci que de se répéter pour chaque fonction.
 
-::: {style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px"}
-**Note de développement:** Cette version de `fonctionr` est encore une version de développement. Elle est néanmoins pleinement fonctionnelle et a passé l'épreuve de nombreux tests, au cours desquels des solutions ont été apportées aux problèmes posés par des structures de données diverses. La mise à disposition publique du package nous permettra de bénéficier de retours plus larges concernant des problèmes que nous n'aurions pas anticipés. Néanmoins, dans un but de continuité d'utilisation, la logique d'utilisation de `fonctionr` restera globalement la même. Seuls quelques éléments seront encore possiblement modifiés ou harmonisés dans un avenir proche (nom d'arguments, arguments supplémentaires...), sans que cela impacte l'utilisation du programme.
-:::
-
 # Présentation des différentes fonctions
 
 La plupart des fonctions de `fonctionr` permettent, à partir de données issues d'un sondage (complexe mais aussi simple), de produire un graphique, un tableau d'indicateurs et les résultat d'un test statistique. Les fonctions produisent toutes une liste qui contient la plupart du temps ces trois objets :

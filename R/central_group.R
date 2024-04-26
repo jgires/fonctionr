@@ -322,7 +322,8 @@ central_group <- function(data,
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total
-      )
+      ) %>%
+      ungroup()
   }
   if(!quo_is_null(quo_facet)){
     tab <- data_W %>%
@@ -335,7 +336,8 @@ central_group <- function(data,
         n_weighted = survey_total(vartype = "ci"),
         .fill = total_name, # Le total
       ) %>%
-      filter({{ facet }} != total_name | is.na({{ facet }})) # POURQUOI JE FAIS CA ??? ME RAPPELLE PLUS => ELUCIDER
+      filter({{ facet }} != total_name | is.na({{ facet }})) %>% # POURQUOI JE FAIS CA ??? ME RAPPELLE PLUS => ELUCIDER
+      ungroup()
   }
 
 

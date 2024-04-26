@@ -16,7 +16,9 @@ globalVariables(unique(c(
   # prop_group:
   "median", "n_sample", "prop", "prop_low", "prop_upp", "fonctionr_express_bin",
   # distrib_continuous:
-  "coord_x", "quantFct", "segment", "x", "y",
+  "coord_x", "coord_max", "quantFct", "segment", "x", "y",
   # distrib_group_continuous:
-  "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "x", "xbegin", "xend", "y", "y_ridges"
+  "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "x", "xbegin", "xend", "y", "y_ridges", ".",
+  # make_surface:
+  "indice_sqrt", "xmean"
 )))

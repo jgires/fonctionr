@@ -240,7 +240,8 @@ distrib_continuous <- function(data,
       } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
       n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
       n_weighted = survey_total(vartype = "ci")
-    )
+    ) %>%
+    ungroup()
 
 
   # 4. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
@@ -638,7 +639,7 @@ distrib_continuous <- function(data,
 }
 
 
-#' @rdname distrib_c
+#' @rdname distrib_continuous
 #' @export
 distrib_c <- function(...) {
   distrib_continuous(...)

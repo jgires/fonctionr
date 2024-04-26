@@ -69,7 +69,7 @@ make_surface <- function(tab,
   if (reorder == T) {
     tab <- tab %>%
       mutate(
-        "{{ var }}" := fct_reorder({{ var }}, {{ value }})
+        "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }})
       ) %>%
       arrange({{ value }}) # Il est nécessaire de trier le tableau, puisque le petit algorithme que j'ai écrit pour créer les positions des geom_tile pour le ggplot s'exécute dans l'ordre du tableau !
   }
@@ -102,13 +102,13 @@ make_surface <- function(tab,
   tab$xmin[1] <- 0
   tab <- tab %>% tibble::add_row() # On ajoute une ligne
 
-  for (i in seq_along(head(tab, -1)[[deparse(substitute(var))]])) {
+  for (i in seq_along(utils::head(tab, -1)[[deparse(substitute(var))]])) {
     tab$xmin[i + 1] <- tab$xmin[i] + tab$indice_sqrt[i]
     tab$xmax[i] <- tab$xmin[i + 1]
 
     tab$xmin[i + 1] <- tab$xmin[i + 1] + space
   }
-  tab <- head(tab, -1) # On supprime la ligne ajoutée
+  tab <- utils::head(tab, -1) # On supprime la ligne ajoutée
   tab$xmean <- (tab$xmin + tab$xmax) / 2
 
 

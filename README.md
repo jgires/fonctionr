@@ -27,15 +27,33 @@ directement et rapidement les résultats produits dans un rapport/une
 publication. Vous trouverez sur cette page une rapide introduction à
 `fonctionr` ; pour plus de détails, voir le manuel.
 
-<div style="border:1px; width: 85%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
+<div style="border:0px; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
-Pour comprendre plus en profondeur notre package et toutes ses
+Pour comprendre plus en profondeur notre package et ses différentes
 possibilités, nous renvoyons l’utilisateur au [Manuel
 d’utilisation](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
 qui constitue un manuel décrivant dans le détail les différentes
 fonctions de `fonctionr`.
 
 </div>
+
+<div style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px">
+
+**Note de développement:** Cette version de `fonctionr` est encore une
+version de développement. Elle est néanmoins pleinement fonctionnelle et
+a passé l’épreuve de nombreux tests, au cours desquels des solutions ont
+été apportées aux problèmes posés par des structures de données
+diverses. La mise à disposition publique du package nous permettra de
+bénéficier de retours plus larges concernant des problèmes que nous
+n’aurions pas anticipés. Néanmoins, dans un but de continuité
+d’utilisation, la logique d’utilisation de `fonctionr` restera
+globalement la même. Seuls quelques éléments seront encore possiblement
+modifiés ou harmonisés dans un avenir proche (nom d’arguments, arguments
+supplémentaires…), sans que cela impacte l’utilisation du programme.
+
+</div>
+
+## Installation
 
 Vous pouvez installer le package `fonctionr` depuis
 [GitHub](https://github.com/). Pour cela, il vous faut d’abord installer

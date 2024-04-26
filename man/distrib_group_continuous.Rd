@@ -2,6 +2,7 @@
 % Please edit documentation in R/distrib_group_continuous.R
 \name{distrib_group_continuous}
 \alias{distrib_group_continuous}
+\alias{distrib_group_c}
 \title{distrib_group_continuous}
 \usage{
 distrib_group_continuous(
@@ -47,6 +48,8 @@ distrib_group_continuous(
   caption = NULL,
   export_path = NULL
 )
+
+distrib_group_c(...)
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}

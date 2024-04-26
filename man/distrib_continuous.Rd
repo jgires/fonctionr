@@ -2,6 +2,7 @@
 % Please edit documentation in R/distrib_continuous.R
 \name{distrib_continuous}
 \alias{distrib_continuous}
+\alias{distrib_c}
 \title{distrib_continuous}
 \usage{
 distrib_continuous(
@@ -36,6 +37,8 @@ distrib_continuous(
   caption = NULL,
   export_path = NULL
 )
+
+distrib_c(...)
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}

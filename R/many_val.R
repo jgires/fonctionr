@@ -286,6 +286,8 @@ many_val = function(data,
       tab <- rbind(tab, tab_i)
     }
   }
+  tab <- tab %>%
+    ungroup()
 
   # On remplace list_vars par les labels list_vars_lab
   if (!is.null(list_vars_lab)) {
