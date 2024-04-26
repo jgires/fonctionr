@@ -7,15 +7,15 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups to be compared.
 #' @param quanti_exp An expression that define the variable the variable to be described.
-#' @param type "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..
+#' @param type Type of central value : "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..
 #' @param facet A supprimer?
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
 #' @param na.rm.facet Argument à supprimer?
-#' @param quantiles quantiles to be computed in the distributions. Default are deciles.
-#' @param moustache_probs a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.
-#' @param bw Default is 1.
+#' @param quantiles Quantiles to be computed in the distributions. Default are deciles.
+#' @param moustache_probs A vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.
+#' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.
 #' @param resolution Resolution of the density curve. Default is 512
 #' @param height Height of the curves. Default is 0.8
 #' @param limits Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.
@@ -33,9 +33,9 @@
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ",".
-#' @param pal color of the density areas. Can be one or sereval colors to create a palette.
-#' @param pal_moustache color of the moustache. Can be one or sereval colors to create a palette.
-#' @param color color of the density curve. Has to be one color.
+#' @param pal Color of the density areas. Can be one or sereval colors to create a palette.
+#' @param pal_moustache Color of the moustache. Can be one or sereval colors to create a palette.
+#' @param color Color of the density curve. Has to be one color.
 #' @param alpha Transparence of the density curve. Default is 1.
 #' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line in the labels of the groups. Default is 25

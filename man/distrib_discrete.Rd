@@ -49,6 +49,10 @@ distrib_d(...)
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA value for the facet variable. Default is TRUE.}
+
+\item{na.rm.var}{TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with the NA value for the discrete variable. Default is TRUE.}
+
 \item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.}
 
 \item{prop_method}{Type of proportion method to use to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}

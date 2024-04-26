@@ -53,7 +53,7 @@ many_mean(..., type = "mean")
 
 \item{type}{"mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.}
 
-\item{list_vars_lab}{names of the variables}
+\item{list_vars_lab}{Names of the variables}
 
 \item{facet}{A variable defining the faceting group.}
 
@@ -63,7 +63,7 @@ many_mean(..., type = "mean")
 
 \item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
-\item{na.vars}{treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
+\item{na.vars}{The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 

@@ -88,7 +88,7 @@ distrib_group_continuous(
 
 \item{quanti_exp}{An expression that define the variable the variable to be described.}
 
-\item{type}{"mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..}
+\item{type}{Type of central value : "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..}
 
 \item{facet}{A supprimer?}
 
@@ -98,9 +98,9 @@ distrib_group_continuous(
 
 \item{na.rm.facet}{Argument à supprimer?}
 
-\item{quantiles}{quantiles to be computed in the distributions. Default are deciles.}
+\item{quantiles}{Quantiles to be computed in the distributions. Default are deciles.}
 
-\item{bw}{Default is 1.}
+\item{bw}{The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.}
 
 \item{resolution}{Resolution of the density curve. Default is 512}
 
@@ -126,9 +126,9 @@ distrib_group_continuous(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{pal}{color of the density areas. Can be one or sereval colors to create a palette.}
+\item{pal}{Color of the density areas. Can be one or sereval colors to create a palette.}
 
-\item{color}{color of the density curve. Has to be one color.}
+\item{color}{Color of the density curve. Has to be one color.}
 
 \item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
 
@@ -148,7 +148,7 @@ distrib_group_continuous(
 
 \item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.}
 
-\item{moustache_probs}{a vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.}
+\item{moustache_probs}{A vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.}
 
 \item{height}{Height of the curves. Default is 0.8}
 
@@ -160,7 +160,7 @@ distrib_group_continuous(
 
 \item{show_moustache}{TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.}
 
-\item{pal_moustache}{color of the moustache. Can be one or sereval colors to create a palette.}
+\item{pal_moustache}{Color of the moustache. Can be one or sereval colors to create a palette.}
 
 \item{alpha}{Transparence of the density curve. Default is 1.}
 

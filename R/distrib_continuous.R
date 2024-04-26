@@ -12,7 +12,7 @@
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.facet A supprimer?
 #' @param quantiles quantiles to be computed in the distribution. Default are deciles.
-#' @param bw Default is 1.
+#' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.
 #' @param resolution Resolution of the density curve. Default is 1024.
 #' @param limits Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.
 #' @param show_mid_line TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.

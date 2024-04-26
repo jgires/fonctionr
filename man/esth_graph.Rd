@@ -46,6 +46,8 @@ esth_graph(
 
 \item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
+\item{pvalue}{The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.}
+
 \item{n_var}{The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.}
 
 \item{show_value}{TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.}
