@@ -7,16 +7,11 @@ navbar:
   left:
   - text: Reference
     href: reference/index.html
-  - text: Articles
-    menu:
-    - text: Présentation des fonctions
-      href: articles/fonctionr_functions.html
-    - text: Présentation des arguments
-      href: articles/fonctionr_arguments.html
+  - text: Manuel
+    href: articles/fonctionr_functions.html
   - text: Changelog
     href: articles/changelog.html
   right:
     - icon: fa-github fa-lg
       text: "github"
       href: https://github.com/jgires/fonctionr
-      

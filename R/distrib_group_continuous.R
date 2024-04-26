@@ -2,7 +2,7 @@
 #'
 #' Function to compare means or medians in different groups from complex survey data. It produces a table, a graphic and a statistical test.
 #'
-#' @name distrib_continuous
+#' @name distrib_group_continuous
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining groups to be compared.

@@ -1,5 +1,5 @@
 ---
-title: "Overview of functionr functions"
+title: "Manuel d'utilisation"
 ---
 
 ```{r, include = FALSE}
@@ -15,7 +15,11 @@ Le package a également été construit pour pouvoir utiliser directement les r�
 
 Ce guide se structure de la manière suivante. Dans un premier temps on décrit les différentes fonctions, ce qu'elles produisent et dans quels cas elles peuvent être utilisées. Dans un deuxième temps, on présente un tableau récapitulatif des arguments. De nombreux arguments revenant dans plusieurs fonctions, il est plus facile de présenter la structure globale de ceux-ci que de se répéter pour chaque fonction.
 
-## Présentation des différentes fonctions
+::: {style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px"}
+**Note de développement:** Cette version de `fonctionr` est encore une version de développement. Elle est néanmoins pleinement fonctionnelle et a passé l'épreuve de nombreux tests, au cours desquels des solutions ont été apportées aux problèmes posés par des structures de données diverses. La mise à disposition publique du package nous permettra de bénéficier de retours plus larges concernant des problèmes que nous n'aurions pas anticipés. Néanmoins, dans un but de continuité d'utilisation, la logique d'utilisation de `fonctionr` restera globalement la même. Seuls quelques éléments seront encore possiblement modifiés ou harmonisés dans un avenir proche (nom d'arguments, arguments supplémentaires...), sans que cela impacte l'utilisation du programme.
+:::
+
+# Présentation des différentes fonctions
 
 La plupart des fonctions de `fonctionr` permettent, à partir de données issues d'un sondage (complexe mais aussi simple), de produire un graphique, un tableau d'indicateurs et les résultat d'un test statistique. Les fonctions produisent toutes une liste qui contient la plupart du temps ces trois objets :
 
@@ -29,11 +33,13 @@ La plupart des fonctions permettent aussi d'exporter directement ces trois résu
 
 Dans la suite de cette partie, nous passons les fonctions en revue en indiquant quels sont leurs objectifs et spécificités.
 
-### `distrib_discrete()`
+## `distrib_discrete()`
 
 `distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
 
 ```{r}
+#| message: false
+#| warning: false
 library(fonctionr)
 library(knitr)
 library(patchwork)
@@ -73,22 +79,28 @@ eusilc_dist_d <- distrib_d(
 Nous affichons ensuite le graphique contenu dans la liste produite :
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_d$graph
 ```
 
 La liste contient également un dataframe `tab` qui reprend les chiffres sur base desquels le graphique est construit. Il comprend les colonnes suivantes : le nom de la modalité (`pl030_rec`), l'estimation de la proportion de la population appartenant à la modalité (`prop`), les bornes inférieure (`prop_low`) et supérieure (`prop_upp`) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (`n_sample`), l'estimation du nombre de personnes dans la population appartenant à la modalité (`n_weighted`), et les bornes inférieure (`n_weighted_low`) et supérieure (`n_weighted_upp`) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95% :
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_d$tab
 ```
 
 La liste contient pour finir le résultat du test statistique dans l'objet `test.stat`. Dans ce cas, il s'agit du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle la répartition de la population selon le vecteur mentionné dans l'argument `probs = c(.2, .15, .1, .1, .25, .1, .1)`, c'est-à-dire 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'avait été mentionné dans `probs`, aucun test n'aurait été effectué. Si le vecteur n'a pas une somme de 1, il est ajusté pour avoir une telle somme. Notons que la p-valeur du test est mentionnée sur le graphique.
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_d$test.stat
 ```
 
-### `distrib_group_discrete()`
+## `distrib_group_discrete()`
 
 `distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution (en pourcentages) des différentes modalités d'une variables qualitative selon les modalités d'une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
 
@@ -107,18 +119,24 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$tab
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$test.stat
 ```
 
-### `prop_group()`
+## `prop_group()`
 
 `prop_group()` calcule des proportions pour les différentes modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Pour indiquer la proportion à calculer, l'utilisateur peut indiquer soit une variable dichotomique, soit directement une expression (sans guillemet, à la manière du `tidyverse`) à partir de laquelle la proportion est calculée. L'exemple ci-dessous compare la proportion d'individus qui bénéficient d'une allocation de chômage (calculé avec l'expression `py090n > 0`) selon les différents statuts socio-économiques (`pl030_rec`).
 
@@ -135,6 +153,8 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop$graph
 ```
 
@@ -145,14 +165,18 @@ Le graphique et le tableau contiennent une modalité `Total` qui reprend l'estim
 Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (les variables dichotomique *proportion vraie-fausse* et de groupe) soient statistiquement indépendantes .
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop$tab
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop$test.stat
 ```
 
-### `central_group()`
+## `central_group()`
 
 `central_group()` compare la valeur centrale d'une variable quantitative selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Deux valeurs centrales sont possibles :
 
@@ -179,14 +203,20 @@ eusilc_mean <- mean_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_mean$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_mean$tab
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_mean$test.stat
 ```
 
@@ -219,10 +249,14 @@ eusilc_many_mean <- many_mean(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_many_mean$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_many_mean$tab
 ```
 
@@ -254,10 +288,14 @@ eusilc_many_mean_group <- many_mean_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_many_mean_group$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_many_mean_group$tab
 ```
 
@@ -268,22 +306,32 @@ eusilc_many_mean_group$tab
 L'exemple ci-dessous décrit la distribution de l'âge.
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_age <- distrib_c(eusilc, age)
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_age$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 head(distrib_age$dens)
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_age$tab
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_age$quant
 ```
 
@@ -305,22 +353,32 @@ distrib_income <- distrib_group_c(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_income$graph
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 head(distrib_income$dens)
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_income$tab
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 head(distrib_income$quant)
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 head(distrib_income$moustache)
 ```
 
@@ -338,7 +396,7 @@ head(distrib_income$moustache)
 
 Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique.
 
-TABLEAU
+**TABLEAU**
 
 # Les arguments liés à la base de données utilisée
 
@@ -353,32 +411,29 @@ Les exemples ci-dessous montrent trois manière différentes de prendre en compt
 ```{r}
 #| message: false
 #| warning: false
-### Un exemple où on indique directement dans la fonction de fonctionr les différents éléments du plan de sondage
+library(survey)
+library(srvyr)
+
+# Un exemple où on indique directement dans la fonction de fonctionr les différents éléments du plan de sondage
 eusilc_prop_1 <- prop_group(eusilc,
   group = pl030_rec,
   prop_exp = py090n > 0,
   strata = db040,
   ids = db030,
   weights = rb050,
-  title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
+  title = "dataframe"
 )
 
-### Un exemple où utilise un objet survey
-library(survey)
-
+# Un exemple où utilise un objet survey
 eusilc_survey <- svydesign(id = ~db030, strat = ~db040, weight = ~rb050, data = eusilc)
 
 eusilc_prop_2 <- prop_group(eusilc_survey,
   group = pl030_rec,
   prop_exp = py090n > 0,
-  title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
+  title = "survey object"
 )
 
-### Un exemple où utilise un objet srvyr
-library(srvyr)
-
+# Un exemple où utilise un objet srvyr
 eusilc_srvyr <- as_survey_design(eusilc,
   ids = db030,
   strata = db040,
@@ -388,12 +443,13 @@ eusilc_srvyr <- as_survey_design(eusilc,
 eusilc_prop_3 <- prop_group(eusilc_srvyr,
   group = pl030_rec,
   prop_exp = py090n > 0,
-  title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
+  title = "srvyr object"
 )
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop_1$graph | eusilc_prop_2$graph | eusilc_prop_3$graph
 ```
 
@@ -428,6 +484,8 @@ eusilc_prop_NA_excl <- prop_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop_NA_excl$graph
 ```
 
@@ -473,6 +531,8 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$graph
 ```
 
@@ -503,6 +563,8 @@ eusilc_prop_NA_incl <- prop_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop_NA_excl$graph | eusilc_prop_NA_incl$graph
 ```
 
@@ -534,6 +596,8 @@ eusilc_mean_reorder <- mean_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_mean_reorder$graph
 ```
 
@@ -557,6 +621,8 @@ eusilc_many_mean_group_2 <- many_mean_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_many_mean_group_2$graph
 ```
 
@@ -582,10 +648,12 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop$graph
 ```
 
-Certains arguments sont spécifiques aux fonctions `distrib_continous()` et `distrib_group_continous()`.
+Certains arguments sont spécifiques aux fonctions `distrib_continous()` et `distrib_group_continous()` :
 
 -   `bw` indique le degré de "lissage" de la densité. Une valeur plus élevée conduira à davantage lisser la densité et masquera davantage les variations locales alors qu'une valeur plus faible montrera les détails dans la variations de le courbe. `resolution` indique la "finesse" de la courbe de densité. Avec une résolution plus faible, il y aura moins de points et on verra les petites droites reliant les points de densité. Une grande résolution implique des calculs plus longs. Ces deux arguments, bien qu'esthétiques, influencent aussi l'objet `dens` produit par les fonctions.
 
@@ -619,6 +687,8 @@ distrib_income_2 <- distrib_group_c(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_income_2$graph
 ```
 
@@ -647,6 +717,8 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$graph 
 ```
 
@@ -669,6 +741,8 @@ distrib_age_2 <- distrib_c(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 distrib_age_2$graph
 ```
 
@@ -703,6 +777,8 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_prop$graph
 ```
 
@@ -733,6 +809,8 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$graph
 ```
 
@@ -767,7 +845,11 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 eusilc_dist_group_d$graph
 ```
 
 # L'export au format xlsx
+
+A ECRIRE

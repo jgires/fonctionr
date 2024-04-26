@@ -22,11 +22,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,12 +38,8 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/fonctionr_functions.html">Présentation des fonctions</a>
-    <a class="dropdown-item" href="articles/fonctionr_arguments.html">Présentation des arguments</a>
-  </div>
+<li class="nav-item">
+  <a class="nav-link" href="articles/fonctionr_functions.html">Manuel</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="articles/changelog.html">Changelog</a>
@@ -75,18 +71,10 @@
 
 <!-- badges: end -->
 <p><code>fonctionr</code> est un package R qui a pour but de produire facilement des statistiques descriptives complètes à partir de données individuelles issues de sondages avec un design complexe. Le package inclut des fonctions permettant de produire les résultats les plus usuels (comparaison de proportions, de moyennes, de médianes, de distributions), en tenant compte du plan d’échantillonnage réel grâce au package <code>survey</code>.</p>
-<p><code>fonctionr</code> a l’objectif de faciliter l’inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l’enquête. <code>fonctionr</code> produit également des graphiques des résultats à l’aide de <code>ggplot2</code>, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication. Vous trouverez sur cette page une rapide introduction à <code>fonctionr</code> ; pour plus de détails, voir les vignettes.</p>
+<p><code>fonctionr</code> a l’objectif de faciliter l’inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l’enquête. <code>fonctionr</code> produit également des graphiques des résultats à l’aide de <code>ggplot2</code>, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication. Vous trouverez sur cette page une rapide introduction à <code>fonctionr</code> ; pour plus de détails, voir le manuel.</p>
 <div style="border:1px; width: 85%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
-<p>Pour comprendre plus en profondeur notre package et toutes ses possibilités, trois vignettes sont disponibles :</p>
-<ul>
-<li><p>La vignette <a href="https://jgires.github.io/fonctionr/articles/complex_survey_design.html" class="external-link">Manipulate complex Survey Design</a> explique de quelle manière <code>fonctionr</code> peut prendre en compte le plan d’échantillonnage réel des sondages.</p></li>
-<li><p>La vignette <a href="https://jgires.github.io/fonctionr/articles/fonctionr_functions.html" class="external-link">Overview of functionr functions</a> décrit avec plus de détails les différentes fonctions de <code>fonctionr</code>.</p></li>
-<li><p>La vignette <a href="https://jgires.github.io/fonctionr/articles/publication_ready.html" class="external-link">Ready for publication</a> explique la philosophie de <code>fonctionr</code> de produire des résultats directement prêts à l’emploi : à la communication à des tiers ou à la publication.</p></li>
-</ul>
+<p>Pour comprendre plus en profondeur notre package et toutes ses possibilités, nous renvoyons l’utilisateur au <a href="https://jgires.github.io/fonctionr/articles/fonctionr_functions.html" class="external-link">Manuel d’utilisation</a> qui constitue un manuel décrivant dans le détail les différentes fonctions de <code>fonctionr</code>.</p>
 </div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
 <p>Vous pouvez installer le package <code>fonctionr</code> depuis <a href="https://github.com/" class="external-link">GitHub</a>. Pour cela, il vous faut d’abord installer et charger le package <code>devtools</code> :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Installer devtools si celui-ci n'est pas installé et charger le package</span></span>
@@ -95,7 +83,6 @@
 <span></span>
 <span><span class="co"># Installer fonctionr</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jgires/fonctionr"</span><span class="op">)</span></span></code></pre></div>
-</div>
 <div class="section level2">
 <h2 id="utilisation">Utilisation<a class="anchor" aria-label="anchor" href="#utilisation"></a>
 </h2>
@@ -247,7 +234,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

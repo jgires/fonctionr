@@ -25,31 +25,17 @@ réel de l’enquête. `fonctionr` produit également des graphiques des
 résultats à l’aide de `ggplot2`, dans le but de pouvoir intégrer
 directement et rapidement les résultats produits dans un rapport/une
 publication. Vous trouverez sur cette page une rapide introduction à
-`fonctionr` ; pour plus de détails, voir les vignettes.
+`fonctionr` ; pour plus de détails, voir le manuel.
 
 <div style="border:1px; width: 85%; margin-left: auto; margin-right: auto; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
 Pour comprendre plus en profondeur notre package et toutes ses
-possibilités, trois vignettes sont disponibles :
-
-- La vignette [Manipulate complex Survey
-  Design](https://jgires.github.io/fonctionr/articles/complex_survey_design.html)
-  explique de quelle manière `fonctionr` peut prendre en compte le plan
-  d’échantillonnage réel des sondages.
-
-- La vignette [Overview of functionr
-  functions](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
-  décrit avec plus de détails les différentes fonctions de `fonctionr`.
-
-- La vignette [Ready for
-  publication](https://jgires.github.io/fonctionr/articles/publication_ready.html)
-  explique la philosophie de `fonctionr` de produire des résultats
-  directement prêts à l’emploi : à la communication à des tiers ou à la
-  publication.
+possibilités, nous renvoyons l’utilisateur au [Manuel
+d’utilisation](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
+qui constitue un manuel décrivant dans le détail les différentes
+fonctions de `fonctionr`.
 
 </div>
-
-## Installation
 
 Vous pouvez installer le package `fonctionr` depuis
 [GitHub](https://github.com/). Pour cela, il vous faut d’abord installer
