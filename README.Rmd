@@ -23,13 +23,7 @@ knitr::opts_chunk$set(
 
 `fonctionr` est un package R qui a pour but de produire facilement des statistiques descriptives complètes à partir de données individuelles issues de sondages avec un design complexe. Le package inclut des fonctions permettant de produire les résultats les plus usuels (comparaison de proportions, de moyennes, de médianes, de distributions), en tenant compte du plan d'échantillonnage réel grâce au package `survey`.
 
-`fonctionr` a l'objectif de faciliter l'inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l'enquête. `fonctionr` produit également des graphiques des résultats à l'aide de `ggplot2`, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication. Vous trouverez sur cette page une ra
-
-```         
-summarise
-```
-
-pide introduction à `fonctionr` ; pour plus de détails, voir le manuel.
+`fonctionr` a l'objectif de faciliter l'inférence statistique : outre des résultats descriptifs, le package produit des intervalles de confiance et des tests statistiques qui prennent en compte de design réel de l'enquête. `fonctionr` produit également des graphiques des résultats à l'aide de `ggplot2`, dans le but de pouvoir intégrer directement et rapidement les résultats produits dans un rapport/une publication. Vous trouverez sur cette page une rapide introduction à `fonctionr` ; pour plus de détails, voir le manuel.
 
 ::: {style="border:0px; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px"}
 **Documentation :** Pour comprendre plus en profondeur notre package et ses différentes possibilités, nous renvoyons l'utilisateur au [Manuel d'utilisation](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html) qui constitue un manuel décrivant dans le détail les différentes fonctions de `fonctionr`.

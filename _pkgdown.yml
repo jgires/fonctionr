@@ -20,6 +20,37 @@ navbar:
       text: "github"
       href: https://github.com/jgires/fonctionr
 
+reference:
+- title: fonctionr functions
+
+- subtitle: Analysis
+  desc: >
+    Functions that produce statistics.
+  contents:
+  - distrib_continuous
+  - central_group
+  - distrib_group_continuous
+  - distrib_discrete
+  - distrib_group_discrete
+  - prop_group
+  - many_val
+  - many_val_group
+
+- subtitle: Esthetic
+  desc: >
+    Functions with a graphic purpose.
+  contents:
+  - esth_graph
+  - make_surface
+  - load_and_active_fonts
+  - theme_fonctionr
+
+- subtitle: Utils
+  desc: >
+    Some useful functions.
+  contents:
+  - pivot_longer_survey
+
 figures:
   dev: ragg::agg_png
   dpi: 48

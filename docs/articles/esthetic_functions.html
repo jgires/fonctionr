@@ -101,17 +101,18 @@ peuvent s’avérer utiles. Nous les décrivons sur cette page.</p>
 <code>load_and_active_fonts()</code><a class="anchor" aria-label="anchor" href="#theme_fonctionr-load_and_active_fonts"></a>
 </h2>
 <p><code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> est une fonction qui permet
-d’appliquer le thème de <code>fonctionr</code> à un objet de
-<code>ggplot2</code>. Il s’agit en réalité d’un simple thème pour
+d’appliquer le thème de <code>fonctionr</code> à un objet
 <code>ggplot2</code>. Cette fonction a un intérêt si l’on veut
-uniformiser l’esthétique de tous les graphiques pour une publication.
-Elle nécessite d’indiquer la police à utiliser dans l’argument
-<code>font</code>. La fonction <code><a href="../reference/load_and_active_fonts.html">load_and_active_fonts()</a></code> est
-complémentaire, puisqu’elle permet de charger facilement des polices de
-caractères et de les rendre disponibles pour <code>ggplot2</code>.
-Actuellement trois polices sont directement incluses dans
-<code>fonctionr</code> : <code>"Roboto"</code>,
-<code>"Montserrat"</code> et <code>"Gotham Narrow"</code>.</p>
+uniformiser l’esthétique de tous les graphiques - ceux qui sont produits
+avec <code>fonctionr</code> et ceux qui ne le sont pas - pour une
+publication. Elle nécessite d’indiquer la police à utiliser dans
+l’argument <code>font</code>. La fonction
+<code><a href="../reference/load_and_active_fonts.html">load_and_active_fonts()</a></code> est ainsi complémentaire,
+puisqu’elle permet de charger facilement des polices de caractères et de
+les rendre disponibles pour <code>ggplot2</code>. Actuellement trois
+polices sont directement incluses dans <code>fonctionr</code> :
+<code>"Roboto"</code>, <code>"Montserrat"</code> et
+<code>"Gotham Narrow"</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Loading of data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">eusilc</span>, package <span class="op">=</span> <span class="st">"laeken"</span><span class="op">)</span></span>
@@ -144,21 +145,20 @@ Actuellement trois polices sont directement incluses dans
 <p><code><a href="../reference/esth_graph.html">esth_graph()</a></code> est une fonction qui permet de construire
 facilement une graphique similaire à ceux produit par les autres
 fonction mais directement à partir d’une tableau de résultats calculé
-précédemment. Cette fonction a un intérêt si l’on veut appliquer
+antérieurement. Cette fonction a un intérêt si l’on veut appliquer
 l’esthétique graphique de <code>fonctionr</code> mais à des indicateurs
-qui ne sont pas calculés par une autre fonction de
-<code>fonctionr</code>. Par rapport à <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code>,
+qui ne sont pas calculés par une fonction de <code>fonctionr</code>.
 <code><a href="../reference/esth_graph.html">esth_graph()</a></code> permet aisément d’intégrer plusieurs éléments
 que l’on retrouve dans d’autres graphiques produits par
 <code>fonctionr</code> : valeurs de l’indicateur, bornes d’intervalle de
 confiance, nombres d’individus dans l’échantillon. La logique
-d’<code><a href="../reference/esth_graph.html">esth_graph()</a></code> est aussi différente de celle de
+d’<code><a href="../reference/esth_graph.html">esth_graph()</a></code> est différente de celle de
 <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> : la première fonction produit un
 graphique à partir d’une table, alors que la seconde applique un thème à
 un graphique existant.</p>
-<p>En comparaison des autres fonctions <code><a href="../reference/esth_graph.html">esth_graph()</a></code> n’a pas
-d’argument <code>data</code>, mais un argument <code>tab</code> qui doit
-correspondre à la table avec les indicateurs (il s’appelle
+<p>En comparaison des autres fonctions, <code><a href="../reference/esth_graph.html">esth_graph()</a></code> n’a
+pas d’argument <code>data</code>, mais un argument <code>tab</code> qui
+doit correspondre à la table avec les indicateurs (il s’appelle
 <code>tab</code> car il est similaire à l’objet <code>tab</code> produit
 par la plupart des fonctions de <code>fonctionr</code>). Les arguments
 <code>var</code> et <code>value</code> sont obligatoires et ils
