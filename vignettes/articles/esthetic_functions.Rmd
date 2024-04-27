@@ -37,7 +37,7 @@ tab1 <- eusilc |>
     prop = survey_mean(eqIncome > 10000, proportion = T, vartype = "ci", na.rm = T)
   )
 
-ggtab1 <- tab1 %>%
+ggtab1 <- tab1 |>
   ggplot(aes(x = pb220a, y = prop)) +
   geom_col() +
   labs(title = "I'm a graphic") +

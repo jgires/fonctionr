@@ -140,6 +140,8 @@ Date : 2024-02-14
 
 -   Tableau à mettre dans la doc.
 
+-   Changer tous les `%>%` en `|>`.
+
 -   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
 
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
@@ -251,15 +253,9 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 ## Fonctions à créer
 
-### Univarié
-
--   Densité pour le général (pour variable continue)
-
 ### Bivarié ou 3 variables+
 
 -   Superposition de 2 statistiques (bar + lines) avec échelles différentes.
 
 -   Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)
-
--   Densité par groupe (pour variable continue)
 :::
