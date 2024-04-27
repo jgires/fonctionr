@@ -41,6 +41,12 @@
 <li class="nav-item">
   <a class="nav-link" href="../articles/fonctionr_functions.html">Manuel</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/esthetic_functions.html">Fonctions esthétiques</a>
+  </div>
+</li>
 <li class="active nav-item">
   <a class="nav-link" href="../articles/changelog.html">Changelog</a>
 </li>
@@ -72,7 +78,7 @@
       <img src="" class="logo" alt=""><h1>Changelog</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/jgires/fonctionr/blob/HEAD/vignettes/changelog.Rmd" class="external-link"><code>vignettes/changelog.Rmd</code></a></small>
       <div class="d-none name"><code>changelog.Rmd</code></div>
     </div>
 
@@ -88,6 +94,8 @@ utilisé par des personnes tierces. Le package commence à être
 diffusable.</p></li>
 <li><p>Le bug avec la ligne du geom_line qui est coupée pour
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> est réglé.</p></li>
+<li><p>bug d’ordonnancement des facteurs réglé dans
+<code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -272,6 +280,7 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
+<li><p>Tableau à mettre dans la doc.</p></li>
 <li><p>Les couleurs des palettes sont attachées au groupe
 (<code><a href="../reference/many_val_group.html">many_val_group()</a></code>) ou à l’indicateur
 (<code><a href="../reference/many_val.html">many_val()</a></code>), mais pas à la position. De ce fait, lorsque
@@ -295,7 +304,6 @@ harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code 
 ggplot.</em></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
-<li><p>Bug avec le fichier YML pour <code>pkgdown</code>.</p></li>
 <li><p>Fichiers *.R pas compatibles ASCII =&gt; tout écrire en
 anglais.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
@@ -334,13 +342,14 @@ autres fonctions).</p></li>
 <li><p>Faire en sorte que le nom du groupe soit toujours le même dans
 les sorties de la liste (pour le moment, parfois “group”, parfois le nom
 de la variable) =&gt; implique de changer l’argument <code>by =</code>
-des <code>left_join()</code> dans le script, et donc le nommage des
+des <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code> dans le script, et donc le nommage des
 colonnes.</p></li>
 <li><p>Ajouter la possibilité de facets.</p></li>
-<li><p>Mal pensé : <code>pal_moustache</code> fonctionne comme
-<code>pal</code> et peut comprendre une couleur unie ou un vecteur de
-couleur. Mais logiquement, il n’est pas pertinent de représenter une
-moustache monochrome.</p></li>
+<li><p>La colonne <code>central</code> dans l’objet <code>dens</code>
+produit n’a pas de valeur <code>y_ridges</code>.</p></li>
+<li><p>Un peu cleaner le script : il y a des étapes inutiles qui
+pourraient être simplifiées, notamment dans la création des valeurs
+centrales.</p></li>
 </ul>
 </div>
 <div class="section level4">

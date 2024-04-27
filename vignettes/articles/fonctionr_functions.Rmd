@@ -5,7 +5,10 @@ title: "Manuel d'utilisation"
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
 )
 ```
 
@@ -34,10 +37,7 @@ Dans la suite de cette partie, nous passons les fonctions en revue en indiquant 
 `distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
 
 ```{r}
-#| message: false
-#| warning: false
 library(fonctionr)
-library(knitr)
 library(patchwork)
 
 # Loading of data
@@ -59,8 +59,6 @@ Ci-dessous, la fonction `distrib_d()` décrit la distribution des différents st
 [^1]: Précisons que dans cet exemple, il n'y a pas de plan de sondage qui est mentionné. Seule la variable de pondération est introduite. Nous aborderons ce point ultérieurement.
 
 ```{r}
-#| message: false
-#| warning: false
 # Computation, taking sample design into account
 eusilc_dist_d <- distrib_d(
   data = eusilc,
@@ -75,24 +73,18 @@ eusilc_dist_d <- distrib_d(
 Nous affichons ensuite le graphique contenu dans la liste produite :
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_d$graph
 ```
 
 La liste contient également un dataframe `tab` qui reprend les chiffres sur base desquels le graphique est construit. Il comprend les colonnes suivantes : le nom de la modalité (`pl030_rec`), l'estimation de la proportion de la population appartenant à la modalité (`prop`), les bornes inférieure (`prop_low`) et supérieure (`prop_upp`) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95%, le nombre de personnes dans l'échantillon appartenant à la modalité (`n_sample`), l'estimation du nombre de personnes dans la population appartenant à la modalité (`n_weighted`), et les bornes inférieure (`n_weighted_low`) et supérieure (`n_weighted_upp`) de l'intervalle de confiance de cette estimation à un niveau de confiance de 95% :
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_d$tab
 ```
 
 La liste contient pour finir le résultat du test statistique dans l'objet `test.stat`. Dans ce cas, il s'agit du khi2 d'adéquation. Ce test est réalisé avec comme hypothèse nulle la répartition de la population selon le vecteur mentionné dans l'argument `probs = c(.2, .15, .1, .1, .25, .1, .1)`, c'est-à-dire 20% de travailleurs à temps plein, 15% de travailleurs à temps partiel, 10% de chômeurs, 10% d'étudiants, 25% de pensionnés, 10% de personnes en incapacité permanente de travail et 10% de personnes au foyer. Si aucun vecteur n'avait été mentionné dans `probs`, aucun test n'aurait été effectué. Si le vecteur n'a pas une somme de 1, il est ajusté pour avoir une telle somme. Notons que la p-valeur du test est mentionnée sur le graphique.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_d$test.stat
 ```
 
@@ -103,8 +95,6 @@ eusilc_dist_d$test.stat
 L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques (`pl030_rec`) selon la nationalité (`pb220a`).
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d <- distrib_group_d(eusilc,
   weights = rb050,
   group = pb220a,
@@ -115,20 +105,14 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$tab
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$test.stat
 ```
 
@@ -137,8 +121,6 @@ eusilc_dist_group_d$test.stat
 `prop_group()` calcule des proportions pour les différentes modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Pour indiquer la proportion à calculer, l'utilisateur peut indiquer soit une variable dichotomique, soit directement une expression (sans guillemet, à la manière du `tidyverse`) à partir de laquelle la proportion est calculée. L'exemple ci-dessous compare la proportion d'individus qui bénéficient d'une allocation de chômage (calculé avec l'expression `py090n > 0`) selon les différents statuts socio-économiques (`pl030_rec`).
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop <- prop_group(eusilc,
   group = pl030_rec,
   prop_exp = py090n > 0,
@@ -149,8 +131,6 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop$graph
 ```
 
@@ -161,14 +141,10 @@ Le graphique et le tableau contiennent une modalité `Total` qui reprend l'estim
 Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (les variables dichotomique *proportion vraie-fausse* et de groupe) soient statistiquement indépendantes .
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop$tab
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop$test.stat
 ```
 
@@ -187,8 +163,6 @@ Pour `mean_group()`, le test statistique effectué est un test de Wald[^3]. Ce t
 [^3]: Voir : <https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r>
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean <- mean_group(eusilc,
   group = pl030_rec,
   quanti_exp = eqIncome / 12,
@@ -199,20 +173,14 @@ eusilc_mean <- mean_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean$tab
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean$test.stat
 ```
 
@@ -231,8 +199,6 @@ Les variables pour lesquelles on veut réaliser ce calcul sont indiquées sans g
 L'exemple ci-dessous compare les revenus mensuels moyens de l'emploi salarié, d'une activité d'indépendant et d'une allocation de chômage dans la totalité de la population.
 
 ```{r}
-#| message: false
-#| warning: false
 # Computation, taking sample design into account
 eusilc_many_mean <- many_mean(eusilc,
   list_vars = c(py010n, py050n, py090n),
@@ -245,14 +211,10 @@ eusilc_many_mean <- many_mean(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_many_mean$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_many_mean$tab
 ```
 
@@ -269,8 +231,6 @@ eusilc_many_mean$tab
 L'exemple ci-dessous compare les revenus mensuels moyens de l'emploi salarié, d'une activité d'indépendant et d'une allocation de chômage des femmes et des hommes.
 
 ```{r}
-#| message: false
-#| warning: false
 # Computation, taking sample design into account
 eusilc_many_mean_group <- many_mean_group(eusilc,
   group = rb090,
@@ -284,14 +244,10 @@ eusilc_many_mean_group <- many_mean_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_many_mean_group$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_many_mean_group$tab
 ```
 
@@ -302,32 +258,22 @@ eusilc_many_mean_group$tab
 L'exemple ci-dessous décrit la distribution de l'âge.
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age <- distrib_c(eusilc, age)
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 head(distrib_age$dens)
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age$tab
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age$quant
 ```
 
@@ -338,8 +284,6 @@ distrib_age$quant
 L'exemple ci-dessous compare la distribution des revenus équivalents selon le statut socio-économique. Comme pour `central_group()`, il est possible d'utiliser une expression quantitative au lieu d'une variable. Ici, c'est le revenu équivalent annuel divisé par 12 qui est retenu pour qu'il soit exprimé en montant mensuel.
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_income <- distrib_group_c(eusilc,
   pl030_rec,
   eqIncome / 12,
@@ -349,44 +293,24 @@ distrib_income <- distrib_group_c(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_income$graph
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 head(distrib_income$dens)
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_income$tab
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 head(distrib_income$quant)
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 head(distrib_income$moustache)
 ```
-
-## `theme_fonctionr()`
-
-`theme_fonctionr()` est une fonction qui permet d'appliquer le thème de `fonctionr` à un objet de `ggplot2`. Cette fonction a un intérêt si l'on veut par exemple, uniformiser l'esthétique de tous les graphiques pour une publication. <!--# J'enlèverais cette partie -->
-
-## `esth_graph()`
-
-`esth_graph()` est une fonction qui permet aisément de construire une graphique similaire à ceux produit par les autres fonction mais directement à partir d'une tableau de résultats calculé précédemment. Cette fonction a un intérêt si l'on veut appliquer l'esthétique graphique de `fonctionr` mais à des indicateurs qui ne sont pas calculés par une autre fonction de `fonctionr`. Par rapport à `theme_fonctionr()`, `esth_graph()` permet aisément d'intégrer plusieurs éléments que l'on retrouve dans d'autres graphiques produits par `fonctionr` : valeurs de l'indicateur, bornes d'intervalle de confiance, nombres d'individus dans l'échantillon. La logique d'`esth_graph()` est aussi différente de celle de `theme_fonctionr()` : la première fonction produit un graphique à partir d'une table, alors que la seconde applique un thème à un graphique existant.<!--# J'enlèverais cette partie -->
-
-## `pivot_longer_survey()`<!--# J'enlèverais cette partie -->
 
 # Tableau récapitulatif des arguments
 
@@ -400,13 +324,9 @@ Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent.
 
 Il est également possible que `data` soit un dataframe. Dans ce cas, si aucune autre précision n'est apportée, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, `fonctionr` peut être utilisé pour l'analyse des sondages complexes mais aussi des sondages aléatoires simple. Mais `fonctionr` peut créer un objet de sondage complexe à partir d'un dataframe. Les arguments définissant le design de l'enquête (poids, strates, etc.) doivent alors être indiqués dans l'argument `…` (dot-dot-dot). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des *replicate weights*. Si l'ont veut intégrer des *replicates weights*, il est nécessaire de créer d'abord un objet `survey` ou `srvyr` et d'utiliser cet objet dans `fonctionr`.
 
-Pour la fonction `esth_graph()`, il n'y a pas d'argument `data`, mais un argument `tab` qui doit correspondre à la table avec les indicateurs (il s'appelle `tab` car il est similaire à l'objet `tab` produit par la plupart des fonctions de `fonctionr`).<!--# J'enlèverais cette partie -->
-
-Les exemples ci-dessous montrent trois manière différentes de prendre en compte un même plan de sondage : en l'indiquant directement dans la fonction de `fonctionr`, en créant d'abord un objet `survey` et en créant d'abord un objet `srvyr`.<!--# Simplifier l'affichage avec patchwork -->
+Les exemples ci-dessous montrent trois manière différentes de prendre en compte un même plan de sondage : en l'indiquant directement dans la fonction de `fonctionr`, en créant d'abord un objet `survey` et en créant d'abord un objet `srvyr`.
 
 ```{r}
-#| message: false
-#| warning: false
 library(survey)
 library(srvyr)
 
@@ -422,30 +342,26 @@ eusilc_prop_1 <- prop_group(eusilc,
 
 # Un exemple où utilise un objet survey
 eusilc_survey <- svydesign(id = ~db030, strat = ~db040, weight = ~rb050, data = eusilc)
-
 eusilc_prop_2 <- prop_group(eusilc_survey,
   group = pl030_rec,
   prop_exp = py090n > 0,
-  title = "survey object"
+  title = "survey object",
+  ylab = "",
+  wrap_width_y = 15
 )
 
 # Un exemple où utilise un objet srvyr
-eusilc_srvyr <- as_survey_design(eusilc,
-  ids = db030,
-  strata = db040,
-  weights = rb050
-)
-
+eusilc_srvyr <- as_survey_design(eusilc, ids = db030, strata = db040, weights = rb050)
 eusilc_prop_3 <- prop_group(eusilc_srvyr,
   group = pl030_rec,
   prop_exp = py090n > 0,
-  title = "srvyr object"
+  title = "srvyr object",
+  ylab = "",
+  wrap_width_y = 15
 )
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop_1$graph | eusilc_prop_2$graph | eusilc_prop_3$graph
 ```
 
@@ -463,13 +379,9 @@ Juste après `list_vars`, il y a un argument esthétique de label des noms des v
 
 L'argument `type` est prédéfini pour les fonctions "alias" `mean_group()` et `median_group()` ; `many_prop()`, `many_mean()` et `many_median()` ; `many_prop_group()`, `many_mean_group()` et `many_median_group()` à partir des fonctions respectives `central_group()`, `many_val()` et `many_val_group()`. Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias". L'argument `type` est aussi utilisé pour `distrib_continuous()` et `distrib_group_continuous()` pour indiquer quel type de valeur centrale doit être calculée et indiquée sur le graphique, "mean" pour la moyenne et "median" pour la médiane. Par défaut, c'est la médiane qui est calculée et indiquée.
 
-Pour `esth_graph()`, les arguments `var` et `value` sont obligatoires et ils indiquent respectivement les colonnes dans `tab` avec nom de l'indicateur et sa valeur.<!--# J'enlèverais cette partie -->
-
 Dans l'exemple ci-dessous, on calcule la proportion des répondant qui travaillent et dont le salaire net annuel était inférieur à 12000€. On peut ainsi introduire des expressions complexe dans les fonctions.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop_NA_excl <- prop_group(eusilc,
   group = rb090,
   prop_exp = (pl030 == "1" | pl030 == "2") & py010n < 12000,
@@ -480,8 +392,6 @@ eusilc_prop_NA_excl <- prop_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop_NA_excl$graph
 ```
 
@@ -499,7 +409,7 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
 
 -   `quantile` est un argument qui permet de choisir, sous forme d'un vecteur, les quantiles à calculer et à indiquer sur le graphique dans `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, ce sont des déciles qui sont calculés.
 
--   `moustache_probs` est un argument qui permet de déterminer les quantiles pour calculer et indiquer la "moustache" sur le graphique dans `distrib_group_continuous()`. La moustache est une représentations graphique qui reprend différentes proportions de la populations autour de la médiane. [Le vecteur doit reprendre d'abord les proportions les plus importantes et puis les proportions les plus limitées]{.underline} <!--# Ah ça je ne sais pas, je ne crois pas ? Sinon il faut faire en sorte que l'ordre ne soit pas important ! A VERIFIER ! -->. Les valeurs par défaut sont 0.95, 0.80 et 0.50 de manière à représenter pour chaque groupe 95%, 80% et 50% de la population autour de la médiane.
+-   `moustache_probs` est un argument qui permet de déterminer les quantiles pour calculer et indiquer la "moustache" sur le graphique dans `distrib_group_continuous()`. La moustache est une représentations graphique qui reprend différentes proportions de la populations autour de la médiane. Les valeurs par défaut sont 0.95, 0.80 et 0.50 de manière à représenter pour chaque groupe 95%, 80% et 50% de la population autour de la médiane.
 
 [^4]: Voir : <https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html>
 
@@ -512,8 +422,6 @@ Nous avons décidé de laisser des possibilités différentes selon les variable
 Dans l'exemple ci-dessous, on compare la distribution des statuts socio-professionnels entre régions, en y ajoutant une modalité `NA` pour le statut (il s'agit des personnes de moins de 16 ans qui ne sont pas interrogées), en filtrant les données pour ne conserver que les personnes de plus de 11 ans et introduisant la variable sexe comme facette. Comme nous le verrons, la couleur des `NA` est toujours grise et ne dépend pas de la palette de couleur, de manière à les identifier spécifiquement.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d <- distrib_group_d(eusilc,
   group = db040,
   quali_var = pl030_rec,
@@ -527,8 +435,6 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$graph
 ```
 
@@ -537,15 +443,12 @@ eusilc_dist_group_d$graph
 Les deux graphiques ci-dessous comparent la part de travailleurs selon le sexe en excluant ou en incluant les `NA`. Les taux du second graphique sont plus faible, car dans celui-ci les personnes n'ayant pas de statut socio-professionnel (ex. les enfants) sont comptabilisés dans le dénominateur.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop_NA_excl <- prop_group(eusilc,
   group = rb090,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
   na.prop = "rm",
-  title = "% workers according to sex NA excluded",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
+  title = "% workers (NA excluded)"
 )
 
 eusilc_prop_NA_incl <- prop_group(eusilc,
@@ -553,14 +456,11 @@ eusilc_prop_NA_incl <- prop_group(eusilc,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
   na.prop = "include",
-  title = "% workers according to sex, NA included",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
+  title = "% workers (NA included)"
 )
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop_NA_excl$graph | eusilc_prop_NA_incl$graph
 ```
 
@@ -577,8 +477,6 @@ Les arguments esthétiques sont des arguments qui affectent uniquement le graphi
 Dans l'exemple ci-dessous, les revenus moyens des statut socio-économique sont réordonnés. Comme il y a des facettes, c'est le médian de chaque catégorie qui est utilisée pour construire. Par exemple, la catégorie "Permanently disabled" se situe en troisième position, car sa valeur médiane (15199€) se entre entre le médian de la catégorie "Student" (15097€) et de la catégorie "Working part time" (16511€).
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean_reorder <- mean_group(eusilc,
   group = pl030_rec,
   quanti_exp = eqIncome,
@@ -592,8 +490,6 @@ eusilc_mean_reorder <- mean_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_mean_reorder$graph
 ```
 
@@ -602,8 +498,6 @@ eusilc_mean_reorder$graph
 Dans l'exemple ci-dessous, il est pertinent d'empiler les barres indiquant les différents revenus pour visualiser le revenu total. Cependant, dans ce cas, on peut plus indiquer les intervalles de confiance sur le graphique.
 
 ```{r}
-#| message: false
-#| warning: false
 #Exemple avec Stack 
 eusilc_many_mean_group_2 <- many_mean_group(eusilc,
   group = rb090,
@@ -617,8 +511,6 @@ eusilc_many_mean_group_2 <- many_mean_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_many_mean_group_2$graph
 ```
 
@@ -629,8 +521,6 @@ eusilc_many_mean_group_2$graph
 Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changé le nom du "Total".
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop <- prop_group(eusilc,
   group = db040,
   prop_exp = pl030 == "1" | pl030 == "2",
@@ -644,8 +534,6 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop$graph
 ```
 
@@ -659,48 +547,44 @@ Certains arguments sont spécifiques aux fonctions `distrib_continous()` et `dis
 
 -   D'autres arguments de type show sont spécifiques à ces deux fonctions. C'est le cas de `show_mid_line`, `show_ci_lines`, `show_ci_area`, `show_quant_lines` qui se retrouvent dans les deux fonctions de distribution continue et `show_mid_point`, `show_ci_errorbar` et `show_moustache` qui sont spécifiques à `distrib_group_continuous()`. Les arguments `show_mid_point` et `show_mid_line` permettent de montrer la valeur centrale, médiane ou moyenne, sous la forme d'un point ou d'une ligne. Les arguments `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur de lignes en pointillée ou d'une aire colorée. `show_quant_lines` permet de tracer des lignes pour les valeurs des quantiles sur le graphique. Enfin, `show_moustache` permet de montrer la boite à moustache. Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne et ses intervalles de confiance par des lignes pointillées et ne trace pas de ligne pour les quantiles. Par défaut, `distrib_group_continuous()` indique les valeurs centrales par des points et leurs intervalles de confiance par des barres d'erreurs, et ne dessine pas d'autres éléments que la moustache sur le graphique .
 
-Dans l'exemple ci-dessous nous comparons les revenus du travail des travailleuses et travailleurs à temps partiel en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales (mais pas toujours statistiquement significatives). `resolution` étant plus faible, on peut déceler les droites qui composent les deux courbes de fréquence. `limits` permet de se concentrer sur la plage de valeur (de -500€ à 3500€) qui contient la grande majorité des observations. Dans le graphique, on a indiqué la médiane sous la forme d'un point et d'une ligne. Ses intervalles de confiance sont aussi indiqués par une barre d'erreur (au niveau de l'axe des X), deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que que le revenu du travail mensuel est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
+Dans l'exemple ci-dessous, nous comparons les revenus du travail des travailleurs à temps partiel selon la région, en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales. `resolution` étant plus faible, on peut déceler les droites qui composent les deux courbes de fréquence. `limits` permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui contient la grande majorité des observations. `height` a été défini pour que les aires de densité se chevauchent. Pour que ce chevauchement soit esthétique, `alpha` a été réglé à `.3` pour des aires transparentes et une bordure a été ajoutée avec `color = black`. On a indiqué la médiane sous la forme d'une ligne. Ses intervalles de confiance sont indiqués par deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que le revenu du travail mensuel est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_income_2 <- distrib_group_c(eusilc,
-  rb090,
+  db040,
   (py010n + py050n) / 12,
   filter_exp = pl030 == 2,
-  bw = 1.3,
+  bw = .7,
   resolution = 100,
-  height = .8,
-  limits = c(-500, 3500),
-  show_mid_point = T,
+  height = 1.5,
+  limits = c(-500, 3000),
+  show_mid_point = F,
+  show_value = F,
   show_mid_line = T,
-  show_ci_errorbar = T,
+  show_ci_errorbar = F,
   show_ci_lines = T,
   show_ci_area = T,
   show_quant_lines = T,
-  show_moustache = F
+  show_moustache = F,
+  color = "black",
+  pal = "turquoise",
+  alpha = .4
 )
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_income_2$graph
 ```
-
--   Pour la fonction `esth_graph()`, les arguments sont un peu différents, à l'exception de `reorder` et `show_value`. `error_low`, `error_upp` et `n_var` permettent d'indiquer les colonnes dans `tab` où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur `NULL`, ce qui conduit à ne pas montrer ces éléments dans le graphique. `name_total` permet d'indiquer le nom du total dans `tab` de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.<!--# J'enlèverais cette partie -->
 
 ## L'esthétique graphique
 
 -   `dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
 
--   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`. `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()` et `esth_graph()`). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`. `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. Pour `many_val()` et ses alias, `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou `pal`. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques.
+-   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`. `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()`<!--# et esth_graph(), mais déplacé dans une autre page -->). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`. `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. Pour `many_val()` et ses alias, `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou `pal`. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chaque fonctions différente, y compris les alias, pour éviter la confusion des graphiques.
 
 Dans l'exemple ci-dessous, on utilise une autre palette de couleur et des barres plus fines.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d <- distrib_group_d(eusilc,
   group = db040,
   quali_var = pl030_rec,
@@ -713,8 +597,6 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$graph 
 ```
 
@@ -725,8 +607,6 @@ eusilc_dist_group_d$graph
 Dans l'exemple ci-dessous, on utilise trois couleurs pour construire la palette qui va colorier l'aire de la densité et on trace la courbe de densité en rouge.
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age_2 <- distrib_c(eusilc,
   age,
   color = "red",
@@ -737,8 +617,6 @@ distrib_age_2 <- distrib_c(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 distrib_age_2$graph
 ```
 
@@ -757,8 +635,6 @@ L'esthétique des chiffres concernent la manière dont l'estimation de l'indicat
 Dans l'exemple ci-dessous, on compare la proportion de travailleurs par région, mais en l'exprimant en pour mille et non en pour cent, en adaptant l'unité (`"‰"`), en conservant un chiffre après la virgule et en utilisant le point comme caractère pour la décimale et non la virgule.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop <- prop_group(eusilc,
   group = db040,
   prop_exp = pl030 == "1" | pl030 == "2",
@@ -773,8 +649,6 @@ eusilc_prop <- prop_group(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_prop$graph
 ```
 
@@ -789,8 +663,6 @@ eusilc_prop$graph
 Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende.
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d <- distrib_group_d(eusilc,
   group = db040,
   quali_var = pl030_rec,
@@ -805,8 +677,6 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$graph
 ```
 
@@ -825,8 +695,6 @@ Les arguments de label ne sont utilisés que si `show_lab = TRUE`. Si `show_lab 
 Dans l'exemple ci-dessous, on introduit manuellement pour les titres, sous-titres, caption et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées.
 
 ```{r}
-#| message: false
-#| warning: false
 # Exemple général avec un axe qu'on ne montre pas mais les autres qui sont montrés
 eusilc_dist_group_d <- distrib_group_d(eusilc,
   group = db040,
@@ -841,8 +709,6 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 ```
 
 ```{r}
-#| message: false
-#| warning: false
 eusilc_dist_group_d$graph
 ```
 

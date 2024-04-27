@@ -26,6 +26,8 @@ Date : 2024-04-26
 
 -   Le bug avec la ligne du geom_line qui est coupée pour `distrib_group_continuous()` est réglé.
 
+-   bug d'ordonnancement des facteurs réglé dans `esth_graph()`.
+
 ## fonctionr 0.2.13
 
 Date : 2024-04-20
@@ -136,6 +138,8 @@ Date : 2024-02-14
 
 #### En général
 
+-   Tableau à mettre dans la doc.
+
 -   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
 
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
@@ -148,8 +152,6 @@ Date : 2024-02-14
     *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
-
--   Bug avec le fichier YML pour `pkgdown`.
 
 -   Fichiers \*.R pas compatibles ASCII =\> tout écrire en anglais.
 
@@ -180,7 +182,9 @@ Date : 2024-02-14
 
 -   Ajouter la possibilité de facets.
 
--   Mal pensé : `pal_moustache` fonctionne comme `pal` et peut comprendre une couleur unie ou un vecteur de couleur. Mais logiquement, il n'est pas pertinent de représenter une moustache monochrome.
+-   La colonne `central` dans l'objet `dens` produit n'a pas de valeur `y_ridges`.
+
+-   Un peu cleaner le script : il y a des étapes inutiles qui pourraient être simplifiées, notamment dans la création des valeurs centrales.
 
 #### central_group
 

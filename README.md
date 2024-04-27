@@ -29,8 +29,8 @@ publication. Vous trouverez sur cette page une rapide introduction à
 
 <div style="border:0px; background-color:#E1F1FA; padding: 10px; margin-bottom: 10px">
 
-Pour comprendre plus en profondeur notre package et ses différentes
-possibilités, nous renvoyons l’utilisateur au [Manuel
+**Documentation :** Pour comprendre plus en profondeur notre package et
+ses différentes possibilités, nous renvoyons l’utilisateur au [Manuel
 d’utilisation](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
 qui constitue un manuel décrivant dans le détail les différentes
 fonctions de `fonctionr`.
@@ -39,7 +39,7 @@ fonctions de `fonctionr`.
 
 <div style="border:0px; background-color:#f8f5e4; padding: 10px; margin-bottom: 10px">
 
-**Note de développement:** Cette version de `fonctionr` est encore une
+*Note de développement :* Cette version de `fonctionr` est encore une
 version de développement. Elle est néanmoins pleinement fonctionnelle et
 a passé l’épreuve de nombreux tests, au cours desquels des solutions ont
 été apportées aux problèmes posés par des structures de données

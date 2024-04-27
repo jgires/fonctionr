@@ -1,4 +1,4 @@
-url: ~
+url: https://jgires.github.io/fonctionr
 template:
   bootstrap: 5
   bootswatch: minty
@@ -9,9 +9,24 @@ navbar:
     href: reference/index.html
   - text: Manuel
     href: articles/fonctionr_functions.html
+  - text: Articles
+    menu:
+    - text: Fonctions esthétiques
+      href: articles/esthetic_functions.html
   - text: Changelog
     href: articles/changelog.html
   right:
     - icon: fa-github fa-lg
       text: "github"
       href: https://github.com/jgires/fonctionr
+
+figures:
+  dev: ragg::agg_png
+  dpi: 48
+  dev.args: []
+  fig.ext: png
+  fig.width: 8
+  fig.height: 5
+  fig.retina: 2
+  bg: NA
+  other.parameters: []

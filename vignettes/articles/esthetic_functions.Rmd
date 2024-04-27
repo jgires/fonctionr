@@ -1,0 +1,86 @@
+---
+title: "Fonctions esthétiques"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
+)
+```
+
+`fonctionr` dispose de quelques fonctions purement graphiques. Leur objectif est soit d'uniformiser les graphiques pour une publication, soit de produire des graphiques originaux à partir de résultats déjà calculés. Ces fonctions ne sont pas très élaborées mais peuvent s'avérer utiles. Nous les décrivons sur cette page.
+
+```{r}
+library(fonctionr)
+library(patchwork)
+library(ggplot2)
+library(dplyr)
+library(srvyr)
+```
+
+## `theme_fonctionr()` & `load_and_active_fonts()`
+
+`theme_fonctionr()` est une fonction qui permet d'appliquer le thème de `fonctionr` à un objet de `ggplot2`. Il s'agit en réalité d'un simple thème pour `ggplot2`. Cette fonction a un intérêt si l'on veut uniformiser l'esthétique de tous les graphiques pour une publication. Elle nécessite d'indiquer la police à utiliser dans l'argument `font`. La fonction `load_and_active_fonts()` est complémentaire, puisqu'elle permet de charger facilement des polices de caractères et de les rendre disponibles pour `ggplot2`. Actuellement trois polices sont directement incluses dans `fonctionr` : `"Roboto"`, `"Montserrat"` et `"Gotham Narrow"`.
+
+```{r}
+# Loading of data
+data(eusilc, package = "laeken")
+
+tab1 <- eusilc |>
+  as_survey_design(ids = db030, strata = db040, weights = rb050) |>
+  group_by(pb220a) |>
+  summarise(
+    prop = survey_mean(eqIncome > 10000, proportion = T, vartype = "ci", na.rm = T)
+  )
+
+ggtab1 <- tab1 %>%
+  ggplot(aes(x = pb220a, y = prop)) +
+  geom_col() +
+  labs(title = "I'm a graphic") +
+  coord_flip()
+
+fonctionr::load_and_active_fonts()
+
+ggtab2 <- ggtab1 +
+  theme_fonctionr(font = "Montserrat")
+
+ggtab1 | ggtab2
+```
+
+## `esth_graph()`
+
+`esth_graph()` est une fonction qui permet de construire facilement une graphique similaire à ceux produit par les autres fonction mais directement à partir d'une tableau de résultats calculé précédemment. Cette fonction a un intérêt si l'on veut appliquer l'esthétique graphique de `fonctionr` mais à des indicateurs qui ne sont pas calculés par une autre fonction de `fonctionr`. Par rapport à `theme_fonctionr()`, `esth_graph()` permet aisément d'intégrer plusieurs éléments que l'on retrouve dans d'autres graphiques produits par `fonctionr` : valeurs de l'indicateur, bornes d'intervalle de confiance, nombres d'individus dans l'échantillon. La logique d'`esth_graph()` est aussi différente de celle de `theme_fonctionr()` : la première fonction produit un graphique à partir d'une table, alors que la seconde applique un thème à un graphique existant.
+
+En comparaison des autres fonctions `esth_graph()` n'a pas d'argument `data`, mais un argument `tab` qui doit correspondre à la table avec les indicateurs (il s'appelle `tab` car il est similaire à l'objet `tab` produit par la plupart des fonctions de `fonctionr`). Les arguments `var` et `value` sont obligatoires et ils indiquent respectivement les colonnes dans `tab` avec nom de l'indicateur et sa valeur. `reorder` et `show_value`. `error_low`, `error_upp` et `n_var` permettent d'indiquer les colonnes dans `tab` où se trouvent les bornes inférieures et supérieures des barres d'erreurs et le nombre de personnes dans l'échantillon. Par défaut, ces arguments ont une valeur `NULL`, ce qui conduit à ne pas montrer ces éléments dans le graphique. `name_total` permet d'indiquer le nom du total dans `tab` de manière à ce que cette valeur soit mise en évidence (couleur et position) dans le graphique.
+
+```{r}
+tab2 <- eusilc |>
+  as_survey_design(ids = db030, strata = db040, weights = rb050) |>
+  group_by(db040) |>
+  cascade(
+    mean = survey_mean(eqIncome, vartype = "ci"),
+    n = unweighted(n()),
+    .fill = "Total"
+  )
+
+esth_graph(tab2,
+  value = mean,
+  var = db040,
+  error_low = mean_low,
+  error_upp = mean_upp,
+  n_var = n,
+  name_total = "Total",
+  fill = "magenta",
+  reorder = T,
+  digits = 1,
+  unit = "€"
+)
+```
+
+## `make_surface()`
+
+A ECRIRE

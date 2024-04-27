@@ -7,6 +7,7 @@ Authors@R:
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
 Description: Package pour faire des analyses faciles sur base de données d'enquête avec design complexe.
 License: GPL-3
+URL: https://jgires.github.io/fonctionr, https://github.com/jgires/fonctionr
 Encoding: UTF-8
 LazyData: true
 Remotes:

@@ -41,6 +41,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../articles/fonctionr_functions.html">Manuel</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/esthetic_functions.html">Fonctions esthétiques</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../articles/changelog.html">Changelog</a>
 </li>
@@ -72,7 +78,7 @@
       <img src="" class="logo" alt=""><h1>Manuel d'utilisation</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/jgires/fonctionr/blob/HEAD/vignettes/articles/fonctionr_functions.Rmd" class="external-link"><code>vignettes/articles/fonctionr_functions.Rmd</code></a></small>
       <div class="d-none name"><code>fonctionr_functions.Rmd</code></div>
     </div>
 
@@ -142,8 +148,7 @@ d’abord les données et recodons le statut socio-économiques
 (<code>pl030</code>) pour lui donner des labels intelligibles, utilisés
 dans la suite des exemples :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fonctionr</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jgires.github.io/fonctionr">fonctionr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Loading of data</span></span>
@@ -179,7 +184,7 @@ variables sont indiquées sans guillemets, à la manière de la syntaxe du
 :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-4-1.png" width="100%"></p>
 <p>La liste contient également un dataframe <code>tab</code> qui reprend
 les chiffres sur base desquels le graphique est construit. Il comprend
 les colonnes suivantes : le nom de la modalité (<code>pl030_rec</code>),
@@ -253,11 +258,10 @@ nationalité (<code>pb220a</code>).</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   pb220a [3]</span></span></span>
 <span><span class="co">#&gt;    pb220a pl030_rec    prop prop_low prop_upp n_sample n_weighted n_weighted_low</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT     Fulfillin… 0.089<span style="text-decoration: underline;">0</span>  0.083<span style="text-decoration: underline;">8</span>    0.094<span style="text-decoration: underline;">4</span>     <span style="text-decoration: underline;">1</span>036    <span style="text-decoration: underline;">548</span>489.        <span style="text-decoration: underline;">516</span>023.</span></span>
@@ -304,7 +308,7 @@ socio-économiques (<code>pl030_rec</code>).</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" width="100%"></p>
 <p>Le graphique et le tableau contiennent une modalité
 <code>Total</code> qui reprend l’estimation de la proportion pour
 l’ensemble de la population de référence. Dans le dataframe
@@ -391,7 +395,7 @@ statistique effectué est celui de Kruskal Wallis.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-16-1.png" width="100%"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 8</span></span></span>
@@ -455,7 +459,7 @@ dans la totalité de la population.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-20-1.png" width="100%"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
@@ -502,7 +506,7 @@ femmes et des hommes.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-23-1.png" width="100%"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
@@ -533,7 +537,7 @@ Dans cette fonction, il n’y a pas de test statistique calculé
 <code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-26-1.png" width="100%"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           x            y quantFct central</span></span>
@@ -596,7 +600,7 @@ mensuel.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-31-1.png" width="100%"></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               group         x            y quantFct     y_ridges central</span></span>
@@ -639,41 +643,6 @@ mensuel.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Working full time 0.95             734. <span style="text-decoration: underline;">4</span>019.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Working full time 0.8             <span style="text-decoration: underline;">1</span>008. <span style="text-decoration: underline;">2</span>909.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Working full time 0.5             <span style="text-decoration: underline;">1</span>315. <span style="text-decoration: underline;">2</span>241.</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="theme_fonctionr">
-<code>theme_fonctionr()</code><a class="anchor" aria-label="anchor" href="#theme_fonctionr"></a>
-</h3>
-<p><code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> est une fonction qui permet
-d’appliquer le thème de <code>fonctionr</code> à un objet de
-<code>ggplot2</code>. Cette fonction a un intérêt si l’on veut par
-exemple, uniformiser l’esthétique de tous les graphiques pour une
-publication. <!--# J'enlèverais cette partie --></p>
-</div>
-<div class="section level3">
-<h3 id="esth_graph">
-<code>esth_graph()</code><a class="anchor" aria-label="anchor" href="#esth_graph"></a>
-</h3>
-<p><code><a href="../reference/esth_graph.html">esth_graph()</a></code> est une fonction qui permet aisément de
-construire une graphique similaire à ceux produit par les autres
-fonction mais directement à partir d’une tableau de résultats calculé
-précédemment. Cette fonction a un intérêt si l’on veut appliquer
-l’esthétique graphique de <code>fonctionr</code> mais à des indicateurs
-qui ne sont pas calculés par une autre fonction de
-<code>fonctionr</code>. Par rapport à <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code>,
-<code><a href="../reference/esth_graph.html">esth_graph()</a></code> permet aisément d’intégrer plusieurs éléments
-que l’on retrouve dans d’autres graphiques produits par
-<code>fonctionr</code> : valeurs de l’indicateur, bornes d’intervalle de
-confiance, nombres d’individus dans l’échantillon. La logique
-d’<code><a href="../reference/esth_graph.html">esth_graph()</a></code> est aussi différente de celle de
-<code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> : la première fonction produit un
-graphique à partir d’une table, alors que la seconde applique un thème à
-un graphique existant.<!--# J'enlèverais cette partie --></p>
-</div>
-<div class="section level3">
-<h3 id="pivot_longer_survey">
-<code>pivot_longer_survey()</code><!--# J'enlèverais cette partie --><a class="anchor" aria-label="anchor" href="#pivot_longer_survey"></a>
-</h3>
 </div>
 </div>
 <div class="section level2">
@@ -720,17 +689,11 @@ intégrant des <em>replicate weights</em>. Si l’ont veut intégrer des
 <em>replicates weights</em>, il est nécessaire de créer d’abord un objet
 <code>survey</code> ou <code>srvyr</code> et d’utiliser cet objet dans
 <code>fonctionr</code>.</p>
-<p>Pour la fonction <code><a href="../reference/esth_graph.html">esth_graph()</a></code>, il n’y a pas d’argument
-<code>data</code>, mais un argument <code>tab</code> qui doit
-correspondre à la table avec les indicateurs (il s’appelle
-<code>tab</code> car il est similaire à l’objet <code>tab</code> produit
-par la plupart des fonctions de
-<code>fonctionr</code>).<!--# J'enlèverais cette partie --></p>
 <p>Les exemples ci-dessous montrent trois manière différentes de prendre
 en compte un même plan de sondage : en l’indiquant directement dans la
 fonction de <code>fonctionr</code>, en créant d’abord un objet
 <code>survey</code> et en créant d’abord un objet
-<code>srvyr</code>.<!--# Simplifier l'affichage avec patchwork --></p>
+<code>srvyr</code>.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://r-survey.r-forge.r-project.org/survey/" class="external-link">survey</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://gdfe.co/srvyr/" class="external-link">srvyr</a></span><span class="op">)</span></span>
@@ -747,28 +710,26 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <span></span>
 <span><span class="co"># Un exemple où utilise un objet survey</span></span>
 <span><span class="va">eusilc_survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survey/man/svydesign.html" class="external-link">svydesign</a></span><span class="op">(</span>id <span class="op">=</span> <span class="op">~</span><span class="va">db030</span>, strat <span class="op">=</span> <span class="op">~</span><span class="va">db040</span>, weight <span class="op">=</span> <span class="op">~</span><span class="va">rb050</span>, data <span class="op">=</span> <span class="va">eusilc</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">eusilc_prop_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc_survey</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"survey object"</span></span>
+<span>  title <span class="op">=</span> <span class="st">"survey object"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  wrap_width_y <span class="op">=</span> <span class="fl">15</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Un exemple où utilise un objet srvyr</span></span>
-<span><span class="va">eusilc_srvyr</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey_design.html" class="external-link">as_survey_design</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
-<span>  ids <span class="op">=</span> <span class="va">db030</span>,</span>
-<span>  strata <span class="op">=</span> <span class="va">db040</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">rb050</span></span>
-<span><span class="op">)</span></span>
-<span></span>
+<span><span class="va">eusilc_srvyr</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey_design.html" class="external-link">as_survey_design</a></span><span class="op">(</span><span class="va">eusilc</span>, ids <span class="op">=</span> <span class="va">db030</span>, strata <span class="op">=</span> <span class="va">db040</span>, weights <span class="op">=</span> <span class="va">rb050</span><span class="op">)</span></span>
 <span><span class="va">eusilc_prop_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc_srvyr</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"srvyr object"</span></span>
+<span>  title <span class="op">=</span> <span class="st">"srvyr object"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  wrap_width_y <span class="op">=</span> <span class="fl">15</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_2</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_3</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-37-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-37-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
@@ -829,10 +790,6 @@ L’argument <code>type</code> est aussi utilisé pour
 valeur centrale doit être calculée et indiquée sur le graphique, “mean”
 pour la moyenne et “median” pour la médiane. Par défaut, c’est la
 médiane qui est calculée et indiquée.</p>
-<p>Pour <code><a href="../reference/esth_graph.html">esth_graph()</a></code>, les arguments <code>var</code> et
-<code>value</code> sont obligatoires et ils indiquent respectivement les
-colonnes dans <code>tab</code> avec nom de l’indicateur et sa
-valeur.<!--# J'enlèverais cette partie --></p>
 <p>Dans l’exemple ci-dessous, on calcule la proportion des répondant qui
 travaillent et dont le salaire net annuel était inférieur à 12000€. On
 peut ainsi introduire des expressions complexe dans les fonctions.</p>
@@ -846,7 +803,7 @@ peut ainsi introduire des expressions complexe dans les fonctions.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
@@ -894,13 +851,9 @@ qui sont calculés.</p></li>
 déterminer les quantiles pour calculer et indiquer la “moustache” sur le
 graphique dans <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. La moustache est
 une représentations graphique qui reprend différentes proportions de la
-populations autour de la médiane. <u>Le vecteur doit reprendre d’abord
-les proportions les plus importantes et puis les proportions les plus
-limitées</u>
-<!--# Ah ça je ne sais pas, je ne crois pas ? Sinon il faut faire en sorte que l'ordre ne soit pas important ! A VERIFIER ! -->.
-Les valeurs par défaut sont 0.95, 0.80 et 0.50 de manière à représenter
-pour chaque groupe 95%, 80% et 50% de la population autour de la
-médiane.</p></li>
+populations autour de la médiane. Les valeurs par défaut sont 0.95, 0.80
+et 0.50 de manière à représenter pour chaque groupe 95%, 80% et 50% de
+la population autour de la médiane.</p></li>
 </ul>
 <div class="section level3">
 <h3 id="le-traitement-des-na">Le traitement des <code>NA</code><a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
@@ -944,7 +897,7 @@ couleur, de manière à les identifier spécifiquement.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.prop</code> indique la manière dont les éventuels
@@ -987,8 +940,7 @@ comptabilisés dans le dénominateur.</p>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  na.prop <span class="op">=</span> <span class="st">"rm"</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"% workers according to sex NA excluded"</span>,</span>
-<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span>  title <span class="op">=</span> <span class="st">"% workers (NA excluded)"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">eusilc_prop_NA_incl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
@@ -996,12 +948,11 @@ comptabilisés dans le dénominateur.</p>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  na.prop <span class="op">=</span> <span class="st">"include"</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"% workers according to sex, NA included"</span>,</span>
-<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span>  title <span class="op">=</span> <span class="st">"% workers (NA included)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_NA_incl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.vars</code> indique la manière dont les <code>NA</code>
@@ -1077,7 +1028,7 @@ catégorie “Student” (15097€) et de la catégorie “Working part time”
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" width="100%"></p>
 <ul>
 <li>
 <code>position</code> est un argument qui ne se trouve uniquement
@@ -1107,7 +1058,7 @@ confiance sur le graphique.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" width="100%"></p>
 <ul>
 <li><p><code>show_ci</code>, <code>show_n</code>,
 <code>show_value</code> et <code>show_lab</code> sont des argument
@@ -1163,7 +1114,7 @@ changé le nom du “Total”.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" width="100%"></p>
 <p>Certains arguments sont spécifiques aux fonctions
 <code>distrib_continous()</code> et
 <code>distrib_group_continous()</code> :</p>
@@ -1217,56 +1168,48 @@ par des points et leurs intervalles de confiance par des barres
 d’erreurs, et ne dessine pas d’autres éléments que la moustache sur le
 graphique .</p></li>
 </ul>
-<p>Dans l’exemple ci-dessous nous comparons les revenus du travail des
-travailleuses et travailleurs à temps partiel en modifiant de nombreuses
+<p>Dans l’exemple ci-dessous, nous comparons les revenus du travail des
+travailleurs à temps partiel selon la région, en modifiant de nombreuses
 options graphiques. <code>bw</code> étant plus faible, la distribution
 est moins lissée et on peut y observer des variations de densités plus
-locales (mais pas toujours statistiquement significatives).
-<code>resolution</code> étant plus faible, on peut déceler les droites
-qui composent les deux courbes de fréquence. <code>limits</code> permet
-de se concentrer sur la plage de valeur (de -500€ à 3500€) qui contient
-la grande majorité des observations. Dans le graphique, on a indiqué la
-médiane sous la forme d’un point et d’une ligne. Ses intervalles de
-confiance sont aussi indiqués par une barre d’erreur (au niveau de l’axe
-des X), deux lignes en pointillées et une aire colorées. Les déciles
-sont indiqués par des lignes verticales grises et on a masqué la
-moustache. Notez que que le revenu du travail mensuel est directement
-calculé dans l’expression en additionnant le salaire avec le revenu
-d’une activité indépendante avant de diviser le tout par 12.</p>
+locales. <code>resolution</code> étant plus faible, on peut déceler les
+droites qui composent les deux courbes de fréquence. <code>limits</code>
+permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui
+contient la grande majorité des observations. <code>height</code> a été
+défini pour que les aires de densité se chevauchent. Pour que ce
+chevauchement soit esthétique, <code>alpha</code> a été réglé à
+<code>.3</code> pour des aires transparentes et une bordure a été
+ajoutée avec <code>color = black</code>. On a indiqué la médiane sous la
+forme d’une ligne. Ses intervalles de confiance sont indiqués par deux
+lignes en pointillées et une aire colorées. Les déciles sont indiqués
+par des lignes verticales grises et on a masqué la moustache. Notez que
+le revenu du travail mensuel est directement calculé dans l’expression
+en additionnant le salaire avec le revenu d’une activité indépendante
+avant de diviser le tout par 12.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
-<span>  <span class="va">rb090</span>,</span>
+<span>  <span class="va">db040</span>,</span>
 <span>  <span class="op">(</span><span class="va">py010n</span> <span class="op">+</span> <span class="va">py050n</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="fl">2</span>,</span>
-<span>  bw <span class="op">=</span> <span class="fl">1.3</span>,</span>
+<span>  bw <span class="op">=</span> <span class="fl">.7</span>,</span>
 <span>  resolution <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  height <span class="op">=</span> <span class="fl">.8</span>,</span>
-<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">500</span>, <span class="fl">3500</span><span class="op">)</span>,</span>
-<span>  show_mid_point <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">500</span>, <span class="fl">3000</span><span class="op">)</span>,</span>
+<span>  show_mid_point <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  show_value <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  show_mid_line <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  show_ci_errorbar <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  show_ci_errorbar <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  show_ci_lines <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_ci_area <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_quant_lines <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  show_moustache <span class="op">=</span> <span class="cn">F</span></span>
+<span>  show_moustache <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  pal <span class="op">=</span> <span class="st">"turquoise"</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">.4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" width="700"></p>
-<ul>
-<li>Pour la fonction <code><a href="../reference/esth_graph.html">esth_graph()</a></code>, les arguments sont un
-peu différents, à l’exception de <code>reorder</code> et
-<code>show_value</code>. <code>error_low</code>, <code>error_upp</code>
-et <code>n_var</code> permettent d’indiquer les colonnes dans
-<code>tab</code> où se trouvent les bornes inférieures et supérieures
-des barres d’erreurs et le nombre de personnes dans l’échantillon. Par
-défaut, ces arguments ont une valeur <code>NULL</code>, ce qui conduit à
-ne pas montrer ces éléments dans le graphique. <code>name_total</code>
-permet d’indiquer le nom du total dans <code>tab</code> de manière à ce
-que cette valeur soit mise en évidence (couleur et position) dans le
-graphique.<!--# J'enlèverais cette partie -->
-</li>
-</ul>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
@@ -1280,8 +1223,8 @@ elles). La valeur par défaut est de <code>0.9</code>.</p></li>
 <code>fill</code> et <code>pal</code>. <code>fill</code> est utilisé
 pour les graphiques monochrome (<code><a href="../reference/prop_group.html">prop_group()</a></code>,
 <code><a href="../reference/central_group.html">central_group()</a></code> et ses alias,
-<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> et <code><a href="../reference/esth_graph.html">esth_graph()</a></code>). Les
-couleurs de base de R ou un code couleur hexadécimal peuvent être
+<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code><!--# et esth_graph(), mais déplacé dans une autre page -->).
+Les couleurs de base de R ou un code couleur hexadécimal peuvent être
 indiqués dans <code>fill</code>. <code>pal</code> est utilisé pour les
 graphiques avec plusieurs couleurs. pal doit reprendre le nom d’une
 palette des packages <code>MetBrewer</code>, <code>MoMAColors</code> ou
@@ -1312,7 +1255,7 @@ des barres plus fines.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span> </span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" width="100%"></p>
 <ul>
 <li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, <code>pal</code> peut soit
@@ -1366,7 +1309,7 @@ densité en rouge.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
@@ -1419,7 +1362,7 @@ la virgule.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
@@ -1439,7 +1382,7 @@ caractères. <code>wrap_width_leg</code> n’est présent que pour les
 graphiques ayant une légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias. Précisons aussi que le _y
 renvoie à l’axe des y tel qu’il est situé sur le graphique, après la
-transformation <code>coord_flip()</code> qui a lieu dans les fonctions.
+transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
 Ainsi, il s’agit souvent des groupes, de la variable qualitative pour
 <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des variables pour
 <code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>) et leurs
@@ -1469,7 +1412,7 @@ colonnes pour la légende.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
@@ -1486,7 +1429,7 @@ titre de la légende et de <em>caption</em> (la petite légende en bas à
 droite du graphique). Précisons que <code>xlab</code> et
 <code>ylab</code> font référence aux axes tels qu’ils sont situés sur le
 graphique, c’est-à-dire après la transformation
-<code>coord_flip()</code> qui a lieu dans les fonctions.
+<code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
 <code>legend_lab</code> n’est présent que pour les graphiques ayant une
 légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias. Le <em>caption</em> étant
@@ -1544,7 +1487,7 @@ pour l’axe des ordonnées.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" width="700"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" width="100%"></p>
 </div>
 </div>
 <div class="section level2">

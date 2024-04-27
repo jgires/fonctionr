@@ -362,6 +362,7 @@ distrib_group_continuous <- function(data,
       ungroup()
   }
 
+  # On calcul un nouvel ordre dans order si on veut réordonner les groupes selon la valeur calculée
   if (reorder == T) {
     tab_order <- tab %>%
       arrange(desc(indice)) %>%
@@ -520,12 +521,14 @@ distrib_group_continuous <- function(data,
 
   }
 
-  # On calcule y_ridges, pour ploter chaque densité de groupe à un y différent sur des multiples de 1 (0, 1, 2, 3, ..., n)
+  # Si reorder = T, on définit un nouveau level à partir de order (calculé plus haut)
   if (reorder == T) {
     df_dens <- df_dens %>%
       left_join(tab_order, by = "group") %>%
       mutate(level = order)
   }
+
+  # On calcule y_ridges, pour ploter chaque densité de groupe à un y différent sur des multiples de 1 (0, 1, 2, 3, ..., n)
   df_dens <- df_dens %>%
     # group_by(group) %>%
     mutate(y_ridges = (y / max(y)) * height) %>%
@@ -757,7 +760,7 @@ distrib_group_continuous <- function(data,
           group = group
         ),
         fill = "darkorange",
-        alpha = .3
+        alpha = .3 * alpha
       )
   }
 

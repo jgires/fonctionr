@@ -2,7 +2,11 @@ pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  esthetic_functions: esthetic_functions.html
   fonctionr_functions: fonctionr_functions.html
   changelog: changelog.html
-last_built: 2024-04-26T19:35Z
+last_built: 2024-04-27T14:14Z
+urls:
+  reference: https://jgires.github.io/fonctionr/reference
+  article: https://jgires.github.io/fonctionr/articles
 

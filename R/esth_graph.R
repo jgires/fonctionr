@@ -219,6 +219,12 @@ esth_graph <- function(tab,
     levels <- levels[!is.na(levels)]
   }
 
+  # On définit l'ordre du facteur dans tab, pour que les couleurs soient associées aux bonnes modalités
+  tab <- tab %>%
+    mutate(
+      "{{ var }}" := factor({{ var }}, levels = rev(levels)) # rev car ggplot ordonne dans le sens inverse (à cause du coord_flip() sans doute)
+    )
+
   # Par cohérence avec autres fonctions => si xlab/ylab == "", alors NULL (pour le faire disparaître sur le ggplot)
   if(all(!is.null(xlab), xlab == "")){
     xlab <- NULL
