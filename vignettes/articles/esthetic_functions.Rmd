@@ -74,7 +74,6 @@ esth_graph(tab2,
   error_upp = mean_upp,
   n_var = n,
   name_total = "Total",
-  fill = "magenta",
   reorder = T,
   digits = 1,
   unit = "€"
@@ -83,4 +82,39 @@ esth_graph(tab2,
 
 ## `make_surface()`
 
-A ECRIRE
+`make_surface()` permet de créer la représentation de différentes valeurs déja calculées en tant que surfaces - sous la forme de carrés. Il s'agit d'un graphique potentiellement intéressant si l'on veut représenter la taille des logements en m², par exemple. La fonction est purement graphique ; elle s'applique sur un dataframe de plusieurs lignes comprenant les modalités/groupes à comparer (argument `var`) et la valeur pour chacun d'eux (`value`). La fonction est donc idéalement applicable au dataframe `tab` produit par `central_group()`. Notre package `fonctionr` étant destiné à l'analyse inférentielle, les bornes supérieures et inférieures des intervalles de confiance peuvent être indiquées (`error_low` et `error_upp`) ; elles sont alors affichées sur le graphique d'une manière originale, comme carrés en pointillés autour de la valeur dans l'échantillon.
+
+```{r}
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+
+eusilc_mean <- mean_group(eusilc,
+  group = pl030_rec,
+  quanti_exp = py010n + py050n + py090n + py100n + py110n + py120n + py130n + py140n,
+  filter_exp = !pl030_rec %in% c("Student", "Fulfilling domestic tasks"),
+  weights = rb050
+)
+```
+
+```{r}
+eusilc_mean$tab %>%
+  filter(pl030_rec != "Total") %>%
+  make_surface(
+    var = pl030_rec,
+    value = mean,
+    error_low = mean_low,
+    error_upp = mean_upp,
+    reorder = T,
+    show_ci = T,
+    wrap_width_lab = 15,
+    unit = "€",
+    title = "Mean of monthly equivalised income in household by socio-economic status",
+    subtitle = "Example with austrian SILC data from 'laeken' package"
+  )
+```

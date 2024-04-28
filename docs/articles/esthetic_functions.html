@@ -190,7 +190,6 @@ graphique.</p>
 <span>  error_upp <span class="op">=</span> <span class="va">mean_upp</span>,</span>
 <span>  n_var <span class="op">=</span> <span class="va">n</span>,</span>
 <span>  name_total <span class="op">=</span> <span class="st">"Total"</span>,</span>
-<span>  fill <span class="op">=</span> <span class="st">"magenta"</span>,</span>
 <span>  reorder <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"€"</span></span>
@@ -201,7 +200,52 @@ graphique.</p>
 <h2 id="make_surface">
 <code>make_surface()</code><a class="anchor" aria-label="anchor" href="#make_surface"></a>
 </h2>
-<p>A ECRIRE</p>
+<p><code><a href="../reference/make_surface.html">make_surface()</a></code> permet de créer la représentation de
+différentes valeurs déja calculées en tant que surfaces - sous la forme
+de carrés. Il s’agit d’un graphique potentiellement intéressant si l’on
+veut représenter la taille des logements en m², par exemple. La fonction
+est purement graphique ; elle s’applique sur un dataframe de plusieurs
+lignes comprenant les modalités/groupes à comparer (argument
+<code>var</code>) et la valeur pour chacun d’eux (<code>value</code>).
+La fonction est donc idéalement applicable au dataframe <code>tab</code>
+produit par <code><a href="../reference/central_group.html">central_group()</a></code>. Notre package
+<code>fonctionr</code> étant destiné à l’analyse inférentielle, les
+bornes supérieures et inférieures des intervalles de confiance peuvent
+être indiquées (<code>error_low</code> et <code>error_upp</code>) ;
+elles sont alors affichées sur le graphique d’une manière originale,
+comme carrés en pointillés autour de la valeur dans l’échantillon.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working full time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working part time"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"3"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Unemployed"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"4"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Student"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"5"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Retired"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"6"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Permanently disabled"</span></span>
+<span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span>
+<span></span>
+<span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>  quanti_exp <span class="op">=</span> <span class="va">py010n</span> <span class="op">+</span> <span class="va">py050n</span> <span class="op">+</span> <span class="va">py090n</span> <span class="op">+</span> <span class="va">py100n</span> <span class="op">+</span> <span class="va">py110n</span> <span class="op">+</span> <span class="va">py120n</span> <span class="op">+</span> <span class="va">py130n</span> <span class="op">+</span> <span class="va">py140n</span>,</span>
+<span>  filter_exp <span class="op">=</span> <span class="op">!</span><span class="va">pl030_rec</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Student"</span>, <span class="st">"Fulfilling domestic tasks"</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">rb050</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pl030_rec</span> <span class="op">!=</span> <span class="st">"Total"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/make_surface.html">make_surface</a></span><span class="op">(</span></span>
+<span>    var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">mean</span>,</span>
+<span>    error_low <span class="op">=</span> <span class="va">mean_low</span>,</span>
+<span>    error_upp <span class="op">=</span> <span class="va">mean_upp</span>,</span>
+<span>    reorder <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    show_ci <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    wrap_width_lab <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>    unit <span class="op">=</span> <span class="st">"€"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Mean of monthly equivalised income in household by socio-economic status"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="esthetic_functions_files/figure-html/unnamed-chunk-6-1.png" width="100%"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
