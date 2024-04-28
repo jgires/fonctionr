@@ -72,7 +72,7 @@
 
 
 
-
+<script src="fonctionr_functions_files/kePrint-0.0.1/kePrint.js"></script><link href="fonctionr_functions_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Manuel d'utilisation</h1>
@@ -108,26 +108,23 @@ structure globale de ceux-ci que de se répéter pour chaque fonction.</p>
 </h2>
 <p>La plupart des fonctions de <code>fonctionr</code> permettent, à
 partir de données issues d’un sondage (complexe mais aussi simple), de
-produire un graphique, un tableau d’indicateurs et les résultat d’un
-test statistique. Les fonctions produisent toutes une liste qui contient
-la plupart du temps ces trois objets :</p>
+produire une liste qui contient la plupart du temps ces trois éléments
+:</p>
 <ul>
-<li><p>L’objet <code>graph</code> est un graphique qui permet la
-visualisation des indicateurs calculés avec leurs intervalles de
-confiance. Il s’agit d’un objet <code>ggplot2</code> qui peut donc aussi
-être modifié par la suite. Le graphique se veut suffisamment finalisé
-pour être directement utilisable dans une publication.</p></li>
-<li><p>L’objet <code>tab</code> est un dataframe qui reprend les
-chiffres sur base desquels le graphique est construit. Les différentes
-colonnes reprennent généralement le nom de l’indicateur, de la modalité
-et des éventuelles facettes, les valeurs des indicateurs, leurs bornes
-d’intervalle de confiance, le nombre de personnes dans l’échantillon
-dans chaque catégorie, l’estimation du nombre de personnes dans la
-population dans chaque catégorie et les bornes de l’intervalle de
-confiance de cette estimation.</p></li>
-<li><p>L’objet <code>test.stat</code> est une liste qui contient les
-différents résultats d’un test statistique lorsqu’il y en a un qui est
-pertinent.</p></li>
+<li><p>Un graphique qui permet la visualisation des indicateurs calculés
+avec leurs intervalles de confiance. Il s’agit d’un objet
+<code>ggplot2</code> qui peut donc aussi être modifié par la suite. Le
+graphique se veut suffisamment finalisé pour être directement utilisable
+dans une publication ;</p></li>
+<li><p>Un ou plusieurs dataframe qui reprennent les chiffres sur base
+desquels le graphique est construit. Ceux-ci reprennent généralement le
+nom de l’indicateur, sa valeur, les bornes d’intervalle de confiance, le
+nombre de personnes dans l’échantillon dans chaque catégorie,
+l’estimation du nombre de personnes dans la population dans chaque
+catégorie et les bornes de l’intervalle de confiance de cette estimation
+;</p></li>
+<li><p>Les différents résultats d’un test statistique lorsqu’il y en a
+un qui est pertinent.</p></li>
 </ul>
 <p>La plupart des fonctions permettent aussi d’exporter directement ces
 trois résultats dans un format Excel, dans l’idée de pouvoir facilement
@@ -136,8 +133,9 @@ le cas du travail de mise en page d’un rapport.</p>
 <p>Dans la suite de cette partie, nous passons les fonctions en revue en
 indiquant quels sont leurs objectifs et spécificités.</p>
 <div class="section level3">
-<h3 id="distrib_discrete">
-<code>distrib_discrete()</code><a class="anchor" aria-label="anchor" href="#distrib_discrete"></a>
+<h3 id="distrib_discrete-distribution-dune-variable-catégorielle">
+<code>distrib_discrete()</code> : distribution d’une variable
+catégorielle<a class="anchor" aria-label="anchor" href="#distrib_discrete-distribution-dune-variable-cat%C3%A9gorielle"></a>
 </h3>
 <p><code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>, avec <code><a href="../reference/distrib_discrete.html">distrib_d()</a></code> comme
 alias, calcule la distribution (en proportions relatives) des
@@ -232,8 +230,9 @@ mentionnée sur le graphique.</p>
 <span><span class="co">#&gt; X-squared = 11462652, scale = 1300.5577, df = 2.9068, p-value &lt; 2.2e-16</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="distrib_group_discrete">
-<code>distrib_group_discrete()</code><a class="anchor" aria-label="anchor" href="#distrib_group_discrete"></a>
+<h3 id="distrib_group_discrete-distribution-dune-variable-catégorielle-par-groupe">
+<code>distrib_group_discrete()</code> : distribution d’une variable
+catégorielle par groupe<a class="anchor" aria-label="anchor" href="#distrib_group_discrete-distribution-dune-variable-cat%C3%A9gorielle-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, avec
 <code><a href="../reference/distrib_group_discrete.html">distrib_group_d()</a></code> comme alias, calcule la distribution (en
@@ -285,8 +284,8 @@ nationalité (<code>pb220a</code>).</p>
 <span><span class="co">#&gt; F = 32.8, ndf = 11.957, ddf = 144750.034, p-value &lt; 2.2e-16</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="prop_group">
-<code>prop_group()</code><a class="anchor" aria-label="anchor" href="#prop_group"></a>
+<h3 id="prop_group-proportion-par-groupe">
+<code>prop_group()</code> : proportion par groupe<a class="anchor" aria-label="anchor" href="#prop_group-proportion-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/prop_group.html">prop_group()</a></code> calcule des proportions pour les
 différentes modalités d’une variable qualitative, que l’on peut
@@ -312,22 +311,24 @@ socio-économiques (<code>pl030_rec</code>).</p>
 <p>Le graphique et le tableau contiennent une modalité
 <code>Total</code> qui reprend l’estimation de la proportion pour
 l’ensemble de la population de référence. Dans le dataframe
-<code>tab</code> produit, on trouve l’estimation du nombre de personnes
-dans la population pour lesquelles le critère de proportion est vérifié
+<code>tab</code> produit, on trouve :</p>
+<ul>
+<li>l’estimation du nombre de personnes dans la population pour
+lesquelles le critère de proportion est vérifié
 (<code>n_true_weighted</code>) accompagné de ses bornes inférieure
 (<code>n_true_weighted_low</code>) et supérieure
 (<code>n_true_weighted_upp</code>) de l’intervalle de confiance à un
-niveau de confiance de 95%. On trouve également l’estimation du nombre
-total de personnes dans la population pour lesquelles les données sont
-valides<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Les personnes exclues, parce que, par exemple, la
+niveau de confiance de 95% ;</li>
+<li>le nombre total de personnes dans la population pour lesquelles les
+données sont valides<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Les personnes exclues, parce que, par exemple, la
 variable dichotomique prend une valeur &lt;code&gt;NA&lt;/code&gt; et que l’on a
 décidé de ne pas les prendre en compte, ne sont pas reprises dans
 &lt;code&gt;n_tot_weighted,&lt;/code&gt; de manière à ce que le ratio entre
 &lt;code&gt;n_true_weighted&lt;/code&gt; et &lt;code&gt;n_tot_weighted&lt;/code&gt; soit égal à
-&lt;code&gt;prop&lt;/code&gt;.&lt;/p&gt;"><sup>2</sup></a>
-(<code>n_tot_weighted</code>) accompagné de ses bornes inférieure
-(<code>n_tot_weighted_low</code>) et supérieure
-(<code>n_tot_weighted_upp</code>) de l’intervalle de confiance.</p>
+&lt;code&gt;prop&lt;/code&gt;.&lt;/p&gt;"><sup>2</sup></a> (<code>n_tot_weighted</code>) accompagné de
+ses bornes inférieure (<code>n_tot_weighted_low</code>) et supérieure
+(<code>n_tot_weighted_upp</code>) de l’intervalle de confiance.</li>
+</ul>
 <p>Le test statistique réalisé est celui du khi2 de Pearson avec
 l’ajustement de Rao &amp; Scott. Ce test est réalisé avec comme
 hypothèse nulle le fait que les deux variables qualitatives (les
@@ -357,25 +358,29 @@ soient statistiquement indépendantes .</p>
 <span><span class="co">#&gt; F = 485.82, ndf = 5.9943, ddf = 72567.0400, p-value &lt; 2.2e-16</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="central_group">
-<code>central_group()</code><a class="anchor" aria-label="anchor" href="#central_group"></a>
+<h3 id="central_group-valeur-centrale-moyennemédiane-par-groupe">
+<code>central_group()</code> : valeur centrale (moyenne/médiane) par
+groupe<a class="anchor" aria-label="anchor" href="#central_group-valeur-centrale-moyennem%C3%A9diane-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/central_group.html">central_group()</a></code> compare la valeur centrale d’une
 variable quantitative selon les modalités d’une variable qualitative,
 que l’on peut considérer comme des groupes. Deux valeurs centrales sont
 possibles :</p>
 <ul>
-<li><p>la moyenne, quand l’argument <code>type = "mean"</code> ou pour
-l’alias <code><a href="../reference/central_group.html">mean_group()</a></code> ;</p></li>
-<li><p>la médiane, quand l’argument <code>type = "median"</code> ou pour
-l’alias <code><a href="../reference/central_group.html">median_group()</a></code>.</p></li>
+<li>la moyenne, quand l’argument <code>type = "mean"</code> ou pour
+l’alias <code><a href="../reference/central_group.html">mean_group()</a></code> ;</li>
+<li>la médiane, quand l’argument <code>type = "median"</code> ou pour
+l’alias <code><a href="../reference/central_group.html">median_group()</a></code>.</li>
 </ul>
-<p>Pour indiquer la tendance centrale à calculer, l’utilisateur peut
-indiquer soit une variable quantitative, soit directement une expression
-(sans guillemet, à la manière du <code>tidyverse</code>) à partir de
-laquelle une nouvelle variable quantitative est calculée. L’exemple
-ci-dessous compare le revenu équivalent mensuel moyen (calculé avec
-l’expression <code>eqIncome / 12</code>) selon les différents statuts
+<p>L’argument <code>type</code> est prédéfini pour les fonctions
+“alias”. Il ne doit pas être utilisé par l’utilisateur s’il utilise les
+fonctions “alias”. Pour indiquer la tendance centrale à calculer,
+l’utilisateur peut indiquer soit une variable quantitative, soit
+directement une expression (sans guillemet, à la manière du
+<code>tidyverse</code>) à partir de laquelle une nouvelle variable
+quantitative est calculée. L’exemple ci-dessous compare le revenu
+équivalent mensuel moyen (calculé avec l’expression
+<code>eqIncome / 12</code>) selon les différents statuts
 socio-économiques des personnes (<code>pl030_rec</code>). Le graphique
 et le tableau contiennent une modalité “Total” qui reprend l’estimation
 de tendance centrale pour l’ensemble de la population de référence.</p>
@@ -417,24 +422,24 @@ statistique effectué est celui de Kruskal Wallis.</p>
 <span><span class="co">#&gt; F =  137.4607  on  6  and  12100  df: p= &lt; 2.22e-16</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="many_val">
-<code>many_val()</code><a class="anchor" aria-label="anchor" href="#many_val"></a>
+<h3 id="many_val-calculer-plusieurs-indicateurs">
+<code>many_val()</code> : calculer plusieurs indicateurs<a class="anchor" aria-label="anchor" href="#many_val-calculer-plusieurs-indicateurs"></a>
 </h3>
 <p><code><a href="../reference/many_val.html">many_val()</a></code> réalise des calculs de proportion ou de
 tendance centrale simultanément pour plusieurs variables différentes. La
 fonction permet de calculer trois résultats différents :</p>
 <ul>
-<li><p>Le calcul de proportions quand l’argument
-<code>type = "prop"</code> ou pour l’alias <code><a href="../reference/many_val.html">many_prop()</a></code>
-;</p></li>
-<li><p>Le calcul de moyennes quand l’argument <code>type = "mean"</code>
-ou pour l’alias <code><a href="../reference/many_val.html">many_mean()</a></code> ;</p></li>
-<li><p>Le calcul de médianes quand l’argument
-<code>type = "median"</code> ou pour l’alias
-<code><a href="../reference/many_val.html">many_median()</a></code>.</p></li>
+<li>Le calcul de proportions quand l’argument <code>type = "prop"</code>
+ou pour l’alias <code><a href="../reference/many_val.html">many_prop()</a></code> ;</li>
+<li>Le calcul de moyennes quand l’argument <code>type = "mean"</code> ou
+pour l’alias <code><a href="../reference/many_val.html">many_mean()</a></code> ;</li>
+<li>Le calcul de médianes quand l’argument <code>type = "median"</code>
+ou pour l’alias <code><a href="../reference/many_val.html">many_median()</a></code>.</li>
 </ul>
-<p>Les variables pour lesquelles on veut réaliser ce calcul sont
-indiquées sans guillemets dans un vecteur passé à l’argument
+<p>L’argument <code>type</code> est prédéfini pour les fonctions
+“alias”. Il ne doit pas être utilisé par l’utilisateur s’il utilise les
+fonctions “alias”. Les variables pour lesquelles on veut réaliser ce
+calcul sont indiquées sans guillemets dans un vecteur passé à l’argument
 <code>list_vars</code>. Contrairement à <code><a href="../reference/prop_group.html">prop_group()</a></code> ou
 <code><a href="../reference/central_group.html">central_group()</a></code>, on ne peut pas indiquer d’expression : ce
 doit être des variables dichotomisées (pour les proportions) ou
@@ -471,8 +476,9 @@ dans la totalité de la population.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="many_val_group">
-<code>many_val_group()</code><a class="anchor" aria-label="anchor" href="#many_val_group"></a>
+<h3 id="many_val_group-calculer-plusieurs-indicateurs-par-groupe">
+<code>many_val_group()</code> : calculer plusieurs indicateurs par
+groupe<a class="anchor" aria-label="anchor" href="#many_val_group-calculer-plusieurs-indicateurs-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/many_val_group.html">many_val_group()</a></code> fonctionne comme
 <code><a href="../reference/many_val.html">many_val()</a></code>, mais permet d’indiquer une variable qualitative
@@ -480,19 +486,21 @@ de groupes : les résultats sont alors différenciés selon les différentes
 modalités de cette variable (= les groupes). Trois calculs sont
 possibles :</p>
 <ul>
-<li><p>La comparaison de proportions quand l’argument
+<li>La comparaison de proportions quand l’argument
 <code>type = "prop"</code> ou pour l’alias
-<code><a href="../reference/many_val_group.html">many_prop_group()</a></code> ;</p></li>
-<li><p>La comparaison de moyennes quand l’argument
+<code><a href="../reference/many_val_group.html">many_prop_group()</a></code> ;</li>
+<li>La comparaison de moyennes quand l’argument
 <code>type = "mean"</code> ou pour l’alias
-<code><a href="../reference/many_val_group.html">many_mean_group()</a></code> ;</p></li>
-<li><p>La comparaison de médianes quand l’argument
+<code><a href="../reference/many_val_group.html">many_mean_group()</a></code> ;</li>
+<li>La comparaison de médianes quand l’argument
 <code>type = "median"</code> ou pour l’alias
-<code><a href="../reference/many_val_group.html">many_median_group()</a></code>.</p></li>
+<code><a href="../reference/many_val_group.html">many_median_group()</a></code>.</li>
 </ul>
-<p>L’exemple ci-dessous compare les revenus mensuels moyens de l’emploi
-salarié, d’une activité d’indépendant et d’une allocation de chômage des
-femmes et des hommes.</p>
+<p>L’argument <code>type</code> est prédéfini pour les fonctions
+“alias”. Il ne doit pas être utilisé par l’utilisateur s’il utilise les
+fonctions “alias”. L’exemple ci-dessous compare les revenus mensuels
+moyens de l’emploi salarié, d’une activité d’indépendant et d’une
+allocation de chômage des femmes et des hommes.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
 <span><span class="va">eusilc_many_mean_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
@@ -521,38 +529,49 @@ femmes et des hommes.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="distrib_continuous">
-<code>distrib_continuous()</code><a class="anchor" aria-label="anchor" href="#distrib_continuous"></a>
+<h3 id="distrib_continuous-distribution-dune-variable-continue">
+<code>distrib_continuous()</code> : distribution d’une variable
+continue<a class="anchor" aria-label="anchor" href="#distrib_continuous-distribution-dune-variable-continue"></a>
 </h3>
 <p><code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code>, avec <code><a href="../reference/distrib_continuous.html">distrib_c()</a></code>
-comme alias, calcule la distribution d’une variable continue. L’objet
-produit est une liste qui comprend quatre éléments. En plus de
-<code>graph</code> et de <code>tab</code> que l’on retrouve dans les
-autres fonction, l’objet <code>dens</code> reprend la densité calculée,
-et l’objet <code>quant</code> reprend les différents quantiles retenus.
-Dans cette fonction, il n’y a pas de test statistique calculé
-<!--# A terme si => à changer à ce moment là -->.</p>
-<p>L’exemple ci-dessous décrit la distribution de l’âge.</p>
+comme alias, calcule la distribution d’une variable continue. L’argument
+<code>type</code> permet d’indiquer quel type de valeur centrale doit
+être calculée et indiquée sur le graphique : <code>"mean"</code> pour la
+moyenne et <code>"median"</code> pour la médiane. Par défaut, c’est la
+médiane qui est calculée et affichée. <code>bw</code> indique le degré
+de “lissage” de la densité. Une valeur plus élevée conduira à davantage
+lisser la densité et masquera davantage les variations locales.
+<code>resolution</code> indique la “finesse” du calcul de la densité.
+Avec une résolution plus faible, il y aura moins de points et on verra
+graphiquement les petites droites reliant les points de densité. Une
+grande résolution implique cependant des calculs plus longs.</p>
+<p>L’exemple ci-dessous décrit la distribution de l’âge. L’objet produit
+est une liste qui comprend quatre éléments. On trouve <code>graph</code>
+et <code>tab</code>, comme dans les autres fonction.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span>, type <span class="op">=</span> <span class="st">"mean"</span>, bw <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-26-1.png" width="100%"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           x            y quantFct central</span></span>
-<span><span class="co">#&gt; 1 -9.832741 1.375886e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 -9.719676 1.556665e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 -9.606611 1.757825e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 -9.493546 1.981221e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 -9.380481 2.234640e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 -9.267416 2.517206e-05        1    &lt;NA&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
-<span><span class="co">#&gt;   median median_low median_upp n_sample n_weighted n_weighted_low n_weighted_upp</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     39         39         40    <span style="text-decoration: underline;">14</span>827      <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827</span></span></code></pre></div>
+<span><span class="co">#&gt;    mean mean_low mean_upp n_sample n_weighted n_weighted_low n_weighted_upp</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  39.2     38.8     39.6    <span style="text-decoration: underline;">14</span>827      <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827</span></span></code></pre></div>
+<p>L’objet <code>dens</code> reprend la densité calculée, et l’objet
+<code>quant</code> reprend les différents quantiles retenus. Dans cette
+fonction, il n’y a pas de test statistique calculé
+<!--# A terme si => à changer à ce moment là -->.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x            y quantFct central</span></span>
+<span><span class="co">#&gt; 1 -7.182919 1.478527e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 -7.075034 1.745094e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 -6.967150 2.053500e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 -6.859265 2.409212e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 -6.751381 2.821400e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 -6.643496 3.303312e-05        1    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">quant</span></span>
 <span><span class="co">#&gt;   probs quantile ci.2.5 ci.97.5        se</span></span>
@@ -567,8 +586,9 @@ Dans cette fonction, il n’y a pas de test statistique calculé
 <span><span class="co">#&gt; 9   0.9       70     70      71 0.2550859</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="distrib_group_continuous">
-<code>distrib_group_continuous()</code><a class="anchor" aria-label="anchor" href="#distrib_group_continuous"></a>
+<h3 id="distrib_group_continuous-distribution-dune-variable-continue-par-groupe">
+<code>distrib_group_continuous()</code> : distribution d’une
+variable continue par groupe<a class="anchor" aria-label="anchor" href="#distrib_group_continuous-distribution-dune-variable-continue-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, avec
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_c()</a></code> comme alias, calcule la distribution
@@ -580,11 +600,13 @@ contenant un graphique (<code>graph</code>), une densité
 (<code>quant</code>). On trouve aussi une boite à moustache
 (<code>moustache</code>) qui indique les bornes dans lesquelles on
 trouve différentes proportions de la population autour de la médiane
-(par défaut : 50%, 75% et 95%). Un test statistique est aussi
-implémenté. Comme pour <code><a href="../reference/central_group.html">central_group()</a></code>, si l’utilisateur
-choisi de calculer la médiane (le choix par défaut), le test statistique
-effectué est celui de Kruskal Wallis ; s’il ou elle choisi de calculer
-la moyenne, test statistique effectué est un test de Wald.</p>
+(par défaut : 50%, 75% et 95% - les proportions peuvent être paramétrées
+dans l’argument <code>moustache_probs</code>). Un test statistique est
+aussi implémenté. Comme pour <code><a href="../reference/central_group.html">central_group()</a></code>, si
+l’utilisateur choisi de calculer la médiane (le choix par défaut), le
+test statistique effectué est celui de Kruskal Wallis ; s’il ou elle
+choisi de calculer la moyenne, test statistique effectué est un test de
+Wald.</p>
 <p>L’exemple ci-dessous compare la distribution des revenus équivalents
 selon le statut socio-économique. Comme pour
 <code><a href="../reference/central_group.html">central_group()</a></code>, il est possible d’utiliser une expression
@@ -595,22 +617,14 @@ mensuel.</p>
 <code class="sourceCode R"><span><span class="va">distrib_income</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">pl030_rec</span>,</span>
 <span>  <span class="va">eqIncome</span> <span class="op">/</span> <span class="fl">12</span>,</span>
-<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5000</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"mean"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4100</span><span class="op">)</span>,</span>
+<span>  bw <span class="op">=</span> <span class="fl">.7</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-31-1.png" width="100%"></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               group         x            y quantFct     y_ridges central</span></span>
-<span><span class="co">#&gt; 1 Working part time -410.5723 6.251777e-08        1 6.122213e-05    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 Working part time -393.1048 9.245802e-08        1 9.054190e-05    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 Working part time -375.6372 1.345161e-07        1 1.317284e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 Working part time -358.1697 1.926109e-07        1 1.886192e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 Working part time -340.7021 2.715594e-07        1 2.659316e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 Working part time -323.2346 3.771709e-07        1 3.693543e-04    &lt;NA&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 8</span></span></span>
 <span><span class="co">#&gt;   pl030_rec            mean mean_low mean_upp n_sample n_weighted n_weighted_low</span></span>
@@ -623,6 +637,15 @@ mensuel.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Working full time   <span style="text-decoration: underline;">1</span>888.    <span style="text-decoration: underline;">1</span>864.    <span style="text-decoration: underline;">1</span>912.     <span style="text-decoration: underline;">5</span>162       <span style="text-decoration: underline;">5</span>162          <span style="text-decoration: underline;">5</span>048.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Working part time   <span style="text-decoration: underline;">1</span>604.    <span style="text-decoration: underline;">1</span>558.    <span style="text-decoration: underline;">1</span>650.     <span style="text-decoration: underline;">1</span>160       <span style="text-decoration: underline;">1</span>160          <span style="text-decoration: underline;">1</span>096.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               group         x            y quantFct     y_ridges central</span></span>
+<span><span class="co">#&gt; 1 Working part time -283.5941 7.063720e-08        1 6.673599e-05    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 Working part time -266.6236 1.192821e-07        1 1.126943e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 Working part time -249.6530 1.958639e-07        1 1.850466e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 Working part time -232.6824 3.129800e-07        1 2.956944e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 Working part time -215.7118 4.870855e-07        1 4.601843e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 Working part time -198.7413 7.497099e-07        1 7.083042e-04    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">quant</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   probs quantile    ci.2.5   ci.97.5             group</span></span>
@@ -661,7 +684,1820 @@ indispensables qui doivent obligatoirement être mentionnés, les
 arguments clés (c’est-à-dire pas obligatoire mais ayant une influence
 sur les résultats) et les arguments esthétiques - qui influencent le
 graphique.</p>
-<p><strong>TABLEAU</strong></p>
+<table class="table  lightable-paper" style='font-size: 12px; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<thead><tr>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+Catégorie d’argument
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+type
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+prop_group
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+many_val_group
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+many_val
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+central_group
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+distrib_group_discrete
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+distrib_discrete
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+distrib_group_continuous
+</th>
+<th style="text-align:left;font-weight: bold;color: black !important;">
+distrib_continuous
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+Base de données
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+df
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+data
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+Base de données
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+df
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+prop_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quanti_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quanti_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quanti_exp
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quali_var
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quali_var
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+list_vars
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+list_vars
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+list_vars_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+list_vars_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+indispensable
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+type
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+type
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+type
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+type
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+type
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+?????
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+?????
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+filter_exp
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+Base de données
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+dot dot dot
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+…
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.group
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.facet
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+?????
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+?????
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.var
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.rm.var
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.prop
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.vars
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+na.vars
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+numeric vector
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+quantiles
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+quantiles
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+numeric vector
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+moustache_probs
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+probs
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+argument clé
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+prop_method
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+prop_method
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+prop_method
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+prop_method
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+prop_method
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+bw
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+bw
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+resolution
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+resolution
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+height
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+limits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+limits
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+reorder
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+reorder
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+reorder
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+reorder
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+reorder
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+position
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_mid_point
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_mid_line
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_mid_line
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci_errorbar
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci_lines
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci_lines
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci_area
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_ci_area
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_quant_lines
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_quant_lines
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_moustache
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_n
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+quoted
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_value
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+logical
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+show_lab
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+total_name
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+total_name
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+Esthétique de base
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+Esthétique : chiffres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+scale
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+scale
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+scale
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+scale
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+scale
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+Esthétique : chiffres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+digits
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+Esthétique : chiffres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+unit
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+Esthétique : chiffres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+dec
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+fill
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+fill
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+fill
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+direction
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+direction
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+direction
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+pal_moustache
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+color
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+color
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+alpha
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+Esthétique : graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+dodge
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+Esthétiques : lettres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+font
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+Esthétiques : lettres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_y
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+Esthétiques : lettres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_leg
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+wrap_width_leg
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+Esthétiques : lettres
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+numeric
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+legend_ncol
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+legend_ncol
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+title
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+subtitle
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+xlab
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+ylab
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+legend_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+legend_lab
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+Esthétique : labels
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+string
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+caption
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-liés-à-la-base-de-données-utilisée">Les arguments liés à la base de données utilisée<a class="anchor" aria-label="anchor" href="#les-arguments-li%C3%A9s-%C3%A0-la-base-de-donn%C3%A9es-utilis%C3%A9e"></a>
@@ -729,7 +2565,7 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_2</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_3</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-37-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-38-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
@@ -742,13 +2578,14 @@ variables/colonnes sont toujours indiquées sans guillemets, à la manière
 de la syntaxe du <code>tidyverse</code>.</p>
 <ul>
 <li><p><code>group</code> et <code>quali_var</code> sont des variables
-qualitatives. Les variables indiquées pour ces arguments sont ainsi
-transformées en facteurs pour leur usage dans la fonction.</p></li>
+qualitatives qui indiquent les groupes ou variables qualitative dont on
+veut calculer la distribution. Les variables indiquées pour ces
+arguments sont transformées en facteurs pour leur usage dans la
+fonction.</p></li>
 <li><p><code>prop_exp</code> et <code>quanti_exp</code> sont des
-expressions. Dans <code>fonctionr</code>, tous les arguments qui
-terminent par “<em>_exp</em>” sont des expressions. Ces arguments
-peuvent être des variables (une variable binaire 0-1 pour
-<code>prop_exp</code> et une variable numérique pour
+expressions qui permettent de calculer les proportions ou tendances
+centrales. Ces arguments peuvent être des variables (une variable
+binaire 0-1 pour <code>prop_exp</code> et une variable numérique pour
 <code>quanti_exp</code>) ou une expression qui produit une variable
 (binaire pour <code>prop_exp</code> et quantitative pour
 <code>quanti_exp</code>). Ainsi, il n’est pas nécessaire de préparer à
@@ -760,36 +2597,19 @@ un vecteur stocké dans l’environnement global) ne sont pas
 autorisés.</p></li>
 <li><p><code>list_vars</code> doit être un vecteur reprenant l’ensemble
 des variables reprises dans les fonctions <code><a href="../reference/many_val.html">many_val()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code>. Pour <code><a href="../reference/many_val.html">many_prop()</a></code> et
-<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>, les variables doivent être binaires (il
-aurait été trop compliqué d’introduire ici des expressions) et pour
-<code><a href="../reference/many_val.html">many_mean()</a></code>, <code><a href="../reference/many_val_group.html">many_mean_group()</a></code>,
-<code><a href="../reference/many_val.html">many_median()</a></code> et <code><a href="../reference/many_val_group.html">many_median_group()</a></code>, les
-variables doivent être numériques.</p></li>
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que leurs alias. Pour
+<code><a href="../reference/many_val.html">many_prop()</a></code> et <code><a href="../reference/many_val_group.html">many_prop_group()</a></code>, les
+variables doivent être binaires (il aurait été trop compliqué
+d’introduire ici des expressions) et pour <code><a href="../reference/many_val.html">many_mean()</a></code>,
+<code><a href="../reference/many_val_group.html">many_mean_group()</a></code>, <code><a href="../reference/many_val.html">many_median()</a></code> et
+<code><a href="../reference/many_val_group.html">many_median_group()</a></code>, les variables doivent être numériques.
+L’argument <code>list_vars_lab</code> permet d’indiquer le label pour
+les variables à l’aide d’un vecteur. Bien qu’il ne s’agisse pas d’un
+argument indispensable, nous l’avons placé juste après
+<code>list_vars</code> pour faciliter l’utilisation des fonctions. Pour
+cet argument, les guillemets doivent être utilisé pour indiquer les
+labels des variables.</p></li>
 </ul>
-<p>Juste après <code>list_vars</code>, il y a un argument esthétique de
-label des noms des variables. Cet argument doit être un vecteur
-reprenant les noms des variables telles que l’on souhaite qu’elles
-apparaissent dans le dataframe de résultat (<code>tab</code>) et le
-graphique (<code>graph</code>) produits par la fonction. Bien qu’il ne
-s’agisse pas d’un argument indispensable, nous avons décidé de le placer
-juste après <code>list_vars</code> pour faciliter l’utilisation des
-fonctions. Pour cet argument, les guillements doivent être utilisé pour
-indiquer les labels des variables.</p>
-<p>L’argument <code>type</code> est prédéfini pour les fonctions “alias”
-<code><a href="../reference/central_group.html">mean_group()</a></code> et <code><a href="../reference/central_group.html">median_group()</a></code> ;
-<code><a href="../reference/many_val.html">many_prop()</a></code>, <code><a href="../reference/many_val.html">many_mean()</a></code> et
-<code><a href="../reference/many_val.html">many_median()</a></code> ; <code><a href="../reference/many_val_group.html">many_prop_group()</a></code>,
-<code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et <code><a href="../reference/many_val_group.html">many_median_group()</a></code> à
-partir des fonctions respectives <code><a href="../reference/central_group.html">central_group()</a></code>,
-<code><a href="../reference/many_val.html">many_val()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>. Il ne doit pas
-être utilisé par l’utilisateur s’il utilise les fonctions “alias”.
-L’argument <code>type</code> est aussi utilisé pour
-<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
-<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> pour indiquer quel type de
-valeur centrale doit être calculée et indiquée sur le graphique, “mean”
-pour la moyenne et “median” pour la médiane. Par défaut, c’est la
-médiane qui est calculée et indiquée.</p>
 <p>Dans l’exemple ci-dessous, on calcule la proportion des répondant qui
 travaillent et dont le salaire net annuel était inférieur à 12000€. On
 peut ainsi introduire des expressions complexe dans les fonctions.</p>
@@ -803,7 +2623,7 @@ peut ainsi introduire des expressions complexe dans les fonctions.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-40-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
@@ -827,45 +2647,35 @@ exemple sélectionner uniquement les personnes âgées de moins de 60 ans,
 dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires.
 Si une possibilité de filtrage est inclue dans les fonctions, c’est pour
 que le filtrage des données soit réalisé après la définition du plan de
-sondage, afin que le filtrage ne modifie pas celui-ci. Ici aussi, seules
-les variables de la base de données, les opérateurs et les valeurs
-numérique sont autorisés dans les expressions.</p></li>
-<li><p><code>probs</code> est un vecteur utilisé dans
-<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> pour indiquer les proportions de
-l’hypothèse nulle sur base desquelles le test du khi2 d’adéquation est
-calculé. Par défaut, le test du khi2 d’adéquation n’est pas
-calculé.</p></li>
+sondage, afin que le filtrage ne modifie pas celui-ci<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri"&gt;https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Ici aussi, seules les
+variables de la base de données, les opérateurs et les valeurs numérique
+sont autorisés dans les expressions.</p></li>
 <li><p><code>prop_method</code> est un argument qui permet de choisir le
 type de correction pour l’estimation des intervalles de confiance d’une
 proportion, notamment pour éviter d’avoir des bornes inférieures à 0 ou
 supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans
 l’argument method de <code><a href="https://rdrr.io/pkg/survey/man/svyciprop.html" class="external-link">svyciprop()</a></code> du package
-<code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html" class="external-link uri"&gt;https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Par défaut, c’est la méthode
+<code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html" class="external-link uri"&gt;https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html&lt;/a&gt;&lt;/p&gt;'><sup>5</sup></a>. Par défaut, c’est la méthode
 <code>"beta"</code> qui est utilisée.</p></li>
-<li><p><code>quantile</code> est un argument qui permet de choisir, sous
-forme d’un vecteur, les quantiles à calculer et à indiquer sur le
+<li><p><code>quantiles</code> est un argument qui permet de choisir,
+sous forme d’un vecteur, les quantiles à calculer et à indiquer sur le
 graphique dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. Par défaut, ce sont des déciles
 qui sont calculés.</p></li>
-<li><p><code>moustache_probs</code> est un argument qui permet de
-déterminer les quantiles pour calculer et indiquer la “moustache” sur le
-graphique dans <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. La moustache est
-une représentations graphique qui reprend différentes proportions de la
-populations autour de la médiane. Les valeurs par défaut sont 0.95, 0.80
-et 0.50 de manière à représenter pour chaque groupe 95%, 80% et 50% de
-la population autour de la médiane.</p></li>
 </ul>
 <div class="section level3">
 <h3 id="le-traitement-des-na">Le traitement des <code>NA</code><a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
 </h3>
-<p>Nous avons décidé de laisser des possibilités différentes selon les
+<p>Nous expliquons ici plus précisément le traitement des
+<code>NA</code> dans les fonctions, car les possibilités sont multiples.
+Nous avons décidé de laisser des possibilités différentes selon les
 variables dans lesquelles se trouvent les <code>NA</code> : groupes,
 variables d’intérêts, expressions, etc.</p>
 <ul>
 <li>
 <code>na.rm.group</code>, <code>na.rm.facet</code>,
-<code>na.rm.var</code> indiquent la manière dont les éventuels
-<code>NA</code> dans les variables <code>group</code>,
+<code>na.rm.var</code> indiquent respectivement la manière dont les
+éventuels <code>NA</code> dans les variables <code>group</code>,
 <code>facet</code> et dans <code>quali_var</code> sont traités. Si
 l’argument est <code>TRUE</code>, les <code>NA</code> sont retirés dans
 les calculs. Si l’argument est <code>FALSE</code>, une modalité
@@ -897,7 +2707,7 @@ couleur, de manière à les identifier spécifiquement.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.prop</code> indique la manière dont les éventuels
@@ -952,7 +2762,7 @@ comptabilisés dans le dénominateur.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_NA_incl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-44-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.vars</code> indique la manière dont les <code>NA</code>
@@ -960,7 +2770,7 @@ doivent être traités dans les différentes variables de
 <code><a href="../reference/many_val.html">many_val()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>. Si l’argument
 prend la valeur <code>"rm"</code>, les <code>NA</code> sont exclus
 séparément dans chaque variable. Il en résulte que l’échantillon ne sera
-pas toujours le même pour chacune des variables calculée, mais que l’on
+pas toujours le même pour chacune des variables calculées, mais on
 conserve un maximum d’observations. Si l’argument prend la valeur
 <code>"rm.all"</code>, les observations qui comprennent au moins un
 <code>NA</code> dans n’importe quelle des variables de
@@ -986,27 +2796,26 @@ d’esthétique des lettres et les labels.</p>
 </h3>
 <ul>
 <li>
-<code>reorder</code> est un argument qui en prenant la valeur
-<code>TRUE</code> permet de réordonner les barres selon leur valeur
-décroissante. Si <code>reorder = FALSE</code>, les barres ne sont pas
-réordonnées et c’est l’ordre des <em>levels</em> de la variable qui est
-utilisé pour ordonner les barre (ou l’ordre alphabétique pour une
-variable string). La barre <code>NA</code> - quand elle existe (par
-exemple avec <code>na.rm.group = FALSE</code>) - et la barre “Total” ne
-sont jamais réordonnées et sont toujours positionnées dans le bas du
-graphique. En cas de facettes, les barres sont réordonnées sur base de
-chaque barre médiane. Par exemple, si l’on utilise des facettes dans
-<code><a href="../reference/prop_group.html">prop_group()</a></code>, la fonction identifie, pour chaque groupe,
-quelle est la proportion médiane par groupe et puis elle va ordonner les
-groupes sur bases de ces médianes. Par défaut, <code>reorder</code>
-prend la valeur de <code>FALSE</code>. <code>reorder</code> n’est pas
-disponible dans <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias
-(<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>, <code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et
-<code><a href="../reference/many_val_group.html">many_median_group()</a></code>), car pour ces variables il y a
-plusieurs proportions ou indicateurs et il est difficile de choisir sur
-lequel ou laquelle réordonner. Dans ce cas, c’est l’ordre des
-<em>levels</em> des facteurs qui est utilisé.</li>
+<code>reorder</code> est un argument qui, en prenant la valeur
+<code>TRUE</code>, permet de réordonner les catégories selon leur valeur
+décroissante. Si <code>reorder = FALSE</code>, les catégories ne sont
+pas réordonnées et c’est l’ordre des <em>levels</em> de la variable qui
+est utilisé si c’est un facteur, ou l’ordre alphabétique si c’est une
+variable string. La catégorie <code>NA</code> - quand elle existe (par
+exemple avec <code>na.rm.group = FALSE</code>) - et la catégorie “Total”
+ne sont jamais réordonnées et sont toujours positionnées dans le bas du
+graphique. En cas de facettes, les catégories sont réordonnées sur base
+de chaque catégorie médiane. Par exemple, si l’on utilise des facettes
+dans <code><a href="../reference/prop_group.html">prop_group()</a></code>, la fonction identifie, pour chaque
+groupe, quelle est la proportion médiane par groupe et puis elle va
+ordonner les groupes sur bases de ces médianes. Par défaut,
+<code>reorder</code> prend la valeur de <code>FALSE</code>.
+<code>reorder</code> n’est pas disponible dans
+<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>
+ainsi que ses alias (<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>,
+<code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et <code><a href="../reference/many_val_group.html">many_median_group()</a></code>), car
+il y a plusieurs proportions ou indicateurs et il est difficile de
+choisir sur lequel ou laquelle réordonner.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, les revenus moyens des statut
 socio-économique sont réordonnés. Comme il y a des facettes, c’est le
@@ -1028,7 +2837,7 @@ catégorie “Student” (15097€) et de la catégorie “Working part time”
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png" width="100%"></p>
 <ul>
 <li>
 <code>position</code> est un argument qui ne se trouve uniquement
@@ -1047,55 +2856,61 @@ Cependant, dans ce cas, on peut plus indiquer les intervalles de
 confiance sur le graphique.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Exemple avec Stack </span></span>
-<span><span class="va">eusilc_many_mean_group_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_many_mean_group_2a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
 <span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  position <span class="op">=</span> <span class="st">"stack"</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"Income from different sources according to sex"</span>,</span>
-<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span>  title <span class="op">=</span> <span class="st">"position = 'stack'"</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#Exemple avec dodge </span></span>
+<span><span class="va">eusilc_many_mean_group_2b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
+<span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
+<span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"dodge"</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"position = 'dodge'"</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" width="100%"></p>
+<code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2a</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2b</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-48-1.png" width="100%"></p>
 <ul>
-<li><p><code>show_ci</code>, <code>show_n</code>,
-<code>show_value</code> et <code>show_lab</code> sont des argument
-similaires qui peuvent prendre les valeurs <code>TRUE</code> et
-<code>FALSE</code>. Les valeur <code>TRUE</code> permettent de montrer
-les éléments suivants : l’intervalle de confiance
-(<code>show_ci</code>), le nombre de personnes dans l’échantillon
-(<code>show_n</code>), l’estimation de l’indicateur
-(<code>show_value</code>) et les titres et sous-titres du graphiques,
-des axes et de la légende (<code>show_lab</code>). Les valeurs
-<code>FALSE</code> permettent de ne pas montrer sur le graphique ces
-différents éléments. Faute de représentation graphique adéquate,
-<code>show_ci</code> n’est pas un argument de la fonction
+<li>
+<p><code>show_ci</code>, <code>show_n</code>,
+<code>show_value</code> et <code>show_lab</code> permettent de montrer
+ou cacher différents éléments sur le graphique avec les valeurs
+<code>TRUE</code> et <code>FALSE</code> :</p>
+<ul>
+<li>l’intervalle de confiance (<code>show_ci</code>),</li>
+<li>le nombre de personnes dans l’échantillon
+(<code>show_n</code>),</li>
+<li>l’estimation de l’indicateur (<code>show_value</code>)</li>
+<li>les titres et sous-titres du graphiques, des axes et de la légende
+(<code>show_lab</code>).</li>
+</ul>
+</li>
+</ul>
+<p>Faute de représentation graphique adéquate, <code>show_ci</code>
+n’est pas un argument de la fonction
 <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>. Pour cette fonction, il est pas
 possible de représenter les intervalles de confiance sur le graphique,
 mais ils sont bien calculé dans le dataframe <code>tab</code>. C’est
 aussi le cas pour <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias quand
-<code>position = "stack"</code> : les intervalles de confiance ne sont
-pas représentés sur le graphique. Précisons aussi que dans
+<code>position = "stack"</code>. Précisons aussi que dans
 <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, seules les valeurs supérieures à
-2% sont indiquées sur le graphique pour des raisons de lisibilité. Par
-défaut, <code>show_ci</code>, <code>show_value</code> et
-<code>show_lab</code> ont la valeur de <code>TRUE</code> et
-<code>show_n</code> a la valeur de <code>FALSE</code>, de manière à
-montrer sur le graphique les intervalles de confiance, les valeurs des
-estimations et les noms des axes, mais pas le nombre d’individus dans
-l’échantillon. Nous aborderons en détail le contenu par défaut des
-labels des axes dans la partie abordant les labels. Pour
-<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> le nombre de personne dans
-l’échantillon est indiqué pour chaque quantile dans la courbe de
-distribution. On n’indique pas ce nombre pour les quantiles que ne sont
-pas complètement représentés quand on utilise l’argument
-<code>limits</code>.</p></li>
-<li><p><code>total_name</code> indique le nom qui doit être mentionné à
-côté de la barre du total dans le graphique. Par défaut, il s’agit de
+2% sont indiquées sur le graphique pour des raisons de lisibilité. Pour
+<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> l’argument <code>show_n</code> indique
+les effectifs de l’échantillon pour chaque quantile.</p>
+<ul>
+<li>
+<code>total_name</code> indique le nom qui doit être mentionné à
+côté du résulat du total dans le graphique. Par défaut, il s’agit de
 “Total”, mais l’utilisateur peut indiquer autre chose de plus
-spécifique.</p></li>
+spécifique.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, on ne montre plus les intervalles de
 confiances, les valeurs de l’indicateur et les labels des titres, par
@@ -1114,21 +2929,11 @@ changé le nom du “Total”.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-50-1.png" width="100%"></p>
 <p>Certains arguments sont spécifiques aux fonctions
 <code>distrib_continous()</code> et
 <code>distrib_group_continous()</code> :</p>
 <ul>
-<li><p><code>bw</code> indique le degré de “lissage” de la densité. Une
-valeur plus élevée conduira à davantage lisser la densité et masquera
-davantage les variations locales alors qu’une valeur plus faible
-montrera les détails dans la variations de le courbe.
-<code>resolution</code> indique la “finesse” de la courbe de densité.
-Avec une résolution plus faible, il y aura moins de points et on verra
-les petites droites reliant les points de densité. Une grande résolution
-implique des calculs plus longs. Ces deux arguments, bien
-qu’esthétiques, influencent aussi l’objet <code>dens</code> produit par
-les fonctions.</p></li>
 <li><p><code>height</code> indique la hauteur des courbes de densité
 dans <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. Une valeur plus élevée
 mènent à des courbes plus hautes qui peuvent éventuellement se
@@ -1143,56 +2948,70 @@ intéressante qui reprend la majorité des observations. Précisons qu’il
 ne s’agit pas d’un filtre, mais d’un zoom : les déciles, valeurs
 centrales et moustaches sont toujours calculées sur l’ensemble de la
 distribution. En cas d’utilisation de zoom important, il est conseillé
-d’utiliser une résolution plus élevée.</p></li>
-<li><p>D’autres arguments de type show sont spécifiques à ces deux
-fonctions. C’est le cas de <code>show_mid_line</code>,
+d’utiliser une résolution plus élevée. A noter que lorsque
+<code>show_n = TRUE</code> pour <code>distrib_continous()</code>, on
+n’indique pas les effectifs pour les quantiles qui ne sont pas
+complètement représentés quand on utilise l’argument
+<code>limits</code>.</p></li>
+<li>
+<p>D’autres arguments de type <code>show_*</code> sont spécifiques à
+ces deux fonctions. C’est le cas de <code>show_mid_line</code>,
 <code>show_ci_lines</code>, <code>show_ci_area</code>,
 <code>show_quant_lines</code> qui se retrouvent dans les deux fonctions
 de distribution continue et <code>show_mid_point</code>,
 <code>show_ci_errorbar</code> et <code>show_moustache</code> qui sont
-spécifiques à <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. Les arguments
-<code>show_mid_point</code> et <code>show_mid_line</code> permettent de
-montrer la valeur centrale, médiane ou moyenne, sous la forme d’un point
-ou d’une ligne. Les arguments <code>show_ci_errorbar</code>,
-<code>show_ci_lines</code> et <code>show_ci_area</code> permettent de
-montrer l’intervalle de confiance de la valeur centrale sous la forme
-d’une barre d’erreur de lignes en pointillée ou d’une aire colorée.
+spécifiques à <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>.</p>
+<ul>
+<li>
+<code>show_mid_point</code> et <code>show_mid_line</code> permettent
+de montrer la valeur centrale, médiane ou moyenne, sous la forme d’un
+point ou d’une ligne.</li>
+<li>
+<code>show_ci_errorbar</code>, <code>show_ci_lines</code> et
+<code>show_ci_area</code> permettent de montrer l’intervalle de
+confiance de la valeur centrale sous la forme d’une barre d’erreur de
+lignes en pointillée ou d’une aire colorée.</li>
+<li>
 <code>show_quant_lines</code> permet de tracer des lignes pour les
-valeurs des quantiles sur le graphique. Enfin,
-<code>show_moustache</code> permet de montrer la boite à moustache. Par
-défaut, <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> indique la la valeur centrale
-par une ligne et ses intervalles de confiance par des lignes pointillées
-et ne trace pas de ligne pour les quantiles. Par défaut,
+valeurs des quantiles sur le graphique.</li>
+<li>
+<code>show_moustache</code> permet de montrer la boite à
+moustache.</li>
+</ul>
+</li>
+</ul>
+<p>Par défaut, <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> indique la la valeur
+centrale par une ligne et ses intervalles de confiance par des lignes
+pointillées et ne trace pas de ligne pour les quantiles. Par défaut,
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> indique les valeurs centrales
 par des points et leurs intervalles de confiance par des barres
 d’erreurs, et ne dessine pas d’autres éléments que la moustache sur le
-graphique .</p></li>
-</ul>
+graphique .</p>
 <p>Dans l’exemple ci-dessous, nous comparons les revenus du travail des
 travailleurs à temps partiel selon la région, en modifiant de nombreuses
 options graphiques. <code>bw</code> étant plus faible, la distribution
 est moins lissée et on peut y observer des variations de densités plus
 locales. <code>resolution</code> étant plus faible, on peut déceler les
-droites qui composent les deux courbes de fréquence. <code>limits</code>
-permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui
-contient la grande majorité des observations. <code>height</code> a été
-défini pour que les aires de densité se chevauchent. Pour que ce
-chevauchement soit esthétique, <code>alpha</code> a été réglé à
-<code>.3</code> pour des aires transparentes et une bordure a été
-ajoutée avec <code>color = black</code>. On a indiqué la médiane sous la
-forme d’une ligne. Ses intervalles de confiance sont indiqués par deux
-lignes en pointillées et une aire colorées. Les déciles sont indiqués
-par des lignes verticales grises et on a masqué la moustache. Notez que
-le revenu du travail mensuel est directement calculé dans l’expression
-en additionnant le salaire avec le revenu d’une activité indépendante
-avant de diviser le tout par 12.</p>
+droites qui composent les courbes de densité. <code>limits</code> permet
+de se concentrer sur la plage de valeur (de -500€ à 3000€) qui contient
+la grande majorité des observations. <code>height</code> a été défini
+pour que les aires de densité se chevauchent. Pour que ce chevauchement
+soit esthétique, <code>alpha</code> a été réglé à <code>.3</code> pour
+des aires transparentes et une bordure a été ajoutée avec
+<code>color = black</code>. On a indiqué la médiane sous la forme d’une
+ligne. Ses intervalles de confiance sont indiqués par deux lignes en
+pointillées et une aire colorées. Les déciles sont indiqués par des
+lignes verticales grises et on a masqué la moustache. Notez que le
+revenu du travail mensuel est directement calculé dans l’expression en
+additionnant le salaire avec le revenu d’une activité indépendante avant
+de diviser le tout par 12.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">db040</span>,</span>
 <span>  <span class="op">(</span><span class="va">py010n</span> <span class="op">+</span> <span class="va">py050n</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="fl">2</span>,</span>
 <span>  bw <span class="op">=</span> <span class="fl">.7</span>,</span>
-<span>  resolution <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  height <span class="op">=</span> <span class="fl">1.5</span>,</span>
 <span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">500</span>, <span class="fl">3000</span><span class="op">)</span>,</span>
 <span>  show_mid_point <span class="op">=</span> <span class="cn">F</span>,</span>
@@ -1204,12 +3023,12 @@ avant de diviser le tout par 12.</p>
 <span>  show_quant_lines <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_moustache <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  color <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  pal <span class="op">=</span> <span class="st">"turquoise"</span>,</span>
+<span>  pal <span class="op">=</span> <span class="st">"purple"</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">.4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
@@ -1219,28 +3038,36 @@ avant de diviser le tout par 12.</p>
 de <code>0</code> (barre invisible car d’épaisseur nulle) à
 <code>1</code> (barre se touchant car ne laissant aucun espace entre
 elles). La valeur par défaut est de <code>0.9</code>.</p></li>
-<li><p>Les couleurs des barres peuvent être indiquées dans les arguments
-<code>fill</code> et <code>pal</code>. <code>fill</code> est utilisé
-pour les graphiques monochrome (<code><a href="../reference/prop_group.html">prop_group()</a></code>,
-<code><a href="../reference/central_group.html">central_group()</a></code> et ses alias,
+<li>
+<p>Les couleurs des barres peuvent être indiquées dans les arguments
+<code>fill</code> et <code>pal</code>.</p>
+<ul>
+<li>
+<code>fill</code> est utilisé pour les graphiques monochrome
+(<code><a href="../reference/prop_group.html">prop_group()</a></code>, <code><a href="../reference/central_group.html">central_group()</a></code> et ses alias,
 <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code><!--# et esth_graph(), mais déplacé dans une autre page -->).
 Les couleurs de base de R ou un code couleur hexadécimal peuvent être
-indiqués dans <code>fill</code>. <code>pal</code> est utilisé pour les
-graphiques avec plusieurs couleurs. pal doit reprendre le nom d’une
-palette des packages <code>MetBrewer</code>, <code>MoMAColors</code> ou
+indiqués dans <code>fill</code>.</li>
+<li>
+<code>pal</code> est utilisé pour les graphiques avec plusieurs
+couleurs. pal doit reprendre le nom d’une palette des packages
+<code>MetBrewer</code>, <code>MoMAColors</code> ou
 <code>PrettyCols</code>. L’argument direction permet d’inverser le sens
 de la palette, en remplaçant le <code>1</code>, par défaut, par
 <code>-1</code> pour avoir le sens opposé. Pour <code><a href="../reference/many_val.html">many_val()</a></code>
 et ses alias, <code>pal</code> peut aussi prendre une couleur unie
 (couleur de R ou code hexadécimal) si l’utilisateur souhaite un
-graphique monochrome. Les couleurs des <code>NA</code> et des totaux,
-quand ils sont présents sont toujours gris (<code>grey</code>) et gris
-foncé (<code>grey40</code>) et ne sont pas modifiable par les arguments
-<code>fill</code> ou <code>pal</code>. Par défaut, des couleurs ou des
-palettes de couleurs différentes ont été choisies pour chaque fonctions
-différente, y compris les alias, pour éviter la confusion des
-graphiques.</p></li>
+graphique monochrome.</li>
 </ul>
+</li>
+</ul>
+<p>Les couleurs des <code>NA</code> et des totaux, quand ils sont
+présents sont toujours gris (<code>grey</code>) et gris foncé
+(<code>grey40</code>) et ne sont pas modifiable par les arguments
+<code>fill</code> ou <code>pal</code>. Par défaut, des couleurs ou des
+palettes de couleurs différentes ont été choisies pour chacune des
+fonctions, y compris les alias, pour éviter la confusion des
+graphiques.</p>
 <p>Dans l’exemple ci-dessous, on utilise une autre palette de couleur et
 des barres plus fines.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
@@ -1249,13 +3076,13 @@ des barres plus fines.</p>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  pal <span class="op">=</span> <span class="st">"VanGogh2"</span>,</span>
-<span>  dodge <span class="op">=</span> <span class="fl">.7</span>,</span>
+<span>  dodge <span class="op">=</span> <span class="fl">.5</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span> </span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-54-1.png" width="100%"></p>
 <ul>
 <li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, <code>pal</code> peut soit
@@ -1265,22 +3092,21 @@ monochrome, dans le cas de plusieurs couleurs, une palette de couleur
 est créée en passant par les différentes couleurs indiquées pour colorer
 les différents quantiles, la première couleur indiquant la coloration
 des premiers et derniers quantiles, et la dernière couleur indiquant la
-coloration du quantile central. En cas d’une pair de catégories, par
-exemple pour des déciles ou des quartiles, les deux catégories centrales
-prennent des couleurs différentes et légèrement dégradées et c’est celle
-du haut qui prend la couleur indiquée en dernière position du vecteur
-<code>pal</code>. Précisons que le vecteur de <code>pal</code> doit être
-un vecteur de couleur de R ou de codes hexadécimaux, mais pas une des
-palettes des packages <code>MetBrewer</code>, <code>MoMAColors</code> ou
+coloration du quantile central<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;En cas d’un nombre pair de quantiles, par exemple pour
+des déciles ou des quartiles, les deux catégories centrales prennent des
+couleurs différentes : c’est celle du haut qui prend la couleur indiquée
+en dernière position du vecteur &lt;code&gt;pal&lt;/code&gt;.&lt;/p&gt;"><sup>6</sup></a>. Précisons que le vecteur de
+<code>pal</code> doit être un vecteur de couleur de R ou de codes
+hexadécimaux, mais pas une des palettes des packages
+<code>MetBrewer</code>, <code>MoMAColors</code> ou
 <code>PrettyCols</code> utilisées dans <code>pal</code> pour les autres
 fonctions. Par défaut <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> utilise un
 dégradé de bleu pour les quantiles et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> colorie les courbes de densité
 en gris, de manière à ne pas surcharger le graphique avec les quantiles.
 Ces deux fonction ont aussi l’argument <code>color</code> qui permet de
-tracer la ligne de la courbe de densité dans une couleur particulière.
-Par défaut cette ligne n’est pas colorée, seule l’aire sous la courbe
-l’est.</p></li>
+définir la couleur de la ligne supérieure de la courbe de densité. Par
+défaut cette ligne n’est pas affichée.</p></li>
 <li><p><code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> comprend aussi l’argument
 <code>pal_moustache</code> qui détermine les couleurs de la moustache et
 <code>alpha</code> qui détermine la transparence de la couleur de la
@@ -1302,14 +3128,16 @@ densité en rouge.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  <span class="va">age</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.05</span><span class="op">)</span>,</span>
+<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span>,</span>
 <span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yellow2"</span>, <span class="st">"green3"</span>, <span class="st">"blue"</span><span class="op">)</span>,</span>
-<span>  show_n <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"green3"</span>, <span class="st">"orange"</span><span class="op">)</span>,</span>
+<span>  show_n <span class="op">=</span> <span class="cn">T</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-56-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
@@ -1329,7 +3157,7 @@ proportions.</p></li>
 <li><p><code>digits</code> indique le nombre de décimales qui doivent
 être affichées pour les valeurs sur le graphique. Par défaut,
 <code>digit = 0</code>, ce qui conduit à ne pas afficher de
-décimale.</p></li>
+décimales.</p></li>
 <li><p><code>unit</code> indique l’unité à indiquer sur le graphique.
 Pour <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>, <code><a href="../reference/prop_group.html">prop_group()</a></code>,
 <code><a href="../reference/many_val.html">many_prop()</a></code> et <code>many_prop_group(</code>), par défaut
@@ -1362,7 +3190,7 @@ la virgule.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
@@ -1380,13 +3208,13 @@ respectivement les différent labels de l’axe des ordonnées et les
 différents labels de la légende. Ces valeurs sont par défaut de 25
 caractères. <code>wrap_width_leg</code> n’est présent que pour les
 graphiques ayant une légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias. Précisons aussi que le _y
-renvoie à l’axe des y tel qu’il est situé sur le graphique, après la
-transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
-Ainsi, il s’agit souvent des groupes, de la variable qualitative pour
-<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des variables pour
-<code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>) et leurs
-alias.</p></li>
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias. Précisons aussi que le
+<code>_y</code> renvoie à l’axe des y tel qu’il est situé sur le
+graphique, après la transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu
+dans les fonctions. Ainsi, il s’agit souvent des groupes, de la variable
+qualitative pour <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des
+variables pour <code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>)
+et leurs alias.</p></li>
 <li><p><code>legend_ncol</code> indique le nombre maximum de colonnes
 dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre
 de lignes dans la légende s’ajuste au nombre maximum de colonnes.
@@ -1394,32 +3222,14 @@ de lignes dans la légende s’ajuste au nombre maximum de colonnes.
 ayant une légende : <code>distrib_group_discrete(</code>) et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias.</p></li>
 </ul>
-<p>Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a
-mis à la ligne les labels de l’ordonnée à partir de 10 caractères et
-ceux de la légende à partir de 15 caractères et on a limité à trois
-colonnes pour la légende.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
-<span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
-<span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
-<span>  font <span class="op">=</span> <span class="st">"Montserrat"</span>,</span>
-<span>  wrap_width_y <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  wrap_width_leg <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>  legend_ncol <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region"</span>,</span>
-<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
 </h3>
 <p>Les arguments de label ne sont utilisés que si
-<code>show_lab = TRUE</code>. Si <code>show_lab = FALSE</code>, aucun
-des labels ci-dessous n’est indiqué.</p>
+<code>show_lab = TRUE</code>, qui est la valeur par défaut. Si
+<code>show_lab = FALSE</code>, aucun des labels ci-dessous n’est
+indiqué.</p>
 <ul>
 <li><p><code>title</code>, <code>subtitle</code>, <code>xlab</code>,
 <code>ylab</code>, <code>legend_lab</code> et <code>caption</code>
@@ -1432,68 +3242,60 @@ graphique, c’est-à-dire après la transformation
 <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
 <code>legend_lab</code> n’est présent que pour les graphiques ayant une
 légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias. Le <em>caption</em> étant
-souvent déjà utilisé pour indiquer la p valeur du test statistique,
-l’utilisation de l’argument <code>caption</code> permet d’ajouter un
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que ses alias. Le <em>caption</em>
+étant souvent déjà utilisé pour indiquer la p valeur du test
+statistique, l’utilisation de l’argument <code>caption</code> ajoute un
 texte en dessous de la mention de la p valeur du test
 statistique.</p></li>
-<li><p>Il est possible de ne pas indiquer de texte explicite pour les
-arguments de label tout en indiquant <code>show_lab = TRUE</code>. Dans
-ce cas, il n’y a pas de titre, pas de sous-titre et pas de
-<em>caption</em> (autre que la p valeur du test statistique), mais il y
-a un <code>xlab</code>, un <code>ylab</code> et, pour les graphiques
-avec légende, un <code>legend_lab</code>. Chacun de ces texte reprend
-les noms de la variable ou de l’expression qui est, pour
-<code>xlab</code>, précédé d’une précision : “Moyenne : …”,
-“Distribution : …”</p></li>
-<li><p>Il est possible d’indiquer certains label et d’autre non, par
-exemple si l’on souhaite un titre mais pas de sous-titre. Il suffit
-d’indiquer <code>show_lab = TRUE</code> et de ne compléter que les
-arguments de labels que l’on souhaite voir écrits sur le graphique.
-Cependant, pour <code>xlab</code>, <code>ylab</code> et
-<code>legend_lab</code>, cette manière de procéder ne fonctionne pas car
-en l’absence de texte explicite (et avec <code>show_lab = TRUE</code>),
-le label par défaut, basé sur le nom des variables, sera écrit sur le
-graphique. Si l’on souhaite ne pas avoir au moins un de ces labels mais
-en avoir d’autres, il faut alors indiquer, respectivement,
-<code>xlab = ""</code>, <code>ylab =""</code> ou
-<code>legend_lab = ""</code>. L’utilisation de <code>xlab = NULL</code>,
-<code>ylab = NULL</code> ou <code>legend_lab = NULL</code> conduira à
-l’écriture du label par défaut.</p></li>
+<li><p>Dans le cas où les arguments de label ne sont pas renseignés par
+l’utilisateur, il n’y a pas de titre, pas de sous-titre et pas de
+<em>caption</em> (autre que la p valeur du test statistique). Par
+contre, <code>xlab</code>, <code>ylab</code> et, pour les graphiques
+avec légende, <code>legend_lab</code> indiquent par défaut les noms de
+la variable ou de l’expression qui est, pour <code>xlab</code>, précédé
+d’une précision sur la nature du calcul : “Moyenne : …”, “Distribution :
+…”</p></li>
+<li><p>Il est possible d’indiquer certains label et d’autres non, par
+exemple si l’on souhaite un titre mais pas de sous-titre. Il suffit de
+ne compléter que les arguments de labels que l’on souhaite voir écrits
+sur le graphique. Cependant, pour <code>xlab</code>, <code>ylab</code>
+et <code>legend_lab</code>, le label par défaut, basé sur le nom des
+variables, est alors écrit sur le graphique. Si l’on souhaite avoir un
+label vide, il faut indiquer, respectivement, <code>xlab = ""</code>,
+<code>ylab =""</code> ou <code>legend_lab = ""</code>. L’utilisation de
+<code>xlab = NULL</code>, <code>ylab = NULL</code> ou
+<code>legend_lab = NULL</code> conduira à l’écriture du label par
+défaut.</p></li>
 <li><p>Comme argument de label, on peut aussi mentionner l’argument
 <code>lists_vars_lab</code> que l’on a déjà expliqué plus haut et qui
-peut être aussi considéré comme un label. Cependant, par rapport aux
-autres labels, cet argument a aussi une influence sur le dataframe
-produit (<code>tab</code>) car ce sont les labels de variables qui
-seront repris dans le tableau, alors que les autres labels, comme tous
-les arguments esthétiques n’influencent que le graphique et non le
-dataframe.</p></li>
+peut être aussi considéré comme un label.</p></li>
 </ul>
-<p>Dans l’exemple ci-dessous, on introduit manuellement pour les titres,
-sous-titres, caption et titre de légende, en conservant le label par
-défaut pour le titre de l’axe des abscisses et en n’ayant pas de titre
-pour l’axe des ordonnées.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Exemple général avec un axe qu'on ne montre pas mais les autres qui sont montrés</span></span>
-<span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<p>Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a
+mis à la ligne les labels de l’ordonnée à partir de 10 caractères et
+ceux de la légende à partir de 15 caractères et on a limité à trois
+colonnes pour la légende. On a également introduit manuellement les
+titres, sous-titres, <em>caption</em> et titre de légende, en conservant
+le label par défaut pour le titre de l’axe des abscisses et en n’ayant
+pas de titre pour l’axe des ordonnées.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  font <span class="op">=</span> <span class="st">"Montserrat"</span>,</span>
+<span>  wrap_width_y <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  wrap_width_leg <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  legend_lab <span class="op">=</span> <span class="st">"Status"</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">"Source : EU-SILC"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-60-1.png" width="100%"></p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="lexport-au-format-xlsx">L’export au format xlsx<a class="anchor" aria-label="anchor" href="#lexport-au-format-xlsx"></a>
-</h2>
-<p>A ECRIRE</p>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
