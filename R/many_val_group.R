@@ -111,12 +111,12 @@ many_val_group = function(data,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Check des arguments nécessaires
+  # Check des arguments necessaires
   if(missing(type) == TRUE){
-    stop("L'argument type doit être rempli")
+    stop("L'argument type doit etre rempli")
   }
   if((missing(data) | missing(group) | missing(list_vars)) == TRUE){
-    stop("Les arguments data, group, list_vars doivent être remplis")
+    stop("Les arguments data, group, list_vars doivent etre remplis")
   }
 
   # Check des autres arguments
@@ -169,7 +169,7 @@ many_val_group = function(data,
     type = "numeric"
   )
 
-  # Check que les arguments avec choix précis sont les bons
+  # Check que les arguments avec choix precis sont les bons
   match.arg(type, choices = c("mean", "median", "prop"))
   match.arg(position, choices = c("dodge", "stack"))
   match.arg(na.vars, choices = c("rm", "rm.all"))
@@ -177,12 +177,12 @@ many_val_group = function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
-  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
+  # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
-  # On transforme les colonnes entrées en un vecteur caractère (plus facile pour le code !)
+  # On transforme les colonnes entrees en un vecteur caractere (plus facile pour le code !)
   vec_list_vars <- all.vars(substitute(list_vars))
   names(vec_list_vars) <- rep("list_vars", length(vec_list_vars))
 
@@ -192,12 +192,12 @@ many_val_group = function(data,
               vec_list_vars = vec_list_vars)
   }
 
-  message("Variable(s) entrées : ", paste(vec_list_vars, collapse = ", "))
+  message("Variable(s) entrees : ", paste(vec_list_vars, collapse = ", "))
 
-  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On crée un vecteur string qui contient toutes les variables entrées
+  # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
+  # On cree un vecteur string qui contient toutes les variables entrees
 
-  # On ajoute group aux variables entrées dans list_vars (détectées précédemment)
+  # On ajoute group aux variables entrees dans list_vars (detectees precedemment)
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_list_vars, vec_group)
   # On ajoute facet si non-NULL
@@ -211,7 +211,7 @@ many_val_group = function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici le check à proprement parler
+  # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
 
@@ -221,7 +221,7 @@ many_val_group = function(data,
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
-  # On ne garde que les colonnes entrées en input
+  # On ne garde que les colonnes entrees en input
   data_W <- data_W %>%
     select(all_of(unname(vars_input_char)))
 
@@ -243,33 +243,33 @@ many_val_group = function(data,
     }
   }
 
-  # On supprime les NA sur la/les variable(s) entrées si na.vars == "rm.all" => de cette façon les effectifs sont les mêmes pour tous les indicateurs.
+  # On supprime les NA sur la/les variable(s) entrees si na.vars == "rm.all" => de cette facon les effectifs sont les memes pour tous les indicateurs.
   if(na.vars == "rm.all"){
     # On calcule les effectifs avant filtre
     before <- data_W %>%
       summarise(n=unweighted(n()))
-    # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+    # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
     for (var in vec_list_vars) {
       data_W <- data_W %>%
         filter(!is.na(.data[[var]]))
     }
-    # On calcule les effectifs après filtre
+    # On calcule les effectifs apres filtre
     after <- data_W %>%
       summarise(n=unweighted(n()))
-    # On affiche le nombre de lignes supprimées (pour vérification)
-    message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) entrées")
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) entrees")
   }
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W %>%
     mutate(
-      "{{ group }}" := droplevels(as.factor({{ group }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+      "{{ group }}" := droplevels(as.factor({{ group }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
     )
-  # On convertit également la variable de facet en facteur si facet non-NULL
+  # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
 
@@ -293,15 +293,15 @@ many_val_group = function(data,
         summarise(
           list_col = i,
           indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
           n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
+          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)
     }
   }
-  # On calcule les moyennes/médianes par groupe
+  # On calcule les moyennes/medianes par groupe
   if(type == "median" | type == "mean"){
     for(i in vec_list_vars) {
       tab_i <- data_W %>%
@@ -310,8 +310,8 @@ many_val_group = function(data,
           indice = if (type == "median") {
             survey_median(.data[[i]], na.rm = T, vartype = "ci")
           } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
-          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimés au préalable des variables de vec_list_vars si na.vars = "rm"
+          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
         )
 
       tab <- rbind(tab, tab_i)
@@ -323,25 +323,25 @@ many_val_group = function(data,
   # On remplace list_vars par les labels list_vars_lab
   if (!is.null(list_vars_lab)) {
 
-    # vérifier que list_vars a une même longueur que list_vars_lab
+    # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      warning("Le nombre de labels n'est pas égal au nombre de variables : les labels ne sont pas pris en compte")
+      warning("Le nombre de labels n'est pas egal au nombre de variables : les labels ne sont pas pris en compte")
 
-      # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+      # On cree un facteur avec l'ordre tel qu'il est entre par l'utilisateur (pour ggplot)
       tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))
 
-      # si oui, on remplace dans tab$list_col le nom des variables par les labels définis par l'utilisateur dans list_vars_lab
+      # si oui, on remplace dans tab$list_col le nom des variables par les labels definis par l'utilisateur dans list_vars_lab
     } else {
 
       for (i in seq_along(vec_list_vars)) {
         tab[["list_col"]][tab[["list_col"]] == vec_list_vars[i]] <- list_vars_lab[i]
       }
-      # On définit l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+      # On definit l'ordre tel qu'il est entre par l'utilisateur (pour ggplot)
       tab$list_col <- factor(tab$list_col, levels = rev(list_vars_lab))
     }
   }
-  # On crée un facteur avec l'ordre tel qu'il est entré par l'utilisateur (pour ggplot)
+  # On cree un facteur avec l'ordre tel qu'il est entre par l'utilisateur (pour ggplot)
   if (is.null(list_vars_lab)) {
     tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))
   }
@@ -349,31 +349,31 @@ many_val_group = function(data,
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette avec le package met.brewer
+  # On cree la palette avec le package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
-  #ou la crée avec le package MoMAColors
+  #ou la cree avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
-  # On crée la palette avec le package PrettyCols
+  # On cree la palette avec le package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
-  # On crée la palette avec la fonction interne official_pal()
+  # On cree la palette avec la fonction interne official_pal()
   } else if(pal %in% c("OBSS", "IBSA")){
     palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
 
   } else {
     palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
+    warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
-  # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
+  # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
 
-  # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
+  # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
   levels <- c(
     NA,
     rev(
@@ -383,30 +383,30 @@ many_val_group = function(data,
     )
   )
 
-  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, même si na.rm.group = F !
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
 
-  # On définit le nom de l'indicateur (proportion, médiane ou moyenne) et l'échelle qui seront affichées dans le graphique ggplot
+  # On definit le nom de l'indicateur (proportion, mediane ou moyenne) et l'echelle qui seront affichees dans le graphique ggplot
   if(type == "prop"){
-    # Si l'échelle n'est pas définie par l'utilisateur => échelle = 100
+    # Si l'echelle n'est pas definie par l'utilisateur => echelle = 100
     if(is.null(scale)){
       scale <- 100
     }
-    # Si l'unité n'est pas définie par l'utilisateur => unité = "%"
+    # Si l'unite n'est pas definie par l'utilisateur => unite = "%"
     if(is.null(unit)){
       unit <- "%"
     }
     type_ggplot <- "Proportion"
   }
-  # Par contre, pour la médiane et la moyenne => échelle = 1 (équivalence avec la variable entrée)
+  # Par contre, pour la mediane et la moyenne => echelle = 1 (equivalence avec la variable entree)
   if(type == "median"){
     if(is.null(scale)){
       scale <- 1
     }
-    type_ggplot <- "Médiane"
+    type_ggplot <- "Mediane"
   }
   if(type == "mean"){
     if(is.null(scale)){
@@ -415,7 +415,7 @@ many_val_group = function(data,
     type_ggplot <- "Moyenne"
   }
 
-  # On crée le graphique
+  # On cree le graphique
 
   graph <- tab %>%
     mutate("{{ group }}" := forcats::fct_rev({{ group }})) %>%
@@ -530,7 +530,7 @@ many_val_group = function(data,
       )
   }
 
-  # Ajouter les valeurs calculées
+  # Ajouter les valeurs calculees
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -562,7 +562,7 @@ many_val_group = function(data,
           family = font),
         size = 3,
         alpha = 0.7,
-        hjust = 0, # Justifié à droite
+        hjust = 0, # Justifie a droite
         vjust = 0.4,
         position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = 0)
       )
@@ -571,7 +571,7 @@ many_val_group = function(data,
 
   # 5. RESULTATS --------------------
 
-  # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
+  # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "prop") {
     tab <- tab %>%
       rename(prop = indice,
@@ -591,7 +591,7 @@ many_val_group = function(data,
              mean_upp = indice_upp)
   }
 
-  # On crée l'objet final
+  # On cree l'objet final
   res <- list()
   res$tab <- tab
   res$graph <- graph
@@ -599,15 +599,15 @@ many_val_group = function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
-    # Pour many_val_group, test pas encore implémenté => on crée un data.frame à la main
+    # Pour many_val_group, test pas encore implemente => on cree un data.frame a la main
     test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implémenté dans many_val_group",
+                                    Value = "Test pas encore implemente dans many_val_group",
                                     row.names = NULL)
 
-    # J'exporte les résultats en Excel
+    # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,

@@ -12,7 +12,7 @@
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.
-#' @param na.rm.facet Argument à supprimer?
+#' @param na.rm.facet Argument a supprimer?
 #' @param quantiles Quantiles to be computed in the distributions. Default are deciles.
 #' @param moustache_probs A vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.
 #' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.
@@ -41,7 +41,7 @@
 #' @param wrap_width_y Number of characters before going to the line in the labels of the groups. Default is 25
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Médianne : " + quanti_exp. To show no X label, use xlab = "".
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
@@ -100,9 +100,9 @@ distrib_group_continuous <- function(data,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Un check impératif
+  # Un check imperatif
   if((missing(data) | missing(group) | missing(quanti_exp)) == TRUE){
-    stop("Les arguments data, group et quanti_exp doivent être remplis")
+    stop("Les arguments data, group et quanti_exp doivent etre remplis")
   }
 
   # Check des autres arguments
@@ -174,32 +174,32 @@ distrib_group_continuous <- function(data,
     )
   )
 
-  # Check que les arguments avec choix précis sont les bons
+  # Check que les arguments avec choix precis sont les bons
   match.arg(type, choices = c("mean", "median"))
 
   # Check que limit ne contient que 2 valeurs
   if(!is.null(limits) & length(limits) != 2){
-    stop("limits doit être un vecteur contenant 2 valeurs (min et max)")
+    stop("limits doit etre un vecteur contenant 2 valeurs (min et max)")
   }
 
-  # On empêche une hauteur de plus de 1 si palette multicolore (ça déconne si chevauchement)
+  # On empeche une hauteur de plus de 1 si palette multicolore (ca deconne si chevauchement)
   if(height > 1 & length(pal) > 1){
-    message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redéfinie à .8")
+    message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redefinie a .8")
     height <- .8
   }
 
-  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
-  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
+  # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
-  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On crée un vecteur string qui contient toutes les variables entrées
-  # Solution trouvée ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
+  # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
+  # On cree un vecteur string qui contient toutes les variables entrees
+  # Solution trouvee ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
 
-  # On détecte d'abord les variables entrées dans l'expression pour calculer la moyenne/médiane
+  # On detecte d'abord les variables entrees dans l'expression pour calculer la moyenne/mediane
   vec_quanti_exp <- all.vars(substitute(quanti_exp))
-  names(vec_quanti_exp) <- rep("quanti_exp", length(vec_quanti_exp)) # On crée un vecteur nommé pour la fonction check_input ci-dessous
+  names(vec_quanti_exp) <- rep("quanti_exp", length(vec_quanti_exp)) # On cree un vecteur nomme pour la fonction check_input ci-dessous
   vars_input_char <- vec_quanti_exp
   # On ajoute groupe
   vec_group <- c(group = as.character(substitute(group)))
@@ -215,7 +215,7 @@ distrib_group_continuous <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici le check à proprement parler
+  # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
 
@@ -225,7 +225,7 @@ distrib_group_continuous <- function(data,
   # On convertit d'abord data en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
-  # # On ne garde que les colonnes entrées en input
+  # # On ne garde que les colonnes entrees en input
   # data_W <- data_W %>%
   #   select(all_of(unname(vars_input_char)))
 
@@ -247,70 +247,70 @@ distrib_group_continuous <- function(data,
     }
   }
 
-  # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette façon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ça on s'en fout)
-  # On les affiche via message (pour vérification)
-  message("Variable(s) détectée(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
+  # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
+  # On les affiche via message (pour verification)
+  message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W %>%
     summarise(n=unweighted(n()))
-  # On filtre via boucle => solution trouvée ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
+  # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
   for (var in vec_quanti_exp) {
     data_W <- data_W %>%
       filter(!is.na(.data[[var]]))
   }
-  # On calcule les effectifs après filtre
+  # On calcule les effectifs apres filtre
   after <- data_W %>%
     summarise(n=unweighted(n()))
-  # On affiche le nombre de lignes supprimées (pour vérification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimées avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
+  # On affiche le nombre de lignes supprimees (pour verification)
+  message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
 
   # On convertit la variable de groupe en facteur si pas facteur
-  # + on recalcule quanti_exp dans une variable unique si c'est une expression à la base => nécessaire pour calculer la densité
+  # + on recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite
   data_W <- data_W %>%
     mutate(
-      "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
+      "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
       quanti_exp_flattened = {{ quanti_exp }}
     )
   # On convertit la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
 
   # 3. TEST STATISTIQUE --------------------
 
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
-  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
+  # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if(na.rm.group == F){
     data_W <- data_W %>%
-      # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
+      # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
   }
   if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>% # On enlève séquentiellement les NA de group puis facet
+      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
   }
 
-  # On réalise les tests statistiques
-  # Solutions trouvées ici :
+  # On realise les tests statistiques
+  # Solutions trouvees ici :
   # https://stackoverflow.com/questions/27261232/passing-argument-to-lm-in-r-within-function
   # https://stackoverflow.com/questions/72384740/passing-data-variables-to-r-formulas
   # https://stackoverflow.com/questions/52856711/use-function-arguments-in-lm-formula-within-function-environment
-  # Pour regTermTest => expliqué par Lumley himself : https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r
-  quanti_exp_fmla <- "quanti_exp_flattened" # Un string car on a créé la variable "en dur" dans la fonction
+  # Pour regTermTest => explique par Lumley himself : https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r
+  quanti_exp_fmla <- "quanti_exp_flattened" # Un string car on a cree la variable "en dur" dans la fonction
   if(quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(group))
     fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
     fmla2 <- stats::as.formula(paste("~", group_fmla))
   }
-  # Avec facet : prévoir une boucle pour chacune des modalité de facet => A FAIRE PLUS TARD
+  # Avec facet : prevoir une boucle pour chacune des modalite de facet => A FAIRE PLUS TARD
   if(!quo_is_null(quo_facet)){
     group_fmla <- as.character(substitute(facet))
     fmla <- stats::as.formula(paste(quanti_exp_fmla, "~", group_fmla))
@@ -325,7 +325,7 @@ distrib_group_continuous <- function(data,
   if(type == "median"){
     test.stat <- svyranktest(fmla, design = data_W, test = "KruskalWallis")
   }
-  # /!\ NOTE : ça fonctionne mais j'ai peur d'utiliser eval => solution précédente choisie, qui a tout de même le pb de ne pas garder la formule dans le call
+  # /!\ NOTE : ca fonctionne mais j'ai peur d'utiliser eval => solution precedente choisie, qui a tout de meme le pb de ne pas garder la formule dans le call
   # if(type == "median"){
   #   if(na.rm.group == T){
   #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W, test = "KruskalWallis")))
@@ -349,20 +349,20 @@ distrib_group_continuous <- function(data,
       group_by({{ facet }}, {{ group }})
   }
 
-  # On calcule l'indicateur par groupe (mean ou median selon la fonction appelée)
+  # On calcule l'indicateur par groupe (mean ou median selon la fonction appelee)
   if (quo_is_null(quo_facet)) {
     tab <- data_W %>%
       summarise(
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
-        n_sample = unweighted(n()), # On peut faire n(), car les NA ont été supprimés partout dans l'expression (précédemment dans la boucle) => plus de NA
+        n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
       ) %>%
       ungroup()
   }
 
-  # On calcul un nouvel ordre dans order si on veut réordonner les groupes selon la valeur calculée
+  # On calcul un nouvel ordre dans order si on veut reordonner les groupes selon la valeur calculee
   if (reorder == T) {
     tab_order <- tab %>%
       arrange(desc(indice)) %>%
@@ -371,17 +371,17 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # 5. CALCUL DE LA DENSITé ET DES QUANTILES --------------------
+  # 5. CALCUL DE LA DENSITE ET DES QUANTILES --------------------
 
-  # On identifie la variable de pondération inclue dans dotdotdot (...) pour la passer aussi à la densité
+  # On identifie la variable de ponderation inclue dans dotdotdot (...) pour la passer aussi a la densite
   var_weights <- substitute(...())$weights
 
-  # On crée des objets vides pour les remplir dans la boucle ci-dessous
+  # On cree des objets vides pour les remplir dans la boucle ci-dessous
   estQuant_W <- tibble()
   df_dens <- tibble()
   quant_seg <- tibble()
   boxplot_df <- tibble()
-  # On crée un vecteur sur lequel on va boucler => ce sont les levels de group (qui est un facteur)
+  # On cree un vecteur sur lequel on va boucler => ce sont les levels de group (qui est un facteur)
   vec_group.i <- rev(levels(data_W$variables[[deparse(substitute(group))]]))
 
   for(group.i in seq_along(vec_group.i)){
@@ -390,14 +390,14 @@ distrib_group_continuous <- function(data,
     data_W_group <- data_W %>%
       filter({{ group }} == vec_group.i[group.i])
 
-    # On estime la densité de la variable quanti pour le group.i
+    # On estime la densite de la variable quanti pour le group.i
     estDensity_group <- stats::density(data_W_group$variables[["quanti_exp_flattened"]],
       n = resolution,
       adjust = bw,
       subdensity = T,
       weights = if (is.null(var_weights)) {
         NULL
-      # On introduit la variable de pondération identifiée dans var_weights mais transformée pour que la somme = 1
+      # On introduit la variable de ponderation identifiee dans var_weights mais transformee pour que la somme = 1
       } else if (!is.null(var_weights)) data_W_group$variables[[as.character(var_weights)]] / sum(data_W_group$variables[[as.character(var_weights)]]),
       na.rm = T
     )
@@ -411,13 +411,13 @@ distrib_group_continuous <- function(data,
       ci = T,
       na.rm = T
     )[[1]]) %>%
-      tibble::rownames_to_column(var = "probs") %>% # On crée une colonne qui contient le quantile
+      tibble::rownames_to_column(var = "probs") %>% # On cree une colonne qui contient le quantile
       mutate(
         group = vec_group.i[group.i], # Pour savoir quel groupe
-        level = group.i # Pour savoir quel level (en valeur numérique)
+        level = group.i # Pour savoir quel level (en valeur numerique)
       )
 
-    # On crée un data.frame avec les densités, et on crée les classes de quantiles (à quel quantile x appartient) en croisant x avec le vecteur de quantiles
+    # On cree un data.frame avec les densites, et on cree les classes de quantiles (a quel quantile x appartient) en croisant x avec le vecteur de quantiles
     df_dens_group <- data.frame(
       group = vec_group.i[group.i],
       level = group.i,
@@ -429,10 +429,10 @@ distrib_group_continuous <- function(data,
 
     # sum(df_dens_group$y)
 
-    # Il faut qu'il y ait dans l'estimation de la densité les valeurs EXACTES des quantiles, pour que le ggplot puisse couper exactement aux quantiles !
+    # Il faut qu'il y ait dans l'estimation de la densite les valeurs EXACTES des quantiles, pour que le ggplot puisse couper exactement aux quantiles !
     # => Je les ajoute avec add_case, en estimant y avec approx()
     # Je le fais dans une boucle, pour avoir tous les quantiles.
-    # SOLUTION INSPIRéE DE CE CODE : https://stackoverflow.com/questions/74560448/how-fill-geom-ribbon-with-different-colour-in-r
+    # SOLUTION INSPIReE DE CE CODE : https://stackoverflow.com/questions/74560448/how-fill-geom-ribbon-with-different-colour-in-r
     for (i in seq_along(unique(quantiles))) {
       df_dens_group <- df_dens_group |>
         tibble::add_case(
@@ -452,22 +452,22 @@ distrib_group_continuous <- function(data,
         )
     }
 
-    # On rbind progressivement les df de densité des différents groupes
+    # On rbind progressivement les df de densite des differents groupes
     df_dens <- rbind(df_dens, df_dens_group)
-    # On rbind progressivement les df de quantiles des différents groupe
+    # On rbind progressivement les df de quantiles des differents groupe
     estQuant_W <- rbind(estQuant_W, estQuant_W_group)
 
-    # On fait les calculs nécessaires pour créer les boites à show_moustaches
+    # On fait les calculs necessaires pour creer les boites a show_moustaches
     if (show_moustache == T) {
 
-      # On calcule les quantiles à partir des proportions indiquées dans moustache_probs
+      # On calcule les quantiles a partir des proportions indiquees dans moustache_probs
       moustache_quant <- c(0 + ((1-unique(moustache_probs))/2), 1 - ((1-unique(moustache_probs))/2))
       moustache_quant <- moustache_quant[order(moustache_quant)]
 
       # On calcule les quantiles du group.i avec survey et on les stocke dans un data.frame
       boxplot_group <- as.data.frame(svyquantile(~quanti_exp_flattened,
         design = data_W_group,
-        quantiles = moustache_quant, # On indique les quantiles calculés
+        quantiles = moustache_quant, # On indique les quantiles calcules
         ci = F,
         na.rm = T
       )[[1]]) %>%
@@ -475,13 +475,13 @@ distrib_group_continuous <- function(data,
           group = vec_group.i[group.i],
           level = group.i
         )
-      # On rbind progressivement les df de quantiles des différents groupe
+      # On rbind progressivement les df de quantiles des differents groupe
       boxplot_df <- rbind(boxplot_df, boxplot_group)
     }
   }
 
   # On restructure boxplot_df pour ggplot
-  # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer à quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
+  # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer a quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
   if (show_moustache == T) {
     boxplot_df <- boxplot_df %>%
       pivot_longer(
@@ -491,7 +491,7 @@ distrib_group_continuous <- function(data,
         names_transform = as.numeric
       ) %>%
       mutate(
-        moustache_prob = ifelse( # On fait l'inverse que précédemment : on retrouve les proportions à partir des quantiles
+        moustache_prob = ifelse( # On fait l'inverse que precedemment : on retrouve les proportions a partir des quantiles
           probs > .5,
           1 - ((1 - probs) * 2),
           1 - (probs * 2)
@@ -507,28 +507,28 @@ distrib_group_continuous <- function(data,
         left_join(tab_order, by = "group") %>%
         mutate(level = order)
     }
-    boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent être en caractère
+    boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent etre en caractere
     boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile)   %>% mutate(across(everything(), as.character))
     boxplot_df <- boxplot_df_begin %>%
       left_join(boxplot_df_end, by = c("group", "level", "moustache_prob")) %>%
       mutate(
-        moustache_prob = as.character(moustache_prob), # On met moustache_prob en caractère pour le fill sur le ggplot
+        moustache_prob = as.character(moustache_prob), # On met moustache_prob en caractere pour le fill sur le ggplot
         across(
           c(xbegin, xend, level),
-          as.numeric # On remet les variables numériques en numérique
+          as.numeric # On remet les variables numeriques en numerique
         )
       )
 
   }
 
-  # Si reorder = T, on définit un nouveau level à partir de order (calculé plus haut)
+  # Si reorder = T, on definit un nouveau level a partir de order (calcule plus haut)
   if (reorder == T) {
     df_dens <- df_dens %>%
       left_join(tab_order, by = "group") %>%
       mutate(level = order)
   }
 
-  # On calcule y_ridges, pour ploter chaque densité de groupe à un y différent sur des multiples de 1 (0, 1, 2, 3, ..., n)
+  # On calcule y_ridges, pour ploter chaque densite de groupe a un y different sur des multiples de 1 (0, 1, 2, 3, ..., n)
   df_dens <- df_dens %>%
     # group_by(group) %>%
     mutate(y_ridges = (y / max(y)) * height) %>%
@@ -538,20 +538,20 @@ distrib_group_continuous <- function(data,
       quantFct = as.factor(quantFct) # Je transforme l'appartenance au quantile en facteur, pour le ggplot
     )
 
-  # On isole les quantiles avec leurs coordonnées y de densité (pour les afficher avec le ggplot)
+  # On isole les quantiles avec leurs coordonnees y de densite (pour les afficher avec le ggplot)
   quant_seg <- df_dens %>%
     filter(segment == TRUE)
 
-  # On inclut les levels à tab => nécessaire pour ggplot
+  # On inclut les levels a tab => necessaire pour ggplot
   tab_level <- df_dens %>%
     group_by(group) %>%
     summarise(level = first(level)) %>%
     rename("{{ group }}" := group) # Pour la jointure
   tab <- tab %>%
-    left_join(tab_level, by = names(select(., {{group}}))) # SOLUTION TROUVéE ICI : https://stackoverflow.com/questions/48449799/join-datasets-using-a-quosure-as-the-by-argument
+    left_join(tab_level, by = names(select(., {{group}}))) # SOLUTION TROUVEE ICI : https://stackoverflow.com/questions/48449799/join-datasets-using-a-quosure-as-the-by-argument
 
   central <- tibble()
-  # On estime la densité de la moyenne ou médiane et ses CI
+  # On estime la densite de la moyenne ou mediane et ses CI
   for(group.i in seq_along(vec_group.i)){
     df_dens_central <- df_dens |>
       filter(group == vec_group.i[group.i])
@@ -585,14 +585,14 @@ distrib_group_continuous <- function(data,
         central = "indice_upp"
       )
 
-    # On rbind progressivement les df de densité des différents groupes
+    # On rbind progressivement les df de densite des differents groupes
     central <- rbind(central, df_dens_central)
   }
 
-  # car central = df_dens avec les indices de centralité en plus
+  # car central = df_dens avec les indices de centralite en plus
   df_dens <- central
 
-  # On crée un df agrégé avec une ligne par groupe qui comprend des colonnes avec l'indice + bornes des CI
+  # On cree un df agrege avec une ligne par groupe qui comprend des colonnes avec l'indice + bornes des CI
   central_CI <- central |>
     filter(!is.na(central)) %>%
     select(-level, -y, -quantFct, -segment, -y_ridges) %>%
@@ -609,7 +609,7 @@ distrib_group_continuous <- function(data,
       mutate(level = order)
   }
 
-  # On identifie toutes les valeurs de densité comprises dans les IC PAR GROUPE => permet de créer une région PAR GROUPE sur le ggplot
+  # On identifie toutes les valeurs de densite comprises dans les IC PAR GROUPE => permet de creer une region PAR GROUPE sur le ggplot
   central <- central |>
     left_join(central_CI, by = "group") %>%
     mutate(
@@ -628,8 +628,8 @@ distrib_group_continuous <- function(data,
   if(all(isColor(pal)) == TRUE){
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
-    # Sinon on met la couleur par défaut
-    message("Une couleur indiquée dans pal n'existe pas : la couleur par défaut est utilisée")
+    # Sinon on met la couleur par defaut
+    message("Une couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
     pal <- "#e0dfe0"
   }
 
@@ -650,15 +650,15 @@ distrib_group_continuous <- function(data,
     if(all(isColor(pal_moustache)) == TRUE){
       # Si condition remplie on ne fait rien => on garde la palette
     } else {
-      # Sinon on met la couleur par défaut
-      message("Une couleur indiquée dans pal_moustache n'existe pas : la couleur par défaut est utilisée")
+      # Sinon on met la couleur par defaut
+      message("Une couleur indiquee dans pal_moustache n'existe pas : la couleur par defaut est utilisee")
       pal_moustache <- c("#EB9BA0", "#FAD7B1")
     }
 
     pal_mous_calc <- grDevices::colorRampPalette(pal_moustache)(length(unique(moustache_probs)))
   }
 
-  # Les limites de la variable quanti si non indiquée par l'utilisateur => pour ggplot
+  # Les limites de la variable quanti si non indiquee par l'utilisateur => pour ggplot
   if(is.null(limits)){
     lim_min <- min(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
     lim_max <- max(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
@@ -673,9 +673,9 @@ distrib_group_continuous <- function(data,
     geom_ribbon(
       data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
       aes(
-        x = x, ymin = level - 1, ymax = y_ridges, # ymin à level - 1 car commence à 0
+        x = x, ymin = level - 1, ymax = y_ridges, # ymin a level - 1 car commence a 0
         fill = quantFct,
-        group = interaction(group, quantFct) # Ici le groupe doit être l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
+        group = interaction(group, quantFct) # Ici le groupe doit etre l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
       ),
       alpha = alpha
     ) +
@@ -727,7 +727,7 @@ distrib_group_continuous <- function(data,
 
   # Pour caption
 
-  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+  if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
     caption <- paste0("\n", caption)
   }
 
@@ -809,7 +809,7 @@ distrib_group_continuous <- function(data,
   # Ajouter les moustaches
   if (show_moustache == T) {
     graph <- graph +
-      ggnewscale::new_scale_fill() + # Ici je suis obligé de réinitialiser une nouvelle palette avec le package ggnewscale => je vois pas d'autre moyen facile
+      ggnewscale::new_scale_fill() + # Ici je suis oblige de reinitialiser une nouvelle palette avec le package ggnewscale => je vois pas d'autre moyen facile
       geom_rect(
         data = boxplot_df,
         aes(
@@ -910,7 +910,7 @@ distrib_group_continuous <- function(data,
 
   # 7. RESULTATS --------------------
 
-  # Dans un but de lisibilité, on renomme les indices "mean" ou "median" selon la fonction appelée
+  # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "mean") {
     tab <- tab %>%
       rename(mean = indice,
@@ -926,7 +926,7 @@ distrib_group_continuous <- function(data,
   }
 
 
-  # On crée l'objet final
+  # On cree l'objet final
   res <- list()
   res$dens <- df_dens[, c("group", "x", "y", "quantFct", "y_ridges", "central")]
   res$tab <- tab[, !names(tab) %in% c("level")]

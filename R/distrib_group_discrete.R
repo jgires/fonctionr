@@ -103,14 +103,14 @@ distrib_group_discrete <- function(data,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Un check impératif
+  # Un check imperatif
   if((missing(data) | missing(group) | missing(quali_var)) == TRUE){
-    stop("Les arguments data, group et quali_var doivent être remplis")
+    stop("Les arguments data, group et quali_var doivent etre remplis")
   }
 
-  # Un check pour voir si quali_var n'a pas qu'un unique level => sinon aucun intérêt à l'analyse
+  # Un check pour voir si quali_var n'a pas qu'un unique level => sinon aucun interet a l'analyse
   if(nlevels(droplevels(as.factor(data[[deparse(substitute(quali_var))]]))) == 1){
-    stop(paste(deparse(substitute(quali_var)), "ne possède qu'un level"))
+    stop(paste(deparse(substitute(quali_var)), "ne possede qu'un level"))
   }
 
   # Check des autres arguments
@@ -157,15 +157,15 @@ distrib_group_discrete <- function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
-  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
+  # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
-  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On crée un vecteur string qui contient toutes les variables entrées
+  # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
+  # On cree un vecteur string qui contient toutes les variables entrees
   vec_quali_var <- all.vars(substitute(quali_var))
-  names(vec_quali_var) <- rep("quali_var", length(vec_quali_var)) # On crée un vecteur nommé pour la fonction check_input ci-dessous
+  names(vec_quali_var) <- rep("quali_var", length(vec_quali_var)) # On cree un vecteur nomme pour la fonction check_input ci-dessous
   # On ajoute group
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_quali_var, vec_group)
@@ -180,7 +180,7 @@ distrib_group_discrete <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici le check à proprement parler
+  # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
 
@@ -195,7 +195,7 @@ distrib_group_discrete <- function(data,
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
-  # On ne garde que les colonnes entrées en input
+  # On ne garde que les colonnes entrees en input
   data_W <- data_W %>%
     select(all_of(unname(vars_input_char)))
 
@@ -226,24 +226,24 @@ distrib_group_discrete <- function(data,
   # On convertit en facteurs si pas facteurs
   data_W <- data_W %>%
     mutate(
-      "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})), # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+      "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
       "{{ group }}" := droplevels(as.factor({{ group }}))
     )
-  # On convertit également la variable de facet en facteur si facet non-NULL
+  # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
 
   # 3. TEST STATISTIQUE --------------------
 
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
-  # L'idée est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
+  # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if (na.rm.group == F) {
     data_W <- data_W %>%
-      # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
+      # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate(
         "{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")),
       )
@@ -263,8 +263,8 @@ distrib_group_discrete <- function(data,
     }
   }
 
-  # On réalise les tests statistiques
-  # NOTE : pour l'instant uniquement lorsque pas de facet => pour facet mon idée c'est une analyse loglinéaire => pas bien pigé avec survey
+  # On realise les tests statistiques
+  # NOTE : pour l'instant uniquement lorsque pas de facet => pour facet mon idee c'est une analyse loglineaire => pas bien pige avec survey
   if(quo_is_null(quo_facet)){
     quali_var_fmla <- as.character(substitute(quali_var))
     group_fmla <- as.character(substitute(group))
@@ -274,14 +274,14 @@ distrib_group_discrete <- function(data,
       expr = {
         svychisq(fmla, data_W)
       },
-    # test.stat devient un vecteur string avec 1 chaîne de caractères si erreur du test
+    # test.stat devient un vecteur string avec 1 chaine de caracteres si erreur du test
       error = function(e){
         "Conditions non remplies"
       }
     )
   }
 
-  # Ici je remets les NA pour les groupes / quali_var / facet => Le fait d'avoir les NA en missing réel est pratique pour construire le graphique ggplot !
+  # Ici je remets les NA pour les groupes / quali_var / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
   if (na.rm.group == F) {
     data_W <- data_W %>%
       mutate(
@@ -306,7 +306,7 @@ distrib_group_discrete <- function(data,
 
   # 4. CALCUL DES FREQUENCES RELATIVES --------------------
 
-  # On calcule les fréquences relatives par groupe
+  # On calcule les frequences relatives par groupe
   if (quo_is_null(quo_facet)) {
     data_W <- data_W %>%
       group_by({{ group }}, {{ quali_var }})
@@ -326,28 +326,28 @@ distrib_group_discrete <- function(data,
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette avec le package MetBrewer
+  # On cree la palette avec le package MetBrewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
 
-  # On crée la palette avec le package MoMAColors
+  # On cree la palette avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
 
-  # On crée la palette avecle package PrettyCols
+  # On cree la palette avecle package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
 
-  # On crée la palette avec la fonction interne official_pal()
+  # On cree la palette avec la fonction interne official_pal()
   } else if(pal %in% c("OBSS", "IBSA")){
     palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), direction = direction))
 
   } else {
     palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
-    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
+    warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
-  # On crée un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
+  # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
   levels <- c(
     NA,
     rev(
@@ -357,13 +357,13 @@ distrib_group_discrete <- function(data,
     )
   )
 
-  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, même si na.rm.group.group = F !
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
 
-  # On crée le graphique
+  # On cree le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -396,25 +396,25 @@ distrib_group_discrete <- function(data,
 
   # Pour caption
 
-  if (!is.null(caption)) { # Permet de passer à la ligne par rapport au test stat
+  if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
     caption <- paste0("\n", caption)
   }
 
   if (quo_is_null(quo_facet)) {
-    if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+    if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'indépendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            "Khi2 d'independance : ", scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )
     }
-    if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a réussi => test.stat est de class "htest", sinon "character"
+    if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'indépendance : conditions non remplies",
+            "Khi2 d'independance : conditions non remplies",
             caption
           )
         )
@@ -474,14 +474,14 @@ distrib_group_discrete <- function(data,
            fill = NULL)
   }
 
-  # Création des facets si facet
+  # Creation des facets si facet
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
       facet_wrap(vars({{ facet }})) +
       theme(panel.spacing.x = unit(1, "lines"))
   }
 
-  # Ajouter les valeurs calculées
+  # Ajouter les valeurs calculees
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -504,7 +504,7 @@ distrib_group_discrete <- function(data,
 
   # 6. RESULTATS --------------------
 
-  # On crée l'objet final
+  # On cree l'objet final
   res <- list()
   res$tab <- tab
   res$graph <- graph
@@ -516,7 +516,7 @@ distrib_group_discrete <- function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
     # On transforme le test stat en dataframe
@@ -537,14 +537,14 @@ distrib_group_discrete <- function(data,
                                         row.names = NULL)
       }
     }
-    # Pour faceting, test pas encore implémenté => on crée un data.frame à la main
+    # Pour faceting, test pas encore implemente => on cree un data.frame a la main
     if (!quo_is_null(quo_facet)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implémenté avec le faceting",
+                                    Value = "Test pas encore implemente avec le faceting",
                                     row.names = NULL)
     }
 
-    # J'exporte les résultats en Excel
+    # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,

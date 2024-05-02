@@ -51,52 +51,52 @@ make_surface <- function(tab,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Check des arguments nécessaires
+  # Check des arguments necessaires
   if((missing(tab) | missing(var) | missing(value)) == TRUE){
-    stop("Les arguments tab, var et value doivent être remplis")
+    stop("Les arguments tab, var et value doivent etre remplis")
   }
 
 
   # 2. PROCESSING DES DONNEES --------------------
 
-  # On convertit la variable catégorielle en facteur si pas facteur
+  # On convertit la variable categorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
-      "{{ var }}" := droplevels(as.factor({{ var }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs
+      "{{ var }}" := droplevels(as.factor({{ var }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs
     )
 
-  # On réordonne si reorder == T
+  # On reordonne si reorder == T
   if (reorder == T) {
     tab <- tab %>%
       mutate(
         "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }})
       ) %>%
-      arrange({{ value }}) # Il est nécessaire de trier le tableau, puisque le petit algorithme que j'ai écrit pour créer les positions des geom_tile pour le ggplot s'exécute dans l'ordre du tableau !
+      arrange({{ value }}) # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
   }
 
   if (show_ci == F) {
     tab <- tab %>%
       mutate(
-        indice_sqrt = sqrt({{ value }}) # La valeur à la racine carrée (car la valeur en surface = racine carrée X racine carrée)
+        indice_sqrt = sqrt({{ value }}) # La valeur a la racine carree (car la valeur en surface = racine carree X racine carree)
       )
   }
 
   if (show_ci == T) {
     tab <- tab %>%
       mutate(
-        indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont activés, la base du calcul des coordonnées = l'intervalle de confiance supérieur, car il dessine les plus grandes surfaces
+        indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont actives, la base du calcul des coordonnees = l'intervalle de confiance superieur, car il dessine les plus grandes surfaces
       )
   }
 
 
   # 3. CREATION DES POSITIONS POUR LES SURFACES --------------------
 
-  # On calcule un espace par défaut, si rien n'est indiqué
+  # On calcule un espace par defaut, si rien n'est indique
   if (is.null(space)) {
     space <- .15 * min(tab$indice_sqrt, na.rm = T)
   }
 
-  # L'algorithme pour créer les positions des geom_tile pour le ggplot
+  # L'algorithme pour creer les positions des geom_tile pour le ggplot
   tab$xmin <- NA
   tab$xmax <- NA
   tab$xmin[1] <- 0
@@ -108,34 +108,34 @@ make_surface <- function(tab,
 
     tab$xmin[i + 1] <- tab$xmin[i + 1] + space
   }
-  tab <- utils::head(tab, -1) # On supprime la ligne ajoutée
+  tab <- utils::head(tab, -1) # On supprime la ligne ajoutee
   tab$xmean <- (tab$xmin + tab$xmax) / 2
 
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette avec le package MetBrewer
+  # On cree la palette avec le package MetBrewer
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
 
-    # On crée la palette avec le package MoMAColors
+    # On cree la palette avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
     palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
 
-    # On crée la palette avecle package PrettyCols
+    # On cree la palette avecle package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
     palette <- as.character(PrettyCols::prettycols(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
 
-    # On crée la palette avec la fonction interne official_pal()
+    # On cree la palette avec la fonction interne official_pal()
   } else if(pal %in% c("OBSS", "IBSA")){
     palette <- as.character(official_pal(inst = pal, n = length(tab[[deparse(substitute(var))]]), direction = direction))
 
   } else {
     palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
-    warning("La palette indiquée dans pal n'existe pas : la palette par défaut est utilisée")
+    warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
-  # On crée le graphique
+  # On cree le graphique
 
   graph <- tab %>%
     ggplot(
@@ -171,7 +171,7 @@ make_surface <- function(tab,
 
   # Pour caption
 
-  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer à la ligne par rapport au test stat
+  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer a la ligne par rapport au test stat
     caption <- paste0("\n", caption)
   }
   if (!is.null(pvalue)) {

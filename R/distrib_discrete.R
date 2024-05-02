@@ -98,9 +98,9 @@ distrib_discrete <- function(data,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Un check impératif
+  # Un check imperatif
   if((missing(data) | missing(quali_var)) == TRUE){
-    stop("Les arguments data et quali_var doivent être remplis")
+    stop("Les arguments data et quali_var doivent etre remplis")
   }
 
   # Check des autres arguments
@@ -151,13 +151,13 @@ distrib_discrete <- function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On crée une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
-  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
+  # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
-  # On procède d'abord à un test : il faut que toutes les variables entrées soient présentes dans data => sinon stop et erreur
-  # On crée un vecteur string qui contient toutes les variables entrées
+  # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
+  # On cree un vecteur string qui contient toutes les variables entrees
   vec_quali_var <- all.vars(substitute(quali_var))
   names(vec_quali_var) <- rep("quali_var", length(vec_quali_var))
   vars_input_char <- vec_quali_var
@@ -172,7 +172,7 @@ distrib_discrete <- function(data,
     names(vec_filter_exp) <- rep("filter_exp", length(vec_filter_exp))
     vars_input_char <- c(vars_input_char, vec_filter_exp)
   }
-  # Ici le check à proprement parler
+  # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
 
@@ -187,7 +187,7 @@ distrib_discrete <- function(data,
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
-  # On ne garde que les colonnes entrées en input
+  # On ne garde que les colonnes entrees en input
   data_W <- data_W %>%
     select(all_of(unname(vars_input_char)))
 
@@ -212,13 +212,13 @@ distrib_discrete <- function(data,
   # On convertit en facteurs si pas facteurs
   data_W <- data_W %>%
     mutate(
-      "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+      "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
     )
-  # On convertit également la variable de facet en facteur si facet non-NULL
+  # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
-        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour éviter qu'un level soit encodé alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+        "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
 
@@ -227,17 +227,17 @@ distrib_discrete <- function(data,
   # Je recode les NA des 2 variables quali_var et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if (na.rm.var == F) {
     data_W <- data_W %>%
-      # Idée : fct_na_value_to_level() pour ajouter un level NA encapsulé dans un droplevels() pour le retirer s'il n'existe pas de NA
+      # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA")))
   }
   if (na.rm.facet == T) {
     if (!quo_is_null(quo_facet)) {
-      data_W <- data_W %>% # On enlève séquentiellement les NA de quali_var puis facet
+      data_W <- data_W %>% # On enleve sequentiellement les NA de quali_var puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
     }
   }
 
-  # On réalise un test khi2 d'adéquation sur quali_var
+  # On realise un test khi2 d'adequation sur quali_var
   if(!is.null(probs)){ # Uniquement si probs est non null
     if(quo_is_null(quo_facet)){ # Uniquement sans facet (pour le moment)
       quali_var_fmla <- as.character(substitute(quali_var))
@@ -246,7 +246,7 @@ distrib_discrete <- function(data,
     }
   }
 
-  # Ici je remets les NA pour quali_var / facet => Le fait d'avoir les NA en missing réel est pratique pour construire le graphique ggplot !
+  # Ici je remets les NA pour quali_var / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
   if (na.rm.var == F) {
     data_W <- data_W %>%
       mutate("{{ quali_var }}" := droplevels(forcats::fct_na_level_to_value({{ quali_var }}, "NA")))
@@ -281,19 +281,19 @@ distrib_discrete <- function(data,
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette : x fois la couleur selon le nombre de levels
+  # On cree la palette : x fois la couleur selon le nombre de levels
   if(all(isColor(fill)) == TRUE){
     palette <- c(rep(fill, nlevels(tab[[deparse(substitute(quali_var))]])))
-  } else { # Si la couleur n'est pas valide => on met la couleur par défaut
+  } else { # Si la couleur n'est pas valide => on met la couleur par defaut
     palette <- c(rep("sienna2", nlevels(tab[[deparse(substitute(quali_var))]])))
-    warning("La couleur indiquée dans fill n'existe pas : la couleur par défaut est utilisée")
+    warning("La couleur indiquee dans fill n'existe pas : la couleur par defaut est utilisee")
   }
 
-  # On calcule la valeur max de la proportion, pour l'écart des geom_text dans le ggplot
+  # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
 
   if (reorder == T ) {
-    # On crée un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
+    # On cree un vecteur pour ordonner les levels de quali_var selon prop, en mettant NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,
       levels(reorder(
@@ -306,7 +306,7 @@ distrib_discrete <- function(data,
   }
 
   if (reorder == F) {
-    # On crée un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
+    # On cree un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,
       rev(
@@ -317,7 +317,7 @@ distrib_discrete <- function(data,
     )
   }
 
-  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, même si na.rm.var = F !
+  # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, meme si na.rm.var = F !
   # On les supprime donc ssi na.rm.var = F et pas de missing sur la variable quali_var **OU** na.rm.var = T
   if ((na.rm.var == F & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm.var == T)  {
     levels <- levels[!is.na(levels)]
@@ -326,7 +326,7 @@ distrib_discrete <- function(data,
   # Le graphique proprement dit
 
   # Pour caption
-  # Permet de passer à la ligne par rapport au test stat
+  # Permet de passer a la ligne par rapport au test stat
   if (!is.null(caption) & !is.null(probs) & quo_is_null(quo_facet)) {
     caption <- paste0("\n", caption)
   }
@@ -357,7 +357,7 @@ distrib_discrete <- function(data,
     labs(title = title,
          subtitle = subtitle,
          caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
-           "Khi2 d'adéquation : ", scales::pvalue(test.stat$p.value, add_p = T),
+           "Khi2 d'adequation : ", scales::pvalue(test.stat$p.value, add_p = T),
            caption) else caption
          )
 
@@ -366,14 +366,14 @@ distrib_discrete <- function(data,
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
-        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (a voir si c'est adapte dans tous les cas)
              y = ifelse(is.null(xlab),
                         paste0("Distribution (total : 100%)"),
                         xlab))
     }
     if(all(!is.null(xlab), xlab == "")){
       graph <- graph +
-        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (à voir si c'est adapté dans tous les cas)
+        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (a voir si c'est adapte dans tous les cas)
              y = NULL)
     }
 
@@ -410,7 +410,7 @@ distrib_discrete <- function(data,
       )
   }
 
-  # Ajouter les valeurs calculées
+  # Ajouter les valeurs calculees
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -444,7 +444,7 @@ distrib_discrete <- function(data,
           family = font),
         size = 3,
         alpha = 0.7,
-        hjust = 0, # Justifié à droite
+        hjust = 0, # Justifie a droite
         vjust = 0.4
       )
   }
@@ -474,7 +474,7 @@ distrib_discrete <- function(data,
 
   # 6. RESULTATS --------------------
 
-  # On crée l'objet final
+  # On cree l'objet final
   res <- list()
   res$tab <- tab
   res$graph <- graph
@@ -486,7 +486,7 @@ distrib_discrete <- function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour être intégré au fichier excel, le graphique doit être affiché => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
     print(graph)
 
     # On transforme le test stat en dataframe
@@ -500,14 +500,14 @@ distrib_discrete <- function(data,
       names(test_stat_excel)[1] <- "Parameter"
       names(test_stat_excel)[2] <- "Value"
     }
-    # Pour faceting, test pas encore implémenté => on crée un data.frame à la main
+    # Pour faceting, test pas encore implemente => on cree un data.frame a la main
     if (!quo_is_null(quo_facet)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implémenté avec le faceting",
+                                    Value = "Test pas encore implemente avec le faceting",
                                     row.names = NULL)
     }
 
-    # J'exporte les résultats en Excel
+    # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
                  graph = graph,
                  test_stat_excel = test_stat_excel,

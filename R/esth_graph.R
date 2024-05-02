@@ -63,9 +63,9 @@ esth_graph <- function(tab,
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
-  # Check des arguments nécessaires
+  # Check des arguments necessaires
   if((missing(tab) | missing(value) | missing(var)) == TRUE){
-    stop("Les arguments tab, value et var doivent être remplis")
+    stop("Les arguments tab, value et var doivent etre remplis")
   }
 
   # Check s'il n'y a pas 2 lignes avec des NA
@@ -76,7 +76,7 @@ esth_graph <- function(tab,
   # Check si le total existe dans var
   if (!is.null(name_total)) {
     if(!name_total %in% tab[[deparse(substitute(var))]]){
-      stop("Le nom indiqué pour le total n'existe pas dans var")
+      stop("Le nom indique pour le total n'existe pas dans var")
     }
   }
 
@@ -113,8 +113,8 @@ esth_graph <- function(tab,
     type = "numeric"
   )
 
-  # On crée des quosures => pour if statements dans la fonction (voir ci-dessous)
-  # Solution trouvée ici : https://rpubs.com/tjmahr/quo_is_missing
+  # On cree des quosures => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_low <- enquo(error_low)
   quo_up <- enquo(error_upp)
@@ -123,7 +123,7 @@ esth_graph <- function(tab,
 
   # 2. PROCESSING DES DONNEES --------------------
 
-  # On convertit la variable catégorielle en facteur si pas facteur
+  # On convertit la variable categorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
       "{{ var }}" := droplevels(as.factor({{ var }}))
@@ -132,25 +132,25 @@ esth_graph <- function(tab,
 
   # 3. CREATION DU GRAPHIQUE --------------------
 
-  # On crée la palette
-  # Petit truc dans le cas où il y a un total
+  # On cree la palette
+  # Petit truc dans le cas ou il y a un total
   if (!is.null(name_total)) { total_add <- 1 } else { total_add <- 0 }
 
   if(all(isColor(fill)) == TRUE){
-    # Avec le total au début (en gris foncé) puis x fois le fill selon le nombre de levels - total_add (1 s'il y a un total, le total étant déjà un niveau, sinon 0)
+    # Avec le total au debut (en gris fonce) puis x fois le fill selon le nombre de levels - total_add (1 s'il y a un total, le total etant deja un niveau, sinon 0)
     palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
   } else {
     palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
-    warning("La couleur indiquée dans pal n'existe pas : la palette par défaut est utilisée")
+    warning("La couleur indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
-  # Créer max_ggplot
+  # Creer max_ggplot
   max_ggplot <- max(tab[[deparse(substitute(value))]])
 
   # Si reorder == T
   if (reorder == T) {
     if (!is.null(name_total))  {
-      # On crée un vecteur pour ordonner les levels de var selon value, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
+      # On cree un vecteur pour ordonner les levels de var selon value, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         name_total,
         NA,
@@ -168,7 +168,7 @@ esth_graph <- function(tab,
       )
     }
     if (is.null(name_total))  {
-      # On crée un vecteur pour ordonner les levels de var selon value, en mettant NA en premier (= en dernier sur le graphique ggplot)
+      # On cree un vecteur pour ordonner les levels de var selon value, en mettant NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         NA,
         levels(reorder(
@@ -185,7 +185,7 @@ esth_graph <- function(tab,
   # Si reorder == F
   if (reorder == F) {
     if (!is.null(name_total))  {
-      # On crée un vecteur pour ordonner les levels de var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
+      # On cree un vecteur pour ordonner les levels de var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         name_total,
         NA,
@@ -201,7 +201,7 @@ esth_graph <- function(tab,
       )
     }
     if (is.null(name_total))  {
-      # On crée un vecteur pour ordonner les levels de var pour mettre NA en premier (= en dernier sur le graphique ggplot)
+      # On cree un vecteur pour ordonner les levels de var pour mettre NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
         NA,
         rev(
@@ -219,13 +219,13 @@ esth_graph <- function(tab,
     levels <- levels[!is.na(levels)]
   }
 
-  # On définit l'ordre du facteur dans tab, pour que les couleurs soient associées aux bonnes modalités
+  # On definit l'ordre du facteur dans tab, pour que les couleurs soient associees aux bonnes modalites
   tab <- tab %>%
     mutate(
-      "{{ var }}" := factor({{ var }}, levels = rev(levels)) # rev car ggplot ordonne dans le sens inverse (à cause du coord_flip() sans doute)
+      "{{ var }}" := factor({{ var }}, levels = rev(levels)) # rev car ggplot ordonne dans le sens inverse (a cause du coord_flip() sans doute)
     )
 
-  # Par cohérence avec autres fonctions => si xlab/ylab == "", alors NULL (pour le faire disparaître sur le ggplot)
+  # Par coherence avec autres fonctions => si xlab/ylab == "", alors NULL (pour le faire disparaitre sur le ggplot)
   if(all(!is.null(xlab), xlab == "")){
     xlab <- NULL
   }
@@ -233,7 +233,7 @@ esth_graph <- function(tab,
     ylab <- NULL
   }
 
-  # On crée le graphique
+  # On cree le graphique
 
   graph <- tab %>%
     ggplot(aes(
@@ -264,7 +264,7 @@ esth_graph <- function(tab,
 
   # Pour caption
 
-  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer à la ligne par rapport au test stat
+  if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer a la ligne par rapport au test stat
     caption <- paste0("\n", caption)
   }
   if (!is.null(pvalue)) {
@@ -305,7 +305,7 @@ esth_graph <- function(tab,
       )
   }
 
-  # Ajouter les IC s'ils sont présents
+  # Ajouter les IC s'ils sont presents
   if (!quo_is_null(quo_low) & !quo_is_null(quo_up)) {
       graph <- graph +
       geom_errorbar(aes(ymin = {{error_low}}, ymax = {{error_upp}}),
@@ -317,7 +317,7 @@ esth_graph <- function(tab,
       )
   }
 
-  # Ajouter les valeurs calculées
+  # Ajouter les valeurs calculees
   if (show_value == TRUE) {
     graph <- graph +
       geom_text(
@@ -351,7 +351,7 @@ esth_graph <- function(tab,
           family = font),
         size = 3,
         alpha = 0.7,
-        hjust = 0, # Justifié à droite
+        hjust = 0, # Justifie a droite
         vjust = 0.4
       )
   }
