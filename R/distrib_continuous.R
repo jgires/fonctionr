@@ -593,7 +593,7 @@ distrib_continuous <- function(data,
       }
       if(is.null(ylab)){
         graph <- graph +
-          labs(y = "Densite")
+          labs(y = paste0("Densit","\u00e9"))
       }
     }
     if(all(!is.null(ylab), ylab == "")){

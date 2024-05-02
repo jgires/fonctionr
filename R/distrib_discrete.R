@@ -357,7 +357,7 @@ distrib_discrete <- function(data,
     labs(title = title,
          subtitle = subtitle,
          caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
-           "Khi2 d'adequation : ", scales::pvalue(test.stat$p.value, add_p = T),
+           "Khi2 d'ad","\u00e9","quation : ", scales::pvalue(test.stat$p.value, add_p = T),
            caption) else caption
          )
 

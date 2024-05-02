@@ -471,7 +471,7 @@ central_group <- function(data,
       if (type == "median") {
         graph <- graph +
           labs(y = ifelse(is.null(xlab),
-                          paste0("Mediane : ", deparse(substitute(quanti_exp))),
+                          paste0("M","\u00e9","diane : ", deparse(substitute(quanti_exp))),
                           xlab))
       }
     }

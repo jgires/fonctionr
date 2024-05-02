@@ -405,7 +405,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'independance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            "Khi2 d'ind","\u00e9 ","pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )
@@ -414,7 +414,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'independance : conditions non remplies",
+            "Khi2 d'ind","\u00e9 ","pendance : conditions non remplies",
             caption
           )
         )
