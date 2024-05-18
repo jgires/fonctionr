@@ -13,6 +13,8 @@ navbar:
     menu:
     - text: Fonctions esthétiques
       href: articles/esthetic_functions.html
+    - text: Sondages avec design complexe
+      href: articles/complex_design.html
   - text: Changelog
     href: articles/changelog.html
   right:

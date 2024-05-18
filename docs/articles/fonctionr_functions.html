@@ -45,6 +45,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/esthetic_functions.html">Fonctions esthétiques</a>
+    <a class="dropdown-item" href="../articles/complex_design.html">Sondages avec design complexe</a>
   </div>
 </li>
 <li class="nav-item">
@@ -166,8 +167,9 @@ distribution des différents statuts socio-économiques dans le dataframe
 <code>eusilc</code>, avec une le poids <code>rb050</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Précisons que dans cet exemple, il n’y a pas de plan de
 sondage qui est mentionné. Seule la variable de pondération est
 introduite. Nous aborderons ce point ultérieurement.&lt;/p&gt;"><sup>1</sup></a>. Comme on le voit, les
-variables sont indiquées sans guillemets, à la manière de la syntaxe du
-<code>tidyverse</code>.</p>
+variables sont indiquées sans mentionner le dataframe (<code>var</code>
+au lieu de <code>df$var</code>) et sans guillemets, à la manière de la
+syntaxe du <code>tidyverse</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
 <span><span class="va">eusilc_dist_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_discrete.html">distrib_d</a></span><span class="op">(</span></span>
@@ -291,11 +293,11 @@ nationalité (<code>pb220a</code>).</p>
 différentes modalités d’une variable qualitative, que l’on peut
 considérer comme des groupes. Pour indiquer la proportion à calculer,
 l’utilisateur peut indiquer soit une variable dichotomique, soit
-directement une expression (sans guillemet, à la manière du
-<code>tidyverse</code>) à partir de laquelle la proportion est calculée.
-L’exemple ci-dessous compare la proportion d’individus qui bénéficient
-d’une allocation de chômage (calculé avec l’expression
-<code>py090n &gt; 0</code>) selon les différents statuts
+directement une expression (sans mentionner le dataframe et sans
+guillemet, à la manière du <code>tidyverse</code>) à partir de laquelle
+la proportion est calculée. L’exemple ci-dessous compare la proportion
+d’individus qui bénéficient d’une allocation de chômage (calculé avec
+l’expression <code>py090n &gt; 0</code>) selon les différents statuts
 socio-économiques (<code>pl030_rec</code>).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
@@ -376,10 +378,10 @@ l’alias <code><a href="../reference/central_group.html">median_group()</a></co
 “alias”. Il ne doit pas être utilisé par l’utilisateur s’il utilise les
 fonctions “alias”. Pour indiquer la tendance centrale à calculer,
 l’utilisateur peut indiquer soit une variable quantitative, soit
-directement une expression (sans guillemet, à la manière du
-<code>tidyverse</code>) à partir de laquelle une nouvelle variable
-quantitative est calculée. L’exemple ci-dessous compare le revenu
-équivalent mensuel moyen (calculé avec l’expression
+directement une expression (sans mentionner le dataframe et sans
+guillemet, à la manière du <code>tidyverse</code>) à partir de laquelle
+une nouvelle variable quantitative est calculée. L’exemple ci-dessous
+compare le revenu équivalent mensuel moyen (calculé avec l’expression
 <code>eqIncome / 12</code>) selon les différents statuts
 socio-économiques des personnes (<code>pl030_rec</code>). Le graphique
 et le tableau contiennent une modalité “Total” qui reprend l’estimation
@@ -669,8 +671,11 @@ mensuel.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="tableau-récapitulatif-des-arguments">Tableau récapitulatif des arguments<a class="anchor" aria-label="anchor" href="#tableau-r%C3%A9capitulatif-des-arguments"></a>
+<h2 id="arguments-des-différentes-fonctions">Arguments des différentes fonctions<a class="anchor" aria-label="anchor" href="#arguments-des-diff%C3%A9rentes-fonctions"></a>
 </h2>
+<div class="section level3">
+<h3 id="tableau-récapitulatif-des-arguments">Tableau récapitulatif des arguments<a class="anchor" aria-label="anchor" href="#tableau-r%C3%A9capitulatif-des-arguments"></a>
+</h3>
 <p>Comme nous l’avons vu, la majorité des fonctions de
 <code>fonctionr</code> se ressemblent. La plupart des arguments se
 retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la
@@ -2499,9 +2504,9 @@ caption
 </tbody>
 </table>
 </div>
-<div class="section level2">
-<h2 id="les-arguments-liés-à-la-base-de-données-utilisée">Les arguments liés à la base de données utilisée<a class="anchor" aria-label="anchor" href="#les-arguments-li%C3%A9s-%C3%A0-la-base-de-donn%C3%A9es-utilis%C3%A9e"></a>
-</h2>
+<div class="section level3">
+<h3 id="les-arguments-liés-à-la-base-de-données-utilisée">Les arguments liés à la base de données utilisée<a class="anchor" aria-label="anchor" href="#les-arguments-li%C3%A9s-%C3%A0-la-base-de-donn%C3%A9es-utilis%C3%A9e"></a>
+</h3>
 <p><code>data</code> est bien entendu un argument fondamental car il
 indique la base de donnée à utiliser. Comme l’objectif du package est de
 permettre une analyse des sondages complexes, il peut s’agir d’un objet
@@ -2567,15 +2572,15 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <code class="sourceCode R"><span><span class="va">eusilc_prop_1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_2</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_3</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-38-1.png" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
-</h2>
+<div class="section level3">
+<h3 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
+</h3>
 <p>Les arguments indispensable sont des arguments qui sont nécessaire au
 bon fonctionnement des fonctions et qui ne peuvent prendre aucune valeur
 par défaut. Ces arguments sont principalement de différents types :
 variables qualitatives, expressions ou listes de variables. Les
-variables/colonnes sont toujours indiquées sans guillemets, à la manière
-de la syntaxe du <code>tidyverse</code>.</p>
+variables/colonnes sont toujours indiquées sans mentionner le dataframe
+et sans guillemet, à la manière du <code>tidyverse</code>.</p>
 <ul>
 <li><p><code>group</code> et <code>quali_var</code> sont des variables
 qualitatives qui indiquent les groupes ou variables qualitative dont on
@@ -2584,8 +2589,10 @@ arguments sont transformées en facteurs pour leur usage dans la
 fonction.</p></li>
 <li><p><code>prop_exp</code> et <code>quanti_exp</code> sont des
 expressions qui permettent de calculer les proportions ou tendances
-centrales. Ces arguments peuvent être des variables (une variable
-binaire 0-1 pour <code>prop_exp</code> et une variable numérique pour
+centrales. Dans <code>fonctionr</code>, tous les arguments pouvant
+contenir une expression terminent par <code>_exp</code>. Ces arguments
+peuvent être des variables (une variable binaire 0-1 pour
+<code>prop_exp</code> et une variable numérique pour
 <code>quanti_exp</code>) ou une expression qui produit une variable
 (binaire pour <code>prop_exp</code> et quantitative pour
 <code>quanti_exp</code>). Ainsi, il n’est pas nécessaire de préparer à
@@ -2625,10 +2632,10 @@ peut ainsi introduire des expressions complexe dans les fonctions.</p>
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-40-1.png" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
+<div class="section level3">
+<h3 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
 résultats<a class="anchor" aria-label="anchor" href="#les-arguments-cl%C3%A9s-pas-obligatoires-mais-influen%C3%A7ant-les-r%C3%A9sultats"></a>
-</h2>
+</h3>
 <p>Les arguments clés sont des arguments qui ne sont pas indispensable
 mais qui influencent les résultats. On y retrouve plusieurs types
 d’arguments.</p>
@@ -2663,9 +2670,9 @@ graphique dans <code><a href="../reference/distrib_continuous.html">distrib_cont
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>. Par défaut, ce sont des déciles
 qui sont calculés.</p></li>
 </ul>
-<div class="section level3">
-<h3 id="le-traitement-des-na">Le traitement des <code>NA</code><a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
-</h3>
+<div class="section level4">
+<h4 id="le-traitement-des-na">Le traitement des <code>NA</code><a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
+</h4>
 <p>Nous expliquons ici plus précisément le traitement des
 <code>NA</code> dans les fonctions, car les possibilités sont multiples.
 Nous avons décidé de laisser des possibilités différentes selon les
@@ -2783,17 +2790,17 @@ toutes les variables. Par défaut, <code>na.vars</code> prend la valeur
 </ul>
 </div>
 </div>
-<div class="section level2">
-<h2 id="les-arguments-esthétiques">Les arguments esthétiques<a class="anchor" aria-label="anchor" href="#les-arguments-esth%C3%A9tiques"></a>
-</h2>
+<div class="section level3">
+<h3 id="les-arguments-esthétiques">Les arguments esthétiques<a class="anchor" aria-label="anchor" href="#les-arguments-esth%C3%A9tiques"></a>
+</h3>
 <p>Les arguments esthétiques sont des arguments qui affectent uniquement
 le graphique produit et pas la table, ni le test statistique. Pour des
 raisons pédagogique, nous aborderons successivement les arguments
 d’esthétique de base, d’esthétique graphique, d’esthétique des chiffres,
 d’esthétique des lettres et les labels.</p>
-<div class="section level3">
-<h3 id="lesthétique-de-base">L’esthétique de base<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-de-base"></a>
-</h3>
+<div class="section level4">
+<h4 id="lesthétique-de-base">L’esthétique de base<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-de-base"></a>
+</h4>
 <ul>
 <li>
 <code>reorder</code> est un argument qui, en prenant la valeur
@@ -3030,9 +3037,9 @@ de diviser le tout par 12.</p>
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png" width="100%"></p>
 </div>
-<div class="section level3">
-<h3 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
-</h3>
+<div class="section level4">
+<h4 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
+</h4>
 <ul>
 <li><p><code>dodge</code> indique l’épaisseur des barres et peut aller
 de <code>0</code> (barre invisible car d’épaisseur nulle) à
@@ -3139,9 +3146,9 @@ densité en rouge.</p>
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-56-1.png" width="100%"></p>
 </div>
-<div class="section level3">
-<h3 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
-</h3>
+<div class="section level4">
+<h4 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
+</h4>
 <p>L’esthétique des chiffres concernent la manière dont l’estimation de
 l’indicateur est affichée sur le graphique. Ainsi, ces argument n’ont
 une utilité que si <code>show_value = TRUE</code>.</p>
@@ -3192,9 +3199,9 @@ la virgule.</p>
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png" width="100%"></p>
 </div>
-<div class="section level3">
-<h3 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
-</h3>
+<div class="section level4">
+<h4 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
+</h4>
 <ul>
 <li><p><code>font</code> indique la police qui est utilisée pour
 l’ensemble du texte dans le graphique. Actuellement trois polices sont
@@ -3223,9 +3230,9 @@ ayant une légende : <code>distrib_group_discrete(</code>) et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias.</p></li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
-</h3>
+<div class="section level4">
+<h4 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
+</h4>
 <p>Les arguments de label ne sont utilisés que si
 <code>show_lab = TRUE</code>, qui est la valeur par défaut. Si
 <code>show_lab = FALSE</code>, aucun des labels ci-dessous n’est
@@ -3296,6 +3303,30 @@ pas de titre pour l’axe des ordonnées.</p>
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-60-1.png" width="100%"></p>
 </div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="programmer-avec-fonctionr">Programmer avec <code>fonctionr</code><a class="anchor" aria-label="anchor" href="#programmer-avec-fonctionr"></a>
+</h2>
+<p>Pour le moment, il n’est pas possible de programmer avec
+<code>fonctionr</code> ; il n’est par exemple pas possible d’utiliser
+les fonctions de <code>fonctionr</code> dans une boucle. Nos fonctions
+ont initialement été écrites dans la visée d’un usage interactif,
+c’est-à-dire d’un maniement direct pas l’utilisateur et non <em>via</em>
+une boucle ou d’autres fonctions. Il s’agit d’une limite provoquée par
+le fait que les variables et expressions utilisent le <a href="https://dplyr.tidyverse.org/articles/programming.html" class="external-link">data
+masking</a>, à la manière du <code>tidyverse</code>, impliquant
+l’utilisation de la <a href="https://adv-r.hadley.nz/metaprogramming.html" class="external-link">non-standard
+evaluation</a> dans le code des fonctions. Si cette possibilité rend
+l’utilisation courante plus simple, elle complexifie largement
+l’écriture du code des fonctions pour nous.</p>
+<p>A terme, nous avons la volonté de modifier ce comportement pour
+rendre possible l’utilisation non-interactive de nos fonctions.
+Néanmoins, cela va nous demander un travail certain, n’étant pas
+programmeurs de profession. Si vous êtes intéressé-e par le concept de
+<code>fonctionr</code> et connaissez ces questions - notamment la
+programmation avec rlang -, ou êtes intéressé-es d’y réfléchir, nous
+accueillerons votre aide avec grand plaisir !</p>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

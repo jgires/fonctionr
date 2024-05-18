@@ -138,7 +138,7 @@ Date : 2024-02-14
 
 #### En général
 
--   Tableau à mettre dans la doc.
+-   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
 -   Changer tous les `%>%` en `|>`.
 
@@ -154,8 +154,6 @@ Date : 2024-02-14
     *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
-
--   Fichiers \*.R pas compatibles ASCII =\> tout écrire en anglais.
 
 -   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 

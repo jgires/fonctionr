@@ -45,6 +45,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/esthetic_functions.html">Fonctions esthétiques</a>
+    <a class="dropdown-item" href="../articles/complex_design.html">Sondages avec design complexe</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -280,7 +281,9 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>Tableau à mettre dans la doc.</p></li>
+<li><p>Rendre l’usage non interactif (= la programmation via d’autres
+fonctions) possible =&gt; gros travail, usage de <code>rlang</code> à la
+place de <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code>.</p></li>
 <li><p>Changer tous les <code>%&gt;%</code> en
 <code>|&gt;</code>.</p></li>
 <li><p>Les couleurs des palettes sont attachées au groupe
@@ -306,8 +309,6 @@ harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code 
 ggplot.</em></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
-<li><p>Fichiers *.R pas compatibles ASCII =&gt; tout écrire en
-anglais.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
 corriger, traduire, ajouter des guillemets pour les arguments dans les
 checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
