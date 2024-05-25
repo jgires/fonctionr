@@ -299,7 +299,7 @@ distrib_discrete <- function(data,
       levels(reorder(
         tab[[deparse(substitute(quali_var))]],
         tab[["prop"]],
-        FUN = median,
+        FUN = "median",
         decreasing = T
       ))
     )

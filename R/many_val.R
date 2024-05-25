@@ -320,7 +320,7 @@ many_val = function(data,
     levels <- levels(reorder(
       tab[["list_col"]],
       tab[["indice"]],
-      FUN = median,
+      FUN = "median",
       decreasing = T
     ))
   }

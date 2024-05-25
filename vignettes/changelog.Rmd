@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.1
+
+Date : 2024-05-25
+
+-   Correction d'un bug mineur dans l'ordonnancement par la médiane des résultats (la fonction est écrite avec des guillemets : `FUN = "median"`. Sans cela, il y avait dans certains cas particuliers un bug).
+
 ## fonctionr 0.3.0
 
 Date : 2024-04-26

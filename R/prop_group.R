@@ -383,12 +383,12 @@ prop_group <- function(data,
       levels(reorder(
         tab[[deparse(substitute(group))]],
         tab[["prop"]],
-        FUN = median,
+        FUN = "median",
         decreasing = T
       ))[levels(reorder(
         tab[[deparse(substitute(group))]],
         tab[["prop"]],
-        FUN = median,
+        FUN = "median",
         decreasing = T
       )) != total_name]
     )

@@ -157,12 +157,12 @@ esth_graph <- function(tab,
         levels(reorder(
           tab[[deparse(substitute(var))]],
           tab[[deparse(substitute(value))]],
-          FUN = median,
+          FUN = "median",
           decreasing = T
         ))[levels(reorder(
           tab[[deparse(substitute(var))]],
           tab[[deparse(substitute(value))]],
-          FUN = median,
+          FUN = "median",
           decreasing = T
         )) != name_total]
       )
@@ -174,7 +174,7 @@ esth_graph <- function(tab,
         levels(reorder(
           tab[[deparse(substitute(var))]],
           tab[[deparse(substitute(value))]],
-          FUN = median,
+          FUN = "median",
           decreasing = T
           )
           )
