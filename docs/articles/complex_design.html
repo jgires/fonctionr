@@ -210,6 +210,27 @@ population. On dit que la moyenne d’échantillon est un estimateur
 précisément ces éléments qui rendent possibles l’inférence et qui
 permettent de calculer des intervalles de confiance et de procéder aux
 tests statistiques.</p>
+<p>Il faut bien avoir à l’esprit que la distribution d’échantillonnage
+est <u><em>estimée théoriquement</em></u> selon les caractéristiques de
+l’échantillon. Il faut donc toujours bien faire attention à ce que les
+conditions soient remplies pour estimer correctement la distribution
+d’échantillonnage (conditions de distribution des variables, du nombre
+d’effectifs, etc.). La distribution d’échantillonnage ne suit par
+exemple pas toujours une loi normale. Par ailleurs, même lorsqu’elle est
+normale, la distribution d’échantillonnage peut avoir une variance
+(“largeur”) plus ou moins grande, notamment si la variance de la
+variable dont on estime la moyenne est grande. Il est facile de le
+comprendre en imaginant une situation où la variance est nulle : si tous
+les individus ont la même caractéristique dans la population, la
+distribution d’échantillonnage ne présentera qu’une unique valeur et
+l’estimation de la moyenne de cette caractéristique dans un échantillon
+sera très précise puisqu’elle sera toujours la même.</p>
+<p>Toute la difficulté de la statistique inférentielle est de bien
+estimer quelle serait la distribution d’échantillonnage (forme,
+caractéristiques) des estimateurs que l’on utilise (= les résultats que
+l’on calcule : des moyennes, proportions…), afin de pouvoir faire des
+tests statistiques ou calculer des intervalles de confiance adaptés aux
+données.</p>
 </div>
 </div>
 <div class="section level2">
@@ -580,8 +601,10 @@ individuel, mais en affectant à chaque individu le revenu équivalent du
 ménage. Or, l’enquête SILC est construite avec comme premier niveau un
 tirage aléatoire de ménages, dans lesquels tous les individus sont
 ensuite interrogés. Des individus du même ménage ont donc exactement le
-même revenu ! <u>Cela montre par ailleurs la nécessite de bien
-comprendre le design de l’enquête et ses implications !</u></p>
+même revenu ! En ne considérant pas les PSU, on fait comme si ces
+individus faisaient partie de ménages différents (améliorant la
+précision des estimations), ce qui est faux. <u>Cela montre la nécessite
+de bien comprendre le design de l’enquête et ses implications !</u></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_poverty1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_poverty2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="complex_design_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
