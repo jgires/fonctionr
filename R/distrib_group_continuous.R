@@ -543,6 +543,7 @@ distrib_group_continuous <- function(data,
     filter(segment == TRUE)
 
   # On inclut les levels a tab => necessaire pour ggplot
+  # Utilise aussi pour le nom des groupes dans le ggplot
   tab_level <- df_dens %>%
     group_by(group) %>%
     summarise(level = first(level)) %>%
@@ -665,19 +666,6 @@ distrib_group_continuous <- function(data,
     limits <- c(lim_min, lim_max)
   }
 
-  # On calcul un ordre pour les labels
-  # NOTE : bricolage : faire ça mieux !
-  if (reorder == T) {
-    tab_labs <- tab %>%
-      arrange(indice) %>%
-      select(group = {{ group }})
-  }
-  if (reorder == F) {
-    tab_labs <- tab %>%
-      select(group = {{ group }})
-  }
-  tab_labs <- as.character(rev(tab_labs$group))
-
   # Le graphique ggplot
 
   graph <- ggplot(
@@ -722,8 +710,8 @@ distrib_group_continuous <- function(data,
       expand = expansion(mult = c(.01, .05))
     ) +
     scale_y_continuous(
-      breaks = (1:length(tab_labs)) - 1,
-      labels = stringr::str_wrap(tab_labs, width = wrap_width_y),
+      breaks = tab_level$level - 1,
+      labels = stringr::str_wrap(tab_level[[1]], width = wrap_width_y),
       expand = expansion(mult = c(0.005, 0.05))
     ) +
     scale_fill_manual(

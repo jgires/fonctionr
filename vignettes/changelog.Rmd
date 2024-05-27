@@ -22,13 +22,13 @@ library(fonctionr)
 
 Date : 2024-05-27
 
--   Correction d'un bug sur le reorder des valeurs avec `distrib_group_continuous()`.
+-   Correction d'un bug sur le reorder des valeurs dans `distrib_group_continuous()`.
 
 ## fonctionr 0.3.1
 
 Date : 2024-05-25
 
--   Correction d'un bug sur le reorder des valeurs par la médiane des résultats (la fonction est désormais écrite avec des guillemets : `FUN = "median"`. Sans cela, il y avait dans certains cas particuliers une erreur).
+-   Correction d'un bug dans la plupart des fonctions sur le reorder des valeurs par la médiane des résultats utilisé pour les facets (la fonction est désormais écrite avec des guillemets : `FUN = "median"`. Sans cela, il y avait dans certains cas particuliers une erreur).
 
 ## fonctionr 0.3.0
 
