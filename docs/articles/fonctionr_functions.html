@@ -568,12 +568,12 @@ fonction, il n’y a pas de test statistique calculé
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           x            y quantFct central</span></span>
-<span><span class="co">#&gt; 1 -7.182919 1.471091e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 -7.075034 1.736570e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 -6.967150 2.043762e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 -6.859265 2.398120e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 -6.751381 2.808797e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 -6.643496 3.289015e-05        1    &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 -7.182919 1.478527e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 -7.075034 1.745094e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 -6.967150 2.053500e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 -6.859265 2.409212e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 -6.751381 2.821400e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 -6.643496 3.303312e-05        1    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">quant</span></span>
 <span><span class="co">#&gt;   probs quantile ci.2.5 ci.97.5        se</span></span>
@@ -642,12 +642,12 @@ mensuel.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               group         x            y quantFct     y_ridges central</span></span>
-<span><span class="co">#&gt; 1 Working part time -283.5941 6.994595e-08        1 6.614026e-05    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 Working part time -266.6236 1.182238e-07        1 1.117914e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 Working part time -249.6530 1.942940e-07        1 1.837227e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 Working part time -232.6824 3.107223e-07        1 2.938162e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 Working part time -215.7118 4.839372e-07        1 4.576066e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 Working part time -198.7413 7.454306e-07        1 7.048725e-04    &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Working part time -283.5941 7.063720e-08        1 6.673599e-05    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 Working part time -266.6236 1.192821e-07        1 1.126943e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 Working part time -249.6530 1.958639e-07        1 1.850466e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 Working part time -232.6824 3.129800e-07        1 2.956944e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 Working part time -215.7118 4.870855e-07        1 4.601843e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 Working part time -198.7413 7.497099e-07        1 7.083042e-04    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">quant</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   probs quantile    ci.2.5   ci.97.5             group</span></span>
@@ -679,7 +679,7 @@ mensuel.</p>
 <p>Comme nous l’avons vu, la majorité des fonctions de
 <code>fonctionr</code> se ressemblent. La plupart des arguments se
 retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la
-totalité des argument en indiquant chaque fois pour quelle(s)
+totalité des arguments en indiquant chaque fois pour quelle(s)
 fonction(s) il est utilisé. L’ordre repris est celui des fonctions et
 les couleurs regroupent les arguments selon leur “catégorie”. Cette
 dernière a une visée pédagogique et regroupe ensemble des arguments dont
@@ -695,7 +695,7 @@ graphique.</p>
 Catégorie d’argument
 </th>
 <th style="text-align:left;font-weight: bold;color: black !important;">
-type
+Type
 </th>
 <th style="text-align:left;font-weight: bold;color: black !important;">
 prop_group
@@ -724,1660 +724,1660 @@ distrib_continuous
 </tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Base de données
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 df
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 data
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 indispensable
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 indispensable
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 prop_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-indispensable
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quoted
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quanti_exp
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quanti_exp
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quanti_exp
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 indispensable
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+quanti_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+quanti_exp
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+quanti_exp
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+indispensable
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
+quoted
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 quali_var
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 quali_var
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 indispensable
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 list_vars
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 list_vars
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 list_vars_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 list_vars_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 indispensable
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 type
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 type
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 type
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 type
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(62, 86, 87, 255) !important;">
 type
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 en developpement
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 en developpement
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 filter_exp
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Base de données
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 dot dot dot
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 …
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(91, 133, 158, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.group
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.facet
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 en developpement
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 en developpement
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.var
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.rm.var
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.prop
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.vars
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 na.vars
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric vector
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 quantiles
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 quantiles
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric vector
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 moustache_probs
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 probs
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 argument clé
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 prop_method
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 prop_method
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 prop_method
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 prop_method
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 prop_method
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(217, 133, 104, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 bw
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 bw
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 resolution
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 resolution
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 height
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 limits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 limits
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 reorder
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 reorder
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 reorder
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 reorder
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 reorder
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 position
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_mid_point
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 quoted
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_mid_line
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_mid_line
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci_errorbar
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci_lines
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci_lines
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci_area
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_ci_area
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_quant_lines
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_quant_lines
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_moustache
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_n
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_value
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 logical
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 show_lab
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique de base
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 total_name
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 total_name
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(193, 111, 95, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: chiffres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 scale
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 scale
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 scale
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 scale
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 scale
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: chiffres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 digits
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: chiffres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 unit
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: chiffres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(127, 58, 59, 255) !important;">
 dec
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 fill
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 fill
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 fill
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 direction
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 direction
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 direction
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 pal_moustache
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 color
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 color
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 alpha
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: graphique
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 dodge
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(150, 113, 146, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétiques: lettres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 font
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétiques: lettres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_y
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétiques: lettres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_leg
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 wrap_width_leg
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétiques: lettres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 numeric
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 legend_ncol
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 legend_ncol
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique: labels
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-string
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-title
+<td style="text-align:left;color: white !important;background-color: rgba(168, 135, 78, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
+title
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: labels
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
+string
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 subtitle
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 xlab
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 ylab
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 legend_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 legend_lab
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
 Esthétique: labels
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;font-style: italic;color: black !important;background-color: white !important;">
 string
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
+<td style="text-align:left;color: white !important;background-color: rgba(51, 101, 71, 255) !important;color: white !important;background-color: rgba(179, 135, 17, 255) !important;">
 caption
 </td>
 </tr>

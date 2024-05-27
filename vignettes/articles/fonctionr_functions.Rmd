@@ -321,17 +321,14 @@ head(distrib_income$moustache)
 
 ## Tableau récapitulatif des arguments
 
-Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des argument en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique.
+Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des arguments en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique.
 
 ```{r, echo=FALSE}
 library(knitr)
 library(kableExtra)
 
-
-
-
 tableau_recap <- tibble::tribble(
-   ~`Catégorie d’argument`,            ~type,    ~prop_group,  ~many_val_group,       ~many_val, ~central_group, ~distrib_group_discrete, ~distrib_discrete, ~distrib_group_continuous, ~distrib_continuous,
+   ~`Catégorie d’argument`,            ~Type,    ~prop_group,  ~many_val_group,       ~many_val, ~central_group, ~distrib_group_discrete, ~distrib_discrete, ~distrib_group_continuous, ~distrib_continuous,
          "Base de données",             "df",         "data",           "data",          "data",         "data",                  "data",            "data",                    "data",              "data",
            "indispensable",         "quoted",        "group",          "group",              "",        "group",                 "group",                "",                   "group",                  "",
            "indispensable",         "quoted",     "prop_exp",               "",              "",             "",                      "",                "",                        "",                  "",
@@ -393,22 +390,23 @@ tableau_recap <- tibble::tribble(
      "Esthétique: labels",         "string",      "caption",        "caption",       "caption",      "caption",               "caption",         "caption",                 "caption",           "caption"
   )
 
-
-pal_tableau_recap <- hcl.colors(9, "Pastel1", rev = F)
+pal_tableau_recap <- as.character(MetBrewer::met.brewer(name = "Redon", n = 9, type = "continuous", direction = 1))
 
 tableau_recap |>
 kbl() |>
   kable_paper(full_width = F, font_size = 12) |> 
   row_spec(0, bold = T, color = "black") |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "black", background = pal_tableau_recap[1]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="indispensable"), color = "black", background = pal_tableau_recap[2]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[3]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="argument clé"), color = "black", background = pal_tableau_recap[4]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "black", background = pal_tableau_recap[5]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: chiffres"), color = "black", background = pal_tableau_recap[6]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "black", background = pal_tableau_recap[7]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétiques: lettres"), color = "black", background = pal_tableau_recap[8]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[9])
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "white", background = pal_tableau_recap[1]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="indispensable"), color = "white", background = pal_tableau_recap[2]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "white", background = pal_tableau_recap[3]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="argument clé"), color = "white", background = pal_tableau_recap[4]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "white", background = pal_tableau_recap[5]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: chiffres"), color = "white", background = pal_tableau_recap[6]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "white", background = pal_tableau_recap[7]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétiques: lettres"), color = "white", background = pal_tableau_recap[8]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "white", background = pal_tableau_recap[9]) |>
+  column_spec(1, bold = T, background = "white", color = "black") |>
+  column_spec(2, italic = T, background = "white", color = "black")
 ```
 
 ## Les arguments liés à la base de données utilisée

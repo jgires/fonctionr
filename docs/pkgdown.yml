@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: 3.1.1
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   complex_design: complex_design.html
   esthetic_functions: esthetic_functions.html
   fonctionr_functions: fonctionr_functions.html
-last_built: 2024-05-27T14:43Z
+last_built: 2024-05-27T20:35Z
 urls:
   reference: https://jgires.github.io/fonctionr/reference
   article: https://jgires.github.io/fonctionr/articles
