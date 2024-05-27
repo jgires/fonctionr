@@ -568,12 +568,12 @@ fonction, il n’y a pas de test statistique calculé
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           x            y quantFct central</span></span>
-<span><span class="co">#&gt; 1 -7.182919 1.478527e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 -7.075034 1.745094e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 -6.967150 2.053500e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 -6.859265 2.409212e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 -6.751381 2.821400e-05        1    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 -6.643496 3.303312e-05        1    &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 -7.182919 1.471091e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 -7.075034 1.736570e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 -6.967150 2.043762e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 -6.859265 2.398120e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 -6.751381 2.808797e-05        1    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 -6.643496 3.289015e-05        1    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">quant</span></span>
 <span><span class="co">#&gt;   probs quantile ci.2.5 ci.97.5        se</span></span>
@@ -642,12 +642,12 @@ mensuel.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               group         x            y quantFct     y_ridges central</span></span>
-<span><span class="co">#&gt; 1 Working part time -283.5941 7.063720e-08        1 6.673599e-05    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2 Working part time -266.6236 1.192821e-07        1 1.126943e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3 Working part time -249.6530 1.958639e-07        1 1.850466e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4 Working part time -232.6824 3.129800e-07        1 2.956944e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 Working part time -215.7118 4.870855e-07        1 4.601843e-04    &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6 Working part time -198.7413 7.497099e-07        1 7.083042e-04    &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Working part time -283.5941 6.994595e-08        1 6.614026e-05    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2 Working part time -266.6236 1.182238e-07        1 1.117914e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 Working part time -249.6530 1.942940e-07        1 1.837227e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 Working part time -232.6824 3.107223e-07        1 2.938162e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 Working part time -215.7118 4.839372e-07        1 4.576066e-04    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6 Working part time -198.7413 7.454306e-07        1 7.048725e-04    &lt;NA&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_income</span><span class="op">$</span><span class="va">quant</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   probs quantile    ci.2.5   ci.97.5             group</span></span>
@@ -756,30 +756,6 @@ data
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-Base de données
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-df
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(255, 197, 208, 255) !important;">
-</td>
-</tr>
-<tr>
 <td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
 indispensable
 </td>
@@ -804,30 +780,6 @@ group
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
 group
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-indispensable
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quoted
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
 </td>
@@ -938,7 +890,7 @@ list_vars
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -960,30 +912,6 @@ list_vars_lab
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-indispensable
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-quoted
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(245, 204, 181, 255) !important;">
 </td>
 </tr>
 <tr>
@@ -1041,10 +969,10 @@ facet
 facet
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
-?????
+en developpement
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
-?????
+en developpement
 </td>
 </tr>
 <tr>
@@ -1165,10 +1093,10 @@ na.rm.facet
 na.rm.facet
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
-?????
+en developpement
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(187, 222, 177, 255) !important;">
-?????
+en developpement
 </td>
 </tr>
 <tr>
@@ -1355,7 +1283,7 @@ prop_method
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 numeric
@@ -1381,7 +1309,7 @@ bw
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 numeric
@@ -1407,7 +1335,7 @@ resolution
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 numeric
@@ -1432,7 +1360,7 @@ height
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 numeric
@@ -1458,7 +1386,7 @@ limits
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1487,7 +1415,7 @@ reorder
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 string
@@ -1512,7 +1440,7 @@ position
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1541,7 +1469,7 @@ show_ci
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 quoted
@@ -1566,7 +1494,7 @@ show_mid_point
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 quoted
@@ -1592,7 +1520,7 @@ show_mid_line
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1617,7 +1545,7 @@ show_ci_errorbar
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1643,7 +1571,7 @@ show_ci_lines
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1669,7 +1597,7 @@ show_ci_area
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1695,7 +1623,7 @@ show_quant_lines
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1720,7 +1648,7 @@ show_moustache
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1751,31 +1679,7 @@ show_n
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-quoted
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1807,7 +1711,7 @@ show_value
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 logical
@@ -1839,7 +1743,7 @@ show_lab
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
+Esthétique de base
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
 string
@@ -1864,32 +1768,8 @@ total_name
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-Esthétique de base
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-string
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(159, 226, 202, 255) !important;">
-</td>
-</tr>
-<tr>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
-Esthétique : chiffres
+Esthétique: chiffres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
 numeric
@@ -1918,7 +1798,7 @@ scale
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
-Esthétique : chiffres
+Esthétique: chiffres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
 numeric
@@ -1950,7 +1830,7 @@ digits
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
-Esthétique : chiffres
+Esthétique: chiffres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
 string
@@ -1982,7 +1862,7 @@ unit
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
-Esthétique : chiffres
+Esthétique: chiffres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(156, 224, 230, 255) !important;">
 string
@@ -2014,7 +1894,7 @@ dec
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 string
@@ -2041,7 +1921,7 @@ fill
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 string
@@ -2070,7 +1950,7 @@ pal
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 numeric
@@ -2097,7 +1977,7 @@ direction
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 string
@@ -2122,7 +2002,7 @@ pal_moustache
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 string
@@ -2148,7 +2028,7 @@ color
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 numeric
@@ -2173,7 +2053,7 @@ alpha
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
-Esthétique : graphique
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(184, 216, 248, 255) !important;">
 numeric
@@ -2203,7 +2083,7 @@ dodge
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
-Esthétiques : lettres
+Esthétiques: lettres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
 string
@@ -2235,7 +2115,7 @@ font
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
-Esthétiques : lettres
+Esthétiques: lettres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
 numeric
@@ -2266,7 +2146,7 @@ wrap_width_y
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
-Esthétiques : lettres
+Esthétiques: lettres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
 numeric
@@ -2292,7 +2172,7 @@ wrap_width_leg
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
-Esthétiques : lettres
+Esthétiques: lettres
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(221, 205, 250, 255) !important;">
 numeric
@@ -2318,7 +2198,7 @@ legend_ncol
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -2350,7 +2230,7 @@ title
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -2382,7 +2262,7 @@ subtitle
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -2414,7 +2294,7 @@ xlab
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -2445,7 +2325,7 @@ ylab
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
@@ -2471,7 +2351,7 @@ legend_lab
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
-Esthétique : labels
+Esthétique: labels
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(220, 214, 167, 255) !important;color: black !important;background-color: rgba(248, 197, 235, 255) !important;">
 string
