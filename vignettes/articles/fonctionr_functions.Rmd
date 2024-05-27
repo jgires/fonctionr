@@ -327,77 +327,73 @@ Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent.
 library(knitr)
 library(kableExtra)
 
+
+
+
 tableau_recap <- tibble::tribble(
-   ~`Catégorie d’argument`,            ~type,    ~prop_group,  ~many_val_group,       ~many_val, ~central_group, ~distrib_group_discrete, ~distrib_discrete, ~distrib_group_continuous, ~distrib_continuous,    ~esth_graph,
-         "Base de données",             "df",         "data",           "data",          "data",         "data",                  "data",            "data",                    "data",              "data",             "",
-         "Base de données",             "df",             "",               "",              "",             "",                      "",                "",                        "",                  "",          "tab",
-           "indispensable",         "quoted",        "group",          "group",              "",        "group",                 "group",                "",                   "group",                  "",             "",
-           "indispensable",         "quoted",             "",               "",              "",             "",                      "",                "",                        "",                  "",          "var",
-           "indispensable",         "quoted",     "prop_exp",               "",              "",             "",                      "",                "",                        "",                  "",             "",
-           "indispensable",         "quoted",             "",               "",              "",   "quanti_exp",                      "",                "",              "quanti_exp",        "quanti_exp",             "",
-           "indispensable",         "quoted",             "",               "",              "",             "",             "quali_var",       "quali_var",                        "",                  "",             "",
-           "indispensable",         "quoted",             "",      "list_vars",     "list_vars",             "",                      "",                "",                        "",                  "",             "",
-     "Esthétique : labels",         "string",             "",  "list_vars_lab", "list_vars_lab",             "",                      "",                "",                        "",                  "",             "",
-           "indispensable",         "quoted",             "",               "",              "",             "",                      "",                "",                        "",                  "",        "value",
-           "indispensable",         "string",             "",           "type",          "type",         "type",                      "",                "",                    "type",              "type",             "",
-            "argument clé",         "quoted",        "facet",          "facet",         "facet",        "facet",                 "facet",           "facet",                   "?????",             "?????",        "facet",
-            "argument clé",         "quoted",   "filter_exp",     "filter_exp",    "filter_exp",   "filter_exp",            "filter_exp",      "filter_exp",              "filter_exp",        "filter_exp",             "",
-         "Base de données",    "dot dot dot",            "…",              "…",             "…",            "…",                     "…",               "…",                       "…",                  "",             "",
-            "argument clé",        "logical",  "na.rm.group",    "na.rm.group",              "",  "na.rm.group",           "na.rm.group",                "",             "na.rm.group",                  "",             "",
-            "argument clé",        "logical",  "na.rm.facet",    "na.rm.facet",   "na.rm.facet",  "na.rm.facet",           "na.rm.facet",     "na.rm.facet",                   "?????",             "?????",             "",
-            "argument clé",         "string",             "",               "",              "",             "",             "na.rm.var",       "na.rm.var",                        "",                  "",             "",
-            "argument clé",         "string",      "na.prop",               "",              "",             "",                      "",                "",                        "",                  "",             "",
-            "argument clé",         "string",             "",        "na.vars",       "na.vars",             "",                      "",                "",                        "",                  "",             "",
-            "argument clé", "numeric vector",             "",               "",              "",             "",                      "",                "",               "quantiles",         "quantiles",             "",
-            "argument clé", "numeric vector",             "",               "",              "",             "",                      "",                "",         "moustache_probs",                  "",             "",
-            "argument clé",        "numeric",             "",               "",              "",             "",                      "",           "probs",                        "",                  "",             "",
-            "argument clé",         "string",  "prop_method",    "prop_method",   "prop_method",             "",           "prop_method",     "prop_method",                        "",                  "",             "",
-      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                      "bw",                "bw",             "",
-      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",              "resolution",        "resolution",             "",
-      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                  "height",                  "",             "",
-      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                  "limits",            "limits",             "",
-      "Esthétique de base",        "logical",      "reorder",               "",       "reorder",      "reorder",                      "",         "reorder",                 "reorder",                  "",      "reorder",
-      "Esthétique de base",         "string",             "",       "position",              "",             "",                      "",                "",                        "",                  "",             "",
-      "Esthétique de base",        "logical",      "show_ci",        "show_ci",       "show_ci",      "show_ci",                      "",         "show_ci",                        "",                  "",             "",
-      "Esthétique de base",         "quoted",             "",               "",              "",             "",                      "",                "",          "show_mid_point",                  "",    "error_low",
-      "Esthétique de base",         "quoted",             "",               "",              "",             "",                      "",                "",           "show_mid_line",     "show_mid_line",    "error_upp",
-      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",        "show_ci_errorbar",                  "",             "",
-      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",           "show_ci_lines",     "show_ci_lines",             "",
-      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",            "show_ci_area",      "show_ci_area",             "",
-      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",        "show_quant_lines",  "show_quant_lines",             "",
-      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",          "show_moustache",                  "",             "",
-      "Esthétique de base",        "logical",       "show_n",         "show_n",        "show_n",       "show_n",                      "",          "show_n",                  "show_n",            "show_n",             "",
-      "Esthétique de base",         "quoted",             "",               "",              "",             "",                      "",                "",                        "",                  "",        "n_var",
-      "Esthétique de base",        "logical",   "show_value",     "show_value",    "show_value",   "show_value",            "show_value",      "show_value",              "show_value",        "show_value",   "show_value",
-      "Esthétique de base",        "logical",     "show_lab",       "show_lab",      "show_lab",     "show_lab",              "show_lab",        "show_lab",                "show_lab",          "show_lab",             "",
-      "Esthétique de base",         "string",   "total_name",               "",              "",   "total_name",                      "",                "",                        "",                  "",             "",
-      "Esthétique de base",         "string",             "",               "",              "",             "",                      "",                "",                        "",                  "",   "name_total",
-   "Esthétique : chiffres",        "numeric",        "scale",          "scale",         "scale",             "",                 "scale",           "scale",                        "",                  "",        "scale",
-   "Esthétique : chiffres",        "numeric",       "digits",         "digits",        "digits",       "digits",                "digits",          "digits",                  "digits",            "digits",       "digits",
-   "Esthétique : chiffres",         "string",         "unit",           "unit",          "unit",         "unit",                  "unit",            "unit",                    "unit",              "unit",         "unit",
-   "Esthétique : chiffres",         "string",          "dec",            "dec",           "dec",          "dec",                   "dec",             "dec",                     "dec",               "dec",          "dec",
-  "Esthétique : graphique",         "string",         "fill",               "",              "",         "fill",                      "",            "fill",                        "",                  "",         "fill",
-  "Esthétique : graphique",         "string",             "",            "pal",           "pal",             "",                   "pal",                "",                     "pal",               "pal",             "",
-  "Esthétique : graphique",        "numeric",             "",      "direction",     "direction",             "",             "direction",                "",                        "",                  "",             "",
-  "Esthétique : graphique",         "string",             "",               "",              "",             "",                      "",                "",           "pal_moustache",                  "",             "",
-  "Esthétique : graphique",         "string",             "",               "",              "",             "",                      "",                "",                   "color",             "color",             "",
-  "Esthétique : graphique",        "numeric",             "",               "",              "",             "",                      "",                "",                   "alpha",                  "",             "",
-  "Esthétique : graphique",        "numeric",        "dodge",          "dodge",         "dodge",        "dodge",                 "dodge",           "dodge",                        "",                  "",        "dodge",
-   "Esthétiques : lettres",         "string",         "font",           "font",          "font",         "font",                  "font",            "font",                    "font",              "font",         "font",
-   "Esthétiques : lettres",        "numeric", "wrap_width_y",   "wrap_width_y",  "wrap_width_y", "wrap_width_y",          "wrap_width_y",    "wrap_width_y",            "wrap_width_y",                  "", "wrap_width_y",
-   "Esthétiques : lettres",        "numeric",             "", "wrap_width_leg",              "",             "",        "wrap_width_leg",                "",                        "",                  "",             "",
-   "Esthétiques : lettres",        "numeric",             "",    "legend_ncol",              "",             "",           "legend_ncol",                "",                        "",                  "",             "",
-     "Esthétique : labels",         "string",        "title",          "title",         "title",        "title",                 "title",           "title",                   "title",             "title",        "title",
-     "Esthétique : labels",         "string",     "subtitle",       "subtitle",      "subtitle",     "subtitle",              "subtitle",        "subtitle",                "subtitle",          "subtitle",     "subtitle",
-     "Esthétique : labels",         "string",         "xlab",           "xlab",          "xlab",         "xlab",                  "xlab",            "xlab",                    "xlab",              "xlab",         "xlab",
-     "Esthétique : labels",         "string",         "ylab",           "ylab",          "ylab",         "ylab",                  "ylab",                "",                    "ylab",              "ylab",         "ylab",
-     "Esthétique : labels",         "string",             "",     "legend_lab",              "",             "",            "legend_lab",                "",                        "",                  "",             "",
-     "Esthétique : labels",         "string",      "caption",        "caption",       "caption",      "caption",               "caption",         "caption",                 "caption",           "caption",      "caption",
-                  "Export",         "string",  "export_path",    "export_path",   "export_path",  "export_path",           "export_path",     "export_path",             "export_path",       "export_path",             ""
+   ~`Catégorie d’argument`,            ~type,    ~prop_group,  ~many_val_group,       ~many_val, ~central_group, ~distrib_group_discrete, ~distrib_discrete, ~distrib_group_continuous, ~distrib_continuous,
+         "Base de données",             "df",         "data",           "data",          "data",         "data",                  "data",            "data",                    "data",              "data",
+           "indispensable",         "quoted",        "group",          "group",              "",        "group",                 "group",                "",                   "group",                  "",
+           "indispensable",         "quoted",     "prop_exp",               "",              "",             "",                      "",                "",                        "",                  "",
+           "indispensable",         "quoted",             "",               "",              "",   "quanti_exp",                      "",                "",              "quanti_exp",        "quanti_exp",
+           "indispensable",         "quoted",             "",               "",              "",             "",             "quali_var",       "quali_var",                        "",                  "",
+           "indispensable",         "quoted",             "",      "list_vars",     "list_vars",             "",                      "",                "",                        "",                  "",
+     "Esthétique: labels",         "string",             "",  "list_vars_lab", "list_vars_lab",             "",                      "",                "",                        "",                  "",
+           "indispensable",         "string",             "",           "type",          "type",         "type",                      "",                "",                    "type",              "type",
+            "argument clé",         "quoted",        "facet",          "facet",         "facet",        "facet",                 "facet",           "facet",        "en developpement",  "en developpement",
+            "argument clé",         "quoted",   "filter_exp",     "filter_exp",    "filter_exp",   "filter_exp",            "filter_exp",      "filter_exp",              "filter_exp",        "filter_exp",
+         "Base de données",    "dot dot dot",            "…",              "…",             "…",            "…",                     "…",               "…",                       "…",                  "",
+            "argument clé",        "logical",  "na.rm.group",    "na.rm.group",              "",  "na.rm.group",           "na.rm.group",                "",             "na.rm.group",                  "",
+            "argument clé",        "logical",  "na.rm.facet",    "na.rm.facet",   "na.rm.facet",  "na.rm.facet",           "na.rm.facet",     "na.rm.facet",        "en developpement",  "en developpement",
+            "argument clé",         "string",             "",               "",              "",             "",             "na.rm.var",       "na.rm.var",                        "",                  "",
+            "argument clé",         "string",      "na.prop",               "",              "",             "",                      "",                "",                        "",                  "",
+            "argument clé",         "string",             "",        "na.vars",       "na.vars",             "",                      "",                "",                        "",                  "",
+            "argument clé", "numeric vector",             "",               "",              "",             "",                      "",                "",               "quantiles",         "quantiles",
+            "argument clé", "numeric vector",             "",               "",              "",             "",                      "",                "",         "moustache_probs",                  "",
+            "argument clé",        "numeric",             "",               "",              "",             "",                      "",           "probs",                        "",                  "",
+            "argument clé",         "string",  "prop_method",    "prop_method",   "prop_method",             "",           "prop_method",     "prop_method",                        "",                  "",
+      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                      "bw",                "bw",
+      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",              "resolution",        "resolution",
+      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                  "height",                  "",
+      "Esthétique de base",        "numeric",             "",               "",              "",             "",                      "",                "",                  "limits",            "limits",
+      "Esthétique de base",        "logical",      "reorder",               "",       "reorder",      "reorder",                      "",         "reorder",                 "reorder",                  "",
+      "Esthétique de base",         "string",             "",       "position",              "",             "",                      "",                "",                        "",                  "",
+      "Esthétique de base",        "logical",      "show_ci",        "show_ci",       "show_ci",      "show_ci",                      "",         "show_ci",                        "",                  "",
+      "Esthétique de base",         "quoted",             "",               "",              "",             "",                      "",                "",          "show_mid_point",                  "",
+      "Esthétique de base",         "quoted",             "",               "",              "",             "",                      "",                "",           "show_mid_line",     "show_mid_line",
+      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",        "show_ci_errorbar",                  "",
+      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",           "show_ci_lines",     "show_ci_lines",
+      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",            "show_ci_area",      "show_ci_area",
+      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",        "show_quant_lines",  "show_quant_lines",
+      "Esthétique de base",        "logical",             "",               "",              "",             "",                      "",                "",          "show_moustache",                  "",
+      "Esthétique de base",        "logical",       "show_n",         "show_n",        "show_n",       "show_n",                      "",          "show_n",                  "show_n",            "show_n",
+      "Esthétique de base",        "logical",   "show_value",     "show_value",    "show_value",   "show_value",            "show_value",      "show_value",              "show_value",        "show_value",
+      "Esthétique de base",        "logical",     "show_lab",       "show_lab",      "show_lab",     "show_lab",              "show_lab",        "show_lab",                "show_lab",          "show_lab",
+      "Esthétique de base",         "string",   "total_name",               "",              "",   "total_name",                      "",                "",                        "",                  "",
+   "Esthétique: chiffres",        "numeric",        "scale",          "scale",         "scale",             "",                 "scale",           "scale",                        "",                  "",
+   "Esthétique: chiffres",        "numeric",       "digits",         "digits",        "digits",       "digits",                "digits",          "digits",                  "digits",            "digits",
+   "Esthétique: chiffres",         "string",         "unit",           "unit",          "unit",         "unit",                  "unit",            "unit",                    "unit",              "unit",
+   "Esthétique: chiffres",         "string",          "dec",            "dec",           "dec",          "dec",                   "dec",             "dec",                     "dec",               "dec",
+  "Esthétique: graphique",         "string",         "fill",               "",              "",         "fill",                      "",            "fill",                        "",                  "",
+  "Esthétique: graphique",         "string",             "",            "pal",           "pal",             "",                   "pal",                "",                     "pal",               "pal",
+  "Esthétique: graphique",        "numeric",             "",      "direction",     "direction",             "",             "direction",                "",                        "",                  "",
+  "Esthétique: graphique",         "string",             "",               "",              "",             "",                      "",                "",           "pal_moustache",                  "",
+  "Esthétique: graphique",         "string",             "",               "",              "",             "",                      "",                "",                   "color",             "color",
+  "Esthétique: graphique",        "numeric",             "",               "",              "",             "",                      "",                "",                   "alpha",                  "",
+  "Esthétique: graphique",        "numeric",        "dodge",          "dodge",         "dodge",        "dodge",                 "dodge",           "dodge",                        "",                  "",
+   "Esthétiques: lettres",         "string",         "font",           "font",          "font",         "font",                  "font",            "font",                    "font",              "font",
+   "Esthétiques: lettres",        "numeric", "wrap_width_y",   "wrap_width_y",  "wrap_width_y", "wrap_width_y",          "wrap_width_y",    "wrap_width_y",            "wrap_width_y",                  "",
+   "Esthétiques: lettres",        "numeric",             "", "wrap_width_leg",              "",             "",        "wrap_width_leg",                "",                        "",                  "",
+   "Esthétiques: lettres",        "numeric",             "",    "legend_ncol",              "",             "",           "legend_ncol",                "",                        "",                  "",
+     "Esthétique: labels",         "string",        "title",          "title",         "title",        "title",                 "title",           "title",                   "title",             "title",
+     "Esthétique: labels",         "string",     "subtitle",       "subtitle",      "subtitle",     "subtitle",              "subtitle",        "subtitle",                "subtitle",          "subtitle",
+     "Esthétique: labels",         "string",         "xlab",           "xlab",          "xlab",         "xlab",                  "xlab",            "xlab",                    "xlab",              "xlab",
+     "Esthétique: labels",         "string",         "ylab",           "ylab",          "ylab",         "ylab",                  "ylab",                "",                    "ylab",              "ylab",
+     "Esthétique: labels",         "string",             "",     "legend_lab",              "",             "",            "legend_lab",                "",                        "",                  "",
+     "Esthétique: labels",         "string",      "caption",        "caption",       "caption",      "caption",               "caption",         "caption",                 "caption",           "caption"
   )
 
-tableau_recap <- tableau_recap[tableau_recap$`Catégorie d’argument` != "Export", ]
-tableau_recap <- tableau_recap[, names(tableau_recap) != "esth_graph"]
+
 pal_tableau_recap <- hcl.colors(9, "Pastel1", rev = F)
 
 tableau_recap |>
@@ -406,13 +402,13 @@ kbl() |>
   row_spec(0, bold = T, color = "black") |>
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "black", background = pal_tableau_recap[1]) |> 
   row_spec(which(tableau_recap$`Catégorie d’argument`=="indispensable"), color = "black", background = pal_tableau_recap[2]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique : labels"), color = "black", background = pal_tableau_recap[3]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[3]) |> 
   row_spec(which(tableau_recap$`Catégorie d’argument`=="argument clé"), color = "black", background = pal_tableau_recap[4]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "black", background = pal_tableau_recap[5]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique : chiffres"), color = "black", background = pal_tableau_recap[6]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique : graphique"), color = "black", background = pal_tableau_recap[7]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétiques : lettres"), color = "black", background = pal_tableau_recap[8]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique : labels"), color = "black", background = pal_tableau_recap[9])
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "black", background = pal_tableau_recap[5]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: chiffres"), color = "black", background = pal_tableau_recap[6]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "black", background = pal_tableau_recap[7]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétiques: lettres"), color = "black", background = pal_tableau_recap[8]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[9])
 ```
 
 ## Les arguments liés à la base de données utilisée
