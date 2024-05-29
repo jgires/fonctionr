@@ -390,7 +390,7 @@ tableau_recap <- tibble::tribble(
      "Esthétique: labels",         "string",      "caption",        "caption",       "caption",      "caption",               "caption",         "caption",                 "caption",           "caption"
   )
 
-pal_tableau_recap <- as.character(MetBrewer::met.brewer(name = "Redon", n = 9, type = "continuous", direction = 1))
+pal_tableau_recap <- as.character(MetBrewer::met.brewer(name = "VanGogh2", n = 9, type = "continuous", direction = -1))
 
 tableau_recap |>
 kbl() |>
