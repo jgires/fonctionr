@@ -436,7 +436,7 @@ central_group <- function(data,
   # Pour caption
 
   if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
-    caption <- paste0("\n", caption)
+    caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
   }
 
   if (type == "mean") {

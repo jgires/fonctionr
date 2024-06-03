@@ -397,7 +397,7 @@ distrib_group_discrete <- function(data,
   # Pour caption
 
   if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
-    caption <- paste0("\n", caption)
+    caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
   }
 
   if (quo_is_null(quo_facet)) {
@@ -405,7 +405,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind","\u00e9 ","pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            "Khi2 d'ind","\u00e9","pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )
@@ -414,7 +414,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind","\u00e9 ","pendance : conditions non remplies",
+            "Khi2 d'ind","\u00e9","pendance : conditions non remplies",
             caption
           )
         )

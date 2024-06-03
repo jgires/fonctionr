@@ -442,7 +442,7 @@ many_val_group = function(data,
                      limits = levels)+
     labs(title = title,
          subtitle = subtitle,
-         caption = caption
+         caption = stringr::str_wrap(caption, width = 100)
     ) +
     guides(fill = guide_legend(ncol = legend_ncol,
                                reverse = TRUE)) +

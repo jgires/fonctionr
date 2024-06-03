@@ -411,7 +411,7 @@ many_val = function(data,
     )+
     labs(title = title,
          subtitle = subtitle,
-         caption = caption
+         caption = stringr::str_wrap(caption, width = 100)
     ) +
     guides(fill="none") +
     coord_flip()

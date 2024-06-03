@@ -328,7 +328,7 @@ distrib_discrete <- function(data,
   # Pour caption
   # Permet de passer a la ligne par rapport au test stat
   if (!is.null(caption) & !is.null(probs) & quo_is_null(quo_facet)) {
-    caption <- paste0("\n", caption)
+    caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
   }
 
   graph <- tab %>%

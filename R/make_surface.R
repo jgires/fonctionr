@@ -172,7 +172,7 @@ make_surface <- function(tab,
   # Pour caption
 
   if (!is.null(caption) & !is.null(pvalue)) { # Permet de passer a la ligne par rapport au test stat
-    caption <- paste0("\n", caption)
+    caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
   }
   if (!is.null(pvalue)) {
     graph <- graph +

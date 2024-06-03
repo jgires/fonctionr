@@ -79,6 +79,7 @@ load_and_active_fonts <- function(){
   sysfonts::font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
   sysfonts::font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
   sysfonts::font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
+  sysfonts::font_add(family = "Helvetica Neue", regular = paste0(system.file("font", package = "fonctionr"), "/HelveticaNeueRoman.otf"))
   showtext::showtext_auto()
 
 }
@@ -373,7 +374,10 @@ theme_fonctionr <- function(font) {
     axis.ticks.y = element_blank(),
     axis.ticks.x = element_line(color = "black"),
     axis.text = element_text(color = "black"),
-    plot.margin = margin(10, 15, 10, 10)
+    plot.margin = margin(10, 15, 10, 10),
+    plot.caption = element_text(
+      color = "grey30"
+    )
   )
 
   return(theme)
