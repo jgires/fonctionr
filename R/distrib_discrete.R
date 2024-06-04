@@ -358,7 +358,7 @@ distrib_discrete <- function(data,
          subtitle = subtitle,
          caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
            "Khi2 d'ad","\u00e9","quation : ", scales::pvalue(test.stat$p.value, add_p = T),
-           caption) else caption
+           caption) else stringr::str_wrap(caption, width = 100)
          )
 
   # Ajouter les axes au besoin

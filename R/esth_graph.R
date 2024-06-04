@@ -279,7 +279,7 @@ esth_graph <- function(tab,
   if (is.null(pvalue)) {
     graph <- graph +
       labs(
-        caption = caption
+        caption = stringr::str_wrap(caption, width = 100)
       )
   }
 
