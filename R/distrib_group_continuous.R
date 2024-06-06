@@ -754,7 +754,7 @@ distrib_group_continuous <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          "GLM : ", scales::pvalue(test.stat$p[1], add_p = T),
+          "ANOVA : ", scales::pvalue(test.stat$p[1], add_p = T),
           caption
         )
       )
