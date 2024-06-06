@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.3
+
+Date : 2024-06-06
+
+-   Amélioration de l'affichage des aires de densité dans `distrib_group_continuous()` lorsque la couleur est d'une seule couleur (quantiles plus visibles).
+-   Ajout des facets dans `make_surface()`.
+-   Mise à la ligne automatique de caption tous les 100 caractères.
+
 ## fonctionr 0.3.2
 
 Date : 2024-05-27
@@ -214,7 +222,9 @@ Date : 2024-02-14
 
 -   Ajouter les checks (penser le cas spécifique de `pvalue`).
 
--   Ajouter la possibilité de facets.
+-   Ajouter la possibilité de reorder lors des facets =\> Ordre différent par facet ? Ou médiane comme les autres fonctions ?
+
+-   Lorsque facet, mieux penser l'alignement entre mêmes modalités ?
 
 **esth_graph**
 

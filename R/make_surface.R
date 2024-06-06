@@ -4,6 +4,7 @@
 #' @param tab
 #' @param var
 #' @param value
+#' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
 #' @param error_low
 #' @param error_upp
 #' @param pvalue
@@ -31,6 +32,7 @@
 make_surface <- function(tab,
                          var,
                          value,
+                         facet = NULL,
                          error_low = NULL,
                          error_upp = NULL,
                          pvalue = NULL,
@@ -56,6 +58,12 @@ make_surface <- function(tab,
     stop("Les arguments tab, var et value doivent etre remplis")
   }
 
+  # On cree des quosures => pour if statements dans la fonction (voir ci-dessous)
+  # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
+  quo_facet <- enquo(facet)
+  quo_low <- enquo(error_low)
+  quo_up <- enquo(error_upp)
+
 
   # 2. PROCESSING DES DONNEES --------------------
 
@@ -66,7 +74,7 @@ make_surface <- function(tab,
     )
 
   # On reordonne si reorder == T
-  if (reorder == T) {
+  if (reorder == T & quo_is_null(quo_facet)) {
     tab <- tab %>%
       mutate(
         "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }})
@@ -74,14 +82,18 @@ make_surface <- function(tab,
       arrange({{ value }}) # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
   }
 
-  if (show_ci == F) {
+  if (reorder == T & !quo_is_null(quo_facet)) {
+    message("Note : reorder n'est pas disponible avec les facets")
+  }
+
+  if (show_ci == F | (show_ci == T & (quo_is_null(quo_low) | quo_is_null(quo_up)))) {
     tab <- tab %>%
       mutate(
         indice_sqrt = sqrt({{ value }}) # La valeur a la racine carree (car la valeur en surface = racine carree X racine carree)
       )
   }
 
-  if (show_ci == T) {
+  if (show_ci == T & !quo_is_null(quo_low) & !quo_is_null(quo_up)) {
     tab <- tab %>%
       mutate(
         indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont actives, la base du calcul des coordonnees = l'intervalle de confiance superieur, car il dessine les plus grandes surfaces
@@ -96,20 +108,54 @@ make_surface <- function(tab,
     space <- .15 * min(tab$indice_sqrt, na.rm = T)
   }
 
-  # L'algorithme pour creer les positions des geom_tile pour le ggplot
-  tab$xmin <- NA
-  tab$xmax <- NA
-  tab$xmin[1] <- 0
-  tab <- tab %>% tibble::add_row() # On ajoute une ligne
+  # Si pas de de facets
+  if (quo_is_null(quo_facet)) {
 
-  for (i in seq_along(utils::head(tab, -1)[[deparse(substitute(var))]])) {
-    tab$xmin[i + 1] <- tab$xmin[i] + tab$indice_sqrt[i]
-    tab$xmax[i] <- tab$xmin[i + 1]
+    # L'algorithme pour creer les positions des geom_tile pour le ggplot
+    tab$xmin <- NA
+    tab$xmax <- NA
+    tab$xmin[1] <- 0
+    tab <- tab %>% tibble::add_row() # On ajoute une ligne
 
-    tab$xmin[i + 1] <- tab$xmin[i + 1] + space
+    for (i in seq_along(utils::head(tab, -1)[[deparse(substitute(var))]])) {
+      tab$xmin[i + 1] <- tab$xmin[i] + tab$indice_sqrt[i]
+      tab$xmax[i] <- tab$xmin[i + 1]
+
+      tab$xmin[i + 1] <- tab$xmin[i + 1] + space
+    }
+    tab <- utils::head(tab, -1) # On supprime la ligne ajoutee
+    tab$xmean <- (tab$xmin + tab$xmax) / 2
   }
-  tab <- utils::head(tab, -1) # On supprime la ligne ajoutee
-  tab$xmean <- (tab$xmin + tab$xmax) / 2
+
+  # S'il y a des facets
+  if (!quo_is_null(quo_facet)) {
+
+    facet_vec <- as.character(unique(tab[[deparse(substitute(facet))]]))
+
+    res <- tibble()
+    for(i in facet_vec){
+      temp <- tab %>%
+        filter({{facet}} == i)
+
+      # L'algorithme pour creer les positions des geom_tile pour le ggplot
+      temp$xmin <- NA
+      temp$xmax <- NA
+      temp$xmin[1] <- 0
+      temp <- temp %>% tibble::add_row() # On ajoute une ligne
+
+      for (i in seq_along(utils::head(temp, -1)[[deparse(substitute(var))]])) {
+        temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i]
+        temp$xmax[i] <- temp$xmin[i + 1]
+
+        temp$xmin[i + 1] <- temp$xmin[i + 1] + space
+      }
+      temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
+      temp$xmean <- (temp$xmin + temp$xmax) / 2
+
+      res <- rbind(res, temp)
+    }
+    tab <- res
+  }
 
 
   # 4. CREATION DU GRAPHIQUE --------------------
@@ -188,6 +234,12 @@ make_surface <- function(tab,
       labs(
         caption = stringr::str_wrap(caption, width = 100)
         )
+  }
+
+  # Ajouter les facets au besoin + scale_y si facet
+  if (!quo_is_null(quo_facet)) {
+    graph <- graph +
+      facet_wrap(vars({{ facet }}), ncol = 1)
   }
 
   # Comparaison avec la surface minimale

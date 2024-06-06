@@ -670,16 +670,38 @@ distrib_group_continuous <- function(data,
 
   graph <- ggplot(
     data = df_dens,
-  ) +
-    geom_ribbon(
-      data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
-      aes(
-        x = x, ymin = level - 1, ymax = y_ridges, # ymin a level - 1 car commence a 0
-        fill = quantFct,
-        group = interaction(group, quantFct) # Ici le groupe doit etre l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
-      ),
-      alpha = alpha
-    ) +
+  )
+
+  if(length(unique(pal)) != 1){
+    graph <- graph +
+      geom_ribbon(
+        data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
+        aes(
+          x = x, ymin = level - 1, ymax = y_ridges, # ymin a level - 1 car commence a 0
+          fill = quantFct,
+          group = interaction(group, quantFct) # Ici le groupe doit etre l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
+        ),
+        alpha = alpha
+      ) +
+      scale_fill_manual(
+        values = palette,
+        guide = "none"
+      )
+  }
+  if(length(unique(pal)) == 1){
+    graph <- graph +
+      geom_ribbon(
+        data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
+        aes(
+          x = x, ymin = level - 1, ymax = y_ridges, # ymin a level - 1 car commence a 0
+          group = group # Ici le groupe doit etre l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
+        ),
+        alpha = alpha,
+        fill = pal
+      )
+  }
+
+  graph <- graph +
     geom_line(
       data = df_dens[!is.na(df_dens$y_ridges), ],
       aes(
@@ -713,10 +735,6 @@ distrib_group_continuous <- function(data,
       breaks = tab_level$level - 1,
       labels = stringr::str_wrap(tab_level[[1]], width = wrap_width_y),
       expand = expansion(mult = c(0.005, 0.05))
-    ) +
-    scale_fill_manual(
-      values = palette,
-      guide = "none"
     ) +
     theme_fonctionr(font = font) +
     theme(

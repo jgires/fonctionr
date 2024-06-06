@@ -32,7 +32,7 @@ publication. Vous trouverez sur cette page une rapide introduction à
 **Documentation :** Pour comprendre plus en profondeur notre package et
 ses différentes possibilités, nous renvoyons l’utilisateur au [Manuel
 d’utilisation](https://jgires.github.io/fonctionr/articles/fonctionr_functions.html)
-qui constitue un manuel décrivant dans le détail les différentes
+qui constitue un guide décrivant dans le détail les différentes
 fonctions de `fonctionr`.
 
 </div>

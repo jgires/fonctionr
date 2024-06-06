@@ -8,6 +8,7 @@ make_surface(
   tab,
   var,
   value,
+  facet = NULL,
   error_low = NULL,
   error_upp = NULL,
   pvalue = NULL,
@@ -28,6 +29,8 @@ make_surface(
 )
 }
 \arguments{
+\item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
+
 \item{wrap_width_lab}{}
 }
 \description{
