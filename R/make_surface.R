@@ -175,8 +175,6 @@ make_surface <- function(tab,
       ungroup()
   }
 
-  print(tab)
-
 
   # 4. CREATION DU GRAPHIQUE --------------------
 

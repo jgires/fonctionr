@@ -22,9 +22,9 @@ library(fonctionr)
 
 Date : 2024-06-06
 
--   Amélioration de l'affichage des aires de densité dans `distrib_group_continuous()` lorsque la couleur est d'une seule couleur (quantiles plus visibles).
+-   Amélioration de l'affichage des aires de densité dans `distrib_group_continuous()` lorsque la palette est d'une seule couleur (on en voit plus les limites des quantiles).
 -   Ajout des facets dans `make_surface()`.
--   Mise à la ligne automatique de caption tous les 100 caractères.
+-   Mise à la ligne automatique de caption tous les 100 caractères dans toutes les fonctions.
 
 ## fonctionr 0.3.2
 
