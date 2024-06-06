@@ -125,6 +125,8 @@ make_surface <- function(tab,
     }
     tab <- utils::head(tab, -1) # On supprime la ligne ajoutee
     tab$xmean <- (tab$xmin + tab$xmax) / 2
+    tab <- tab %>%
+      mutate(compare = sqrt(min({{ value }}))) # On calcule le min (pour la comparaison graphique)
   }
 
   # S'il y a des facets
@@ -151,12 +153,14 @@ make_surface <- function(tab,
       }
       temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
       temp$xmean <- (temp$xmin + temp$xmax) / 2
+      temp <- temp %>%
+        mutate(compare = sqrt(min({{ value }}))) # On calcule le min PAR FACET (pour la comparaison graphique)
 
       res <- rbind(res, temp)
     }
     tab <- res
   }
-
+  print(tab)
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
@@ -251,8 +255,8 @@ make_surface <- function(tab,
           y = if (position == "mid") {
             0
           } else if (position == "bottom") indice_sqrt / 2,
-          width = sqrt(min({{ value }})),
-          height = sqrt(min({{ value }}))
+          width = compare,
+          height = compare
         ),
         alpha = .1,
         fill = "black",
