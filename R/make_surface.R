@@ -160,7 +160,6 @@ make_surface <- function(tab,
     }
     tab <- res
   }
-  print(tab)
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
