@@ -108,79 +108,88 @@ make_surface <- function(tab,
     space <- .15 * min(tab$indice_sqrt, na.rm = T)
   }
 
-  # Si pas de de facets
-  if (quo_is_null(quo_facet)) {
-
-    # L'algorithme pour creer les positions des geom_tile pour le ggplot
-    tab$xmin <- NA
-    tab$xmax <- NA
-    tab$xmin[1] <- 0
-    tab <- tab %>% tibble::add_row() # On ajoute une ligne
-
-    for (i in seq_along(utils::head(tab, -1)[[deparse(substitute(var))]])) {
-      tab$xmin[i + 1] <- tab$xmin[i] + tab$indice_sqrt[i]
-      tab$xmax[i] <- tab$xmin[i + 1]
-
-      tab$xmin[i + 1] <- tab$xmin[i + 1] + space
-    }
-    tab <- utils::head(tab, -1) # On supprime la ligne ajoutee
-    tab$xmean <- (tab$xmin + tab$xmax) / 2
-    tab <- tab %>%
-      mutate(compare = sqrt(min({{ value }}))) # On calcule le min (pour la comparaison graphique)
-  }
-
   # S'il y a des facets
   if (!quo_is_null(quo_facet)) {
-
     facet_vec <- as.character(unique(tab[[deparse(substitute(facet))]]))
+  }
+  # Si pas de de facets
+  # NOTE : dans ce cas, on met une valeur factice unique a facet_vec pour que la boucle ne fasse qu'un tour !
+  if (quo_is_null(quo_facet)) {
+    facet_vec <- 1
+  }
 
-    res <- tibble()
-    for(i in facet_vec){
+  res <- tibble()
+  for(i in facet_vec){
+
+    if (!quo_is_null(quo_facet)) {
       temp <- tab %>%
         filter({{facet}} == i)
-
-      # L'algorithme pour creer les positions des geom_tile pour le ggplot
-      temp$xmin <- NA
-      temp$xmax <- NA
-      temp$xmin[1] <- 0
-      temp <- temp %>% tibble::add_row() # On ajoute une ligne
-
-      for (i in seq_along(utils::head(temp, -1)[[deparse(substitute(var))]])) {
-        temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i]
-        temp$xmax[i] <- temp$xmin[i + 1]
-
-        temp$xmin[i + 1] <- temp$xmin[i + 1] + space
-      }
-      temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
-      temp$xmean <- (temp$xmin + temp$xmax) / 2
-      temp <- temp %>%
-        mutate(compare = sqrt(min({{ value }}))) # On calcule le min PAR FACET (pour la comparaison graphique)
-
-      res <- rbind(res, temp)
     }
-    tab <- res
+    if (quo_is_null(quo_facet)) {
+      temp <- tab
+    }
+
+    # L'algorithme pour creer les positions des geom_tile pour le ggplot
+    temp$xmin <- NA
+    temp$xmax <- NA
+    temp$xmin[1] <- 0
+    temp <- temp %>% tibble::add_row() # On ajoute une ligne
+
+    for (i in seq_along(utils::head(temp, -1)[[deparse(substitute(var))]])) {
+      temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i]
+      temp$xmax[i] <- temp$xmin[i + 1]
+
+      temp$xmin[i + 1] <- temp$xmin[i + 1] + space
+    }
+    temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
+    temp$xmean <- (temp$xmin + temp$xmax) / 2
+    temp <- temp %>%
+      mutate(compare = sqrt(min({{ value }})),  # On calcule le min (pour la comparaison graphique). C'est fait PAR FACET si facet = non-NULL
+      row_num = row_number() - 1)
+
+    res <- rbind(res, temp)
   }
+  tab <- res
+
+  # Pour l'alignement des facets
+  if (!quo_is_null(quo_facet)) {
+    xmax_facet <- max(tab$xmax) # la valeur max de la facet => definit la justification des autres facets
+    tab <- tab %>%
+      group_by({{facet}}) %>%
+      mutate(row_coef = row_num * (sum(row_num) / max(row_num)),
+             diff = abs(max(xmax) - xmax_facet),
+             incr_unit = diff / sum(row_num),
+             xmin = xmin + (incr_unit*row_coef),
+             xmax = xmax + (incr_unit*row_coef),
+             xmean = (xmin + xmax) / 2
+      ) %>%
+      ungroup()
+  }
+
+  # print(tab)
+
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
   # On cree la palette avec le package MetBrewer
+  # NOTE : on met unique() car avec facet il y a les modalites en double !
   if(pal %in% names(MetBrewer::MetPalettes)){
-    palette <- as.character(MetBrewer::met.brewer(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
 
     # On cree la palette avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
 
     # On cree la palette avecle package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pal, n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(name = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
 
     # On cree la palette avec la fonction interne official_pal()
   } else if(pal %in% c("OBSS", "IBSA")){
-    palette <- as.character(official_pal(inst = pal, n = length(tab[[deparse(substitute(var))]]), direction = direction))
+    palette <- as.character(official_pal(inst = pal, n = length(unique(tab[[deparse(substitute(var))]])), direction = direction))
 
   } else {
-    palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = length(tab[[deparse(substitute(var))]]), type = "continuous", direction = direction))
+    palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
     warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
