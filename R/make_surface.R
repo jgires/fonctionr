@@ -26,6 +26,7 @@
 #' @return
 #' @import dplyr
 #' @import ggplot2
+#' @import rlang
 #' @export
 #'
 #' @examples
@@ -36,6 +37,7 @@ make_surface <- function(tab,
                          error_low = NULL,
                          error_upp = NULL,
                          pvalue = NULL,
+                         name_total = "Total",
                          compare = F,
                          reorder = F,
                          show_ci = TRUE,
@@ -67,6 +69,12 @@ make_surface <- function(tab,
 
   # 2. PROCESSING DES DONNEES --------------------
 
+  # On enleve le total
+  tab <- tab %>%
+    filter(
+      {{ var }} != name_total
+    )
+
   # On convertit la variable categorielle en facteur si pas facteur
   tab <- tab %>%
     mutate(
@@ -77,15 +85,16 @@ make_surface <- function(tab,
   if (reorder == T & quo_is_null(quo_facet)) {
     tab <- tab %>%
       mutate(
-        "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }})
+        "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }}) # Je pense que c'est necessaire pour le ggplot et la palette ?
       ) %>%
       arrange({{ value }}) # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
   }
 
   if (reorder == T & !quo_is_null(quo_facet)) {
-    message("Note : reorder n'est pas disponible avec les facets")
+    message("Attention : reorder n'est pas disponible avec les facets")
   }
 
+  # Si CI pas affiches (ou affiches mais variables pas indiquees)
   if (show_ci == F | (show_ci == T & (quo_is_null(quo_low) | quo_is_null(quo_up)))) {
     tab <- tab %>%
       mutate(
@@ -93,6 +102,7 @@ make_surface <- function(tab,
       )
   }
 
+  # Si CI affiches ET variables indiquees
   if (show_ci == T & !quo_is_null(quo_low) & !quo_is_null(quo_up)) {
     tab <- tab %>%
       mutate(
@@ -110,12 +120,11 @@ make_surface <- function(tab,
 
   # S'il y a des facets
   if (!quo_is_null(quo_facet)) {
-    facet_vec <- as.character(unique(tab[[deparse(substitute(facet))]]))
+    facet_vec <- as.character(unique(tab[[deparse(substitute(facet))]])) # Vecteur qui liste les modalites de la variable des facettes
   }
   # Si pas de de facets
-  # NOTE : dans ce cas, on met une valeur factice unique a facet_vec pour que la boucle ne fasse qu'un tour !
   if (quo_is_null(quo_facet)) {
-    facet_vec <- 1
+    facet_vec <- 1   # Dans ce cas, on met une valeur factice unique a facet_vec pour que la boucle ne fasse qu'un tour ! (economie de code : le meme pour facets et non facets)
   }
 
   res <- tibble()
@@ -123,7 +132,7 @@ make_surface <- function(tab,
 
     if (!quo_is_null(quo_facet)) {
       temp <- tab %>%
-        filter({{facet}} == i)
+        filter({{facet}} == i) # On filtre pour la facet i (et on fait comme ca chaque facet)
     }
     if (quo_is_null(quo_facet)) {
       temp <- tab
@@ -136,43 +145,43 @@ make_surface <- function(tab,
     temp <- temp %>% tibble::add_row() # On ajoute une ligne
 
     for (i in seq_along(utils::head(temp, -1)[[deparse(substitute(var))]])) {
-      temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i]
+      temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i] # On calcule les coord xmin et xmax de chaque surface, sur base de indice_sqrt
       temp$xmax[i] <- temp$xmin[i + 1]
 
       temp$xmin[i + 1] <- temp$xmin[i + 1] + space
     }
     temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
-    temp$xmean <- (temp$xmin + temp$xmax) / 2
+    temp$xmean <- (temp$xmin + temp$xmax) / 2 # On calcule la valeur centrale en faisant la moyenne de xmin et xmax
     temp <- temp %>%
-      mutate(compare = sqrt(min({{ value }})),  # On calcule le min (pour la comparaison graphique). C'est fait PAR FACET si facet = non-NULL
-      row_num = row_number() - 1)
+      mutate(compare = sqrt(min({{ value }})),  # On calcule le min (pour la comparaison graphique) => automatiquement fait PAR FACET si facet = non-NULL
+      row_num = row_number() - 1) # On determine le numero de la ligne - 1 (pour la justification des facettes ci-dessous)
 
-    res <- rbind(res, temp)
+    res <- rbind(res, temp) # On aggrege les resultats par facette
   }
   tab <- res
 
-  # Pour l'alignement des facets
+  # On aligne les facets => Justification de chaque ligne
   if (!quo_is_null(quo_facet)) {
-    xmax_facet <- max(tab$xmax) # la valeur max de la facet => definit la justification des autres facets
+    xmax_facet <- max(tab$xmax) # la valeur max de la facet => definit la largeur max et donc la justification necessaire des autres facets
     tab <- tab %>%
       group_by({{facet}}) %>%
-      mutate(row_coef = row_num * (sum(row_num) / max(row_num)),
-             diff = abs(max(xmax) - xmax_facet),
-             incr_unit = diff / sum(row_num),
-             xmin = xmin + (incr_unit*row_coef),
+      mutate(diff = abs(max(xmax) - xmax_facet), # On calcule l'ecart entre la facet max et la facet actuelle
+             incr_unit = diff / sum(row_num), # On calcule une incrementation minimale
+             row_coef = row_num * (sum(row_num) / max(row_num)), # On calcule un coefficient pour que coef X incrementation augmente progressivement par groupe pour arriver a diff
+             xmin = xmin + (incr_unit*row_coef), # On recalcule xmin, xmax et xmean
              xmax = xmax + (incr_unit*row_coef),
              xmean = (xmin + xmax) / 2
       ) %>%
       ungroup()
   }
 
-  # print(tab)
+  print(tab)
 
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
   # On cree la palette avec le package MetBrewer
-  # NOTE : on met unique() car avec facet il y a les modalites en double !
+  # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
   if(pal %in% names(MetBrewer::MetPalettes)){
     palette <- as.character(MetBrewer::met.brewer(name = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
 
