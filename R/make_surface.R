@@ -82,16 +82,39 @@ make_surface <- function(tab,
     )
 
   # On reordonne si reorder == T
+  # Si pas de facets
   if (reorder == T & quo_is_null(quo_facet)) {
     tab <- tab %>%
       mutate(
-        "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }}) # Je pense que c'est necessaire pour le ggplot et la palette ?
+        "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }}) # Necessaire pour que la palette soit ordonnee comme l'ordre cree par arrange()
       ) %>%
       arrange({{ value }}) # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
   }
 
+  # Si facets
   if (reorder == T & !quo_is_null(quo_facet)) {
-    message("Attention : reorder n'est pas disponible avec les facets")
+    tab <- tab %>%
+      group_by({{ var}}) %>%
+      mutate(
+        the_medians = median({{ value }}, na.rm = TRUE) # On calcule la mediane par groupe (entre les facettes) => utilise pour la palette
+        ) %>%
+      # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
+      # On ordonne par valeur => ordre different par facette, c'est voulu !
+      arrange({{ facet }}, {{ value }}) %>%
+      ungroup()
+
+    # Pour creer un ordre de couleurs pour {{ var }}
+    tab_levels <- tab %>%
+      distinct({{ var }}, the_medians) %>% # On cree un ordre selon la mediane par groupe => utile pour avoir un ordre de palette coherent
+      arrange(the_medians) %>%
+      select(order = 1)
+
+    # On reordonne le facteur selon la mediane en introduisant le vecteur cree ci-dessus
+    tab <- tab %>%
+      mutate(
+        "{{ var }}" := factor({{ var }}, levels = tab_levels$order)
+      )
+
   }
 
   # Si CI pas affiches (ou affiches mais variables pas indiquees)
