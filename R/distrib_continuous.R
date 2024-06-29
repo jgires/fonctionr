@@ -27,7 +27,7 @@
 #' @param dec Decimal mark shown on the graphic. Default is ",".
 #' @param pal color of the density area. maybe one color or a vector with several colors.
 #' @param color color of the density line.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".
@@ -631,8 +631,33 @@ distrib_continuous <- function(data,
   res <- list()
   res$dens <- df_dens[,c("x", "y", "quantFct", "central")]
   res$tab <- tab
-  res$quant <- estQuant_W
+  res$quant <- estQuant_W[, c("probs", "quantile", "ci.2.5", "ci.97.5")]
   res$graph <- graph
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # Pour many_prop, test pas encore implemente => on cree un data.frame a la main
+    test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                  Value = "Test pas encore implemente dans distrib_continuous",
+                                  row.names = NULL)
+
+    # J'exporte les resultats en Excel
+    export_excel(tab_excel = tab,
+                 graph = graph,
+                 test_stat_excel = test_stat_excel,
+                 quantiles = res$quant,
+                 density = res$dens,
+                 facet_null = TRUE,
+                 export_path = export_path,
+                 percent_fm = FALSE,
+                 fgFill = "#00708C",
+                 bivariate = FALSE,
+                 dens = "uni")
+  }
 
   return(res)
 

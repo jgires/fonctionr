@@ -24,7 +24,7 @@ library(srvyr)
 
 ## `theme_fonctionr()` & `load_and_active_fonts()`
 
-`theme_fonctionr()` est une fonction qui permet d'appliquer le thème de `fonctionr` à un objet `ggplot2`. Cette fonction a un intérêt si l'on veut uniformiser l'esthétique de tous les graphiques - ceux qui sont produits avec `fonctionr` et ceux qui ne le sont pas - pour une publication. Elle nécessite d'indiquer la police à utiliser dans l'argument `font`. La fonction `load_and_active_fonts()` est ainsi complémentaire, puisqu'elle permet de charger facilement des polices de caractères et de les rendre disponibles pour `ggplot2`. Actuellement trois polices sont directement incluses dans `fonctionr` : `"Roboto"`, `"Montserrat"` et `"Gotham Narrow"`.
+`theme_fonctionr()` est une fonction qui permet d'appliquer le thème de `fonctionr` à un objet `ggplot2`. Cette fonction a un intérêt si l'on veut uniformiser l'esthétique de tous les graphiques pour une publication - ceux qui sont produits avec `fonctionr` et ceux qui ne le sont pas. L'argument `font` permet d'indiquer la police d'écriture à utiliser : une police disponible sur votre système ou une de celles directement contenues dans `fonctionr`. La fonction `load_and_active_fonts()` est automatiquement exécutée lorsque `theme_fonctionr()` est appliqué : celle-ci a pour but de rendre disponibles les polices incluses dans le package. Cette fonction est par ailleurs autonome et permet de charger facilement les polices d'écriture contenues dans `fonctionr` afin de les rendre disponibles pour n'importe quelle utilisation avec `ggplot2`. Voir la documentation de la fonction pour connaître les polices incluses dans le package.
 
 ```{r}
 # Loading of data
@@ -42,8 +42,6 @@ ggtab1 <- tab1 |>
   geom_col() +
   labs(title = "I'm a graphic") +
   coord_flip()
-
-fonctionr::load_and_active_fonts()
 
 ggtab2 <- ggtab1 +
   theme_fonctionr(font = "Montserrat")

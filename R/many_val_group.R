@@ -26,7 +26,7 @@
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
 #' @param wrap_width_leg Number of characters before before going to the line. Applies to the labels of the legend. Default is 25.
 #' @param legend_ncol Number maximum of colomn in the legend. Default is 4.

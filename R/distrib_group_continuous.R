@@ -37,7 +37,7 @@
 #' @param pal_moustache Color of the moustache. Can be one or sereval colors to create a palette.
 #' @param color Color of the density curve. Has to be one color.
 #' @param alpha Transparence of the density curve. Default is 1.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line in the labels of the groups. Default is 25
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
@@ -949,11 +949,51 @@ distrib_group_continuous <- function(data,
   res <- list()
   res$dens <- df_dens[, c("group", "x", "y", "quantFct", "y_ridges", "central")]
   res$tab <- tab[, !names(tab) %in% c("level")]
-  res$quant <- estQuant_W[, !names(estQuant_W) %in% c("level", "se")]
+  res$quant <- estQuant_W[, c("group", "probs", "quantile", "ci.2.5", "ci.97.5")]
   res$graph <- graph
   if (show_moustache == T) {
     res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
   }
+
+  if (!is.null(export_path)) {
+    # L'export en excel
+
+    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
+    print(graph)
+
+    # On transforme le test stat en dataframe
+    if (type == "median") {
+      test_stat_excel <- test.stat %>%
+        broom::tidy() %>%
+        t() %>%
+        as.data.frame()
+      test_stat_excel$names <- rownames(test_stat_excel)
+      test_stat_excel <- test_stat_excel[, c(2,1)]
+      names(test_stat_excel)[1] <- "Parameter"
+      names(test_stat_excel)[2] <- "Value"
+    }
+    # broom::tidy() ne fonctionne pas sur regTermTest => je le fais a la main
+    if (type == "mean") {
+      test_stat_excel <- data.frame(Parameter = c("df", "ddf", "statistic", "p.value", "method"),
+                                    Value = c(test.stat$df, test.stat$ddf, test.stat$Ftest, test.stat$p, "Wald test"),
+                                    row.names = NULL)
+    }
+
+    # J'exporte les resultats en Excel
+    export_excel(tab_excel = res$tab,
+                 graph = graph,
+                 test_stat_excel = test_stat_excel,
+                 quantiles = res$quant,
+                 density = res$dens,
+                 facet_null = TRUE,
+                 export_path = export_path,
+                 percent_fm = FALSE,
+                 fgFill = "#CC5258",
+                 bivariate = FALSE,
+                 dens = "group")
+
+  }
+
   return(res)
 
 }

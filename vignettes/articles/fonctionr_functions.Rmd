@@ -769,7 +769,7 @@ eusilc_prop$graph
 
 ### L'esthétique des lettres
 
--   `font` indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Actuellement trois polices sont directement incluses dans `fonctionr` : `"Roboto"`, `"Montserrat"` et `"Gotham Narrow"`. Par défaut, `font = "Roboto"`.
+-   `font` indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Plusieurs polices sont directement incluses dans `fonctionr` afin qu'elles soient utilisables sur tous les systèmes. Pour prendre connaissance des polices disponibles, voir `load_and_active_fonts()`.
 
 -   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` et ses alias. Précisons aussi que le `_y` renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
 

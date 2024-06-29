@@ -24,7 +24,7 @@
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
 #' @param dodge Width of the bar, between 0 and 1.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
@@ -416,9 +416,6 @@ prop_group <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-
-  # On charge et active les polices
-  load_and_active_fonts()
 
   # On cree le graphique
 

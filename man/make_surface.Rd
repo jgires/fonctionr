@@ -12,6 +12,7 @@ make_surface(
   error_low = NULL,
   error_upp = NULL,
   pvalue = NULL,
+  name_total = "Total",
   compare = F,
   reorder = F,
   show_ci = TRUE,

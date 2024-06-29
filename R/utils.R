@@ -66,7 +66,8 @@ convert_to_srvyr <- function(data, ...) {
 
 #' load_and_active_fonts
 #'
-#' Fonction pour charger et activer les polices de fonctionr
+#' Function to load and activate fonctionr's built-in fonts.
+#' Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".
 #'
 #' @return
 #' @export
@@ -80,8 +81,9 @@ load_and_active_fonts <- function(){
   sysfonts::font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
   sysfonts::font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
   sysfonts::font_add(family = "Helvetica Neue", regular = paste0(system.file("font", package = "fonctionr"), "/HelveticaNeueRoman.otf"))
+  sysfonts::font_add(family = "League Gothic", regular = paste0(system.file("font", package = "fonctionr"), "/LeagueGothic-Regular.otf"))
+  sysfonts::font_add(family = "Amatic", regular = paste0(system.file("font", package = "fonctionr"), "/AmaticSC-Regular.ttf"))
   showtext::showtext_auto()
-
 }
 
 
@@ -92,11 +94,14 @@ load_and_active_fonts <- function(){
 #' @param tab_excel A dataframe with the results calculated by fonctionr's functions.
 #' @param graph ggplot object showing results of fonctionr's functions.
 #' @param test_stat_excel A dataframe with results of a statistical test on the data.
+#' @param quantiles A dataframe with quantiles for density functions.
+#' @param density A dataframe with density coordinates for density functions.
 #' @param facet_null A logical vector. TRUE if no facet.
 #' @param export_path Path to export the results in an xlsx file.
 #' @param percent_fm A logical vector. TRUE if results are percentages.
 #' @param fgFill Color of first row in exported excel file.
 #' @param bivariate A logical vector. TRUE if results are bivariate.
+#' @param dens A string vector indicating the type of density result to be exported. Possible values: "uni", "group" or "none" (not a density calculation).
 #'
 #' @import openxlsx
 #'
@@ -105,27 +110,55 @@ load_and_active_fonts <- function(){
 export_excel <- function(tab_excel,
                          graph,
                          test_stat_excel,
+                         quantiles = NULL,
+                         density = NULL,
                          facet_null = NULL,
                          export_path,
                          percent_fm = NULL,
                          fgFill,
-                         bivariate = NULL) {
+                         bivariate = NULL,
+                         dens = "none") {
 
   # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
   print(graph)
 
-  # Je formate un fichier Excel dans lequel j'exporte les resultats
+  # Le nom du feuillet avec tab_excel varie selon que c'est la densite ou non
+  # sub_dens = astuce pour la mise en gras ou non de la premiere colonne (voir apres)
+  name_tab <- "Resultats"
+  sub_dens <- 0
+  if(dens == "uni" | dens == "group"){
+    name_tab <- "Indices centraux"
+  }
+  if(dens == "uni"){
+    sub_dens <- 1
+  }
+
+  # Formatage du fichier Excel dans lequel on exporte les resultats
 
   wb <- createWorkbook() # On cree l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
-  addWorksheet(wb, "Resultats") # On ajoute une feuille pour les resultats
+  addWorksheet(wb, name_tab) # On ajoute une feuille pour les resultats / indices centraux (densite)
+  if(dens != "none"){ # Si densite
+    addWorksheet(wb, "Quantiles") # On ajoute une feuille pour les quantiles
+    addWorksheet(wb, "Densite") # On ajoute une feuille pour la densite
+  }
   addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
   addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le resultat du test stat
 
-  writeData(wb, "Resultats", tab_excel, keepNA = TRUE, na.string = "NA") # On ecrit les resultats en gardant les NA
+  # On ecrit les donnees
+  writeData(wb, name_tab, tab_excel, keepNA = TRUE, na.string = "NA") # On ecrit les resultats en gardant les NA
+  if(dens != "none"){ # Si densite
+    writeData(wb, "Quantiles", quantiles, keepNA = TRUE, na.string = "NA") # On ecrit les quantiles en gardant les NA
+    writeData(wb, "Densite", density, keepNA = TRUE, na.string = "NA") # On ecrit la densite en gardant les NA
+  }
   insertPlot(wb,"Graphique", dpi = 90, width = 12, height = 7)
   writeData(wb, "Test statistique", test_stat_excel) # On ecrit le resultat du test stat
 
-  setColWidths(wb, "Resultats", widths = 20, cols = 1:ncol(tab_excel)) # Largeur des colonnes
+ # On definit les styles
+  setColWidths(wb, name_tab, widths = 20, cols = 1:ncol(tab_excel))
+  if(dens != "none"){ # Si densite
+    setColWidths(wb, "Quantiles", widths = 20, cols = 1:ncol(quantiles))
+    setColWidths(wb, "Densite", widths = 20, cols = 1:ncol(density))
+  }
   hs <- createStyle(fontColour = "#ffffff", fgFill = fgFill,  # Style de la premiere ligne
                     halign = "center", textDecoration = "Bold",
                     fontName = "Arial Narrow")
@@ -135,30 +168,53 @@ export_excel <- function(tab_excel,
                        fontName = "Arial Narrow")
   percent <- createStyle(numFmt = "percentage")
 
-  addStyle(wb, "Resultats", hs, cols = 1:ncol(tab_excel), rows = 1) # On applique le style a la premiere ligne
-  addStyle(wb, "Resultats", body, cols = 2:ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+  # On applique le style a la premiere ligne
+  addStyle(wb, name_tab, hs, cols = 1:ncol(tab_excel), rows = 1)
+  if(dens != "none"){
+    addStyle(wb, "Quantiles", hs, cols = 1:ncol(quantiles), rows = 1)
+    addStyle(wb, "Densite", hs, cols = 1:ncol(density), rows = 1)
+  }
 
-  # 2 options selon que la fonction produit un indicateur selon 1 variable ou selon 2 (= bivarie)
-  # => C'est le cas des profils-lignes : il y a alors une colonne en plus a mettre en gras dans la mise en forme ci-dessous !
+  # On applique le style aux reste des lignes a partir de la 2e colonne (car la 1ere est en gras)
+  # SAUF pour la densite univariee ou la 1ere col n'est pas en gras (et donc on fait 2-sub_dens qui est = 1)
+  addStyle(wb, name_tab, body, cols = (2-sub_dens):ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+  if(dens != "none"){
+    # Pour les quantiles 3-sub_dens car il y au moins la 1ere colonne en gras (et les 2 premieres lorsque dens par groupe)
+    addStyle(wb, "Quantiles", body, cols = (3-sub_dens):ncol(quantiles), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
+    addStyle(wb, "Densite", body, cols = (2-sub_dens):ncol(density), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
+  }
+
+  # On suit une logique d'elements additifs pour plus ou moins de colonnes pour la mise en forme
+  # Selon que la fonction produit un indicateur selon 1 variable ou selon 2 (= bivarie) => c'est le cas de many_val_group et distrib_group_d : il y a alors une colonne en plus a mettre en gras dans la mise en forme ci-dessous !
   bivar_add <- 0
   if (bivariate == TRUE) {
     bivar_add <- 1
   }
-
-  # Des if statements dans le cas ou le resultat est demultiplie par modalite de facet => Pas les memes regles vu qu'il y a une colonne en plus a mettre en gras
+  # Meme logique dans le cas ou le resultat varie par modalite de facet => il y a une colonne en plus a mettre en gras
+  facet_add <- 0
   if (!facet_null) {
-    addStyle(wb, "Resultats", firstC, cols = 1:(2+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style a la premiere colonne (sans la premiere ligne)
-    if (percent_fm == TRUE) {
-      addStyle(wb, "Resultats", percent, cols = (3+bivar_add):(5+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
-    }
-  }
-  if (facet_null) {
-    addStyle(wb, "Resultats", firstC, cols = 1:(1+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style a la premiere colonne (sans la premiere ligne)
-    if (percent_fm == TRUE) {
-      addStyle(wb, "Resultats", percent, cols = (2+bivar_add):(4+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style de pourcentage aux proportions
-    }
+    facet_add <- 1
   }
 
+  # On applique le style aux premieres colonnes (sans la premiere ligne)
+  # if statement car pas de 1ere colonne en gras pour densite univariee
+  if(dens == "group" | dens == "none"){
+    addStyle(wb, name_tab, firstC, cols = 1:(1+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+  }
+  # Particulier a densite
+  if(dens != "none"){
+    addStyle(wb, "Quantiles", firstC, cols = 1:(1+facet_add+(1-sub_dens)), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
+    # if statement car pas de 1ere colonne en gras pour densite univariee
+    if(dens == "group"){
+      addStyle(wb, "Densite", firstC, cols = 1:(1+facet_add), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
+    }
+  }
+  # On applique le style de pourcentage aux proportions
+  if (percent_fm == TRUE) {
+    addStyle(wb, name_tab, percent, cols = (2+facet_add+bivar_add):(4+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+  }
+
+  # Styles pour le test stat (a part pour lisibilite)
   setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
   hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la premiere ligne
                      halign = "center", textDecoration = "Bold",
@@ -169,6 +225,7 @@ export_excel <- function(tab_excel,
   addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style a la premiere colonne (sans la premiere ligne)
   addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
 
+  # On sauvegarde le fichier excel
   saveWorkbook(wb, export_path, overwrite = TRUE)
 
 }
@@ -350,7 +407,7 @@ official_pal <- function(inst,
 
 #' theme_fonctionr
 #'
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #'
 #' @return
 #' @import ggplot2
@@ -358,7 +415,7 @@ official_pal <- function(inst,
 #'
 #' @examples
 #'
-theme_fonctionr <- function(font) {
+theme_fonctionr <- function(font = "Roboto") {
 
   load_and_active_fonts()
 

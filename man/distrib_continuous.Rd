@@ -87,7 +87,7 @@ distrib_c(...)
 
 \item{color}{color of the density line.}
 
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{title}{Title of the graphic.}
 

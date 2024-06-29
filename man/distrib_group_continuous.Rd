@@ -118,7 +118,7 @@ distrib_group_c(...)
 
 \item{alpha}{Transparence of the density curve. Default is 1.}
 
-\item{font}{Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25}
 

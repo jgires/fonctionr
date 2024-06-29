@@ -19,7 +19,7 @@
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param fill Colour of the bars.
 #' @param dodge Width of the bar, between 0 and 1.
-#' @param font Font used in the graphic. Available fonts, included in the package itself, are "Roboto", "Montserrat" and "Gotham Narrow". Default is "Roboto".
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before before going to the line. Applies to the labels var. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
