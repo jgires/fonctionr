@@ -473,20 +473,6 @@ many_val_group = function(data,
       graph <- graph +
         labs(x = NULL)
     }
-
-    # LEGEND ---
-    if(all(!is.null(legend_lab), legend_lab != "")){
-      graph <- graph +
-        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
-    }
-    if(all(!is.null(legend_lab), legend_lab == "")){
-      graph <- graph +
-        labs(fill = NULL)
-    }
-    if(is.null(legend_lab)){
-      graph <- graph +
-        labs(fill = NULL)
-    }
   }
 
   # Masquer les axes si show_lab == FALSE
@@ -494,21 +480,20 @@ many_val_group = function(data,
     graph <- graph +
       labs(x = NULL,
            y = NULL)
+  }
 
-    # LEGEND ---
-    if(all(!is.null(legend_lab), legend_lab != "")){
-      graph <- graph +
-        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
-    }
-    if(all(!is.null(legend_lab), legend_lab == "")){
-      graph <- graph +
-        labs(fill = NULL)
-    }
-    if(is.null(legend_lab)){
-      graph <- graph +
-        labs(fill = NULL)
-    }
-
+  # LEGEND ---
+  if(all(!is.null(legend_lab), legend_lab != "")){
+    graph <- graph +
+      labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
+  }
+  if(all(!is.null(legend_lab), legend_lab == "")){
+    graph <- graph +
+      labs(fill = NULL)
+  }
+  if(is.null(legend_lab)){
+    graph <- graph +
+      labs(fill = NULL)
   }
 
   # Ajouter les facets au besoin + scale_y si facet
