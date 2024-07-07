@@ -176,9 +176,10 @@ prop_group <- function(data,
   quo_filter <- enquo(filter_exp)
 
   # On definit la palette si group.fill ou non
-  if(quo_is_null(quo_group.fill)){
+  if(quo_is_null(quo_group.fill) & is.null(pal)){
     pal <- "deepskyblue3"
-  } else {
+  }
+  if(!quo_is_null(quo_group.fill) & is.null(pal)){
     pal <- "Koons"
   }
 
