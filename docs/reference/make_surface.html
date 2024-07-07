@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,38 +66,129 @@
 <span>  <span class="va">tab</span>,</span>
 <span>  <span class="va">var</span>,</span>
 <span>  <span class="va">value</span>,</span>
-<span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  error_low <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  error_upp <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pvalue <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  name_total <span class="op">=</span> <span class="st">"Total"</span>,</span>
-<span>  compare <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  show_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compare <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  space <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  position <span class="op">=</span> <span class="st">"mid"</span>,</span>
+<span>  show_ci <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  name_total <span class="op">=</span> <span class="st">"Total"</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pal <span class="op">=</span> <span class="st">"Kandinsky"</span>,</span>
-<span>  bg <span class="op">=</span> <span class="st">"snow2"</span>,</span>
 <span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  bg <span class="op">=</span> <span class="st">"snow2"</span>,</span>
+<span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
+<span>  wrap_width_lab <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  wrap_width_lab <span class="op">=</span> <span class="fl">20</span></span>
+<span>  caption <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>facet</dt>
+    <dl><dt>tab</dt>
+<dd><p>dataframe with the variables to be ploted.</p></dd>
+
+
+<dt>var</dt>
+<dd><p>The variable in tab with the labels of the indicators to be ploted.</p></dd>
+
+
+<dt>value</dt>
+<dd><p>The variable in tab with the values of the indicator to be ploted.</p></dd>
+
+
+<dt>error_low</dt>
+<dd><p>The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.</p></dd>
+
+
+<dt>error_upp</dt>
+<dd><p>The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.</p></dd>
+
+
+<dt>facet</dt>
 <dd><p>A variable in tab defining the faceting group, if applicable. Default is NULL.</p></dd>
 
 
+<dt>pvalue</dt>
+<dd><p>The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.</p></dd>
+
+
+<dt>reorder</dt>
+<dd><p>TRUE if you want to reorder the values. NA value is not included in the reorder.</p></dd>
+
+
+<dt>compare</dt>
+<dd><p>TRUE to display a square representing the smallest value. When facets are enabled, this is the smallest value per facet category.</p></dd>
+
+
+<dt>space</dt>
+<dd><p>The space between the squares. The unit is that of the indicator.</p></dd>
+
+
+<dt>position</dt>
+<dd><p>The position of the squares: "mid" for center alignment, "bottom" for bottom alignment.</p></dd>
+
+
+<dt>show_ci</dt>
+<dd><p>TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted squares around the result. FALSE if you do not want to show them. Default is TRUE.</p></dd>
+
+
+<dt>name_total</dt>
+<dd><p>Name of the var label that may contain the total. When indicated, it is not displayed on the graph.</p></dd>
+
+
+<dt>digits</dt>
+<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
+
+
+<dt>unit</dt>
+<dd><p>The unit showd on the plot. Default is percent.</p></dd>
+
+
+<dt>pal</dt>
+<dd><p>Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.</p></dd>
+
+
+<dt>direction</dt>
+<dd><p>Direction of the palette color. Default is 1. The opposite direction is -1.</p></dd>
+
+
+<dt>bg</dt>
+<dd><p>Color of the background.</p></dd>
+
+
+<dt>font</dt>
+<dd><p>Font used in the graphic. See load_and_active_fonts() for available fonts.</p></dd>
+
+
 <dt>wrap_width_lab</dt>
-<dd></dd>
+<dd><p>Number of characters before going to the line for the labels of the categories of var. Default is 20.</p></dd>
+
+
+<dt>title</dt>
+<dd><p>Title of the graphic.</p></dd>
+
+
+<dt>subtitle</dt>
+<dd><p>Subtitle of the graphic.</p></dd>
+
+
+<dt>caption</dt>
+<dd><p>Caption of the graphic.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A ggplot graphic.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

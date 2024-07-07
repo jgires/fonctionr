@@ -102,7 +102,6 @@ eusilc_mean <- mean_group(eusilc,
 
 ```{r}
 eusilc_mean$tab %>%
-  filter(pl030_rec != "Total") %>%
   make_surface(
     var = pl030_rec,
     value = mean,

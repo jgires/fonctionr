@@ -25,7 +25,7 @@
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
@@ -344,10 +344,10 @@ many_val = function(data,
 
   # On cree la palette avec le package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
   # On cree la palette avec la fonction interne official_pal
-  } else if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% official_pal(list_pal_names = T)){
     palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
 
   # On cree une palette unicolore

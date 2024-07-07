@@ -2,17 +2,17 @@
 #'
 #' Function to construct a graphic following the aestetics of the other function function of this package from a table
 #'
-#' @param tab Table with the variables to be ploted.
+#' @param tab dataframe with the variables to be ploted.
 #' @param var The variable in tab with the labels of the indicators to be ploted.
-#' @param value The variable in tab with the indicators to be ploted.
-#' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
+#' @param value The variable in tab with the values of the indicator to be ploted.
 #' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
-#' @param pvalue The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.
+#' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
 #' @param n_var The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.
+#' @param pvalue The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.
+#' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
 #' @param show_value TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.
-#' @param name_total Name of the total bar on the graphic.
+#' @param name_total Name of the var label that may contain the total. When indicated, it is displayed separately on the graph.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit The unit showd on the plot. Default is percent.
@@ -20,14 +20,14 @@
 #' @param fill Colour of the bars.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels var. Default is 25.
+#' @param wrap_width_y Number of characters before going to the line. Applies to the labels var. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to var in tab.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
 #' @param caption Caption of the graphic.
 #'
-#' @return
+#' @return A ggplot graphic.
 #' @import rlang
 #' @import dplyr
 #' @import ggplot2
@@ -38,12 +38,12 @@
 esth_graph <- function(tab,
                        var,
                        value,
-                       facet = NULL,
-                       reorder = F,
                        error_low = NULL,
                        error_upp = NULL,
-                       pvalue = NULL,
+                       facet = NULL,
                        n_var = NULL,
+                       pvalue = NULL,
+                       reorder = F,
                        show_value = TRUE,
                        name_total = NULL,
                        scale = 1,
@@ -115,9 +115,9 @@ esth_graph <- function(tab,
 
   # On cree des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
-  quo_facet <- enquo(facet)
   quo_low <- enquo(error_low)
   quo_up <- enquo(error_upp)
+  quo_facet <- enquo(facet)
   quo_n <- enquo(n_var)
 
 

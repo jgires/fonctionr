@@ -8,12 +8,12 @@ esth_graph(
   tab,
   var,
   value,
-  facet = NULL,
-  reorder = F,
   error_low = NULL,
   error_upp = NULL,
-  pvalue = NULL,
+  facet = NULL,
   n_var = NULL,
+  pvalue = NULL,
+  reorder = F,
   show_value = TRUE,
   name_total = NULL,
   scale = 1,
@@ -32,27 +32,27 @@ esth_graph(
 )
 }
 \arguments{
-\item{tab}{Table with the variables to be ploted.}
+\item{tab}{dataframe with the variables to be ploted.}
 
 \item{var}{The variable in tab with the labels of the indicators to be ploted.}
 
-\item{value}{The variable in tab with the indicators to be ploted.}
-
-\item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
-
-\item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.}
+\item{value}{The variable in tab with the values of the indicator to be ploted.}
 
 \item{error_low}{The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
 \item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
-\item{pvalue}{The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.}
+\item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
 \item{n_var}{The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.}
 
+\item{pvalue}{The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.}
+
+\item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.}
+
 \item{show_value}{TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.}
 
-\item{name_total}{Name of the total bar on the graphic.}
+\item{name_total}{Name of the var label that may contain the total. When indicated, it is displayed separately on the graph.}
 
 \item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
@@ -68,7 +68,7 @@ esth_graph(
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
-\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels var. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels var. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
@@ -79,6 +79,9 @@ esth_graph(
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.}
 
 \item{caption}{Caption of the graphic.}
+}
+\value{
+A ggplot graphic.
 }
 \description{
 Function to construct a graphic following the aestetics of the other function function of this package from a table

@@ -54,7 +54,7 @@ many_mean_group(..., type = "mean")
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{group}{A variable defining groups be compared.}
+\item{group}{A variable defining groups to be compared.}
 
 \item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
 
@@ -76,7 +76,7 @@ many_mean_group(..., type = "mean")
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{position}{Position adjustment for geom_bar}
+\item{position}{Position adjustment for geom_bar.}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
 
@@ -102,9 +102,9 @@ many_mean_group(..., type = "mean")
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
-\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the groups. Default is 25.}
 
-\item{wrap_width_leg}{Number of characters before before going to the line. Applies to the labels of the legend. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line. Applies to the labels of the legend. Default is 25.}
 
 \item{legend_ncol}{Number maximum of colomn in the legend. Default is 4.}
 

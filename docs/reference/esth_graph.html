@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,12 +66,12 @@
 <span>  <span class="va">tab</span>,</span>
 <span>  <span class="va">var</span>,</span>
 <span>  <span class="va">value</span>,</span>
-<span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  error_low <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  error_upp <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pvalue <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pvalue <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  name_total <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  scale <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -93,7 +93,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>tab</dt>
-<dd><p>Table with the variables to be ploted.</p></dd>
+<dd><p>dataframe with the variables to be ploted.</p></dd>
 
 
 <dt>var</dt>
@@ -101,15 +101,7 @@
 
 
 <dt>value</dt>
-<dd><p>The variable in tab with the indicators to be ploted.</p></dd>
-
-
-<dt>facet</dt>
-<dd><p>A variable in tab defining the faceting group, if applicable. Default is NULL.</p></dd>
-
-
-<dt>reorder</dt>
-<dd><p>TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.</p></dd>
+<dd><p>The variable in tab with the values of the indicator to be ploted.</p></dd>
 
 
 <dt>error_low</dt>
@@ -120,12 +112,20 @@
 <dd><p>The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.</p></dd>
 
 
-<dt>pvalue</dt>
-<dd><p>The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.</p></dd>
+<dt>facet</dt>
+<dd><p>A variable in tab defining the faceting group, if applicable. Default is NULL.</p></dd>
 
 
 <dt>n_var</dt>
 <dd><p>The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.</p></dd>
+
+
+<dt>pvalue</dt>
+<dd><p>The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.</p></dd>
+
+
+<dt>reorder</dt>
+<dd><p>TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.</p></dd>
 
 
 <dt>show_value</dt>
@@ -133,7 +133,7 @@
 
 
 <dt>name_total</dt>
-<dd><p>Name of the total bar on the graphic.</p></dd>
+<dd><p>Name of the var label that may contain the total. When indicated, it is displayed separately on the graph.</p></dd>
 
 
 <dt>scale</dt>
@@ -165,7 +165,7 @@
 
 
 <dt>wrap_width_y</dt>
-<dd><p>Number of characters before before going to the line. Applies to the labels var. Default is 25.</p></dd>
+<dd><p>Number of characters before going to the line. Applies to the labels var. Default is 25.</p></dd>
 
 
 <dt>title</dt>
@@ -188,6 +188,12 @@
 <dd><p>Caption of the graphic.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A ggplot graphic.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

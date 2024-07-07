@@ -155,6 +155,21 @@ eusilc_prop$tab
 eusilc_prop$test.stat
 ```
 
+La fonction `prop_group()` permet également de différencier le calcul de proportion en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
+
+```{r}
+eusilc_prop_sex <- prop_group(eusilc,
+  group = pl030_rec,
+  prop_exp = py090n > 0,
+  group.fill = rb090,
+  weights = rb050,
+  title = "% of ind. receiving unemp. benefits in their hh by soc.-eco. stat. & sex",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+
+eusilc_prop_sex$graph
+```
+
 ## `central_group()` : valeur centrale (moyenne/médiane) par groupe
 
 `central_group()` compare la valeur centrale d'une variable quantitative selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Deux valeurs centrales sont possibles :
@@ -328,83 +343,99 @@ library(knitr)
 library(kableExtra)
 
 tableau_recap <- tibble::tribble(
-   ~`Catégorie d’argument`,    ~prop_group,  ~many_val_group,       ~many_val, ~central_group, ~distrib_group_d,     ~distrib_d,   ~distrib_group_c,         ~distrib_c,
-         "Base de données",         "data",           "data",          "data",         "data",           "data",         "data",             "data",             "data",
-           "indispensable",        "group",          "group",              "",        "group",          "group",             "",            "group",                 "",
-           "indispensable",     "prop_exp",               "",              "",             "",               "",             "",                 "",                 "",
-           "indispensable",             "",               "",              "",   "quanti_exp",               "",             "",       "quanti_exp",       "quanti_exp",
-           "indispensable",             "",               "",              "",             "",      "quali_var",    "quali_var",                 "",                 "",
-           "indispensable",             "",      "list_vars",     "list_vars",             "",               "",             "",                 "",                 "",
-     "Esthétique: labels",             "",  "list_vars_lab", "list_vars_lab",             "",               "",             "",                 "",                 "",
-           "indispensable",             "",           "type",          "type",         "type",               "",             "",             "type",             "type",
-            "argument clé",        "facet",          "facet",         "facet",        "facet",          "facet",        "facet", "en developpement", "en developpement",
-            "argument clé",   "filter_exp",     "filter_exp",    "filter_exp",   "filter_exp",     "filter_exp",   "filter_exp",       "filter_exp",       "filter_exp",
-         "Base de données",            "…",              "…",             "…",            "…",              "…",            "…",                "…",                 "",
-            "argument clé",  "na.rm.group",    "na.rm.group",              "",  "na.rm.group",    "na.rm.group",             "",      "na.rm.group",                 "",
-            "argument clé",  "na.rm.facet",    "na.rm.facet",   "na.rm.facet",  "na.rm.facet",    "na.rm.facet",  "na.rm.facet", "en developpement", "en developpement",
-            "argument clé",             "",               "",              "",             "",      "na.rm.var",    "na.rm.var",                 "",                 "",
-            "argument clé",      "na.prop",               "",              "",             "",               "",             "",                 "",                 "",
-            "argument clé",             "",        "na.vars",       "na.vars",             "",               "",             "",                 "",                 "",
-            "argument clé",             "",               "",              "",             "",               "",             "",        "quantiles",        "quantiles",
-            "argument clé",             "",               "",              "",             "",               "",             "",  "moustache_probs",                 "",
-            "argument clé",             "",               "",              "",             "",               "",        "probs",                 "",                 "",
-            "argument clé",  "prop_method",    "prop_method",   "prop_method",             "",    "prop_method",  "prop_method",                 "",                 "",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",               "bw",               "bw",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",       "resolution",       "resolution",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",           "height",                 "",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",           "limits",           "limits",
-      "Esthétique de base",      "reorder",               "",       "reorder",      "reorder",               "",      "reorder",          "reorder",                 "",
-      "Esthétique de base",             "",       "position",              "",             "",               "",             "",                 "",                 "",
-      "Esthétique de base",      "show_ci",        "show_ci",       "show_ci",      "show_ci",               "",      "show_ci",                 "",                 "",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",   "show_mid_point",                 "",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",    "show_mid_line",    "show_mid_line",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "", "show_ci_errorbar",                 "",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",    "show_ci_lines",    "show_ci_lines",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",     "show_ci_area",     "show_ci_area",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "", "show_quant_lines", "show_quant_lines",
-      "Esthétique de base",             "",               "",              "",             "",               "",             "",   "show_moustache",                 "",
-      "Esthétique de base",       "show_n",         "show_n",        "show_n",       "show_n",               "",       "show_n",           "show_n",           "show_n",
-      "Esthétique de base",   "show_value",     "show_value",    "show_value",   "show_value",     "show_value",   "show_value",       "show_value",       "show_value",
-      "Esthétique de base",     "show_lab",       "show_lab",      "show_lab",     "show_lab",       "show_lab",     "show_lab",         "show_lab",         "show_lab",
-      "Esthétique de base",   "total_name",               "",              "",   "total_name",               "",             "",                 "",                 "",
-   "Esthétique: chiffres",        "scale",          "scale",         "scale",             "",          "scale",        "scale",                 "",                 "",
-   "Esthétique: chiffres",       "digits",         "digits",        "digits",       "digits",         "digits",       "digits",           "digits",           "digits",
-   "Esthétique: chiffres",         "unit",           "unit",          "unit",         "unit",           "unit",         "unit",             "unit",             "unit",
-   "Esthétique: chiffres",          "dec",            "dec",           "dec",          "dec",            "dec",          "dec",              "dec",              "dec",
-  "Esthétique: graphique",         "fill",               "",              "",         "fill",               "",         "fill",                 "",                 "",
-  "Esthétique: graphique",             "",            "pal",           "pal",             "",            "pal",             "",              "pal",              "pal",
-  "Esthétique: graphique",             "",      "direction",     "direction",             "",      "direction",             "",                 "",                 "",
-  "Esthétique: graphique",             "",               "",              "",             "",               "",             "",    "pal_moustache",                 "",
-  "Esthétique: graphique",             "",               "",              "",             "",               "",             "",            "color",            "color",
-  "Esthétique: graphique",             "",               "",              "",             "",               "",             "",            "alpha",                 "",
-  "Esthétique: graphique",        "dodge",          "dodge",         "dodge",        "dodge",          "dodge",        "dodge",                 "",                 "",
-   "Esthétiques: lettres",         "font",           "font",          "font",         "font",           "font",         "font",             "font",             "font",
-   "Esthétiques: lettres", "wrap_width_y",   "wrap_width_y",  "wrap_width_y", "wrap_width_y",   "wrap_width_y", "wrap_width_y",     "wrap_width_y",                 "",
-   "Esthétiques: lettres",             "", "wrap_width_leg",              "",             "", "wrap_width_leg",             "",                 "",                 "",
-   "Esthétiques: lettres",             "",    "legend_ncol",              "",             "",    "legend_ncol",             "",                 "",                 "",
-     "Esthétique: labels",        "title",          "title",         "title",        "title",          "title",        "title",            "title",            "title",
-     "Esthétique: labels",     "subtitle",       "subtitle",      "subtitle",     "subtitle",       "subtitle",     "subtitle",         "subtitle",         "subtitle",
-     "Esthétique: labels",         "xlab",           "xlab",          "xlab",         "xlab",           "xlab",         "xlab",             "xlab",             "xlab",
-     "Esthétique: labels",         "ylab",           "ylab",          "ylab",         "ylab",           "ylab",             "",             "ylab",             "ylab",
-     "Esthétique: labels",             "",     "legend_lab",              "",             "",     "legend_lab",             "",                 "",                 "",
-     "Esthétique: labels",      "caption",        "caption",       "caption",      "caption",        "caption",      "caption",          "caption",          "caption"
+  ~`Catégorie d’argument`, ~Site,         ~type,      ~prop_group,  ~many_val_group,       ~many_val, ~central_group,          ~distrib_group_c,            ~distrib_c, ~distrib_group_d,     ~distrib_d,
+        "Base de données",    1L,          "df",           "data",           "data",          "data",         "data",                    "data",                "data",           "data",         "data",
+          "Indispensable",    1L,      "quoted",          "group",          "group",              NA,        "group",                   "group",                    NA,          "group",             NA,
+          "Indispensable",    1L,      "quoted",       "prop_exp",               NA,              NA,             NA,                        NA,                    NA,               NA,             NA,
+          "Indispensable",    1L,      "quoted",               NA,               NA,              NA,   "quanti_exp",              "quanti_exp",          "quanti_exp",               NA,             NA,
+          "Indispensable",    1L,      "quoted",               NA,               NA,              NA,             NA,                        NA,                    NA,      "quali_var",    "quali_var",
+          "Indispensable",    1L,      "quoted",               NA,      "list_vars",     "list_vars",             NA,                        NA,                    NA,               NA,             NA,
+          "Indispensable",    1L,      "string",               NA,           "type",          "type",         "type",                    "type",                "type",               NA,             NA,
+     "Esthétique de base",    1L,      "string",               NA,  "list_vars_lab", "list_vars_lab",             NA,                        NA,                    NA,               NA,             NA,
+           "Argument clé",    1L,      "quoted",          "facet",          "facet",         "facet",        "facet",     "to_delete PLUS TARD", "to_delete PLUS TARD",          "facet",        "facet",
+           "Argument clé",    1L,      "quoted",     "filter_exp",     "filter_exp",    "filter_exp",   "filter_exp",              "filter_exp",          "filter_exp",     "filter_exp",   "filter_exp",
+        "Base de données",    1L, "dot dot dot",              "…",              "…",             "…",            "…",                       "…",                   "…",              "…",            "…",
+           "Argument clé",    1L,     "logical",    "na.rm.group",    "na.rm.group",              NA,  "na.rm.group",             "na.rm.group",                    NA,    "na.rm.group",             NA,
+           "Argument clé",    1L,     "logical",    "na.rm.facet",    "na.rm.facet",   "na.rm.facet",  "na.rm.facet",     "to_delete PLUS TARD", "to_delete PLUS TARD",    "na.rm.facet",  "na.rm.facet",
+           "Argument clé",    1L,      "string",        "na.prop",               NA,              NA,             NA,                        NA,                    NA,               NA,             NA,
+           "Argument clé",    1L,      "string",               NA,        "na.vars",       "na.vars",             NA,                        NA,                    NA,               NA,             NA,
+           "Argument clé",    1L,      "string",               NA,               NA,              NA,             NA,                        NA,                    NA,      "na.rm.var",    "na.rm.var",
+           "Argument clé",    1L,     "numeric",               NA,               NA,              NA,             NA,                        NA,                    NA,               NA,        "probs",
+           "Argument clé",    1L,      "string",    "prop_method",    "prop_method",   "prop_method",             NA,                        NA,                    NA,    "prop_method",  "prop_method",
+           "Argument clé",    1L,     "numeric",               NA,               NA,              NA,             NA,               "quantiles",           "quantiles",               NA,             NA,
+           "Argument clé",    1L,     "numeric",               NA,               NA,              NA,             NA,         "moustache_probs",   "to_delete UTILE ?",               NA,             NA,
+     "Esthétique de base",    1L,     "numeric",               NA,               NA,              NA,             NA,                      "bw",                  "bw",               NA,             NA,
+     "Esthétique de base",    1L,     "numeric",               NA,               NA,              NA,             NA,              "resolution",          "resolution",               NA,             NA,
+     "Esthétique de base",    1L,     "numeric",               NA,               NA,              NA,             NA,                  "height",                    NA,               NA,             NA,
+     "Esthétique de base",    1L,     "numeric",               NA,               NA,              NA,             NA,                  "limits",              "limits",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",        "reorder",  "to_delete ???",       "reorder",      "reorder",                 "reorder",                    NA,               NA,      "reorder",
+     "Esthétique de base",    1L,      "string",               NA,       "position",              NA,             NA,                        NA,                    NA,               NA,             NA,
+     "Esthétique de base",    1L,     "logical",        "show_ci",        "show_ci",       "show_ci",      "show_ci",                        NA,                    NA,               NA,      "show_ci",
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,          "show_mid_point",                    NA,               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,           "show_mid_line",       "show_mid_line",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,        "show_ci_errorbar",                    NA,               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,           "show_ci_lines",       "show_ci_lines",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,            "show_ci_area",        "show_ci_area",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,        "show_quant_lines",    "show_quant_lines",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",               NA,               NA,              NA,             NA,          "show_moustache",   "to_delete UTILE ?",               NA,             NA,
+     "Esthétique de base",    1L,     "logical",         "show_n",         "show_n",        "show_n",       "show_n",       "to_delete UTILE ?",              "show_n",               NA,       "show_n",
+     "Esthétique de base",    1L,     "logical",     "show_value",     "show_value",    "show_value",   "show_value",              "show_value",          "show_value",     "show_value",   "show_value",
+     "Esthétique de base",    1L,     "logical",       "show_lab",       "show_lab",      "show_lab",     "show_lab",                "show_lab",            "show_lab",       "show_lab",     "show_lab",
+     "Esthétique de base",    1L,      "string",     "total_name",               NA,              NA,   "total_name",                        NA,                    NA,               NA,             NA,
+   "Esthétique: chiffres",    1L,     "numeric",          "scale",          "scale",         "scale",             NA,                        NA,                    NA,          "scale",        "scale",
+   "Esthétique: chiffres",    1L,     "numeric",         "digits",         "digits",        "digits",       "digits",                  "digits",              "digits",         "digits",       "digits",
+   "Esthétique: chiffres",    1L,      "string",           "unit",           "unit",          "unit",         "unit",                    "unit",                "unit",           "unit",         "unit",
+   "Esthétique: chiffres",    1L,      "string",            "dec",            "dec",           "dec",          "dec",                     "dec",                 "dec",            "dec",          "dec",
+  "Esthétique: graphique",    1L,      "string",               NA,               NA,              NA,         "fill",                        NA,                    NA,               NA,         "fill",
+  "Esthétique: graphique",    1L,      "string",            "pal",            "pal",           "pal",             NA,                     "pal",                 "pal",            "pal",             NA,
+  "Esthétique: graphique",    1L,     "numeric",      "direction",      "direction",     "direction",             NA,                        NA,                    NA,      "direction",             NA,
+  "Esthétique: graphique",    1L,      "string",               NA,               NA,              NA,             NA,           "pal_moustache",                    NA,               NA,             NA,
+  "Esthétique: graphique",    1L,      "string",               NA,               NA,              NA,             NA,                   "color",               "color",               NA,             NA,
+  "Esthétique: graphique",    1L,     "numeric",               NA,               NA,              NA,             NA,                   "alpha",                    NA,               NA,             NA,
+  "Esthétique: graphique",    1L,     "numeric",          "dodge",          "dodge",         "dodge",        "dodge",                        NA,                    NA,          "dodge",        "dodge",
+    "Esthétique: lettres",    1L,      "string",           "font",           "font",          "font",         "font",                    "font",                "font",           "font",         "font",
+    "Esthétique: lettres",    1L,     "numeric",   "wrap_width_y",   "wrap_width_y",  "wrap_width_y", "wrap_width_y",            "wrap_width_y",                    NA,   "wrap_width_y", "wrap_width_y",
+    "Esthétique: lettres",    1L,     "numeric", "wrap_width_leg", "wrap_width_leg",              NA,             NA,       "to_delete UTILE ?",                    NA, "wrap_width_leg",             NA,
+    "Esthétique: lettres",    1L,     "numeric",    "legend_ncol",    "legend_ncol",              NA,             NA,       "to_delete UTILE ?",                    NA,    "legend_ncol",             NA,
+     "Esthétique: labels",    1L,      "string",          "title",          "title",         "title",        "title",                   "title",               "title",          "title",        "title",
+     "Esthétique: labels",    1L,      "string",       "subtitle",       "subtitle",      "subtitle",     "subtitle",                "subtitle",            "subtitle",       "subtitle",     "subtitle",
+     "Esthétique: labels",    1L,      "string",           "xlab",           "xlab",          "xlab",         "xlab",                    "xlab",                "xlab",           "xlab",         "xlab",
+     "Esthétique: labels",    1L,      "string",           "ylab",           "ylab",          "ylab",         "ylab",                    "ylab",                "ylab",           "ylab",             NA,
+     "Esthétique: labels",    1L,      "string",     "legend_lab",     "legend_lab",              NA,             NA, "to_delete A IMPLEMENTER",                    NA,     "legend_lab",             NA,
+     "Esthétique: labels",    1L,      "string",        "caption",        "caption",       "caption",      "caption",                 "caption",             "caption",        "caption",      "caption"
   )
 
-pal_tableau_recap <- as.character(MetBrewer::met.brewer(name = "VanGogh2", n = 9, type = "continuous", direction = -1))
+del_to_empty <- function(x){
+  x[stringr::str_detect(x, "to_delete")] <- ""
+  x[is.na(x)] <- ""
+  return(x)
+}
+
+tableau_recap <- tableau_recap |>
+  dplyr::select(-Site, -type) %>% 
+  dplyr::mutate(
+    dplyr::across(
+      tidyselect::everything(),
+      del_to_empty
+    )
+  )
+
+pal_tableau_recap <- as.character(MetBrewer::met.brewer(name = "Egypt", n = 9, type = "continuous", direction = -1))
+pal_tableau_recap <- colorspace::lighten(pal_tableau_recap, 0.7, space = "HLS")
 
 tableau_recap |>
 kbl() |>
   kable_paper(full_width = F, font_size = 12) |> 
   row_spec(0, bold = T, color = "black") |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "white", background = pal_tableau_recap[1]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="indispensable"), color = "white", background = pal_tableau_recap[2]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "white", background = pal_tableau_recap[3]) |> 
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="argument clé"), color = "white", background = pal_tableau_recap[4]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "white", background = pal_tableau_recap[5]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: chiffres"), color = "white", background = pal_tableau_recap[6]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "white", background = pal_tableau_recap[7]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétiques: lettres"), color = "white", background = pal_tableau_recap[8]) |>
-  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "white", background = pal_tableau_recap[9]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "black", background = pal_tableau_recap[1]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Indispensable"), color = "black", background = pal_tableau_recap[2]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[3]) |> 
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Argument clé"), color = "black", background = pal_tableau_recap[4]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique de base"), color = "black", background = pal_tableau_recap[5]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: chiffres"), color = "black", background = pal_tableau_recap[6]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "black", background = pal_tableau_recap[7]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: lettres"), color = "black", background = pal_tableau_recap[8]) |>
+  row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[9]) |>
   column_spec(1, bold = T, background = "white", color = "black")
 ```
 
@@ -688,8 +719,8 @@ distrib_income_2$graph
 
 -   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`.
 
-    -   `fill` est utilisé pour les graphiques monochrome (`prop_group()`, `central_group()` et ses alias, `distrib_discrete()`<!--# et esth_graph(), mais déplacé dans une autre page -->). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`.
-    -   `pal` est utilisé pour les graphiques avec plusieurs couleurs. pal doit reprendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. L'argument direction permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. Pour `many_val()` et ses alias, `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome.
+    -   `fill` est utilisé pour les graphiques monochrome (`central_group()` et ses alias, `distrib_discrete()`<!--# et esth_graph(), mais déplacé dans une autre page -->). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`.
+    -   `pal` est utilisé pour les graphiques qui peuvent présenter plusieurs couleurs. `pal` doit alors généralement prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé.
 
 Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou `pal`. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter la confusion des graphiques.
 
@@ -709,6 +740,34 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 
 ```{r}
 eusilc_dist_group_d$graph 
+```
+
+Dans certains cas, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. C'est le cas pour `many_val()` et ses alias, où `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. C'est également le cas pour `prop_group()` : lorsque l'on indique des sous-groupes dans l'argument `group.fill`, il faut pouvoir différencier les sous-groupes avec une couleur, et alors il faut indiquer une palette des trois packages mentionnés. Par contre, lorsqu'il n'y a pas de sous-groupes, il faut indiquer une couleur unique. L'exemple ci-dessous montre les deux usages de `pal` avec `prop_group()`. On calcule la proportion de travailleurs à temps partiel selon le sexe. Dans le premier graphique, on différencie les proportions selon la région ; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols`). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`.
+
+```{r}
+# Avec sous-groupes
+eusilc_prop_sub_group <- prop_group(eusilc,
+  group = rb090,
+  prop_exp = pl030_rec == "Working part time",
+  group.fill = db040,
+  weights = rb050,
+  title = "% of ind. working part time by sex & region",
+  subtitle = "(with sub-groups)",
+  pal = "Neon"
+)
+# Sans sous-groupes
+eusilc_prop_no_sub_group <- prop_group(eusilc,
+  group = rb090,
+  prop_exp = pl030_rec == "Working part time",
+  weights = rb050,
+  title = "% of ind. working part time by sex",
+  subtitle = "(no sub-groups)",
+  pal = "gold"
+)
+```
+
+```{r}
+eusilc_prop_sub_group$graph | eusilc_prop_no_sub_group$graph
 ```
 
 -   Dans `distrib_continuous()` et `distrib_group_continuous()`, `pal` peut soit prendre la valeur d'une couleur, soit un vecteur reprenant plusieurs couleurs. Dans le cas d'une seule couleur, les graphiques seront monochrome, dans le cas de plusieurs couleurs, une palette de couleur est créée en passant par les différentes couleurs indiquées pour colorer les différents quantiles, la première couleur indiquant la coloration des premiers et derniers quantiles, et la dernière couleur indiquant la coloration du quantile central[^6]. Précisons que le vecteur de `pal` doit être un vecteur de couleur de R ou de codes hexadécimaux, mais pas une des palettes des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` utilisées dans `pal` pour les autres fonctions. Par défaut `distrib_continuous()` utilise un dégradé de bleu pour les quantiles et `distrib_group_continuous()` colorie les courbes de densité en gris, de manière à ne pas surcharger le graphique avec les quantiles. Ces deux fonction ont aussi l'argument `color` qui permet de définir la couleur de la ligne supérieure de la courbe de densité. Par défaut cette ligne n'est pas affichée.
@@ -771,15 +830,15 @@ eusilc_prop$graph
 
 -   `font` indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Plusieurs polices sont directement incluses dans `fonctionr` afin qu'elles soient utilisables sur tous les systèmes. Pour prendre connaissance des polices disponibles, voir `load_and_active_fonts()`.
 
--   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` et ses alias. Précisons aussi que le `_y` renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
+-   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()`, `many_val_group()` et ses alias et `prop_group()` lorsqu'on définit des sous-groupes. Précisons aussi que le `_y` renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
 
--   `legend_ncol` indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. `legend_ncol` n'est aussi présent que pour les graphiques ayant une légende : `distrib_group_discrete(`) et `many_val_group()` et ses alias.
+-   `legend_ncol` indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. `legend_ncol` n'est aussi présent que pour les graphiques ayant une légende : `distrib_group_discrete(`) et `many_val_group()` et ses alias et `prop_group()` lorsqu'on définit des sous-groupes.
 
 ### Les labels
 
 Les arguments de label ne sont utilisés que si `show_lab = TRUE`, qui est la valeur par défaut. Si `show_lab = FALSE`, aucun des labels ci-dessous n'est indiqué.
 
--   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption` indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que `xlab` et `ylab` font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation `coord_flip()` qui a lieu dans les fonctions. `legend_lab` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias. Le *caption* étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument `caption` ajoute un texte en dessous de la mention de la p valeur du test statistique.
+-   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption` indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que `xlab` et `ylab` font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation `coord_flip()` qui a lieu dans les fonctions. `legend_lab` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias et `prop_group()` lorsqu'on définit des sous-groupes. Le *caption* étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument `caption` ajoute un texte en dessous de la mention de la p valeur du test statistique.
 
 -   Dans le cas où les arguments de label ne sont pas renseignés par l'utilisateur, il n'y a pas de titre, pas de sous-titre et pas de *caption* (autre que la p valeur du test statistique). Par contre, `xlab`, `ylab` et, pour les graphiques avec légende, `legend_lab` indiquent par défaut les noms de la variable ou de l'expression qui est, pour `xlab`, précédé d'une précision sur la nature du calcul : "Moyenne : ...", "Distribution : ..."
 

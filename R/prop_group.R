@@ -3,8 +3,9 @@
 #' Function to compare proportions in different groups from complex survey data. It produces a table, a graphic and a statistical test.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param group A variable defining groups be compared.
+#' @param group A variable defining the groups to be compared.
 #' @param prop_exp An expression that define the proportion to be computed.
+#' @param group.fill A variable defining a second variable of groups to be compared.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
@@ -22,14 +23,18 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param fill Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_leg Number of characters before going to the line for the labels of the categories of group.fill. Default is 25.
+#' @param legend_ncol Number of colomns in the legend. Default is 4.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
@@ -71,6 +76,7 @@
 prop_group <- function(data,
                        group,
                        prop_exp,
+                       group.fill = NULL,
                        facet = NULL,
                        filter_exp = NULL,
                        ...,
@@ -88,14 +94,18 @@ prop_group <- function(data,
                        digits = 0,
                        unit = "%",
                        dec = ",", ### A FAIRE
-                       fill = "deepskyblue3",
+                       pal = NULL,
+                       direction = 1,
                        dodge = 0.9,
                        font ="Roboto",
                        wrap_width_y = 25,
+                       wrap_width_leg = 25,
+                       legend_ncol = 4,
                        title = NULL,
                        subtitle = NULL,
                        xlab = NULL,
                        ylab = NULL,
+                       legend_lab = NULL,
                        caption = NULL,
                        export_path = NULL) {
 
@@ -117,12 +127,12 @@ prop_group <- function(data,
       total_name = total_name,
       unit = unit,
       dec = dec,
-      fill = fill,
       font = font,
       title = title,
       subtitle = subtitle,
       xlab = xlab,
       ylab = ylab,
+      legend_lab = legend_lab,
       caption = caption,
       export_path = export_path
     ),
@@ -144,8 +154,11 @@ prop_group <- function(data,
     arg = list(
       scale = scale,
       digits = digits,
+      direction = direction,
       dodge = dodge,
-      wrap_width_y = wrap_width_y
+      wrap_width_y = wrap_width_y,
+      wrap_width_leg = wrap_width_leg,
+      legend_ncol = legend_ncol
     ),
     type = "numeric"
   )
@@ -156,10 +169,18 @@ prop_group <- function(data,
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
-  # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
+  # On cree une quosure de group.fill, facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
+  quo_group.fill <- enquo(group.fill)
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
+
+  # On definit la palette si group.fill ou non
+  if(quo_is_null(quo_group.fill)){
+    pal <- "deepskyblue3"
+  } else {
+    pal <- "Koons"
+  }
 
   # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
   # On cree un vecteur string qui contient toutes les variables entrees
@@ -171,6 +192,11 @@ prop_group <- function(data,
   # On ajoute group
   vec_group <- c(group = as.character(substitute(group)))
   vars_input_char <- c(vec_prop_exp, vec_group)
+  # On ajoute group.fill si non-NULL
+  if(!quo_is_null(quo_group.fill)){
+    vec_group.fill <- c(group.fill = as.character(substitute(group.fill)))
+    vars_input_char <- c(vars_input_char, vec_group.fill)
+  }
   # On ajoute facet si non-NULL
   if(!quo_is_null(quo_facet)){
     vec_facet <- c(facet = as.character(substitute(facet)))
@@ -216,10 +242,15 @@ prop_group <- function(data,
     data_W <- data_W %>%
       filter({{ filter_exp }})
   }
-  # On supprime les NA sur le groupe si na.rm.group = T
+  # On supprime les NA sur group + group.fill si na.rm.group = T
   if (na.rm.group == T) {
     data_W <- data_W %>%
       filter(!is.na({{ group }}))
+
+    if(!quo_is_null(quo_group.fill)){
+      data_W <- data_W %>%
+        filter(!is.na({{ group.fill }}))
+    }
   }
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
@@ -267,7 +298,14 @@ prop_group <- function(data,
       )
   }
 
-  # On convertit egalement la variable de facet en facteur si facet non-NULL
+  # On convertit egalement la variable de group.fill en facteur si facet non-NULL
+  if(!quo_is_null(quo_group.fill)){
+    data_W <- data_W %>%
+      mutate(
+        "{{ group.fill }}" := droplevels(as.factor({{ group.fill }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+  }
+
+  # idem pour facet
   if(!quo_is_null(quo_facet)){
     data_W <- data_W %>%
       mutate(
@@ -277,99 +315,151 @@ prop_group <- function(data,
 
   # 3. TEST STATISTIQUE --------------------
 
-  # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
-  # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
-  if (na.rm.group == F) {
-    data_W <- data_W %>%
-      # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
-      mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")))
-  }
-  # idem sur la variable de facet si non-NULL
-  if (na.rm.facet == F) {
-    if (!quo_is_null(quo_facet)) {
-      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
-        mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
+  # Uniquement si pas de group.fill (A PREVOIR PLUS TARD ?)
+  if(quo_is_null(quo_group.fill)){
+
+    # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
+    # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
+    if (na.rm.group == F) {
+      data_W <- data_W %>%
+        # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
+        mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")))
     }
-  }
-
-  # On realise les tests statistiques
-  # Ici un test khi2 sur une variable binaire "fonctionr_express_bin" oui/non pour l'expression
-  if(quo_is_null(quo_facet)){
-    group_fmla <- as.character(substitute(group))
-    fmla <- stats::as.formula(paste("~", group_fmla, "+", "fonctionr_express_bin"))
-  }
-  # Avec facet : prevoir une boucle pour chacune des modalite de facet => A FAIRE PLUS TARD
-  if(!quo_is_null(quo_facet)){
-    facet_fmla <- as.character(substitute(facet))
-    fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
-  }
-
-  # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
-  test.stat <- tryCatch(
-    expr = {
-      svychisq(fmla, data_W)
-    },
-    # test.stat devient un vecteur string avec 1 chaine de caracteres si erreur du test
-    error = function(e){
-      "Conditions non remplies"
-    }
-  )
-
-  # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
-  if(na.rm.group == F){
-    data_W <- data_W %>%
-      mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
-      )
-  }
-  if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
+    if (na.rm.facet == F) {
+      if (!quo_is_null(quo_facet)) {
+        data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+          mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
+      }
+    }
+
+    # On realise les tests statistiques
+    # Ici un test khi2 sur une variable binaire "fonctionr_express_bin" oui/non pour l'expression
+    if(quo_is_null(quo_facet)){
+      group_fmla <- as.character(substitute(group))
+      fmla <- stats::as.formula(paste("~", group_fmla, "+", "fonctionr_express_bin"))
+    }
+    # Avec facet : prevoir une boucle pour chacune des modalite de facet => A FAIRE PLUS TARD
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
-        mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
+      facet_fmla <- as.character(substitute(facet))
+      fmla <- stats::as.formula(paste("~", facet_fmla, "+", "fonctionr_express_bin"))
+    }
+
+    # On utilise un tryCatch pour bypasser le test s'il produit une erreur => possible lorsque les conditions ne sont pas remplies
+    test.stat <- tryCatch(
+      expr = {
+        svychisq(fmla, data_W)
+      },
+      # test.stat devient un vecteur string avec 1 chaine de caracteres si erreur du test
+      error = function(e){
+        "Conditions non remplies"
+      }
+    )
+
+    # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
+    if(na.rm.group == F){
+      data_W <- data_W %>%
+        mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
         )
     }
+    if (na.rm.facet == F) {
+      # idem sur la variable de facet si non-NULL
+      if(!quo_is_null(quo_facet)){
+        data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+          mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
+          )
+      }
+    }
+
   }
 
 
   # 4. CALCUL DES PROPORTIONS --------------------
 
-  # On calcule les proportions par groupe
-  if(quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ group }}) %>%
-      cascade(
-        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
-        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
-        n_tot_weighted = survey_total(vartype = "ci"),
-        .fill = total_name, # Le total = colonne "Total"
-      ) %>%
-      ungroup()
+  # On definit le grouping
+  # Si non facet
+  if (quo_is_null(quo_facet)) {
+    if (quo_is_null(quo_group.fill)) { # Si pas group.fill
+      data_W <- data_W %>%
+        group_by({{ group }})
+    }
+    if (!quo_is_null(quo_group.fill)) { # Si group.fill
+      data_W <- data_W %>%
+        group_by({{ group }}, {{ group.fill }})
+    }
   }
-  # Version avec facet
-  if(!quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ facet }}, {{ group }}) %>%
-      cascade(
-        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
-        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
-        n_tot_weighted = survey_total(vartype = "ci"),
-        .fill = total_name, # Le total = colonne "Total"
-      ) %>%
+  # Si facet
+  if (!quo_is_null(quo_facet)) {
+    if (quo_is_null(quo_group.fill)) { # Si pas group.fill
+      data_W <- data_W %>%
+        group_by({{ facet }}, {{ group }})
+    }
+    if (!quo_is_null(quo_group.fill)) { # Si group.fill
+      data_W <- data_W %>%
+        group_by({{ facet }}, {{ group }}, {{ group.fill }})
+    }
+  }
+
+  # On calcule les proportions par groupe
+  tab <- data_W %>%
+    cascade(
+      prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+      n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
+      n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+      n_tot_weighted = survey_total(vartype = "ci"),
+      .fill = total_name, # Le total = colonne "Total"
+    ) %>%
+    ungroup()
+
+  # On supprime la facet qui est le total => pas utile
+  if(!quo_is_null(quo_facet)) {
+    tab <- tab %>%
       filter({{ facet }} != total_name | is.na({{ facet }})) %>%
-      ungroup()
+      mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
+  }
+  # On supprime le group.fill qui est le total => pas utile
+  if(!quo_is_null(quo_group.fill)) {
+    tab <- tab %>%
+      filter({{ group.fill }} != total_name | is.na({{ group.fill }})) %>%
+      mutate("{{ group.fill }}" := droplevels(as.factor({{ group.fill }})), # Pour enlever le level "Total"
+             "{{ group }}" := droplevels(as.factor({{ group }}))) # Pour enlever le level "Total"
   }
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
-  # On cree la palette : avec le total au debut (en gris fonce) puis x fois le fill selon le nombre de levels - 1 (le total etant deja un niveau)
-  if(all(isColor(fill)) == TRUE){
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-  } else { # Si la couleur n'est pas valide => on met la couleur par defaut
-    palette <- c(rep("deepskyblue3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-    warning("La couleur indiquee dans fill n'existe pas : la couleur par defaut est utilisee")
+  # La palette est differente selon qu'il y a group.fill (1 couleur) ou non (1 palette)
+  if(quo_is_null(quo_group.fill)) {
+    # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
+    if(all(isColor(pal)) == TRUE){
+      palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+    } else { # Si la couleur n'est pas valide => on met la couleur par defaut
+      palette <- c(rep("deepskyblue3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+      warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+    }
+  }
+
+  if(!quo_is_null(quo_group.fill)) {
+    # On cree la palette avec le package MetBrewer
+    if(pal %in% names(MetBrewer::MetPalettes)){
+      palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
+
+      # On cree la palette avec le package MoMAColors
+    } else if(pal %in% names(MoMAColors::MoMAPalettes)){
+      palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
+
+      # On cree la palette avecle package PrettyCols
+    } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+      palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
+
+      # On cree la palette avec la fonction interne official_pal()
+    } else if(pal %in% official_pal(list_pal_names = T)){
+      palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), direction = direction))
+
+    } else {
+      palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
+      warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+    }
   }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
@@ -416,21 +506,31 @@ prop_group <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
+  # Pour enlever le level "Total" si group.fill (car pas calcule)
+  if(!quo_is_null(quo_group.fill)) {
+    levels <- levels[levels != total_name]
+  }
 
   # On cree le graphique
 
-  # Pour caption
-
-  if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
-    caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
+  if (quo_is_null(quo_group.fill)) { # Si pas de group.fill
+    graph <- tab %>%
+      ggplot(aes(
+        x = {{ group }},
+        y = prop,
+        fill = {{ group }}
+      ))
+  }
+  if (!quo_is_null(quo_group.fill)) { # Si group.fill
+    graph <- tab %>%
+      ggplot(aes(
+        x = {{ group }},
+        y = prop,
+        fill = {{ group.fill }}
+      ))
   }
 
-  graph <- tab %>%
-    ggplot(aes(
-      x = {{ group }},
-      y = prop,
-      fill = {{ group }}
-    )) +
+  graph <- graph +
     geom_bar(
       width = dodge,
       stat = "identity",
@@ -438,46 +538,60 @@ prop_group <- function(data,
     ) +
     theme_fonctionr(font = font) +
     theme(
-      legend.position = "none"
+      legend.position = if (quo_is_null(quo_group.fill)) "none" else "bottom"
     ) +
     scale_fill_manual(
       values = palette,
-      na.value = "grey"
+      na.value = "grey",
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_leg)
     ) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
-                     limits = levels)+
-    labs(title = title,
-         subtitle = subtitle
+    scale_x_discrete(
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
+      limits = levels
+    ) +
+    guides(fill = guide_legend(ncol = legend_ncol)) +
+    labs(
+      title = title,
+      subtitle = subtitle
     ) +
     coord_flip()
 
-  # Pour caption
+  # Le resultat du test stat => uniquement si non group.fill
+  if (quo_is_null(quo_group.fill)) {
 
-  if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
-    caption <- paste0("\n", caption)
+    # Pour caption
+    if (!is.null(caption)) { # Permet de passer a la ligne par rapport au test stat
+      caption <- paste0("\n", stringr::str_wrap(caption, width = 100))
+    }
+
+    if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
+      graph <- graph +
+        labs(
+          caption = paste0(
+            "Khi2 d'ind",
+            "\u00e9",
+            "pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            caption
+          )
+        )
+    }
+    if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
+      graph <- graph +
+        labs(
+          caption = paste0(
+            "Khi2 d'ind",
+            "\u00e9",
+            "pendance : conditions non remplies",
+            caption
+          )
+        )
+    }
   }
-
-  if (inherits(test.stat, "htest")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
+  if (!quo_is_null(quo_group.fill)) {
     graph <- graph +
       labs(
-        caption = paste0(
-          "Khi2 d'ind",
-          "\u00e9",
-          "pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
-          caption
+        caption = stringr::str_wrap(caption, width = 100)
         )
-      )
-  }
-  if (inherits(test.stat, "character")) { # Condition sur inherits car si le test a reussi => test.stat est de class "htest", sinon "character"
-    graph <- graph +
-      labs(
-        caption = paste0(
-          "Khi2 d'ind",
-          "\u00e9",
-          "pendance : conditions non remplies",
-          caption
-        )
-      )
   }
 
   # Ajouter les axes
@@ -505,13 +619,24 @@ prop_group <- function(data,
       graph <- graph +
         labs(x = NULL)
     }
+
+    # LEGEND ---
+    if(all(!is.null(legend_lab), legend_lab != "")){
+      graph <- graph +
+        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
+    }
+    if(all(!is.null(legend_lab), legend_lab == "")){
+      graph <- graph +
+        labs(fill = NULL)
+    }
   }
 
   # Masquer les axes si show_lab == FALSE
   if(show_lab == FALSE){
     graph <- graph +
       labs(x = NULL,
-           y = NULL)
+           y = NULL,
+           fill = NULL)
   }
 
   # Ajouter les facets au besoin + scale_y si facet
@@ -583,7 +708,8 @@ prop_group <- function(data,
         size = 3,
         alpha = 0.7,
         hjust = 0, # Justifie a droite
-        vjust = 0.4
+        vjust = 0.4,
+        position = position_dodge(width = dodge)
       )
   }
 
@@ -594,25 +720,36 @@ prop_group <- function(data,
   res <- list()
   res$tab <- tab
   res$graph <- graph
-  res$test.stat <- test.stat
+  if (quo_is_null(quo_group.fill)) { # Pas de test stat si group.fill
+    res$test.stat <- test.stat
+  }
 
   if (!is.null(export_path)) {
     # L'export en excel
 
     # On transforme le test stat en dataframe
-    if(all(test.stat != "Conditions non remplies")){
-      test_stat_excel <- test.stat %>%
-        broom::tidy() %>%
-        t() %>%
-        as.data.frame()
-      test_stat_excel$names <- rownames(test_stat_excel)
-      test_stat_excel <- test_stat_excel[, c(2,1)]
-      names(test_stat_excel)[1] <- "Parameter"
-      names(test_stat_excel)[2] <- "Value"
+    if (quo_is_null(quo_group.fill)) {
+      if(all(test.stat != "Conditions non remplies")){
+        test_stat_excel <- test.stat %>%
+          broom::tidy() %>%
+          t() %>%
+          as.data.frame()
+        test_stat_excel$names <- rownames(test_stat_excel)
+        test_stat_excel <- test_stat_excel[, c(2,1)]
+        names(test_stat_excel)[1] <- "Parameter"
+        names(test_stat_excel)[2] <- "Value"
+      }
+      if(all(test.stat == "Conditions non remplies")){
+        test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                      Value = test.stat,
+                                      row.names = NULL)
+      }
     }
-    if(all(test.stat == "Conditions non remplies")){
+
+    # Si group.fill, test pas encore implemente => on cree un data.frame a la main
+    if (!quo_is_null(quo_group.fill)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = test.stat,
+                                    Value = "Test pas encore implemente avec group.fill",
                                     row.names = NULL)
     }
 
@@ -624,7 +761,7 @@ prop_group <- function(data,
                  export_path = export_path,
                  percent_fm = TRUE,
                  fgFill = "skyblue3",
-                 bivariate = FALSE)
+                 bivariate = !quo_is_null(quo_group.fill))
   }
 
   # end_time <- Sys.time()

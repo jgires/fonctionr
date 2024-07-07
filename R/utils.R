@@ -376,32 +376,46 @@ isColor <- function(x) {
 #'
 #' @param inst name of the institution
 #' @param n number of colors
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param list_pal_names TRUE to generate a vector with palette names.
 #'
 #' @noRd
 #'
 
 official_pal <- function(inst,
                          n,
-                         direction = 1){
+                         direction = 1,
+                         list_pal_names = F){
 
-  if(all(direction != -1, direction != 1)){
-    stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
+  if(list_pal_names == F){
+    if(all(direction != -1, direction != 1)){
+      stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
+    }
+
+    if(inst == "OBSS"){
+      pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
+    }
+    if(inst == "IBSA"){
+      pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
+    }
+    if(inst == "ULB"){
+      pal_fct <- grDevices::colorRampPalette(c("#0a5296", "#a7b9dd"))
+    }
+
+    palette <- pal_fct(n)
+
+    if(direction == -1){
+      palette <- rev(palette)
+    }
+
+    return(palette)
   }
 
-  if(inst == "OBSS"){
-    pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
-  }
-  if(inst == "IBSA"){
-    pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
-  }
+  if(list_pal_names == T){
+    pal_names <- c("OBSS", "IBSA", "ULB")
 
-  palette <- pal_fct(n)
-
-  if(direction == -1){
-    palette <- rev(palette)
+    return(pal_names)
   }
-
-  return(palette)
 }
 
 

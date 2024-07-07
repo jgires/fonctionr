@@ -8,31 +8,77 @@ make_surface(
   tab,
   var,
   value,
-  facet = NULL,
   error_low = NULL,
   error_upp = NULL,
+  facet = NULL,
   pvalue = NULL,
-  name_total = "Total",
-  compare = F,
   reorder = F,
-  show_ci = TRUE,
+  compare = F,
   space = NULL,
   position = "mid",
+  show_ci = TRUE,
+  name_total = "Total",
   digits = 0,
   unit = NULL,
   pal = "Kandinsky",
-  bg = "snow2",
   direction = 1,
+  bg = "snow2",
+  font = "Roboto",
+  wrap_width_lab = 20,
   title = NULL,
   subtitle = NULL,
-  caption = NULL,
-  wrap_width_lab = 20
+  caption = NULL
 )
 }
 \arguments{
+\item{tab}{dataframe with the variables to be ploted.}
+
+\item{var}{The variable in tab with the labels of the indicators to be ploted.}
+
+\item{value}{The variable in tab with the values of the indicator to be ploted.}
+
+\item{error_low}{The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
+
+\item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
+
 \item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
-\item{wrap_width_lab}{}
+\item{pvalue}{The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.}
+
+\item{reorder}{TRUE if you want to reorder the values. NA value is not included in the reorder.}
+
+\item{compare}{TRUE to display a square representing the smallest value. When facets are enabled, this is the smallest value per facet category.}
+
+\item{space}{The space between the squares. The unit is that of the indicator.}
+
+\item{position}{The position of the squares: "mid" for center alignment, "bottom" for bottom alignment.}
+
+\item{show_ci}{TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted squares around the result. FALSE if you do not want to show them. Default is TRUE.}
+
+\item{name_total}{Name of the var label that may contain the total. When indicated, it is not displayed on the graph.}
+
+\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+
+\item{unit}{The unit showd on the plot. Default is percent.}
+
+\item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{bg}{Color of the background.}
+
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+
+\item{wrap_width_lab}{Number of characters before going to the line for the labels of the categories of var. Default is 20.}
+
+\item{title}{Title of the graphic.}
+
+\item{subtitle}{Subtitle of the graphic.}
+
+\item{caption}{Caption of the graphic.}
+}
+\value{
+A ggplot graphic.
 }
 \description{
 make_surface

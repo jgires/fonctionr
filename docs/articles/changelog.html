@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,23 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-3-5">fonctionr 0.3.5<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-5"></a>
+</h2>
+<p>Date : 2024-07-07</p>
+<ul>
+<li><p>Modifications substancielles de <code><a href="../reference/prop_group.html">prop_group()</a></code> : ajout
+de la possibilité de faire des sous-groupes (argument
+<code>group.fill</code>) par groupe.</p></li>
+<li><p>La fonction <code><a href="../reference/make_surface.html">make_surface()</a></code> est terminée :
+documentation et checks.</p></li>
+<li><p>Modification du code relatif aux palettes de couleurs pour
+compatibilité avec la nouvelle version de <code>PrettyCols</code>
+(changement de nom d’un argument).</p></li>
+<li><p>Corrections mineures à divers endroits du code. Le check
+n’indique désormais plus d’erreur, warning ou note.</p></li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-4">fonctionr 0.3.4<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-4"></a>
 </h2>
@@ -346,9 +363,8 @@ le message.</p></li>
 <li><p>Documenter tous les arguments des différentes fonctions +
 vérifier que les explications sont bien correctes (quelques erreurs, par
 ex. à cause de copier-coller ou de l’ajout de nouveaux argument avec la
-nouvelle logique des na.rm). Il y a également des champs manquants (voir
-warnings de <code>roxygenise()</code>). Voir ici pour savoir les
-différentes options possibles dans la doc : <a href="#id_0" class="uri">https://r-pkgs.org/man.html</a>.</p></li>
+nouvelle logique des na.rm). Voir ici pour savoir les différentes
+options possibles dans la doc : <a href="#id_0" class="uri">https://r-pkgs.org/man.html</a>.</p></li>
 <li><p>Vérifier que les scripts sont bien commentés pour qu’on se
 rappelle ce qu’on a fait (il manque des notes et quelques explications
 d’opérations dont je ne me rappelle plus le but).</p></li>
@@ -358,9 +374,9 @@ ggplot.</em></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,
-corriger, traduire, ajouter des guillemets pour les arguments dans les
-checks, mieux écrire les résultats des tests stat (on ne sait pas quelle
-est l’hypothèse nulle).</p></li>
+corriger, traduire, indiquer les accents (é, è…), ajouter des guillemets
+pour les arguments dans les checks, mieux écrire les résultats des tests
+stat (on ne sait pas quelle est l’hypothèse nulle).</p></li>
 <li><p>Mettre des conditions pour réaliser les tests (n min,
 distribution, variances égales…).</p></li>
 <li><p>Changer la fonction <code><a href="https://scales.r-lib.org/reference/pvalue_format.html" class="external-link">scales::pvalue</a></code>, qui n’est plus
@@ -389,7 +405,6 @@ Apparemment la fonction n’est pas pré-programmée dans
 groupe. De ce fait, il n’apparaît pas toujours en dernier, notamment
 lorsque <code>reorder = T</code>. Régler ça (pas cohérent avec les
 autres fonctions).</p></li>
-<li><p>Ajouter l’export excel.</p></li>
 <li><p>Faire en sorte que le nom du groupe soit toujours le même dans
 les sorties de la liste (pour le moment, parfois “group”, parfois le nom
 de la variable) =&gt; implique de changer l’argument <code>by =</code>
@@ -435,10 +450,10 @@ lorsque <code>position == "stack"</code>
 <ul>
 <li><p>Ajouter les checks (penser le cas spécifique de
 <code>pvalue</code>).</p></li>
-<li><p>Ajouter la possibilité de reorder lors des facets =&gt; Ordre
-différent par facet ? Ou médiane comme les autres fonctions ?</p></li>
 <li><p>Lorsque facet, mieux penser l’alignement entre mêmes modalités
 ?</p></li>
+<li><p>Ajouter les arguments <code>dec</code> et éventuellement
+<code>scales</code>.</p></li>
 </ul>
 <p><strong>esth_graph</strong></p>
 <ul>
@@ -473,8 +488,8 @@ les fonctions de <code>rlang</code>.</em>
 d’importer des packages extérieurs <u>entiers</u> dans le NAMESPACE,
 cela augmente le risque de collisions de noms de fonctions =&gt; un bon
 résumé ici : <a href="#id_0" class="uri">https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/</a>
-et pour plus de détails : <a href="#id_0" class="uri">https://r-pkgs.org/dependencies-in-practice.html</a>.<br><em>=&gt; A faire : importer seulement les fonctions utiles (mutate,
-select, etc.).</em>
+et pour plus de détails : <a href="#id_0" class="uri">https://r-pkgs.org/dependencies-in-practice.html</a>.<br><strong><em>=&gt; A faire : importer seulement les fonctions utiles
+(mutate, select, etc.).</em></strong>
 </li>
 </ul>
 </div>

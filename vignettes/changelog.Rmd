@@ -18,6 +18,18 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.5
+
+Date : 2024-07-07
+
+-   Modifications substancielles de `prop_group()` : ajout de la possibilité de faire des sous-groupes (argument `group.fill`) par groupe.
+
+-   La fonction `make_surface()` est terminée : documentation et checks.
+
+-   Modification du code relatif aux palettes de couleurs pour compatibilité avec la nouvelle version de `PrettyCols` (changement de nom d'un argument).
+
+-   Corrections mineures à divers endroits du code. Le check n'indique désormais plus d'erreur, warning ou note.
+
 ## fonctionr 0.3.4
 
 Date : 2024-06-29
@@ -174,7 +186,7 @@ Date : 2024-02-14
 
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
 
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Il y a également des champs manquants (voir warnings de `roxygenise()`). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
+-   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
 -   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes et quelques explications d'opérations dont je ne me rappelle plus le but).
 
@@ -183,7 +195,7 @@ Date : 2024-02-14
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
 
--   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
+-   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
@@ -203,8 +215,6 @@ Date : 2024-02-14
 **distrib_group_c**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
-
--   Ajouter l'export excel.
 
 -   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
 
@@ -230,9 +240,9 @@ Date : 2024-02-14
 
 -   Ajouter les checks (penser le cas spécifique de `pvalue`).
 
--   Ajouter la possibilité de reorder lors des facets =\> Ordre différent par facet ? Ou médiane comme les autres fonctions ?
-
 -   Lorsque facet, mieux penser l'alignement entre mêmes modalités ?
+
+-   Ajouter les arguments `dec` et éventuellement `scales`.
 
 **esth_graph**
 
@@ -252,7 +262,7 @@ Date : 2024-02-14
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
 -   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
-    *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
+    ***=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).***
 
 #### distrib_group_d
 

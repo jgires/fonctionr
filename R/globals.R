@@ -20,5 +20,5 @@ globalVariables(unique(c(
   # distrib_group_continuous:
   "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "x", "xbegin", "xend", "y", "y_ridges", ".",
   # make_surface:
-  "indice_sqrt", "xmean"
+  "indice_sqrt", "xmean", "incr_unit", "row_coef", "row_num", "the_medians", "xmax", "xmin"
 )))

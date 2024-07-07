@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,6 +66,7 @@
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">prop_exp</span>,</span>
+<span>  group.fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  facet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
@@ -83,14 +84,18 @@
 <span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"%"</span>,</span>
 <span>  dec <span class="op">=</span> <span class="st">","</span>,</span>
-<span>  fill <span class="op">=</span> <span class="st">"deepskyblue3"</span>,</span>
+<span>  pal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  dodge <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
 <span>  wrap_width_y <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  wrap_width_leg <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  legend_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_path <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -103,11 +108,15 @@
 
 
 <dt>group</dt>
-<dd><p>A variable defining groups be compared.</p></dd>
+<dd><p>A variable defining the groups to be compared.</p></dd>
 
 
 <dt>prop_exp</dt>
 <dd><p>An expression that define the proportion to be computed.</p></dd>
+
+
+<dt>group.fill</dt>
+<dd><p>A variable defining a second variable of groups to be compared.</p></dd>
 
 
 <dt>facet</dt>
@@ -178,8 +187,12 @@
 <dd><p>Decimal mark shown on the graphic. Default is ","</p></dd>
 
 
-<dt>fill</dt>
-<dd><p>Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.</p></dd>
+<dt>pal</dt>
+<dd><p>If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.</p></dd>
+
+
+<dt>direction</dt>
+<dd><p>Direction of the palette color. Default is 1. The opposite direction is -1.</p></dd>
 
 
 <dt>dodge</dt>
@@ -191,7 +204,15 @@
 
 
 <dt>wrap_width_y</dt>
-<dd><p>Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.</p></dd>
+<dd><p>Number of characters before going to the line. Applies to the labels of the groups. Default is 25.</p></dd>
+
+
+<dt>wrap_width_leg</dt>
+<dd><p>Number of characters before going to the line for the labels of the categories of group.fill. Default is 25.</p></dd>
+
+
+<dt>legend_ncol</dt>
+<dd><p>Number of colomns in the legend. Default is 4.</p></dd>
 
 
 <dt>title</dt>
@@ -208,6 +229,10 @@
 
 <dt>ylab</dt>
 <dd><p>Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.</p></dd>
+
+
+<dt>legend_lab</dt>
+<dd><p>Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".</p></dd>
 
 
 <dt>caption</dt>

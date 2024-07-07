@@ -336,10 +336,10 @@ distrib_group_discrete <- function(data,
 
   # On cree la palette avecle package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
 
   # On cree la palette avec la fonction interne official_pal()
-  } else if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% official_pal(list_pal_names = T)){
     palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), direction = direction))
 
   } else {
@@ -364,7 +364,6 @@ distrib_group_discrete <- function(data,
   }
 
   # On cree le graphique
-
   graph <- tab %>%
     ggplot(aes(
       x = {{ group }},
@@ -380,18 +379,26 @@ distrib_group_discrete <- function(data,
     theme(
       legend.position = "bottom"
     ) +
-    scale_fill_manual(values = palette,
-                      labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
-                      na.value = "grey") +
-    scale_y_continuous(
-      labels = function(x) { paste0(x * scale, unit) },
-      expand = expansion(mult = c(.01, .05))
+    scale_fill_manual(
+      values = palette,
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
+      na.value = "grey"
     ) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
-                     limits = levels) +
+    scale_y_continuous(
+      labels = function(x) {
+        paste0(x * scale, unit)
+      },
+      expand = expansion(mult = c(.01, .01))
+    ) +
+    scale_x_discrete(
+      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
+      limits = levels
+    ) +
     guides(fill = guide_legend(ncol = legend_ncol)) +
-    labs(title = title,
-         subtitle = subtitle) +
+    labs(
+      title = title,
+      subtitle = subtitle
+    ) +
     coord_flip()
 
   # Pour caption

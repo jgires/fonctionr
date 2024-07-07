@@ -93,7 +93,7 @@ many_mean(..., type = "mean")
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
-\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the groups. Default is 25.}
 
 \item{title}{Title of the graphic.}
 

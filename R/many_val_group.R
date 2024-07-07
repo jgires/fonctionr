@@ -3,7 +3,7 @@
 #' Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param group A variable defining groups be compared.
+#' @param group A variable defining groups to be compared.
 #' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
 #' @param type "mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute proportions by group.
 #' @param list_vars_lab Names of the variables
@@ -14,7 +14,7 @@
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
 #' @param na.vars The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
-#' @param position Position adjustment for geom_bar
+#' @param position Position adjustment for geom_bar.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
@@ -27,8 +27,8 @@
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.
-#' @param wrap_width_leg Number of characters before before going to the line. Applies to the labels of the legend. Default is 25.
+#' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param wrap_width_leg Number of characters before going to the line. Applies to the labels of the legend. Default is 25.
 #' @param legend_ncol Number maximum of colomn in the legend. Default is 4.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
@@ -359,10 +359,10 @@ many_val_group = function(data,
 
   # On cree la palette avec le package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
 
   # On cree la palette avec la fonction interne official_pal()
-  } else if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% official_pal(list_pal_names = T)){
     palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
 
   } else {

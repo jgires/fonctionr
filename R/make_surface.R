@@ -1,29 +1,31 @@
 #' make_surface
 #'
 #'
-#' @param tab
-#' @param var
-#' @param value
+#' @param tab dataframe with the variables to be ploted.
+#' @param var The variable in tab with the labels of the indicators to be ploted.
+#' @param value The variable in tab with the values of the indicator to be ploted.
+#' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
+#' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param error_low
-#' @param error_upp
-#' @param pvalue
-#' @param compare
-#' @param reorder
-#' @param show_ci
-#' @param space
-#' @param position
-#' @param digits
-#' @param unit
-#' @param pal
-#' @param bg
-#' @param direction
-#' @param title
-#' @param subtitle
-#' @param caption
-#' @param wrap_width_lab
+#' @param pvalue The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.
+#' @param reorder TRUE if you want to reorder the values. NA value is not included in the reorder.
+#' @param compare TRUE to display a square representing the smallest value. When facets are enabled, this is the smallest value per facet category.
+#' @param space The space between the squares. The unit is that of the indicator.
+#' @param position The position of the squares: "mid" for center alignment, "bottom" for bottom alignment.
+#' @param show_ci TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted squares around the result. FALSE if you do not want to show them. Default is TRUE.
+#' @param name_total Name of the var label that may contain the total. When indicated, it is not displayed on the graph.
+#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
+#' @param unit The unit showd on the plot. Default is percent.
+#' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param bg Color of the background.
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
+#' @param wrap_width_lab Number of characters before going to the line for the labels of the categories of var. Default is 20.
+#' @param title Title of the graphic.
+#' @param subtitle Subtitle of the graphic.
+#' @param caption Caption of the graphic.
 #'
-#' @return
+#' @return A ggplot graphic.
 #' @import dplyr
 #' @import ggplot2
 #' @import rlang
@@ -33,25 +35,26 @@
 make_surface <- function(tab,
                          var,
                          value,
-                         facet = NULL,
                          error_low = NULL,
                          error_upp = NULL,
+                         facet = NULL,
                          pvalue = NULL,
-                         name_total = "Total",
-                         compare = F,
                          reorder = F,
-                         show_ci = TRUE,
+                         compare = F,
                          space = NULL,
                          position = "mid",
+                         show_ci = TRUE,
+                         name_total = "Total",
                          digits = 0,
                          unit = NULL,
                          pal = "Kandinsky",
-                         bg = "snow2",
                          direction = 1,
+                         bg = "snow2",
+                         font = "Roboto",
+                         wrap_width_lab = 20,
                          title = NULL,
                          subtitle = NULL,
-                         caption = NULL,
-                         wrap_width_lab = 20) {
+                         caption = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
@@ -60,11 +63,54 @@ make_surface <- function(tab,
     stop("Les arguments tab, var et value doivent etre remplis")
   }
 
+  # Check des autres arguments
+  check_arg(
+    arg = list(
+      position = position,
+      name_total = name_total,
+      unit = unit,
+      pal = pal,
+      bg = bg,
+      font = font,
+      title = title,
+      subtitle = subtitle,
+      caption = caption
+    ),
+    type = "character"
+  )
+  check_arg(
+    arg = list(
+      reorder = reorder,
+      compare = compare,
+      show_ci = show_ci
+    ),
+    type = "logical"
+  )
+  check_arg(
+    arg = list(
+      pvalue = pvalue,
+      space = space,
+      digits = digits,
+      direction = direction,
+      wrap_width_lab = wrap_width_lab
+    ),
+    type = "numeric"
+  )
+
+  # Check que les arguments avec choix precis sont les bons
+  match.arg(position, choices = c("mid", "bottom"))
+
   # On cree des quosures => pour if statements dans la fonction (voir ci-dessous)
   # Solution trouvee ici : https://rpubs.com/tjmahr/quo_is_missing
   quo_facet <- enquo(facet)
   quo_low <- enquo(error_low)
   quo_up <- enquo(error_upp)
+
+  # Check des arguments necessaires
+  if((show_ci == T) & (quo_is_null(quo_low) | quo_is_null(quo_up))){
+    message(paste0("Vous n'avez pas indiqu", "\u00e9", " les variables avec les IC : ceux-ci sont desactiv", "\u00e9", "s"))
+    show_ci <- FALSE
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------
@@ -212,10 +258,10 @@ make_surface <- function(tab,
 
     # On cree la palette avecle package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(name = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
 
     # On cree la palette avec la fonction interne official_pal()
-  } else if(pal %in% c("OBSS", "IBSA")){
+  } else if(pal %in% official_pal(list_pal_names = T)){
     palette <- as.character(official_pal(inst = pal, n = length(unique(tab[[deparse(substitute(var))]])), direction = direction))
 
   } else {
@@ -224,6 +270,9 @@ make_surface <- function(tab,
   }
 
   # On cree le graphique
+
+  # On charge les polices
+  load_and_active_fonts()
 
   graph <- tab %>%
     ggplot(
@@ -248,7 +297,11 @@ make_surface <- function(tab,
     theme_void() +
     theme(
       legend.position = "none",
-      plot.background = element_rect(fill = bg, color = NA)
+      plot.background = element_rect(fill = bg, color = NA),
+      text = element_text(family = font),
+      plot.caption = element_text(
+        color = "grey30"
+      )
     ) +
     # guides(fill="none") +
     labs(
@@ -315,7 +368,8 @@ make_surface <- function(tab,
             stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit, " (", round({{ error_low }}, digits), ";", round({{ error_upp }}, digits), ")"), wrap_width_lab)
           )
         } else if (show_ci == FALSE) paste0(stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit), wrap_width_lab))
-      )
+      ),
+      family = font
     )
 
   # Les IC si show_ci = T

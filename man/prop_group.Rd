@@ -8,6 +8,7 @@ prop_group(
   data,
   group,
   prop_exp,
+  group.fill = NULL,
   facet = NULL,
   filter_exp = NULL,
   ...,
@@ -25,14 +26,18 @@ prop_group(
   digits = 0,
   unit = "\%",
   dec = ",",
-  fill = "deepskyblue3",
+  pal = NULL,
+  direction = 1,
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
+  wrap_width_leg = 25,
+  legend_ncol = 4,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
+  legend_lab = NULL,
   caption = NULL,
   export_path = NULL
 )
@@ -40,9 +45,11 @@ prop_group(
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{group}{A variable defining groups be compared.}
+\item{group}{A variable defining the groups to be compared.}
 
 \item{prop_exp}{An expression that define the proportion to be computed.}
+
+\item{group.fill}{A variable defining a second variable of groups to be compared.}
 
 \item{facet}{A variable defining the faceting group.}
 
@@ -78,13 +85,19 @@ prop_group(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+\item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
 \item{dodge}{Width of the bar, between 0 and 1.}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
-\item{wrap_width_y}{Number of characters before before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the groups. Default is 25.}
+
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories of group.fill. Default is 25.}
+
+\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 
@@ -93,6 +106,8 @@ prop_group(
 \item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
 
