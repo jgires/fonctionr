@@ -58,7 +58,7 @@ eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
 eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 ```
 
-Ci-dessous, la fonction `distrib_d()` décrit la distribution des différents statuts socio-économiques dans le dataframe `eusilc`, avec une le poids `rb050`[^1]. Comme on le voit, les variables sont indiquées sans mentionner le dataframe (`var` au lieu de `df$var`) et sans guillemets, à la manière de la syntaxe du `tidyverse`.
+Ci-dessous, la fonction `distrib_d()` décrit la distribution des différents statuts socio-économiques dans le dataframe `eusilc`, en utilisant la variable de pondération `rb050`[^1]. Comme on le voit, les variables sont indiquées sans mentionner le dataframe (`var` au lieu de `df$var`) et sans guillemets, à la manière de la syntaxe du `tidyverse`.
 
 [^1]: Précisons que dans cet exemple, il n'y a pas de plan de sondage qui est mentionné. Seule la variable de pondération est introduite. Nous aborderons ce point ultérieurement.
 
@@ -66,8 +66,8 @@ Ci-dessous, la fonction `distrib_d()` décrit la distribution des différents st
 # Computation, taking sample design into account
 eusilc_dist_d <- distrib_d(
   data = eusilc,
-  weights = rb050,
   quali_var = pl030_rec,
+  weights = rb050,
   probs = c(.2, .15, .1, .1, .25, .1, .1),
   title = "Distribution of socio-economic status",
   subtitle = "Example with austrian SILC data from 'laeken' package"
@@ -99,7 +99,8 @@ eusilc_dist_d$test.stat
 L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques (`pl030_rec`) selon la nationalité (`pb220a`).
 
 ```{r}
-eusilc_dist_group_d <- distrib_group_d(eusilc,
+eusilc_dist_group_d <- distrib_group_d(
+  eusilc,
   weights = rb050,
   group = pb220a,
   quali_var = pl030_rec,
@@ -125,7 +126,8 @@ eusilc_dist_group_d$test.stat
 `prop_group()` calcule des proportions pour les différentes modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Pour indiquer la proportion à calculer, l'utilisateur peut indiquer soit une variable dichotomique, soit directement une expression (sans mentionner le dataframe et sans guillemet, à la manière du `tidyverse`) à partir de laquelle la proportion est calculée. L'exemple ci-dessous compare la proportion d'individus qui bénéficient d'une allocation de chômage (calculé avec l'expression `py090n > 0`) selon les différents statuts socio-économiques (`pl030_rec`).
 
 ```{r}
-eusilc_prop <- prop_group(eusilc,
+eusilc_prop <- prop_group(
+  eusilc,
   group = pl030_rec,
   prop_exp = py090n > 0,
   weights = rb050,
@@ -158,7 +160,8 @@ eusilc_prop$test.stat
 La fonction `prop_group()` permet également de différencier le calcul de proportion en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
 
 ```{r}
-eusilc_prop_sex <- prop_group(eusilc,
+eusilc_prop_sex <- prop_group(
+  eusilc,
   group = pl030_rec,
   prop_exp = py090n > 0,
   group.fill = rb090,
@@ -184,7 +187,8 @@ Pour `mean_group()`, le test statistique effectué est un test de Wald[^3]. Ce t
 [^3]: Voir : <https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r>
 
 ```{r}
-eusilc_mean <- mean_group(eusilc,
+eusilc_mean <- mean_group(
+  eusilc,
   group = pl030_rec,
   quanti_exp = eqIncome / 12,
   weights = rb050,
@@ -219,7 +223,8 @@ L'exemple ci-dessous compare les revenus mensuels moyens de l'emploi salarié, d
 
 ```{r}
 # Computation, taking sample design into account
-eusilc_many_mean <- many_mean(eusilc,
+eusilc_many_mean <- many_mean(
+  eusilc,
   list_vars = c(py010n, py050n, py090n),
   list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
   weights = rb050,
@@ -249,7 +254,8 @@ L'argument `type` est prédéfini pour les fonctions "alias". Il ne doit pas êt
 
 ```{r}
 # Computation, taking sample design into account
-eusilc_many_mean_group <- many_mean_group(eusilc,
+eusilc_many_mean_group <- many_mean_group(
+  eusilc,
   group = rb090,
   list_vars = c(py010n, py050n, py090n),
   list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
@@ -303,7 +309,8 @@ distrib_age$quant
 L'exemple ci-dessous compare la distribution des revenus équivalents selon le statut socio-économique. Comme pour `central_group()`, il est possible d'utiliser une expression quantitative au lieu d'une variable. Ici, c'est le revenu équivalent annuel divisé par 12 qui est retenu pour qu'il soit exprimé en montant mensuel.
 
 ```{r}
-distrib_income <- distrib_group_c(eusilc,
+distrib_income <- distrib_group_c(
+  eusilc,
   pl030_rec,
   eqIncome / 12,
   type = "mean",
@@ -426,7 +433,6 @@ pal_tableau_recap <- colorspace::lighten(pal_tableau_recap, 0.7, space = "HLS")
 tableau_recap |>
 kbl() |>
   kable_paper(full_width = F, font_size = 12) |> 
-  row_spec(0, bold = T, color = "black") |>
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Base de données"), color = "black", background = pal_tableau_recap[1]) |> 
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Indispensable"), color = "black", background = pal_tableau_recap[2]) |> 
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[3]) |> 
@@ -436,6 +442,7 @@ kbl() |>
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: graphique"), color = "black", background = pal_tableau_recap[7]) |>
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: lettres"), color = "black", background = pal_tableau_recap[8]) |>
   row_spec(which(tableau_recap$`Catégorie d’argument`=="Esthétique: labels"), color = "black", background = pal_tableau_recap[9]) |>
+  row_spec(0, bold = T, color = "white", background = "grey35") |>
   column_spec(1, bold = T, background = "white", color = "black")
 ```
 
@@ -452,7 +459,8 @@ library(survey)
 library(srvyr)
 
 # Un exemple où on indique directement dans la fonction de fonctionr les différents éléments du plan de sondage
-eusilc_prop_1 <- prop_group(eusilc,
+eusilc_prop_1 <- prop_group(
+  eusilc,
   group = pl030_rec,
   prop_exp = py090n > 0,
   strata = db040,
@@ -463,7 +471,8 @@ eusilc_prop_1 <- prop_group(eusilc,
 
 # Un exemple où utilise un objet survey
 eusilc_survey <- svydesign(id = ~db030, strat = ~db040, weight = ~rb050, data = eusilc)
-eusilc_prop_2 <- prop_group(eusilc_survey,
+eusilc_prop_2 <- prop_group(
+  eusilc_survey,
   group = pl030_rec,
   prop_exp = py090n > 0,
   title = "survey object",
@@ -473,7 +482,8 @@ eusilc_prop_2 <- prop_group(eusilc_survey,
 
 # Un exemple où utilise un objet srvyr
 eusilc_srvyr <- as_survey_design(eusilc, ids = db030, strata = db040, weights = rb050)
-eusilc_prop_3 <- prop_group(eusilc_srvyr,
+eusilc_prop_3 <- prop_group(
+  eusilc_srvyr,
   group = pl030_rec,
   prop_exp = py090n > 0,
   title = "srvyr object",
@@ -499,7 +509,8 @@ Les arguments indispensable sont des arguments qui sont nécessaire au bon fonct
 Dans l'exemple ci-dessous, on calcule la proportion des répondant qui travaillent et dont le salaire net annuel était inférieur à 12000€. On peut ainsi introduire des expressions complexe dans les fonctions.
 
 ```{r}
-eusilc_prop_NA_excl <- prop_group(eusilc,
+eusilc_prop_NA_excl <- prop_group(
+  eusilc,
   group = rb090,
   prop_exp = (pl030 == "1" | pl030 == "2") & py010n < 12000,
   weights = rb050,
@@ -516,7 +527,24 @@ eusilc_prop_NA_excl$graph
 
 Les arguments clés sont des arguments qui ne sont pas indispensable mais qui influencent les résultats. On y retrouve plusieurs types d'arguments.
 
--   `facet` est une variable qualitative qui produit des facettes dans le dataframe de résultats `tab` et dans le graphique `ggplot2`. Comme `group` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites.
+-   `facet` permet d'indiquer une variable qualitative pour différencier les résultats selon les différentes modalités de cette variable, dans le graphique `ggplot2` et le dataframe de résultat `tab`. Dans le graphique, elle produit des "facettes", d'où le nom de l'argument. Comme `group` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on calcule la distribution des différents statuts socio-économiques par région (indiquée comme variable de facettes) :
+
+```{r}
+# Computation, taking sample design into account
+eusilc_dist_d <- distrib_d(
+  data = eusilc,
+  quali_var = pl030_rec,
+  facet = db040,
+  weights = rb050,
+  probs = c(.2, .15, .1, .1, .25, .1, .1),
+  title = "Distribution of socio-economic status",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+```
+
+```{r}
+eusilc_dist_d$graph
+```
 
 -   `filter_exp` est une expression qui permet de filtrer les données de manière à produire les résultats sur une partie de l'échantillon. Comme il s'agit d'une expression, il est possible de mettre en oeuvre des conditions de filtres complexe et multiples, par exemple sélectionner uniquement les personnes âgées de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Si une possibilité de filtrage est inclue dans les fonctions, c'est pour que le filtrage des données soit réalisé après la définition du plan de sondage, afin que le filtrage ne modifie pas celui-ci[^4]. Ici aussi, seules les variables de la base de données, les opérateurs et les valeurs numérique sont autorisés dans les expressions.
 
@@ -537,7 +565,8 @@ Nous expliquons ici plus précisément le traitement des `NA` dans les fonctions
 Dans l'exemple ci-dessous, on compare la distribution des statuts socio-professionnels entre régions, en y ajoutant une modalité `NA` pour le statut (il s'agit des personnes de moins de 16 ans qui ne sont pas interrogées), en filtrant les données pour ne conserver que les personnes de plus de 11 ans et introduisant la variable sexe comme facette. Comme nous le verrons, la couleur des `NA` est toujours grise et ne dépend pas de la palette de couleur, de manière à les identifier spécifiquement.
 
 ```{r}
-eusilc_dist_group_d <- distrib_group_d(eusilc,
+eusilc_dist_group_d <- distrib_group_d(
+  eusilc,
   group = db040,
   quali_var = pl030_rec,
   na.rm.var = FALSE,
@@ -558,7 +587,8 @@ eusilc_dist_group_d$graph
 Les deux graphiques ci-dessous comparent la part de travailleurs selon le sexe en excluant ou en incluant les `NA`. Les taux du second graphique sont plus faible, car dans celui-ci les personnes n'ayant pas de statut socio-professionnel (ex. les enfants) sont comptabilisés dans le dénominateur.
 
 ```{r}
-eusilc_prop_NA_excl <- prop_group(eusilc,
+eusilc_prop_NA_excl <- prop_group(
+  eusilc,
   group = rb090,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
@@ -566,7 +596,8 @@ eusilc_prop_NA_excl <- prop_group(eusilc,
   title = "% workers (NA excluded)"
 )
 
-eusilc_prop_NA_incl <- prop_group(eusilc,
+eusilc_prop_NA_incl <- prop_group(
+  eusilc,
   group = rb090,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
@@ -592,7 +623,8 @@ Les arguments esthétiques sont des arguments qui affectent uniquement le graphi
 Dans l'exemple ci-dessous, les revenus moyens des statut socio-économique sont réordonnés. Comme il y a des facettes, c'est le médian de chaque catégorie qui est utilisée pour construire. Par exemple, la catégorie "Permanently disabled" se situe en troisième position, car sa valeur médiane (15199€) se entre entre le médian de la catégorie "Student" (15097€) et de la catégorie "Working part time" (16511€).
 
 ```{r}
-eusilc_mean_reorder <- mean_group(eusilc,
+eusilc_mean_reorder <- mean_group(
+  eusilc,
   group = pl030_rec,
   quanti_exp = eqIncome,
   facet = pb220a,
@@ -614,7 +646,8 @@ Dans l'exemple ci-dessous, il est pertinent d'empiler les barres indiquant les d
 
 ```{r}
 #Exemple avec Stack 
-eusilc_many_mean_group_2a <- many_mean_group(eusilc,
+eusilc_many_mean_group_2a <- many_mean_group(
+  eusilc,
   group = rb090,
   list_vars = c(py010n, py050n, py090n),
   list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
@@ -624,7 +657,8 @@ eusilc_many_mean_group_2a <- many_mean_group(eusilc,
   legend_ncol = 2
 )
 #Exemple avec dodge 
-eusilc_many_mean_group_2b <- many_mean_group(eusilc,
+eusilc_many_mean_group_2b <- many_mean_group(
+  eusilc,
   group = rb090,
   list_vars = c(py010n, py050n, py090n),
   list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
@@ -653,7 +687,8 @@ Faute de représentation graphique adéquate, `show_ci` n'est pas un argument de
 Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changé le nom du "Total".
 
 ```{r}
-eusilc_prop <- prop_group(eusilc,
+eusilc_prop <- prop_group(
+  eusilc,
   group = db040,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
@@ -687,7 +722,8 @@ Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne 
 Dans l'exemple ci-dessous, nous comparons les revenus du travail des travailleurs à temps partiel selon la région, en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales. `resolution` étant plus faible, on peut déceler les droites qui composent les courbes de densité. `limits` permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui contient la grande majorité des observations. `height` a été défini pour que les aires de densité se chevauchent. Pour que ce chevauchement soit esthétique, `alpha` a été réglé à `.3` pour des aires transparentes et une bordure a été ajoutée avec `color = black`. On a indiqué la médiane sous la forme d'une ligne. Ses intervalles de confiance sont indiqués par deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que le revenu du travail mensuel est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
 
 ```{r}
-distrib_income_2 <- distrib_group_c(eusilc,
+distrib_income_2 <- distrib_group_c(
+  eusilc,
   db040,
   (py010n + py050n) / 12,
   filter_exp = pl030 == 2,
@@ -727,7 +763,8 @@ Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris
 Dans l'exemple ci-dessous, on utilise une autre palette de couleur et des barres plus fines.
 
 ```{r}
-eusilc_dist_group_d <- distrib_group_d(eusilc,
+eusilc_dist_group_d <- distrib_group_d(
+  eusilc,
   group = db040,
   quali_var = pl030_rec,
   weights = rb050,
@@ -742,11 +779,12 @@ eusilc_dist_group_d <- distrib_group_d(eusilc,
 eusilc_dist_group_d$graph 
 ```
 
-Dans certains cas, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. C'est le cas pour `many_val()` et ses alias, où `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. C'est également le cas pour `prop_group()` : lorsque l'on indique des sous-groupes dans l'argument `group.fill`, il faut pouvoir différencier les sous-groupes avec une couleur, et alors il faut indiquer une palette des trois packages mentionnés. Par contre, lorsqu'il n'y a pas de sous-groupes, il faut indiquer une couleur unique. L'exemple ci-dessous montre les deux usages de `pal` avec `prop_group()`. On calcule la proportion de travailleurs à temps partiel selon le sexe. Dans le premier graphique, on différencie les proportions selon la région ; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols`). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`.
+Dans certains cas, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. C'est le cas pour `many_val()` et ses alias, où `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. C'est également le cas pour `prop_group()` : lorsque l'on indique une variable de sous-groupes dans l'argument `group.fill`, il faut pouvoir différencier les catégories des sous-groupes avec une couleur, et alors il faut indiquer une palette des trois packages mentionnés. Par contre, lorsqu'il n'y a pas de sous-groupes, il faut indiquer une couleur unique. L'exemple ci-dessous montre les deux usages de `pal` avec `prop_group()`. On calcule la proportion de travailleurs à temps partiel selon le sexe. Dans le premier graphique, on différencie les proportions selon la région ; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols`). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`.
 
 ```{r}
 # Avec sous-groupes
-eusilc_prop_sub_group <- prop_group(eusilc,
+eusilc_prop_sub_group <- prop_group(
+  eusilc,
   group = rb090,
   prop_exp = pl030_rec == "Working part time",
   group.fill = db040,
@@ -756,7 +794,8 @@ eusilc_prop_sub_group <- prop_group(eusilc,
   pal = "Neon"
 )
 # Sans sous-groupes
-eusilc_prop_no_sub_group <- prop_group(eusilc,
+eusilc_prop_no_sub_group <- prop_group(
+  eusilc,
   group = rb090,
   prop_exp = pl030_rec == "Working part time",
   weights = rb050,
@@ -779,7 +818,8 @@ eusilc_prop_sub_group$graph | eusilc_prop_no_sub_group$graph
 Dans l'exemple ci-dessous, on utilise trois couleurs pour construire la palette qui va colorier l'aire de la densité et on trace la courbe de densité en rouge.
 
 ```{r}
-distrib_age_2 <- distrib_c(eusilc,
+distrib_age_2 <- distrib_c(
+  eusilc,
   age,
   type = "mean",
   quantiles = seq(.05, .95, .05),
@@ -809,7 +849,8 @@ L'esthétique des chiffres concernent la manière dont l'estimation de l'indicat
 Dans l'exemple ci-dessous, on compare la proportion de travailleurs par région, mais en l'exprimant en pour mille et non en pour cent, en adaptant l'unité (`"‰"`), en conservant un chiffre après la virgule et en utilisant le point comme caractère pour la décimale et non la virgule.
 
 ```{r}
-eusilc_prop <- prop_group(eusilc,
+eusilc_prop <- prop_group(
+  eusilc,
   group = db040,
   prop_exp = pl030 == "1" | pl030 == "2",
   weights = rb050,
@@ -849,7 +890,8 @@ Les arguments de label ne sont utilisés que si `show_lab = TRUE`, qui est la va
 Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende. On a également introduit manuellement les titres, sous-titres, *caption* et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées.
 
 ```{r}
-eusilc_dist_group_d <- distrib_group_d(eusilc,
+eusilc_dist_group_d <- distrib_group_d(
+  eusilc,
   group = db040,
   quali_var = pl030_rec,
   weights = rb050,

@@ -164,18 +164,19 @@ dans la suite des exemples :</p>
 <span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"7"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Fulfilling domestic tasks"</span></span></code></pre></div>
 <p>Ci-dessous, la fonction <code><a href="../reference/distrib_discrete.html">distrib_d()</a></code> décrit la
 distribution des différents statuts socio-économiques dans le dataframe
-<code>eusilc</code>, avec une le poids <code>rb050</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Précisons que dans cet exemple, il n’y a pas de plan de
+<code>eusilc</code>, en utilisant la variable de pondération
+<code>rb050</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Précisons que dans cet exemple, il n’y a pas de plan de
 sondage qui est mentionné. Seule la variable de pondération est
-introduite. Nous aborderons ce point ultérieurement.&lt;/p&gt;"><sup>1</sup></a>. Comme on le voit, les
-variables sont indiquées sans mentionner le dataframe (<code>var</code>
-au lieu de <code>df$var</code>) et sans guillemets, à la manière de la
-syntaxe du <code>tidyverse</code>.</p>
+introduite. Nous aborderons ce point ultérieurement.&lt;/p&gt;"><sup>1</sup></a>. Comme on le voit, les variables sont
+indiquées sans mentionner le dataframe (<code>var</code> au lieu de
+<code>df$var</code>) et sans guillemets, à la manière de la syntaxe du
+<code>tidyverse</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
 <span><span class="va">eusilc_dist_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_discrete.html">distrib_d</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">eusilc</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>, <span class="fl">.15</span>, <span class="fl">.1</span>, <span class="fl">.1</span>, <span class="fl">.25</span>, <span class="fl">.1</span>, <span class="fl">.1</span><span class="op">)</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
@@ -250,7 +251,8 @@ avec comme hypothèse nulle le fait que les deux variables qualitatives
 différents statuts socio-économiques (<code>pl030_rec</code>) selon la
 nationalité (<code>pb220a</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pb220a</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
@@ -300,7 +302,8 @@ d’individus qui bénéficient d’une allocation de chômage (calculé avec
 l’expression <code>py090n &gt; 0</code>) selon les différents statuts
 socio-économiques (<code>pl030_rec</code>).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -368,7 +371,8 @@ doit être indiquée dans l’argument <code>group.fill</code>. Pour des
 raisons de lisibilité, il n’y a pas de calcul de test statistique
 lorsque des sous-groupes sont définis.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop_sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">eusilc_prop_sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
 <span>  group.fill <span class="op">=</span> <span class="va">rb090</span>,</span>
@@ -414,7 +418,8 @@ modalités de la variable qualitative (les groupes) sur la variable
 quantitative soient nuls. Pour <code><a href="../reference/central_group.html">median_group()</a></code>, le test
 statistique effectué est celui de Kruskal Wallis.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  quanti_exp <span class="op">=</span> <span class="va">eqIncome</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -477,7 +482,8 @@ salarié, d’une activité d’indépendant et d’une allocation de chômage
 dans la totalité de la population.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
-<span><span class="va">eusilc_many_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val.html">many_mean</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_many_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val.html">many_mean</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
 <span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -526,7 +532,8 @@ moyens de l’emploi salarié, d’une activité d’indépendant et d’une
 allocation de chômage des femmes et des hommes.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
-<span><span class="va">eusilc_many_mean_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_many_mean_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
 <span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
@@ -637,7 +644,8 @@ quantitative au lieu d’une variable. Ici, c’est le revenu équivalent
 annuel divisé par 12 qui est retenu pour qu’il soit exprimé en montant
 mensuel.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_income</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">distrib_income</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  <span class="va">pl030_rec</span>,</span>
 <span>  <span class="va">eqIncome</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"mean"</span>,</span>
@@ -712,31 +720,31 @@ sur les résultats) et les arguments esthétiques - qui influencent le
 graphique.</p>
 <table class="table  lightable-paper" style='font-size: 12px; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
 <thead><tr>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 Catégorie d’argument
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 prop_group
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 many_val_group
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 many_val
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 central_group
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 distrib_group_c
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 distrib_c
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 distrib_group_d
 </th>
-<th style="text-align:left;font-weight: bold;color: black !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
 distrib_d
 </th>
 </tr></thead>
@@ -2261,7 +2269,8 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://gdfe.co/srvyr/" class="external-link">srvyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Un exemple où on indique directement dans la fonction de fonctionr les différents éléments du plan de sondage</span></span>
-<span><span class="va">eusilc_prop_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_prop_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
 <span>  strata <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -2272,7 +2281,8 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <span></span>
 <span><span class="co"># Un exemple où utilise un objet survey</span></span>
 <span><span class="va">eusilc_survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survey/man/svydesign.html" class="external-link">svydesign</a></span><span class="op">(</span>id <span class="op">=</span> <span class="op">~</span><span class="va">db030</span>, strat <span class="op">=</span> <span class="op">~</span><span class="va">db040</span>, weight <span class="op">=</span> <span class="op">~</span><span class="va">rb050</span>, data <span class="op">=</span> <span class="va">eusilc</span><span class="op">)</span></span>
-<span><span class="va">eusilc_prop_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc_survey</span>,</span>
+<span><span class="va">eusilc_prop_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc_survey</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"survey object"</span>,</span>
@@ -2282,7 +2292,8 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <span></span>
 <span><span class="co"># Un exemple où utilise un objet srvyr</span></span>
 <span><span class="va">eusilc_srvyr</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey_design.html" class="external-link">as_survey_design</a></span><span class="op">(</span><span class="va">eusilc</span>, ids <span class="op">=</span> <span class="va">db030</span>, strata <span class="op">=</span> <span class="va">db040</span>, weights <span class="op">=</span> <span class="va">rb050</span><span class="op">)</span></span>
-<span><span class="va">eusilc_prop_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc_srvyr</span>,</span>
+<span><span class="va">eusilc_prop_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc_srvyr</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">py090n</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"srvyr object"</span>,</span>
@@ -2342,7 +2353,8 @@ labels des variables.</p></li>
 travaillent et dont le salaire net annuel était inférieur à 12000€. On
 peut ainsi introduire des expressions complexe dans les fonctions.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="op">(</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">py010n</span> <span class="op">&lt;</span> <span class="fl">12000</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2361,12 +2373,33 @@ résultats<a class="anchor" aria-label="anchor" href="#les-arguments-cl%C3%A9s-p
 mais qui influencent les résultats. On y retrouve plusieurs types
 d’arguments.</p>
 <ul>
-<li><p><code>facet</code> est une variable qualitative qui produit des
-facettes dans le dataframe de résultats <code>tab</code> et dans le
-graphique <code>ggplot2</code>. Comme <code>group</code> et
+<li>
+<code>facet</code> permet d’indiquer une variable qualitative pour
+différencier les résultats selon les différentes modalités de cette
+variable, dans le graphique <code>ggplot2</code> et le dataframe de
+résultat <code>tab</code>. Dans le graphique, elle produit des
+“facettes”, d’où le nom de l’argument. Comme <code>group</code> et
 <code>quali_var</code>, la variable indiquée pour cet argument est
 transformée en facteur pour leur usage dans la fonction. Par défaut, les
-facettes ne sont pas produites.</p></li>
+facettes ne sont pas produites. Ci-dessous, on calcule la distribution
+des différents statuts socio-économiques par région (indiquée comme
+variable de facettes) :</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
+<span><span class="va">eusilc_dist_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_discrete.html">distrib_d</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">eusilc</span>,</span>
+<span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
+<span>  facet <span class="op">=</span> <span class="va">db040</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>, <span class="fl">.15</span>, <span class="fl">.1</span>, <span class="fl">.1</span>, <span class="fl">.25</span>, <span class="fl">.1</span>, <span class="fl">.1</span><span class="op">)</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" width="100%"></p>
+<ul>
 <li><p><code>filter_exp</code> est une expression qui permet de filtrer
 les données de manière à produire les résultats sur une partie de
 l’échantillon. Comme il s’agit d’une expression, il est possible de
@@ -2422,8 +2455,9 @@ conserver que les personnes de plus de 11 ans et introduisant la
 variable sexe comme facette. Comme nous le verrons, la couleur des
 <code>NA</code> est toujours grise et ne dépend pas de la palette de
 couleur, de manière à les identifier spécifiquement.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  na.rm.var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -2433,9 +2467,9 @@ couleur, de manière à les identifier spécifiquement.</p>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region and gender"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.prop</code> indique la manière dont les éventuels
@@ -2472,8 +2506,9 @@ selon le sexe en excluant ou en incluant les <code>NA</code>. Les taux
 du second graphique sont plus faible, car dans celui-ci les personnes
 n’ayant pas de statut socio-professionnel (ex. les enfants) sont
 comptabilisés dans le dénominateur.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2481,16 +2516,17 @@ comptabilisés dans le dénominateur.</p>
 <span>  title <span class="op">=</span> <span class="st">"% workers (NA excluded)"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">eusilc_prop_NA_incl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_prop_NA_incl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  na.prop <span class="op">=</span> <span class="st">"include"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"% workers (NA included)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_NA_incl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" width="100%"></p>
 <ul>
 <li>
 <code>na.vars</code> indique la manière dont les <code>NA</code>
@@ -2552,8 +2588,9 @@ exemple, la catégorie “Permanently disabled” se situe en troisième
 position, car sa valeur médiane (15199€) se entre entre le médian de la
 catégorie “Student” (15097€) et de la catégorie “Working part time”
 (16511€).</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  quanti_exp <span class="op">=</span> <span class="va">eqIncome</span>,</span>
 <span>  facet <span class="op">=</span> <span class="va">pb220a</span>,</span>
@@ -2563,9 +2600,9 @@ catégorie “Student” (15097€) et de la catégorie “Working part time”
 <span>  title <span class="op">=</span> <span class="st">"Mean of eq. income by status and nationality"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" width="100%"></p>
 <ul>
 <li>
 <code>position</code> est un argument qui ne se trouve uniquement
@@ -2582,9 +2619,10 @@ défaut.</li>
 indiquant les différents revenus pour visualiser le revenu total.
 Cependant, dans ce cas, on peut plus indiquer les intervalles de
 confiance sur le graphique.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Exemple avec Stack </span></span>
-<span><span class="va">eusilc_many_mean_group_2a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_many_mean_group_2a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
 <span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
@@ -2594,7 +2632,8 @@ confiance sur le graphique.</p>
 <span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#Exemple avec dodge </span></span>
-<span><span class="va">eusilc_many_mean_group_2b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_many_mean_group_2b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
 <span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
@@ -2603,9 +2642,9 @@ confiance sur le graphique.</p>
 <span>  title <span class="op">=</span> <span class="st">"position = 'dodge'"</span>,</span>
 <span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2a</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2b</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" width="100%"></p>
 <ul>
 <li>
 <p><code>show_ci</code>, <code>show_n</code>,
@@ -2644,8 +2683,9 @@ spécifique.</li>
 confiances, les valeurs de l’indicateur et les labels des titres, par
 contre on montre le nombre de personnes dans l’échantillon et on a
 changé le nom du “Total”.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2655,9 +2695,9 @@ changé le nom du “Total”.</p>
 <span>  show_lab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  total_name <span class="op">=</span> <span class="st">"Total Austria"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" width="100%"></p>
 <p>Certains arguments sont spécifiques aux fonctions
 <code>distrib_continous()</code> et
 <code>distrib_group_continous()</code> :</p>
@@ -2733,8 +2773,9 @@ lignes verticales grises et on a masqué la moustache. Notez que le
 revenu du travail mensuel est directement calculé dans l’expression en
 additionnant le salaire avec le revenu d’une activité indépendante avant
 de diviser le tout par 12.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  <span class="va">db040</span>,</span>
 <span>  <span class="op">(</span><span class="va">py010n</span> <span class="op">+</span> <span class="va">py050n</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12</span>,</span>
 <span>  filter_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="fl">2</span>,</span>
@@ -2754,9 +2795,9 @@ de diviser le tout par 12.</p>
 <span>  pal <span class="op">=</span> <span class="st">"purple"</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">.4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
@@ -2797,8 +2838,9 @@ fonctions, y compris les alias, pour éviter la confusion des
 graphiques.</p>
 <p>Dans l’exemple ci-dessous, on utilise une autre palette de couleur et
 des barres plus fines.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2807,31 +2849,32 @@ des barres plus fines.</p>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span> </span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" width="100%"></p>
 <p>Dans certains cas, on peut indiquer dans <code>pal</code> soit une
 couleur unique, soit une palette des packages <code>MetBrewer</code>,
 <code>MoMAColors</code> ou <code>PrettyCols</code>. C’est le cas pour
 <code><a href="../reference/many_val.html">many_val()</a></code> et ses alias, où <code>pal</code> peut aussi
 prendre une couleur unie (couleur de R ou code hexadécimal) si
 l’utilisateur souhaite un graphique monochrome. C’est également le cas
-pour <code><a href="../reference/prop_group.html">prop_group()</a></code> : lorsque l’on indique des sous-groupes
-dans l’argument <code>group.fill</code>, il faut pouvoir différencier
-les sous-groupes avec une couleur, et alors il faut indiquer une palette
-des trois packages mentionnés. Par contre, lorsqu’il n’y a pas de
-sous-groupes, il faut indiquer une couleur unique. L’exemple ci-dessous
-montre les deux usages de <code>pal</code> avec
-<code><a href="../reference/prop_group.html">prop_group()</a></code>. On calcule la proportion de travailleurs à
-temps partiel selon le sexe. Dans le premier graphique, on différencie
+pour <code><a href="../reference/prop_group.html">prop_group()</a></code> : lorsque l’on indique une variable de
+sous-groupes dans l’argument <code>group.fill</code>, il faut pouvoir
+différencier les catégories des sous-groupes avec une couleur, et alors
+il faut indiquer une palette des trois packages mentionnés. Par contre,
+lorsqu’il n’y a pas de sous-groupes, il faut indiquer une couleur
+unique. L’exemple ci-dessous montre les deux usages de <code>pal</code>
+avec <code><a href="../reference/prop_group.html">prop_group()</a></code>. On calcule la proportion de travailleurs
+à temps partiel selon le sexe. Dans le premier graphique, on différencie
 les proportions selon la région ; <code>pal</code> prend alors le nom
 d’une palette (ici <code>"Neon"</code> de <code>PrettyCols</code>). Dans
 le deuxième, il n’y a pas de sous-groupes. <code>pal</code> n’a alors
 besoin que d’une unique couleur, et on a indiqué la couleur de base de R
 <code>"gold"</code>.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Avec sous-groupes</span></span>
-<span><span class="va">eusilc_prop_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_prop_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030_rec</span> <span class="op">==</span> <span class="st">"Working part time"</span>,</span>
 <span>  group.fill <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -2841,7 +2884,8 @@ besoin que d’une unique couleur, et on a indiqué la couleur de base de R
 <span>  pal <span class="op">=</span> <span class="st">"Neon"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># Sans sous-groupes</span></span>
-<span><span class="va">eusilc_prop_no_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<span><span class="va">eusilc_prop_no_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030_rec</span> <span class="op">==</span> <span class="st">"Working part time"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2849,9 +2893,9 @@ besoin que d’une unique couleur, et on a indiqué la couleur de base de R
 <span>  subtitle <span class="op">=</span> <span class="st">"(no sub-groups)"</span>,</span>
 <span>  pal <span class="op">=</span> <span class="st">"gold"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_sub_group</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_no_sub_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" width="100%"></p>
 <ul>
 <li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, <code>pal</code> peut soit
@@ -2894,8 +2938,9 @@ particulièrement utile si les différentes courbes se superposent (quand
 <p>Dans l’exemple ci-dessous, on utilise trois couleurs pour construire
 la palette qui va colorier l’aire de la densité et on trace la courbe de
 densité en rouge.</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  <span class="va">age</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"mean"</span>,</span>
 <span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.05</span><span class="op">)</span>,</span>
@@ -2904,9 +2949,9 @@ densité en rouge.</p>
 <span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"green3"</span>, <span class="st">"orange"</span><span class="op">)</span>,</span>
 <span>  show_n <span class="op">=</span> <span class="cn">T</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
@@ -2945,8 +2990,9 @@ par région, mais en l’exprimant en pour mille et non en pour cent, en
 adaptant l’unité (<code>"‰"</code>), en conservant un chiffre après la
 virgule et en utilisant le point comme caractère pour la décimale et non
 la virgule.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  prop_exp <span class="op">=</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">|</span> <span class="va">pl030</span> <span class="op">==</span> <span class="st">"2"</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -2957,9 +3003,9 @@ la virgule.</p>
 <span>  title <span class="op">=</span> <span class="st">"Proportion of workers by region, in ‰"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-63-1.png" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
@@ -3048,8 +3094,9 @@ colonnes pour la légende. On a également introduit manuellement les
 titres, sous-titres, <em>caption</em> et titre de légende, en conservant
 le label par défaut pour le titre de l’axe des abscisses et en n’ayant
 pas de titre pour l’axe des ordonnées.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span><span class="va">eusilc</span>,</span>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
 <span>  quali_var <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
@@ -3063,9 +3110,9 @@ pas de titre pour l’axe des ordonnées.</p>
 <span>  legend_lab <span class="op">=</span> <span class="st">"Status"</span>,</span>
 <span>  caption <span class="op">=</span> <span class="st">"Source : EU-SILC"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-63-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-65-1.png" width="100%"></p>
 </div>
 </div>
 </div>
