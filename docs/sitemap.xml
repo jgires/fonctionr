@@ -1,78 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://jgires.github.io/fonctionr/404.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/articles/complex_design.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/articles/esthetic_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/articles/fonctionr_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/changelog.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/complex_design.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/esthetic_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/fonctionr_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/central_group.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/distrib_continuous.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/distrib_discrete.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/distrib_group_continuous.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/distrib_group_discrete.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/esth_graph.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/load_and_active_fonts.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/make_surface.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/many_val.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/many_val_group.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/pivot_longer_survey.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/prop_group.html</loc>
-  </url>
-  <url>
-    <loc>https://jgires.github.io/fonctionr/reference/theme_fonctionr.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://jgires.github.io/fonctionr/404.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/articles/changelog.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/articles/complex_design.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/articles/esthetic_functions.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/articles/fonctionr_functions.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/articles/index.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/authors.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/index.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/central_group.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/distrib_continuous.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/distrib_discrete.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/distrib_group_continuous.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/distrib_group_discrete.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/esth_graph.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/index.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/load_and_active_fonts.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/make_surface.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/many_val.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/many_val_group.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/pivot_longer_survey.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/prop_group.html</loc></url>
+<url><loc>https://jgires.github.io/fonctionr/reference/theme_fonctionr.html</loc></url>
 </urlset>
+

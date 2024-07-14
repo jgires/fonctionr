@@ -207,12 +207,12 @@ Date : 2024-02-14
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
-**distrib_c**
+#### **distrib_c**
 
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
 -   Ajouter la possibilité de facets.
 
-**distrib_group_c**
+#### **distrib_group_c**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
 
@@ -236,7 +236,7 @@ Date : 2024-02-14
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 
-### make_surface
+#### make_surface
 
 -   Ajouter les checks (penser le cas spécifique de `pvalue`).
 
@@ -244,7 +244,7 @@ Date : 2024-02-14
 
 -   Ajouter les arguments `dec` et éventuellement `scales`.
 
-**esth_graph**
+#### **esth_graph**
 
 -   Changer le nom.
 
@@ -277,9 +277,9 @@ Date : 2024-02-14
 
 -   Possibilité d'indiquer un vecteur avec une palette de couleur ?
 
-## Notes
+### Notes
 
-### Filtrage
+#### Filtrage
 
 Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fait pas, on considère le design sur l'objet filtré (avec moins de PSU / strates qu'il y en a en réalité), ce qui sous-estime potentiellement la distribution d'échantillonnage. Voir :
 
@@ -289,9 +289,9 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 *=\> De ce fait, j'ai inclus une option de filtre (filter_exp) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! [A FAIRE : expliquer dans la doc !]{.underline}*
 
-## Fonctions à créer
+### Fonctions à créer
 
-### Bivarié ou 3 variables+
+#### Bivarié ou 3 variables+
 
 -   Superposition de 2 statistiques (bar + lines) avec échelles différentes.
 
