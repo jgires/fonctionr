@@ -280,7 +280,7 @@ make_surface <- function(tab,
         color = {{ var }}
       )
     ) +
-    geom_tile(
+    geom_tile( # Le fond blanc
       aes(
         x = xmean,
         y = if (position == "mid") {
@@ -290,6 +290,40 @@ make_surface <- function(tab,
         height = sqrt({{ value }})
       ),
       fill = "white",
+      linewidth = NA
+    )
+
+  # Comparaison avec la surface minimale
+  if (compare == T) {
+    graph <- graph +
+      geom_tile(
+        aes(
+          x = if (position == "mid") {
+            xmean
+          } else if (position == "bottom") xmin + (compare/2),
+          y = if (position == "mid") {
+            0
+          } else if (position == "bottom") compare / 2,
+          width = compare,
+          height = compare
+        ),
+        alpha = .1,
+        fill = "black",
+        linewidth = NA,
+      )
+  }
+
+  graph <- graph +
+    geom_tile( # Le contour de couleur des surfaces
+      aes(
+        x = xmean,
+        y = if (position == "mid") {
+          0
+        } else if (position == "bottom") indice_sqrt / 2,
+        width = sqrt({{ value }}),
+        height = sqrt({{ value }})
+      ),
+      fill = NA,
       linewidth = .75
     ) +
     scale_color_manual(values = palette) +
@@ -335,24 +369,6 @@ make_surface <- function(tab,
   if (!quo_is_null(quo_facet)) {
     graph <- graph +
       facet_wrap(vars({{ facet }}), ncol = 1)
-  }
-
-  # Comparaison avec la surface minimale
-  if (compare == T) {
-    graph <- graph +
-      geom_tile(
-        aes(
-          x = xmean,
-          y = if (position == "mid") {
-            0
-          } else if (position == "bottom") indice_sqrt / 2,
-          width = compare,
-          height = compare
-        ),
-        alpha = .1,
-        fill = "black",
-        linewidth = NA,
-      )
   }
 
   # Les labels

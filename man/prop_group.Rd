@@ -21,6 +21,7 @@ prop_group(
   show_n = FALSE,
   show_value = TRUE,
   show_lab = TRUE,
+  total = TRUE,
   total_name = "Total",
   scale = 100,
   digits = 0,
@@ -74,6 +75,8 @@ prop_group(
 \item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
 
 \item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{total_name}{Name of the total shown on the graphic. Default is "Total".}
 

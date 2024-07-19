@@ -18,11 +18,19 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.6
+
+Date : 2024-07-20
+
+-   Ajout de la possibilité dans `prop_group()` de ne pas calculer le total.
+
+-   Dans `make_surface()`, l'option `position = "bottom"` change également la position de la surface minimale affichée lorsque `compare = T` (suggestion de Robin).
+
 ## fonctionr 0.3.5
 
 Date : 2024-07-07
 
--   Modifications substancielles de `prop_group()` : ajout de la possibilité de faire des sous-groupes (argument `group.fill`) par groupe.
+-   Modifications substancielles pour `prop_group()` : ajout de la possibilité de faire des sous-groupes (argument `group.fill`) par groupe.
 
 -   La fonction `make_surface()` est terminée : documentation et checks.
 
@@ -227,6 +235,8 @@ Date : 2024-02-14
 #### central_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
+-   Ajouter une option de suppression du total.
+-   Créer une option `group.fill` (comme dans `prop_group()`).
 
 #### distrib_group_d
 

@@ -18,6 +18,7 @@
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
 #' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param total_name Name of the total shown on the graphic. Default is "Total".
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
@@ -89,6 +90,7 @@ prop_group <- function(data,
                        show_n = FALSE,
                        show_value = TRUE,
                        show_lab = TRUE,
+                       total = TRUE,
                        total_name = "Total",
                        scale = 100,
                        digits = 0,
@@ -146,7 +148,8 @@ prop_group <- function(data,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_lab = show_lab
+      show_lab = show_lab,
+      total = total
     ),
     type = "logical"
   )
@@ -402,28 +405,42 @@ prop_group <- function(data,
   }
 
   # On calcule les proportions par groupe
-  tab <- data_W %>%
-    cascade(
-      prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-      n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
-      n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
-      n_tot_weighted = survey_total(vartype = "ci"),
-      .fill = total_name, # Le total = colonne "Total"
-    ) %>%
-    ungroup()
-
-  # On supprime la facet qui est le total => pas utile
-  if(!quo_is_null(quo_facet)) {
-    tab <- tab %>%
-      filter({{ facet }} != total_name | is.na({{ facet }})) %>%
-      mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
+  # Si pas de total
+  if(total == FALSE) {
+    tab <- data_W %>%
+      summarise( # pas cascade si total == F
+        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci")
+      ) %>%
+      ungroup()
   }
-  # On supprime le group.fill qui est le total => pas utile
-  if(!quo_is_null(quo_group.fill)) {
-    tab <- tab %>%
-      filter({{ group.fill }} != total_name | is.na({{ group.fill }})) %>%
-      mutate("{{ group.fill }}" := droplevels(as.factor({{ group.fill }})), # Pour enlever le level "Total"
-             "{{ group }}" := droplevels(as.factor({{ group }}))) # Pour enlever le level "Total"
+  # Si total
+  if(total == TRUE) {
+    tab <- data_W %>%
+      cascade(
+        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci"),
+        .fill = total_name, # Le total = colonne "Total"
+      ) %>%
+      ungroup()
+
+    # On supprime la facet qui est le total => pas utile
+    if(!quo_is_null(quo_facet)) {
+      tab <- tab %>%
+        filter({{ facet }} != total_name | is.na({{ facet }})) %>%
+        mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
+    }
+    # On supprime le group.fill qui est le total => pas utile
+    if(!quo_is_null(quo_group.fill)) {
+      tab <- tab %>%
+        filter({{ group.fill }} != total_name | is.na({{ group.fill }})) %>%
+        mutate("{{ group.fill }}" := droplevels(as.factor({{ group.fill }})), # Pour enlever le level "Total"
+               "{{ group }}" := droplevels(as.factor({{ group }}))) # Pour enlever le level "Total"
+    }
   }
 
 
@@ -435,8 +452,13 @@ prop_group <- function(data,
     if(all(isColor(pal)) == TRUE){
       palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
     } else { # Si la couleur n'est pas valide => on met la couleur par defaut
-      palette <- c(rep("deepskyblue3", nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+      pal <- "deepskyblue3" # Alors pal == "deepskyblue3"
+      palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
       warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+    }
+    # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
+    if(total == FALSE) {
+      palette[palette == "grey40"] <- pal
     }
   }
 
@@ -507,8 +529,8 @@ prop_group <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-  # Pour enlever le level "Total" si group.fill (car pas calcule)
-  if(!quo_is_null(quo_group.fill)) {
+  # Pour enlever le level "Total" si group.fill (car pas calcule) ou total == F
+  if(!quo_is_null(quo_group.fill) | total == FALSE) {
     levels <- levels[levels != total_name]
   }
 
