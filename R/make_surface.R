@@ -289,7 +289,8 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
+        } else if (position == "bottom" & show_ci == T) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+        } else if (position == "bottom" & show_ci == F) indice_sqrt / 2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
@@ -308,8 +309,7 @@ make_surface <- function(tab,
           } else if (position == "bottom" & show_ci == F) xmin + (compare/2),
           y = if (position == "mid") {
             0
-          } else if (position == "bottom" & show_ci == T) { compare / 2
-          } else if (position == "bottom" & show_ci == F) compare / 2,
+          } else if (position == "bottom") compare / 2,
           width = compare,
           height = compare
         ),
@@ -325,7 +325,8 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
+        } else if (position == "bottom" & show_ci == T) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+        } else if (position == "bottom" & show_ci == F) indice_sqrt / 2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
