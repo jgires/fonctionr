@@ -243,6 +243,7 @@ make_surface <- function(tab,
       ) |>
       ungroup()
   }
+  print(tab)
 
 
   # 4. CREATION DU GRAPHIQUE --------------------
@@ -300,10 +301,12 @@ make_surface <- function(tab,
         aes(
           x = if (position == "mid") {
             xmean
-          } else if (position == "bottom") xmin + (compare/2),
+          } else if (position == "bottom" & show_ci == T) { xmin + (compare/2) + (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+          } else if (position == "bottom" & show_ci == F) xmin + (compare/2),
           y = if (position == "mid") {
             0
-          } else if (position == "bottom") compare / 2,
+          } else if (position == "bottom" & show_ci == T) { compare / 2 + (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+          } else if (position == "bottom" & show_ci == F) compare / 2,
           width = compare,
           height = compare
         ),
