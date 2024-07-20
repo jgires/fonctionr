@@ -17,12 +17,12 @@ convert_to_srvyr <- function(data, ...) {
   # Si objet survey (avec replicates ou non)
   if(any(class(data) %in% c("survey.design2","survey.design")) & all(class(data) %ni% c("tbl_svy"))){
     message("Input: objet survey")
-    data_W <- data %>%
+    data_W <- data |>
       as_survey_design()
   }
   if(any(class(data) %in% c("svyrep.design")) & all(class(data) %ni% c("tbl_svy"))){
     message("Input: objet survey")
-    data_W <- data %>%
+    data_W <- data |>
       as_survey_rep()
   }
   # Si objet srvyr (avec replicates ou non)
@@ -33,15 +33,15 @@ convert_to_srvyr <- function(data, ...) {
   # Si data.frame (pas de replicate prevu => A FAIRE A TERME)
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     message("Input: data.frame")
-    data_W <- data %>%
+    data_W <- data |>
       as_survey_design(...)
   }
 
   # message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
 
   # On extrait les variables du design
-  attr_design <- attr(data_W, "survey_vars") %>%
-    as.character() %>%
+  attr_design <- attr(data_W, "survey_vars") |>
+    as.character() |>
     unlist(use.names = TRUE)
 
   vec_design <- character(0)

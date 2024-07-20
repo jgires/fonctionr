@@ -179,18 +179,18 @@ distrib_continuous <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # # On ne garde que les colonnes entrees en input
-  # data_W <- data_W %>%
+  # data_W <- data_W |>
   #   select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
   # On supprimes les NA sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
@@ -199,27 +199,27 @@ distrib_continuous <- function(data,
   # On les affiche via message (pour verification)
   message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
-  before <- data_W %>%
+  before <- data_W |>
     summarise(n=unweighted(n()))
   # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
   for (var in vec_quanti_exp) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na(.data[[var]]))
   }
   # On calcule les effectifs apres filtre
-  after <- data_W %>%
+  after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
   message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
 
   # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite
-  data_W <- data_W %>%
+  data_W <- data_W |>
     mutate(
       quanti_exp_flattened = {{ quanti_exp }}
     )
   # On convertit la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
@@ -228,19 +228,19 @@ distrib_continuous <- function(data,
   # 3. CALCUL DE L'INDICE CENTRAL (MEDIANE/MOYENNE) --------------------
 
   if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ facet }})
   }
 
   # Calcul de la moyenne ou mediane et ses IC
-  tab <- data_W %>%
+  tab <- data_W |>
     summarise(
       indice = if (type == "median") {
         survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
       } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
       n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
       n_weighted = survey_total(vartype = "ci")
-    ) %>%
+    ) |>
     ungroup()
 
 
@@ -269,7 +269,7 @@ distrib_continuous <- function(data,
     quantiles = unique(quantiles),
     ci = T,
     na.rm = T
-  )[[1]]) %>%
+  )[[1]]) |>
     tibble::rownames_to_column(var = "probs")
 
   # On cree un data.frame avec les densites, et on cree les classes de quantiles (a quel quantile x appartient) en croisant x avec le vecteur de quantiles
@@ -293,7 +293,7 @@ distrib_continuous <- function(data,
         y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i], ties = "mean")$y,
         quantFct = i,
         segment = TRUE
-      ) %>%
+      ) |>
       tibble::add_case(
         x = estQuant_W$quantile[i],
         y = stats::approx(df_dens$x, df_dens$y, xout = estQuant_W$quantile[i], ties = "mean")$y,
@@ -302,22 +302,22 @@ distrib_continuous <- function(data,
   }
 
   # On isole les quantiles avec leurs coordonnees y de densite (pour les afficher avec le ggplot)
-  quant_seg <- df_dens %>%
+  quant_seg <- df_dens |>
     filter(segment == TRUE)
 
   # Je transforme l'appartenance au quantile en facteur, pour le ggplot
-  df_dens <- df_dens %>%
+  df_dens <- df_dens |>
     mutate(quantFct = as.factor(quantFct))
 
   if (show_n == TRUE) {
     # Les effectifs par quantile
-    quantile_n <- data_W %>%
+    quantile_n <- data_W |>
       mutate(quantFct = cut({{ quanti_exp }},
         include.lowest = T,
         right = F,
         breaks = c(-Inf, estQuant_W$quantile, Inf)
-      )) %>%
-      group_by(quantFct) %>%
+      )) |>
+      group_by(quantFct) |>
       summarise(n = unweighted(n()))
 
     # On joint les coordonnees x du debut des classes de quantile aux effectifs par quantile
@@ -328,27 +328,27 @@ distrib_continuous <- function(data,
 
     # Si l'utilisateur indique des limites, alors on supprime les effectifs de toutes les classes de quantile pas affichees en entier
     if(!is.null(limits)){
-      quantile_n <- quantile_n %>%
+      quantile_n <- quantile_n |>
         filter(coord_x > limits[1]) # Les premieres classes si elles sont coupees
       if(max(data_W$variables[["quanti_exp_flattened"]], na.rm = T) > limits[2])
-        quantile_n <- quantile_n %>%
+        quantile_n <- quantile_n |>
           filter(coord_max < limits[2]) # Et les dernieres si elles sont coupees
     }
   }
 
   # On estime la densite de la moyenne ou mediane et ses CI
   df_dens <- df_dens |>
-    mutate(central = NA) %>%
+    mutate(central = NA) |>
     tibble::add_case(
       x = tab$indice,
       y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice, ties = "mean")$y,
       central = "indice"
-    ) %>%
+    ) |>
     tibble::add_case(
       x = tab$indice_low,
       y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_low, ties = "mean")$y,
       central = "indice_low"
-    ) %>%
+    ) |>
     tibble::add_case(
       x = tab$indice_upp,
       y = stats::approx(df_dens$x, df_dens$y, xout = tab$indice_upp, ties = "mean")$y,
@@ -360,7 +360,7 @@ distrib_continuous <- function(data,
     filter(x >= tab$indice_low & x <= tab$indice_upp)
 
   # # On enleve les lignes creees pour la moyenne ou mediane et ses CI du df de densite => pas necessaire, et duplique potentiels avec certains quantiles
-  # df_dens <- df_dens %>%
+  # df_dens <- df_dens |>
   #   filter(is.na(central))
 
 
@@ -614,14 +614,14 @@ distrib_continuous <- function(data,
 
   # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "mean") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(mean = indice,
              mean_low = indice_low,
              mean_upp = indice_upp)
   }
 
   if (type == "median") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(median = indice,
              median_low = indice_low,
              median_upp = indice_upp)

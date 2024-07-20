@@ -196,42 +196,42 @@ distrib_group_discrete <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # On ne garde que les colonnes entrees en input
-  data_W <- data_W %>%
+  data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
 
   # On supprime les NA de group si na.rm.group == T
   if(na.rm.group == T){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na({{ group }}))
   }
   # On supprime les NA de quali_var si na.rm.var == T
   if(na.rm.var == T){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na({{ quali_var }}))
   }
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
 
   # On convertit en facteurs si pas facteurs
-  data_W <- data_W %>%
+  data_W <- data_W |>
     mutate(
       "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
       "{{ group }}" := droplevels(as.factor({{ group }}))
     )
   # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
@@ -242,7 +242,7 @@ distrib_group_discrete <- function(data,
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if (na.rm.group == F) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate(
         "{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")),
@@ -250,7 +250,7 @@ distrib_group_discrete <- function(data,
   }
   # idem sur quali_var
   if (na.rm.var == F) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
       )
@@ -258,7 +258,7 @@ distrib_group_discrete <- function(data,
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == F) {
     if (!quo_is_null(quo_facet)) {
-      data_W <- data_W %>%
+      data_W <- data_W |>
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
     }
   }
@@ -283,14 +283,14 @@ distrib_group_discrete <- function(data,
 
   # Ici je remets les NA pour les groupes / quali_var / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
   if (na.rm.group == F) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA")),
       )
   }
   # idem sur quali_var
   if (na.rm.var == F) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ quali_var }}" := droplevels(forcats::fct_na_level_to_value({{ quali_var }}, "NA"))
       )
@@ -298,7 +298,7 @@ distrib_group_discrete <- function(data,
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == F) {
     if (!quo_is_null(quo_facet)) {
-      data_W <- data_W %>%
+      data_W <- data_W |>
         mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA")))
     }
   }
@@ -308,19 +308,19 @@ distrib_group_discrete <- function(data,
 
   # On calcule les frequences relatives par groupe
   if (quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ group }}, {{ quali_var }})
   }
   if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ facet }}, {{ group }}, {{ quali_var }})
   }
-  tab <- data_W %>%
+  tab <- data_W |>
     summarise(
       prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
       n_sample = unweighted(n()),
       n_weighted = survey_total(vartype = c("ci"))
-    ) %>%
+    ) |>
     ungroup()
 
 
@@ -364,7 +364,7 @@ distrib_group_discrete <- function(data,
   }
 
   # On cree le graphique
-  graph <- tab %>%
+  graph <- tab |>
     ggplot(aes(
       x = {{ group }},
       y = prop,
@@ -529,9 +529,9 @@ distrib_group_discrete <- function(data,
     # On transforme le test stat en dataframe
     if (quo_is_null(quo_facet)) { # Pour l'instant, test uniquement si pas de facet
       if(all(test.stat != "Conditions non remplies")){
-      test_stat_excel <- test.stat %>%
-        broom::tidy() %>%
-        t() %>%
+      test_stat_excel <- test.stat |>
+        broom::tidy() |>
+        t() |>
         as.data.frame()
       test_stat_excel$names <- rownames(test_stat_excel)
       test_stat_excel <- test_stat_excel[, c(2,1)]

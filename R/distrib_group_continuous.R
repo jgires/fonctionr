@@ -226,23 +226,23 @@ distrib_group_continuous <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # # On ne garde que les colonnes entrees en input
-  # data_W <- data_W %>%
+  # data_W <- data_W |>
   #   select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na({{ group }}))
   }
   # On supprimes les NA sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
@@ -251,29 +251,29 @@ distrib_group_continuous <- function(data,
   # On les affiche via message (pour verification)
   message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
-  before <- data_W %>%
+  before <- data_W |>
     summarise(n=unweighted(n()))
   # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
   for (var in vec_quanti_exp) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na(.data[[var]]))
   }
   # On calcule les effectifs apres filtre
-  after <- data_W %>%
+  after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
   message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
 
   # On convertit la variable de groupe en facteur si pas facteur
   # + on recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite
-  data_W <- data_W %>%
+  data_W <- data_W |>
     mutate(
       "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
       quanti_exp_flattened = {{ quanti_exp }}
     )
   # On convertit la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
@@ -284,7 +284,7 @@ distrib_group_continuous <- function(data,
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if(na.rm.group == F){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
@@ -292,7 +292,7 @@ distrib_group_continuous <- function(data,
   if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+      data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
@@ -340,33 +340,33 @@ distrib_group_continuous <- function(data,
 
   # Si non facet
   if (quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ group }})
   }
   # Si facet
   if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ facet }}, {{ group }})
   }
 
   # On calcule l'indicateur par groupe (mean ou median selon la fonction appelee)
   if (quo_is_null(quo_facet)) {
-    tab <- data_W %>%
+    tab <- data_W |>
       summarise(
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
-      ) %>%
+      ) |>
       ungroup()
   }
 
   # On calcul un nouvel ordre dans order si on veut reordonner les groupes selon la valeur calculee
   if (reorder == T) {
-    tab_order <- tab %>%
-      arrange(desc(indice)) %>%
-      mutate(order = row_number()) %>%
+    tab_order <- tab |>
+      arrange(desc(indice)) |>
+      mutate(order = row_number()) |>
       select(group = {{ group }}, order)
   }
 
@@ -387,7 +387,7 @@ distrib_group_continuous <- function(data,
   for(group.i in seq_along(vec_group.i)){
 
     # On filtre data pour le group.i
-    data_W_group <- data_W %>%
+    data_W_group <- data_W |>
       filter({{ group }} == vec_group.i[group.i])
 
     # On estime la densite de la variable quanti pour le group.i
@@ -410,8 +410,8 @@ distrib_group_continuous <- function(data,
       quantiles = unique(quantiles),
       ci = T,
       na.rm = T
-    )[[1]]) %>%
-      tibble::rownames_to_column(var = "probs") %>% # On cree une colonne qui contient le quantile
+    )[[1]]) |>
+      tibble::rownames_to_column(var = "probs") |> # On cree une colonne qui contient le quantile
       mutate(
         group = vec_group.i[group.i], # Pour savoir quel groupe
         level = group.i # Pour savoir quel level (en valeur numerique)
@@ -442,7 +442,7 @@ distrib_group_continuous <- function(data,
           y = stats::approx(df_dens_group$x, df_dens_group$y, xout = estQuant_W_group$quantile[i], ties = "mean")$y,
           quantFct = i,
           segment = TRUE
-        ) %>%
+        ) |>
         tibble::add_case(
           group = vec_group.i[group.i],
           level = group.i,
@@ -470,7 +470,7 @@ distrib_group_continuous <- function(data,
         quantiles = moustache_quant, # On indique les quantiles calcules
         ci = F,
         na.rm = T
-      )[[1]]) %>%
+      )[[1]]) |>
         mutate(
           group = vec_group.i[group.i],
           level = group.i
@@ -483,13 +483,13 @@ distrib_group_continuous <- function(data,
   # On restructure boxplot_df pour ggplot
   # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer a quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
   if (show_moustache == T) {
-    boxplot_df <- boxplot_df %>%
+    boxplot_df <- boxplot_df |>
       pivot_longer(
         cols = !c(group, level),
         names_to = "probs",
         values_to = "quantile",
         names_transform = as.numeric
-      ) %>%
+      ) |>
       mutate(
         moustache_prob = ifelse( # On fait l'inverse que precedemment : on retrouve les proportions a partir des quantiles
           probs > .5,
@@ -503,14 +503,14 @@ distrib_group_continuous <- function(data,
         )
       )
     if (reorder == T) {
-      boxplot_df <- boxplot_df %>%
-        left_join(tab_order, by = "group") %>%
+      boxplot_df <- boxplot_df |>
+        left_join(tab_order, by = "group") |>
         mutate(level = order)
     }
-    boxplot_df_begin <- boxplot_df %>% filter(position == "begin") %>% select(group, level, moustache_prob, xbegin = quantile) %>% mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent etre en caractere
-    boxplot_df_end <- boxplot_df   %>% filter(position == "end")   %>% select(group, level, moustache_prob, xend = quantile)   %>% mutate(across(everything(), as.character))
-    boxplot_df <- boxplot_df_begin %>%
-      left_join(boxplot_df_end, by = c("group", "level", "moustache_prob")) %>%
+    boxplot_df_begin <- boxplot_df |> filter(position == "begin") |> select(group, level, moustache_prob, xbegin = quantile) |> mutate(across(everything(), as.character)) # Pour la jointure ci-dessous les variables doivent etre en caractere
+    boxplot_df_end <- boxplot_df   |> filter(position == "end")   |> select(group, level, moustache_prob, xend = quantile)   |> mutate(across(everything(), as.character))
+    boxplot_df <- boxplot_df_begin |>
+      left_join(boxplot_df_end, by = c("group", "level", "moustache_prob")) |>
       mutate(
         moustache_prob = as.character(moustache_prob), # On met moustache_prob en caractere pour le fill sur le ggplot
         across(
@@ -523,30 +523,30 @@ distrib_group_continuous <- function(data,
 
   # Si reorder = T, on definit un nouveau level a partir de order (calcule plus haut)
   if (reorder == T) {
-    df_dens <- df_dens %>%
-      left_join(tab_order, by = "group") %>%
+    df_dens <- df_dens |>
+      left_join(tab_order, by = "group") |>
       mutate(level = order)
   }
 
   # On calcule y_ridges, pour ploter chaque densite de groupe a un y different sur des multiples de 1 (0, 1, 2, 3, ..., n)
-  df_dens <- df_dens %>%
-    # group_by(group) %>%
-    mutate(y_ridges = (y / max(y)) * height) %>%
-    # ungroup() %>%
+  df_dens <- df_dens |>
+    # group_by(group) |>
+    mutate(y_ridges = (y / max(y)) * height) |>
+    # ungroup() |>
     mutate(
       y_ridges = y_ridges + (level - 1),
       quantFct = as.factor(quantFct) # Je transforme l'appartenance au quantile en facteur, pour le ggplot
     )
 
   # On isole les quantiles avec leurs coordonnees y de densite (pour les afficher avec le ggplot)
-  quant_seg <- df_dens %>%
+  quant_seg <- df_dens |>
     filter(segment == TRUE)
 
   # On inclut les levels a tab => necessaire pour ggplot
   # Utilise aussi pour le nom des groupes dans le ggplot
-  tab_level <- df_dens %>%
-    group_by(group) %>%
-    summarise(level = first(level)) %>%
+  tab_level <- df_dens |>
+    group_by(group) |>
+    summarise(level = first(level)) |>
     rename("{{ group }}" := group) # Pour la jointure
   tab <- tab %>%
     left_join(tab_level, by = names(select(., {{group}}))) # SOLUTION TROUVEE ICI : https://stackoverflow.com/questions/48449799/join-datasets-using-a-quosure-as-the-by-argument
@@ -562,22 +562,22 @@ distrib_group_continuous <- function(data,
     # print(tab$indice[tab[[1]] == vec_group.i[group.i]])
     # print(tab$indice_upp[tab[[1]] == vec_group.i[group.i]])
 
-    df_dens_central <- df_dens_central %>%
-      mutate(central = NA) %>%
+    df_dens_central <- df_dens_central |>
+      mutate(central = NA) |>
       tibble::add_case(
         group = vec_group.i[group.i],
         level = group.i,
         x = tab$indice[tab[[1]] == vec_group.i[group.i]],
         y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice[tab[[1]] == vec_group.i[group.i]], ties = "mean")$y,
         central = "indice"
-      ) %>%
+      ) |>
       tibble::add_case(
         group = vec_group.i[group.i],
         level = group.i,
         x = tab$indice_low[tab[[1]] == vec_group.i[group.i]],
         y = stats::approx(df_dens_central$x, df_dens_central$y, xout = tab$indice_low[tab[[1]] == vec_group.i[group.i]], ties = "mean")$y,
         central = "indice_low"
-      ) %>%
+      ) |>
       tibble::add_case(
         group = vec_group.i[group.i],
         level = group.i,
@@ -595,8 +595,8 @@ distrib_group_continuous <- function(data,
 
   # On cree un df agrege avec une ligne par groupe qui comprend des colonnes avec l'indice + bornes des CI
   central_CI <- central |>
-    filter(!is.na(central)) %>%
-    select(-level, -y, -quantFct, -segment, -y_ridges) %>%
+    filter(!is.na(central)) |>
+    select(-level, -y, -quantFct, -segment, -y_ridges) |>
     pivot_wider(
       names_from = "central",
       values_from = "x"
@@ -605,20 +605,20 @@ distrib_group_continuous <- function(data,
   if (reorder == T) {
     central_CI <- select(central_CI, -order)
     central <- central |>
-      select(-order) %>%
-      left_join(tab_order, by = "group") %>%
+      select(-order) |>
+      left_join(tab_order, by = "group") |>
       mutate(level = order)
   }
 
   # On identifie toutes les valeurs de densite comprises dans les IC PAR GROUPE => permet de creer une region PAR GROUPE sur le ggplot
   central <- central |>
-    left_join(central_CI, by = "group") %>%
+    left_join(central_CI, by = "group") |>
     mutate(
       y_ridges = (y / max(y)) * height
-    ) %>%
-    group_by(group) %>%
-    filter(x >= indice_low & x <= indice_upp) %>%
-    ungroup() %>%
+    ) |>
+    group_by(group) |>
+    filter(x >= indice_low & x <= indice_upp) |>
+    ungroup() |>
     mutate(
       y_ridges = y_ridges + (level - 1)
     )
@@ -931,14 +931,14 @@ distrib_group_continuous <- function(data,
 
   # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "mean") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(mean = indice,
              mean_low = indice_low,
              mean_upp = indice_upp)
   }
 
   if (type == "median") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(median = indice,
              median_low = indice_low,
              median_upp = indice_upp)
@@ -963,9 +963,9 @@ distrib_group_continuous <- function(data,
 
     # On transforme le test stat en dataframe
     if (type == "median") {
-      test_stat_excel <- test.stat %>%
-        broom::tidy() %>%
-        t() %>%
+      test_stat_excel <- test.stat |>
+        broom::tidy() |>
+        t() |>
         as.data.frame()
       test_stat_excel$names <- rownames(test_stat_excel)
       test_stat_excel <- test_stat_excel[, c(2,1)]

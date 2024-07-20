@@ -124,7 +124,7 @@ esth_graph <- function(tab,
   # 2. PROCESSING DES DONNEES --------------------
 
   # On convertit la variable categorielle en facteur si pas facteur
-  tab <- tab %>%
+  tab <- tab |>
     mutate(
       "{{ var }}" := droplevels(as.factor({{ var }}))
     )
@@ -220,7 +220,7 @@ esth_graph <- function(tab,
   }
 
   # On definit l'ordre du facteur dans tab, pour que les couleurs soient associees aux bonnes modalites
-  tab <- tab %>%
+  tab <- tab |>
     mutate(
       "{{ var }}" := factor({{ var }}, levels = rev(levels)) # rev car ggplot ordonne dans le sens inverse (a cause du coord_flip() sans doute)
     )
@@ -235,7 +235,7 @@ esth_graph <- function(tab,
 
   # On cree le graphique
 
-  graph <- tab %>%
+  graph <- tab |>
     ggplot(aes(
       x = {{ var }},
       y = {{ value }},

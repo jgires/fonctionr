@@ -221,7 +221,7 @@ prop_group <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
-  data_W <- data_W %>%
+  data_W <- data_W |>
     mutate(fonctionr_test_prop_exp = {{ prop_exp }})
   if (!all(data_W$variables[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit etre une expression produisant des TRUE-FALSE ou etre une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
 
@@ -238,28 +238,28 @@ prop_group <- function(data,
   # 2. PROCESSING DES DONNEES --------------------
 
   # On ne garde que les colonnes entrees en input
-  data_W <- data_W %>%
+  data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
   # On supprime les NA sur group + group.fill si na.rm.group = T
   if (na.rm.group == T) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na({{ group }}))
 
     if(!quo_is_null(quo_group.fill)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ group.fill }}))
     }
   }
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
@@ -269,22 +269,22 @@ prop_group <- function(data,
     # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_prop_exp cree au debut
     message("Variable(s) detectee(s) dans l'expression : ", paste(vec_prop_exp, collapse = ", "))
     # On calcule les effectifs avant filtre
-    before <- data_W %>%
+    before <- data_W |>
       summarise(n=unweighted(n()))
     # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
     for (var in vec_prop_exp) {
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na(.data[[var]]))
     }
     # On calcule les effectifs apres filtre
-    after <- data_W %>%
+    after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
     message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression")
 
     # On convertit la variable de groupe en facteur si pas facteur
     # On cree egalement une variable binaire liee a la proportion pour le khi2
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
         fonctionr_express_bin = {{ prop_exp }}
@@ -293,7 +293,7 @@ prop_group <- function(data,
 
   # Si na.prop == "include", alors on transforme les NA en 0, pour inclure tout l'echantillon au denominateur
   if(na.prop == "include"){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
         fonctionr_express_bin = ifelse(!is.na({{ prop_exp }}),
@@ -304,14 +304,14 @@ prop_group <- function(data,
 
   # On convertit egalement la variable de group.fill en facteur si facet non-NULL
   if(!quo_is_null(quo_group.fill)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ group.fill }}" := droplevels(as.factor({{ group.fill }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
 
   # idem pour facet
   if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
@@ -325,14 +325,14 @@ prop_group <- function(data,
     # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
     # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
     if (na.rm.group == F) {
-      data_W <- data_W %>%
+      data_W <- data_W |>
         # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
         mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA")))
     }
     # idem sur la variable de facet si non-NULL
     if (na.rm.facet == F) {
       if (!quo_is_null(quo_facet)) {
-        data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+        data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
           mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
       }
     }
@@ -362,14 +362,14 @@ prop_group <- function(data,
 
     # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
     if(na.rm.group == F){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
         )
     }
     if (na.rm.facet == F) {
       # idem sur la variable de facet si non-NULL
       if(!quo_is_null(quo_facet)){
-        data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+        data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
           mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
           )
       }
@@ -381,65 +381,49 @@ prop_group <- function(data,
   # 4. CALCUL DES PROPORTIONS --------------------
 
   # On definit le grouping
-  # Si non facet
-  if (quo_is_null(quo_facet)) {
-    if (quo_is_null(quo_group.fill)) { # Si pas group.fill
-      data_W <- data_W %>%
-        group_by({{ group }})
-    }
-    if (!quo_is_null(quo_group.fill)) { # Si group.fill
-      data_W <- data_W %>%
-        group_by({{ group }}, {{ group.fill }})
-    }
-  }
   # Si facet
   if (!quo_is_null(quo_facet)) {
-    if (quo_is_null(quo_group.fill)) { # Si pas group.fill
-      data_W <- data_W %>%
-        group_by({{ facet }}, {{ group }})
-    }
-    if (!quo_is_null(quo_group.fill)) { # Si group.fill
-      data_W <- data_W %>%
-        group_by({{ facet }}, {{ group }}, {{ group.fill }})
-    }
+    data_W <- data_W |>
+      group_by({{ facet }})
+  }
+  # Group (dans tous les cas)
+  data_W <- data_W |>
+    group_by({{ group }}, .add = TRUE)
+  # Si group.fill
+  if (!quo_is_null(quo_group.fill)) {
+    data_W <- data_W |>
+      group_by({{ group.fill }}, .add = TRUE)
   }
 
   # On calcule les proportions par groupe
   # Si pas de total
-  if(total == FALSE) {
-    tab <- data_W %>%
+  if(total == FALSE | !quo_is_null(quo_group.fill)) {
+    tab <- data_W |>
       summarise( # pas cascade si total == F
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci")
-      ) %>%
+      ) |>
       ungroup()
   }
   # Si total
-  if(total == TRUE) {
-    tab <- data_W %>%
+  if(total == TRUE & quo_is_null(quo_group.fill)) {
+    tab <- data_W |>
       cascade(
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
         n_tot_weighted = survey_total(vartype = "ci"),
-        .fill = total_name, # Le total = colonne "Total"
-      ) %>%
+        .fill = total_name # Le total = colonne "Total"
+      ) |>
       ungroup()
 
     # On supprime la facet qui est le total => pas utile
     if(!quo_is_null(quo_facet)) {
-      tab <- tab %>%
-        filter({{ facet }} != total_name | is.na({{ facet }})) %>%
+      tab <- tab |>
+        filter({{ facet }} != total_name | is.na({{ facet }})) |>
         mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
-    }
-    # On supprime le group.fill qui est le total => pas utile
-    if(!quo_is_null(quo_group.fill)) {
-      tab <- tab %>%
-        filter({{ group.fill }} != total_name | is.na({{ group.fill }})) %>%
-        mutate("{{ group.fill }}" := droplevels(as.factor({{ group.fill }})), # Pour enlever le level "Total"
-               "{{ group }}" := droplevels(as.factor({{ group }}))) # Pour enlever le level "Total"
     }
   }
 
@@ -537,7 +521,7 @@ prop_group <- function(data,
   # On cree le graphique
 
   if (quo_is_null(quo_group.fill)) { # Si pas de group.fill
-    graph <- tab %>%
+    graph <- tab |>
       ggplot(aes(
         x = {{ group }},
         y = prop,
@@ -545,7 +529,7 @@ prop_group <- function(data,
       ))
   }
   if (!quo_is_null(quo_group.fill)) { # Si group.fill
-    graph <- tab %>%
+    graph <- tab |>
       ggplot(aes(
         x = {{ group }},
         y = prop,
@@ -753,9 +737,9 @@ prop_group <- function(data,
     # On transforme le test stat en dataframe
     if (quo_is_null(quo_group.fill)) {
       if(all(test.stat != "Conditions non remplies")){
-        test_stat_excel <- test.stat %>%
-          broom::tidy() %>%
-          t() %>%
+        test_stat_excel <- test.stat |>
+          broom::tidy() |>
+          t() |>
           as.data.frame()
         test_stat_excel$names <- rownames(test_stat_excel)
         test_stat_excel <- test_stat_excel[, c(2,1)]

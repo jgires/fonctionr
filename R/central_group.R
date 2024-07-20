@@ -184,23 +184,23 @@ central_group <- function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # On ne garde que les colonnes entrees en input
-  data_W <- data_W %>%
+  data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na({{ group }}))
   }
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
@@ -209,21 +209,21 @@ central_group <- function(data,
   # On les affiche via message (pour verification)
   message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
-  before <- data_W %>%
+  before <- data_W |>
     summarise(n=unweighted(n()))
   # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
   for (var in vec_quanti_exp) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter(!is.na(.data[[var]]))
   }
   # On calcule les effectifs apres filtre
-  after <- data_W %>%
+  after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
   message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
 
   # On convertit la variable de groupe en facteur si pas facteur
-  data_W <- data_W %>%
+  data_W <- data_W |>
     mutate(
       "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
       quanti_exp_flattened = {{ quanti_exp }} # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour les tests stat ci-dessous
@@ -231,7 +231,7 @@ central_group <- function(data,
 
   # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }}))) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
   }
@@ -242,7 +242,7 @@ central_group <- function(data,
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
   if(na.rm.group == F){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
@@ -250,7 +250,7 @@ central_group <- function(data,
   if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+      data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA"))
         )
     }
@@ -295,14 +295,14 @@ central_group <- function(data,
 
   # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
   if(na.rm.group == F){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
       )
   }
   if (na.rm.facet == F) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>% # On enleve sequentiellement les NA de group puis facet
+      data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA"))
         )
     }
@@ -313,30 +313,30 @@ central_group <- function(data,
 
   # On calcule l'indicateur par groupe (mean ou median selon la fonction appelee)
   if(quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ group }}) %>%
+    tab <- data_W |>
+      group_by({{ group }}) |>
       cascade(
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci"),
-        .fill = total_name, # Le total
-      ) %>%
+        .fill = total_name # Le total
+      ) |>
       ungroup()
   }
   if(!quo_is_null(quo_facet)){
-    tab <- data_W %>%
-      group_by({{ facet }}, {{ group }}) %>%
+    tab <- data_W |>
+      group_by({{ facet }}, {{ group }}) |>
       cascade(
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci"),
-        .fill = total_name, # Le total
-      ) %>%
-      filter({{ facet }} != total_name | is.na({{ facet }})) %>% # POURQUOI JE FAIS CA ??? ME RAPPELLE PLUS => ELUCIDER
+        .fill = total_name # Le total
+      ) |>
+      filter({{ facet }} != total_name | is.na({{ facet }})) |> # POURQUOI JE FAIS CA ??? ME RAPPELLE PLUS => ELUCIDER
       ungroup()
   }
 
@@ -406,7 +406,7 @@ central_group <- function(data,
 
   # On cree le graphique
 
-  graph <- tab %>%
+  graph <- tab |>
     ggplot(aes(
       x = {{ group }},
       y = indice,
@@ -578,14 +578,14 @@ central_group <- function(data,
 
   # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "mean") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(mean = indice,
              mean_low = indice_low,
              mean_upp = indice_upp)
   }
 
   if (type == "median") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(median = indice,
              median_low = indice_low,
              median_upp = indice_upp)
@@ -605,9 +605,9 @@ central_group <- function(data,
 
     # On transforme le test stat en dataframe
     if (type == "median") {
-      test_stat_excel <- test.stat %>%
-        broom::tidy() %>%
-        t() %>%
+      test_stat_excel <- test.stat |>
+        broom::tidy() |>
+        t() |>
         as.data.frame()
       test_stat_excel$names <- rownames(test_stat_excel)
       test_stat_excel <- test_stat_excel[, c(2,1)]

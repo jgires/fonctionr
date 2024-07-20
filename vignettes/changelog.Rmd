@@ -26,6 +26,8 @@ Date : 2024-07-20
 
 -   Dans `make_surface()`, l'option `position = "bottom"` change également la position de la surface minimale affichée lorsque `compare = T` (suggestion de Robin).
 
+-   Optimisation du code (très légère augmentation de la vitesse).
+
 ## fonctionr 0.3.5
 
 Date : 2024-07-07

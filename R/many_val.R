@@ -205,18 +205,18 @@ many_val = function(data,
   data_W <- convert_to_srvyr(data, ...)
 
   # On ne garde que les colonnes entrees en input
-  data_W <- data_W %>%
+  data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
-    data_W <- data_W %>%
+    data_W <- data_W |>
       filter({{ filter_exp }})
   }
   # On supprime les NA sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na({{ facet }}))
     }
   }
@@ -224,15 +224,15 @@ many_val = function(data,
   # On supprime les NA sur la/les variable(s) entrees si na.vars == "rm.all" => de cette facon les effectifs sont les memes pour tous les indicateurs.
   if(na.vars == "rm.all"){
     # On calcule les effectifs avant filtre
-    before <- data_W %>%
+    before <- data_W |>
       summarise(n=unweighted(n()))
     # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
     for (var in vec_list_vars) {
-      data_W <- data_W %>%
+      data_W <- data_W |>
         filter(!is.na(.data[[var]]))
     }
     # On calcule les effectifs apres filtre
-    after <- data_W %>%
+    after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
     message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) entrees")
@@ -240,7 +240,7 @@ many_val = function(data,
 
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       mutate(
         "{{ facet }}" := droplevels(as.factor({{ facet }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
         )
@@ -251,14 +251,14 @@ many_val = function(data,
 
   # Si facet => on groupe deja data (economie de code)
   if (!quo_is_null(quo_facet)) {
-    data_W <- data_W %>%
+    data_W <- data_W |>
       group_by({{ facet }})
   }
   tab <- tibble()
   # On calcule les proportions
   if(type == "prop"){
     for (i in vec_list_vars) {
-      tab_i <- data_W %>%
+      tab_i <- data_W |>
         summarise(
           list_col = i,
           indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
@@ -273,7 +273,7 @@ many_val = function(data,
   # On calcule les moyennes/medianes
   if(type == "median" | type == "mean"){
     for (i in vec_list_vars) {
-      tab_i <- data_W %>%
+      tab_i <- data_W |>
         summarise(
           list_col = i,
           indice = if (type == "median") {
@@ -286,7 +286,7 @@ many_val = function(data,
       tab <- rbind(tab, tab_i)
     }
   }
-  tab <- tab %>%
+  tab <- tab |>
     ungroup()
 
   # On remplace list_vars par les labels list_vars_lab
@@ -390,7 +390,7 @@ many_val = function(data,
 
   # On cree le graphique
 
-  graph <- tab %>%
+  graph <- tab |>
     ggplot(aes(
       x = list_col,
       y = indice,
@@ -533,19 +533,19 @@ many_val = function(data,
 
   # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "prop") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(prop = indice,
              prop_low = indice_low,
              prop_upp = indice_upp)
   }
   if (type == "median") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(median = indice,
              median_low = indice_low,
              median_upp = indice_upp)
   }
   if (type == "mean") {
-    tab <- tab %>%
+    tab <- tab |>
       rename(mean = indice,
              mean_low = indice_low,
              mean_upp = indice_upp)

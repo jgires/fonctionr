@@ -116,13 +116,13 @@ make_surface <- function(tab,
   # 2. PROCESSING DES DONNEES --------------------
 
   # On enleve le total
-  tab <- tab %>%
+  tab <- tab |>
     filter(
       {{ var }} != name_total
     )
 
   # On convertit la variable categorielle en facteur si pas facteur
-  tab <- tab %>%
+  tab <- tab |>
     mutate(
       "{{ var }}" := droplevels(as.factor({{ var }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs
     )
@@ -130,33 +130,33 @@ make_surface <- function(tab,
   # On reordonne si reorder == T
   # Si pas de facets
   if (reorder == T & quo_is_null(quo_facet)) {
-    tab <- tab %>%
+    tab <- tab |>
       mutate(
         "{{ var }}" := forcats::fct_reorder({{ var }}, {{ value }}) # Necessaire pour que la palette soit ordonnee comme l'ordre cree par arrange()
-      ) %>%
+      ) |>
       arrange({{ value }}) # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
   }
 
   # Si facets
   if (reorder == T & !quo_is_null(quo_facet)) {
-    tab <- tab %>%
-      group_by({{ var}}) %>%
+    tab <- tab |>
+      group_by({{ var}}) |>
       mutate(
         the_medians = median({{ value }}, na.rm = TRUE) # On calcule la mediane par groupe (entre les facettes) => utilise pour la palette
-        ) %>%
+        ) |>
       # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
       # On ordonne par valeur => ordre different par facette, c'est voulu !
-      arrange({{ facet }}, {{ value }}) %>%
+      arrange({{ facet }}, {{ value }}) |>
       ungroup()
 
     # Pour creer un ordre de couleurs pour {{ var }}
-    tab_levels <- tab %>%
-      distinct({{ var }}, the_medians) %>% # On cree un ordre selon la mediane par groupe => utile pour avoir un ordre de palette coherent
-      arrange(the_medians) %>%
+    tab_levels <- tab |>
+      distinct({{ var }}, the_medians) |> # On cree un ordre selon la mediane par groupe => utile pour avoir un ordre de palette coherent
+      arrange(the_medians) |>
       select(order = 1)
 
     # On reordonne le facteur selon la mediane en introduisant le vecteur cree ci-dessus
-    tab <- tab %>%
+    tab <- tab |>
       mutate(
         "{{ var }}" := factor({{ var }}, levels = tab_levels$order)
       )
@@ -165,7 +165,7 @@ make_surface <- function(tab,
 
   # Si CI pas affiches (ou affiches mais variables pas indiquees)
   if (show_ci == F | (show_ci == T & (quo_is_null(quo_low) | quo_is_null(quo_up)))) {
-    tab <- tab %>%
+    tab <- tab |>
       mutate(
         indice_sqrt = sqrt({{ value }}) # La valeur a la racine carree (car la valeur en surface = racine carree X racine carree)
       )
@@ -173,7 +173,7 @@ make_surface <- function(tab,
 
   # Si CI affiches ET variables indiquees
   if (show_ci == T & !quo_is_null(quo_low) & !quo_is_null(quo_up)) {
-    tab <- tab %>%
+    tab <- tab |>
       mutate(
         indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont actives, la base du calcul des coordonnees = l'intervalle de confiance superieur, car il dessine les plus grandes surfaces
       )
@@ -200,7 +200,7 @@ make_surface <- function(tab,
   for(i in facet_vec){
 
     if (!quo_is_null(quo_facet)) {
-      temp <- tab %>%
+      temp <- tab |>
         filter({{facet}} == i) # On filtre pour la facet i (et on fait comme ca chaque facet)
     }
     if (quo_is_null(quo_facet)) {
@@ -211,7 +211,7 @@ make_surface <- function(tab,
     temp$xmin <- NA
     temp$xmax <- NA
     temp$xmin[1] <- 0
-    temp <- temp %>% tibble::add_row() # On ajoute une ligne
+    temp <- temp |> tibble::add_row() # On ajoute une ligne
 
     for (i in seq_along(utils::head(temp, -1)[[deparse(substitute(var))]])) {
       temp$xmin[i + 1] <- temp$xmin[i] + temp$indice_sqrt[i] # On calcule les coord xmin et xmax de chaque surface, sur base de indice_sqrt
@@ -221,7 +221,7 @@ make_surface <- function(tab,
     }
     temp <- utils::head(temp, -1) # On supprime la ligne ajoutee
     temp$xmean <- (temp$xmin + temp$xmax) / 2 # On calcule la valeur centrale en faisant la moyenne de xmin et xmax
-    temp <- temp %>%
+    temp <- temp |>
       mutate(compare = sqrt(min({{ value }})),  # On calcule le min (pour la comparaison graphique) => automatiquement fait PAR FACET si facet = non-NULL
       row_num = row_number() - 1) # On determine le numero de la ligne - 1 (pour la justification des facettes ci-dessous)
 
@@ -232,15 +232,15 @@ make_surface <- function(tab,
   # On aligne les facets => Justification de chaque ligne
   if (!quo_is_null(quo_facet)) {
     xmax_facet <- max(tab$xmax) # la valeur max de la facet => definit la largeur max et donc la justification necessaire des autres facets
-    tab <- tab %>%
-      group_by({{facet}}) %>%
+    tab <- tab |>
+      group_by({{facet}}) |>
       mutate(diff = abs(max(xmax) - xmax_facet), # On calcule l'ecart entre la facet max et la facet actuelle
              incr_unit = diff / sum(row_num), # On calcule une incrementation minimale
              row_coef = row_num * (sum(row_num) / max(row_num)), # On calcule un coefficient pour que coef X incrementation augmente progressivement par groupe pour arriver a diff
              xmin = xmin + (incr_unit*row_coef), # On recalcule xmin, xmax et xmean
              xmax = xmax + (incr_unit*row_coef),
              xmean = (xmin + xmax) / 2
-      ) %>%
+      ) |>
       ungroup()
   }
 
@@ -274,7 +274,7 @@ make_surface <- function(tab,
   # On charge les polices
   load_and_active_fonts()
 
-  graph <- tab %>%
+  graph <- tab |>
     ggplot(
       aes(
         color = {{ var }}
