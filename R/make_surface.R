@@ -19,6 +19,7 @@
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param bg Color of the background.
+#' @param ratio Aspect ratio of the surfaces.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_lab Number of characters before going to the line for the labels of the categories of var. Default is 20.
 #' @param title Title of the graphic.
@@ -50,6 +51,7 @@ make_surface <- function(tab,
                          pal = "Kandinsky",
                          direction = 1,
                          bg = "snow2",
+                         ratio = 3/2,
                          font = "Roboto",
                          wrap_width_lab = 20,
                          title = NULL,
@@ -92,6 +94,7 @@ make_surface <- function(tab,
       space = space,
       digits = digits,
       direction = direction,
+      ratio = ratio,
       wrap_width_lab = wrap_width_lab
     ),
     type = "numeric"
@@ -286,7 +289,7 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom") indice_sqrt / 2,
+        } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
@@ -305,7 +308,7 @@ make_surface <- function(tab,
           } else if (position == "bottom" & show_ci == F) xmin + (compare/2),
           y = if (position == "mid") {
             0
-          } else if (position == "bottom" & show_ci == T) { compare / 2 + (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+          } else if (position == "bottom" & show_ci == T) { compare / 2
           } else if (position == "bottom" & show_ci == F) compare / 2,
           width = compare,
           height = compare
@@ -322,7 +325,7 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom") indice_sqrt / 2,
+        } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
@@ -345,7 +348,7 @@ make_surface <- function(tab,
       title = title,
       subtitle = subtitle
     ) +
-    coord_fixed(ratio = 1)
+    coord_fixed(ratio = ratio)
 
   # Pour caption
 
@@ -399,7 +402,7 @@ make_surface <- function(tab,
           x = xmean,
           y = if (position == "mid") {
             0
-          } else if (position == "bottom") indice_sqrt / 2,
+          } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
           width = indice_sqrt,
           height = indice_sqrt
         ),
@@ -413,7 +416,7 @@ make_surface <- function(tab,
           x = xmean,
           y = if (position == "mid") {
             0
-          } else if (position == "bottom") indice_sqrt / 2,
+          } else if (position == "bottom") indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2,
           width = sqrt({{ error_low }}),
           height = sqrt({{ error_low }})
         ),
