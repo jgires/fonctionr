@@ -178,14 +178,6 @@ prop_group <- function(data,
   quo_facet <- enquo(facet)
   quo_filter <- enquo(filter_exp)
 
-  # On definit la palette si group.fill ou non
-  if(quo_is_null(quo_group.fill) & is.null(pal)){
-    pal <- "deepskyblue3"
-  }
-  if(!quo_is_null(quo_group.fill) & is.null(pal)){
-    pal <- "Koons"
-  }
-
   # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
   # On cree un vecteur string qui contient toutes les variables entrees
   # Solution trouvee ici : https://stackoverflow.com/questions/63727729/r-how-to-extract-object-names-from-expression
@@ -433,12 +425,14 @@ prop_group <- function(data,
   # La palette est differente selon qu'il y a group.fill (1 couleur) ou non (1 palette)
   if(quo_is_null(quo_group.fill)) {
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
-    if(all(isColor(pal)) == TRUE){
+    if(!is.null(pal) & all(isColor(pal)) == TRUE){
       palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-    } else { # Si la couleur n'est pas valide => on met la couleur par defaut
+    } else { # Si pal est NULL ou la couleur n'est pas valide => on met la couleur par defaut
+      if(!is.null(pal) & all(isColor(pal)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
+        warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+      }
       pal <- "deepskyblue3" # Alors pal == "deepskyblue3"
       palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-      warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
     }
     # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
     if(total == FALSE) {
@@ -448,23 +442,23 @@ prop_group <- function(data,
 
   if(!quo_is_null(quo_group.fill)) {
     # On cree la palette avec le package MetBrewer
-    if(pal %in% names(MetBrewer::MetPalettes)){
+    if(!is.null(pal) & pal %in% names(MetBrewer::MetPalettes)){
       palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec le package MoMAColors
-    } else if(pal %in% names(MoMAColors::MoMAPalettes)){
+    } else if(!is.null(pal) & pal %in% names(MoMAColors::MoMAPalettes)){
       palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avecle package PrettyCols
-    } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+    } else if(!is.null(pal) & pal %in% names(PrettyCols::PrettyColsPalettes)){
       palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec la fonction interne official_pal()
-    } else if(pal %in% official_pal(list_pal_names = T)){
+    } else if(!is.null(pal) & pal %in% official_pal(list_pal_names = T)){
       palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), direction = direction))
 
     } else {
-      palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
+      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
       warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
     }
   }

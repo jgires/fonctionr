@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.7
+
+Date : 2024-08-04
+
+-   Modifications substancielles pour `central_group()` : ajout de la possibilité de faire des sous-groupes (argument `group.fill`) par groupe.
+
+-   Ajout de la possibilité dans `central_group()` de ne pas calculer le total.
+
 ## fonctionr 0.3.6
 
 Date : 2024-07-20
@@ -190,8 +198,6 @@ Date : 2024-02-14
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   Changer tous les `%>%` en `|>`.
-
 -   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
 
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
@@ -234,19 +240,23 @@ Date : 2024-02-14
 
 -   Un peu cleaner le script : il y a des étapes inutiles qui pourraient être simplifiées, notamment dans la création des valeurs centrales.
 
+-   Ajouter la possibilité d'un total.
+
 #### central_group
 
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
--   Ajouter une option de suppression du total.
--   Créer une option `group.fill` (comme dans `prop_group()`).
 
 #### distrib_group_d
 
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
+-   Ajouter un total ? Il faudrait une autre couleur, sinon pas clair.
 
 #### many_val_group
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
+-   Ajouter la possibilité d'un total.
+-   **Fusionner `many_val_group()` et `many_val()` !\
+    =\> + Ajouter la possibilité de group.fill pour les deux**
 
 #### make_surface
 
@@ -281,9 +291,6 @@ Date : 2024-02-14
 -   Ajouter les n par "cellule" ?
 
 -   Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-
--   Ajouter un total ? Il faudrait une autre couleur, sinon pas clair =\> comment faire vu qu'il y a la palette de couleur des modalités ?\
-    *=\> Tentative en cours d'utiliser des hachures.*
 
 -   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
 
