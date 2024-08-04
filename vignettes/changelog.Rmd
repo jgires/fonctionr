@@ -260,6 +260,8 @@ Date : 2024-02-14
 
 #### make_surface
 
+-   Ajouter la détection automatique des IC (possible si les colonnes sont du même nom que la valeur, mais terminant par `_low` et `_upp`).
+
 -   Ajouter les checks (penser le cas spécifique de `pvalue`).
 
 -   Lorsque facet, mieux penser l'alignement entre mêmes modalités ?

@@ -23,6 +23,7 @@ make_surface(
   pal = "Kandinsky",
   direction = 1,
   bg = "snow2",
+  ratio = 3/2,
   font = "Roboto",
   wrap_width_lab = 20,
   title = NULL,
@@ -66,6 +67,8 @@ make_surface(
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
 \item{bg}{Color of the background.}
+
+\item{ratio}{Aspect ratio of the surfaces.}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 

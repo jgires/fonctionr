@@ -11,6 +11,7 @@ central_group(
   group,
   quanti_exp,
   type,
+  group.fill = NULL,
   facet = NULL,
   filter_exp = NULL,
   ...,
@@ -21,18 +22,23 @@ central_group(
   show_n = FALSE,
   show_value = TRUE,
   show_lab = TRUE,
+  total = TRUE,
   total_name = "Total",
   digits = 0,
   unit = "",
   dec = ",",
-  fill = NULL,
+  pal = NULL,
+  direction = 1,
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
+  wrap_width_leg = 25,
+  legend_ncol = 4,
   title = NULL,
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
+  legend_lab = NULL,
   caption = NULL,
   export_path = NULL
 )
@@ -49,6 +55,8 @@ mean_group(..., type = "mean")
 \item{quanti_exp}{An expression that define the variable from which the mean/median is computed.}
 
 \item{type}{"mean" to compute mean by group ; "median" to compute median by group.}
+
+\item{group.fill}{A variable defining a second variable of groups to be compared.}
 
 \item{facet}{A variable defining the faceting group.}
 
@@ -70,6 +78,8 @@ mean_group(..., type = "mean")
 
 \item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
 \item{total_name}{Name of the total bar on the graphic. Default is Total.}
 
 \item{digits}{Numbers of digits showed on the value labels on the graphic. Default is 0.}
@@ -78,13 +88,19 @@ mean_group(..., type = "mean")
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+\item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
+
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
 \item{dodge}{Width of the bar, between 0 and 1.Default is 0.9.}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25.}
+
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories of group.fill. Default is 25.}
+
+\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 
@@ -93,6 +109,8 @@ mean_group(..., type = "mean")
 \item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".}
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
+
+\item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
 
