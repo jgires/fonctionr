@@ -17,7 +17,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit The unit showd on the plot. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param fill Colour of the bars.
+#' @param pal Colour of the bars.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line. Applies to the labels var. Default is 25.
@@ -51,7 +51,7 @@ esth_graph <- function(tab,
                        digits = 2,
                        unit = "",
                        dec = ",",
-                       fill = "indianred4",
+                       pal = "indianred4",
                        dodge = 0.9,
                        font ="Roboto",
                        wrap_width_y = 25,
@@ -88,7 +88,7 @@ esth_graph <- function(tab,
       name_total = name_total,
       unit = unit,
       dec = dec,
-      fill = fill,
+      pal = pal,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -138,9 +138,9 @@ esth_graph <- function(tab,
   # Petit truc dans le cas ou il y a un total
   if (!is.null(name_total)) { total_add <- 1 } else { total_add <- 0 }
 
-  if(all(isColor(fill)) == TRUE){
-    # Avec le total au debut (en gris fonce) puis x fois le fill selon le nombre de levels - total_add (1 s'il y a un total, le total etant deja un niveau, sinon 0)
-    palette <- c(rep(fill, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
+  if(all(isColor(pal)) == TRUE){
+    # Avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - total_add (1 s'il y a un total, le total etant deja un niveau, sinon 0)
+    palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
   } else {
     palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
     warning("La couleur indiquee dans pal n'existe pas : la palette par defaut est utilisee")
