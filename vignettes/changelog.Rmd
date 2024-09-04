@@ -210,6 +210,8 @@ Date : 2024-02-14
 
 #### En général
 
+-   **GROS BUG : si une variable de design == le nom d'un objet externe, ça fonctionne !!! =\> APPROFONDIR ET REGLER CA !**
+
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
 -   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
