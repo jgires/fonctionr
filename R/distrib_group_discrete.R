@@ -13,7 +13,7 @@
 #' @param na.rm.var TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with the NA value for the discrete variable. Default is TRUE.
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
-#' @param show_lab TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is no unit.
@@ -81,7 +81,7 @@ distrib_group_discrete <- function(data,
                                    na.rm.var = T,
                                    prop_method = "beta",
                                    show_value = TRUE,
-                                   show_lab = TRUE,
+                                   show_labs = TRUE,
                                    scale = 100,
                                    digits = 0,
                                    unit = "",
@@ -139,7 +139,7 @@ distrib_group_discrete <- function(data,
       na.rm.facet = na.rm.facet,
       na.rm.var = na.rm.var,
       show_value = show_value,
-      show_lab = show_lab
+      show_labs = show_labs
     ),
     type = "logical"
   )
@@ -440,7 +440,7 @@ distrib_group_discrete <- function(data,
   }
 
   # Ajouter les axes
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -476,8 +476,8 @@ distrib_group_discrete <- function(data,
     }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL,

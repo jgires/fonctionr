@@ -15,7 +15,7 @@
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each modality of quali_var. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.
-#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
@@ -80,7 +80,7 @@ distrib_discrete <- function(data,
                              show_ci = TRUE,
                              show_n = FALSE,
                              show_value = TRUE,
-                             show_lab = TRUE,
+                             show_labs = TRUE,
                              scale = 100,
                              digits = 0,
                              unit = "%",
@@ -126,7 +126,7 @@ distrib_discrete <- function(data,
       na.rm.facet = na.rm.facet,
       na.rm.var = na.rm.var,
       show_n = show_n,
-      show_lab = show_lab,
+      show_labs = show_labs,
       show_value = show_value,
       reorder = reorder,
       show_ci = show_ci
@@ -365,7 +365,7 @@ distrib_discrete <- function(data,
          )
 
   # Ajouter les axes au besoin
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -393,8 +393,8 @@ distrib_discrete <- function(data,
     }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)

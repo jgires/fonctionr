@@ -16,7 +16,7 @@
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
@@ -82,7 +82,7 @@ many_val = function(data,
                     show_ci = T,
                     show_n = FALSE,
                     show_value = TRUE,
-                    show_lab = TRUE,
+                    show_labs = TRUE,
                     scale = NULL,
                     digits = 0,
                     unit = NULL,
@@ -141,7 +141,7 @@ many_val = function(data,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_lab = show_lab
+      show_labs = show_labs
     ),
     type = "logical"
   )
@@ -420,7 +420,7 @@ many_val = function(data,
     coord_flip()
 
   # Ajouter les axes
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
       # X ---
       if(any(is.null(xlab), xlab != "")){
         graph <- graph +
@@ -450,8 +450,8 @@ many_val = function(data,
       }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)

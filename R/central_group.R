@@ -18,7 +18,7 @@
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
-#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
@@ -84,7 +84,7 @@ central_group <- function(data,
                           show_ci = T,
                           show_n = FALSE,
                           show_value = TRUE,
-                          show_lab = TRUE,
+                          show_labs = TRUE,
                           total = TRUE,
                           total_name = "Total",
                           digits = 0,
@@ -143,7 +143,7 @@ central_group <- function(data,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_lab = show_lab,
+      show_labs = show_labs,
       total = total
     ),
     type = "logical"
@@ -584,7 +584,7 @@ central_group <- function(data,
   }
 
   # Ajouter les axes
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       if (type == "mean") {
@@ -628,8 +628,8 @@ central_group <- function(data,
     }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)

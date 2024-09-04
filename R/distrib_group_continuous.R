@@ -29,7 +29,7 @@
 #' @param show_moustache TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
-#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ",".
@@ -82,7 +82,7 @@ distrib_group_continuous <- function(data,
                                show_moustache = TRUE,
                                show_n = FALSE,
                                show_value = TRUE,
-                               show_lab = TRUE,
+                               show_labs = TRUE,
                                digits = 0,
                                unit = "",
                                dec = ",",
@@ -143,7 +143,7 @@ distrib_group_continuous <- function(data,
       show_quant_lines = show_quant_lines,
       show_moustache = show_moustache,
       show_value = show_value,
-      show_lab = show_lab
+      show_labs = show_labs
     ),
     type = "logical"
   )
@@ -892,7 +892,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les axes
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -922,8 +922,8 @@ distrib_group_continuous <- function(data,
     }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL)

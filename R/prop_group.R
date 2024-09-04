@@ -17,7 +17,7 @@
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param total_name Name of the total shown on the graphic. Default is "Total".
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
@@ -90,7 +90,7 @@ prop_group <- function(data,
                        show_ci = T,
                        show_n = FALSE,
                        show_value = TRUE,
-                       show_lab = TRUE,
+                       show_labs = TRUE,
                        total = TRUE,
                        total_name = "Total",
                        scale = 100,
@@ -150,7 +150,7 @@ prop_group <- function(data,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_lab = show_lab,
+      show_labs = show_labs,
       total = total
     ),
     type = "logical"
@@ -598,7 +598,7 @@ prop_group <- function(data,
   }
 
   # Ajouter les axes
-  if(show_lab == TRUE){
+  if(show_labs == TRUE){
     # X ---
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
@@ -634,8 +634,8 @@ prop_group <- function(data,
     }
   }
 
-  # Masquer les axes si show_lab == FALSE
-  if(show_lab == FALSE){
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE){
     graph <- graph +
       labs(x = NULL,
            y = NULL,
