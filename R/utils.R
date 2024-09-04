@@ -429,12 +429,13 @@ official_pal <- function(inst,
 #'
 #' @examples
 #'
-theme_fonctionr <- function(font = "Roboto") {
+theme_fonctionr <- function(font = "Roboto",
+                            theme = "fonctionr") {
 
   load_and_active_fonts()
 
-  theme <- theme_minimal() +
-  theme(
+  theme_fonctionr_def <- theme_minimal() +
+    theme(
     panel.grid.minor.y = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_blank(),
@@ -450,6 +451,12 @@ theme_fonctionr <- function(font = "Roboto") {
       color = "grey30"
     )
   )
+  if(theme == "IWEPS"){
+    theme_fonctionr_def<-theme_fonctionr_def+theme(
+      axis.line.y = element_line(color = "black"),
+      axis.ticks.y = element_line(color = "black")
+    )
+  }
 
-  return(theme)
+  return(theme_fonctionr_def)
 }

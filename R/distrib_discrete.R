@@ -29,6 +29,7 @@
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Distribution (total : 100 percent)". To show no X label, use xlab = "".
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".
 #' @param caption Caption in the graphic.
+#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -93,6 +94,7 @@ distrib_discrete <- function(data,
                              xlab = NULL,
                              ylab = NULL,
                              caption = NULL,
+                             theme = "fonctionr"
                              export_path = NULL) {
 
 
@@ -349,7 +351,8 @@ distrib_discrete <- function(data,
       labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
       limits = levels
       ) +
-    theme_fonctionr(font = font) +
+    theme_fonctionr(font = font,
+                    theme = theme) +
     theme(
       legend.position = "none"
     ) +

@@ -37,6 +37,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
+#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -102,6 +103,7 @@ central_group <- function(data,
                           ylab = NULL,
                           legend_lab = NULL,
                           caption = NULL,
+                          theme = "fonctionr",
                           export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -525,7 +527,8 @@ central_group <- function(data,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_fonctionr(font = font) +
+    theme_fonctionr(font = font,
+                    theme = theme) +
     theme(
       legend.position = if (quo_is_null(quo_group.fill)) "none" else "bottom"
     ) +

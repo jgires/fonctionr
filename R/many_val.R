@@ -31,6 +31,7 @@
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param caption Caption of the graphic.
+#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table and a graphic
@@ -96,6 +97,7 @@ many_val = function(data,
                     xlab = NULL,
                     ylab = NULL,
                     caption = NULL,
+                    theme = "fonctionr",
                     export_path = NULL){
 
 
@@ -401,7 +403,8 @@ many_val = function(data,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_fonctionr(font = font) +
+    theme_fonctionr(font = font,
+                    theme = theme) +
     scale_fill_manual(
       values = palette
     ) +
