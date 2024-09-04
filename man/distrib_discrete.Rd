@@ -19,12 +19,12 @@ distrib_discrete(
   show_ci = TRUE,
   show_n = FALSE,
   show_value = TRUE,
-  show_lab = TRUE,
+  show_labs = TRUE,
   scale = 100,
   digits = 0,
   unit = "\%",
   dec = ",",
-  fill = "sienna2",
+  pal = "sienna2",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -33,6 +33,7 @@ distrib_discrete(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
+  theme = "fonctionr",
   export_path = NULL
 )
 
@@ -65,7 +66,7 @@ distrib_d(...)
 
 \item{show_value}{TRUE if you want to show the proportion of each category on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.}
 
-\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
@@ -75,7 +76,7 @@ distrib_d(...)
 
 \item{dec}{Decimal mark shown on the graphic. Default is ",".}
 
-\item{fill}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+\item{pal}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
 
 \item{dodge}{Width of the bar, between 0 and 1. Default is 0.9.}
 
@@ -92,6 +93,8 @@ distrib_d(...)
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".}
 
 \item{caption}{Caption in the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).}
 }

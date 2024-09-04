@@ -14,6 +14,8 @@
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
+#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
+#' @param total_name Name of the total shown on the graphic. Default is "Total".
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is no unit.
@@ -82,6 +84,8 @@ distrib_group_discrete <- function(data,
                                    prop_method = "beta",
                                    show_value = TRUE,
                                    show_labs = TRUE,
+                                   total = TRUE,
+                                   total_name = "Total",
                                    scale = 100,
                                    digits = 0,
                                    unit = "",
@@ -231,6 +235,10 @@ distrib_group_discrete <- function(data,
       "{{ quali_var }}" := droplevels(as.factor({{ quali_var }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
       "{{ group }}" := droplevels(as.factor({{ group }}))
     )
+
+  # On enregistre les labels originaux si total = T
+  levels_origin_group <- levels(data_W$variables[[deparse(substitute(group))]])
+
   # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
     data_W <- data_W |>
@@ -317,13 +325,48 @@ distrib_group_discrete <- function(data,
     data_W <- data_W |>
       group_by({{ facet }}, {{ group }}, {{ quali_var }})
   }
-  tab <- data_W |>
-    summarise(
-      prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
-      n_sample = unweighted(n()),
-      n_weighted = survey_total(vartype = c("ci"))
-    ) |>
-    ungroup()
+
+  if(total == FALSE) {
+    tab <- data_W |>
+      summarise(
+        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = c("ci"))
+      ) |>
+      ungroup()
+  }
+  if(total == TRUE) {
+    tab <- data_W |>
+      summarise(
+        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = c("ci"))
+      ) |>
+      ungroup()
+
+    # On calcule les frequences relatives totales
+    if (quo_is_null(quo_facet)) { # On refait un grouping mais sans group (=> pour le total)
+      data_W <- data_W |>
+        group_by({{ quali_var }})
+    }
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W |>
+        group_by({{ facet }}, {{ quali_var }})
+    }
+
+    tab_tot <- data_W |>
+      summarise(
+        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        n_sample = unweighted(n()),
+        n_weighted = survey_total(vartype = c("ci"))
+      ) |>
+      ungroup() |>
+      mutate("{{ group }}" := total_name)
+
+    # On joint les resultats par groupe et pour le total
+    tab <- bind_rows(tab, tab_tot) |>
+      mutate("{{ group }}" := factor({{ group }}, levels = c(levels_origin_group, total_name))) # On recree un facteur avec l'ordre original + total
+  }
 
 
   # 5. CREATION DU GRAPHIQUE --------------------
@@ -351,11 +394,14 @@ distrib_group_discrete <- function(data,
 
   # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
   levels <- c(
+    total_name,
     NA,
     rev(
       levels(
         tab[[deparse(substitute(group))]]
-        )
+      )[levels(
+        tab[[deparse(substitute(group))]]
+      ) != total_name]
     )
   )
 
@@ -363,6 +409,10 @@ distrib_group_discrete <- function(data,
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
+  }
+  # Pour enlever le level "Total" si total == F
+  if(total == FALSE) {
+    levels <- levels[levels != total_name]
   }
 
   # On cree le graphique
@@ -403,6 +453,21 @@ distrib_group_discrete <- function(data,
       subtitle = subtitle
     ) +
     coord_flip()
+
+  # On assombrit la barre du total (si total = T)
+  if(total == TRUE) {
+    graph <- graph +
+      geom_bar(
+        aes(
+          x = {{ group }},
+          y = ifelse({{ group }} == total_name, prop, NA)
+        ),
+        fill = "grey20",
+        alpha = .6,
+        width = dodge,
+        stat = "identity"
+      )
+  }
 
   # Pour caption
 

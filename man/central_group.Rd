@@ -21,7 +21,7 @@ central_group(
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
-  show_lab = TRUE,
+  show_labs = TRUE,
   total = TRUE,
   total_name = "Total",
   digits = 0,
@@ -40,6 +40,7 @@ central_group(
   ylab = NULL,
   legend_lab = NULL,
   caption = NULL,
+  theme = "fonctionr",
   export_path = NULL
 )
 
@@ -76,7 +77,7 @@ mean_group(..., type = "mean")
 
 \item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
-\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
@@ -113,6 +114,8 @@ mean_group(..., type = "mean")
 \item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

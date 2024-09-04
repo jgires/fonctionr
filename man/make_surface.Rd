@@ -27,6 +27,7 @@ make_surface(
   font = "Roboto",
   wrap_width_lab = 20,
   title = NULL,
+  hjust.title = 0,
   subtitle = NULL,
   caption = NULL
 )
@@ -76,11 +77,11 @@ make_surface(
 
 \item{title}{Title of the graphic.}
 
+\item{hjust.title}{Horizontal alignment of title & subtitle.}
+
 \item{subtitle}{Subtitle of the graphic.}
 
 \item{caption}{Caption of the graphic.}
-
-\item{hjust.title}{Horizontal alignment of title & subtitle.}
 }
 \value{
 A ggplot graphic.

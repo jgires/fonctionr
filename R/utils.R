@@ -422,6 +422,7 @@ official_pal <- function(inst,
 #' theme_fonctionr
 #'
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
+#' @param theme The theme you want for the graphic. Available themes: the default theme and “IWEPS”.
 #'
 #' @return
 #' @import ggplot2
@@ -431,28 +432,27 @@ official_pal <- function(inst,
 #'
 theme_fonctionr <- function(font = "Roboto",
                             theme = "fonctionr") {
-
   load_and_active_fonts()
 
   theme_fonctionr_def <- theme_minimal() +
     theme(
-    panel.grid.minor.y = element_blank(),
-    panel.grid.minor.x = element_blank(),
-    panel.grid.major.y = element_blank(),
-    panel.grid.major.x = element_line(color = "#dddddd"),
-    text = element_text(family = font),
-    axis.line.x = element_line(color = "black"),
-    axis.line.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.ticks.x = element_line(color = "black"),
-    axis.text = element_text(color = "black"),
-    plot.margin = margin(10, 15, 10, 10),
-    plot.caption = element_text(
-      color = "grey30"
+      panel.grid.minor.y = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.y = element_blank(),
+      panel.grid.major.x = element_line(color = "#dddddd"),
+      text = element_text(family = font),
+      axis.line.x = element_line(color = "black"),
+      axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.ticks.x = element_line(color = "black"),
+      axis.text = element_text(color = "black"),
+      plot.margin = margin(10, 15, 10, 10),
+      plot.caption = element_text(
+        color = "grey30"
+      )
     )
-  )
-  if(theme == "IWEPS"){
-    theme_fonctionr_def<-theme_fonctionr_def+theme(
+  if (theme == "IWEPS") {
+    theme_fonctionr_def <- theme_fonctionr_def + theme(
       axis.line.y = element_line(color = "black"),
       axis.ticks.y = element_line(color = "black")
     )

@@ -22,7 +22,7 @@ many_val(
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
-  show_lab = TRUE,
+  show_labs = TRUE,
   scale = NULL,
   digits = 0,
   unit = NULL,
@@ -37,6 +37,7 @@ many_val(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
+  theme = "fonctionr",
   export_path = NULL
 )
 
@@ -75,7 +76,7 @@ many_mean(..., type = "mean")
 
 \item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
 
-\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
@@ -104,6 +105,8 @@ many_mean(..., type = "mean")
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
 \item{caption}{Caption of the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }

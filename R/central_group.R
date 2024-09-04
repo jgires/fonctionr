@@ -259,6 +259,9 @@ central_group <- function(data,
       quanti_exp_flattened = {{ quanti_exp }} # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour les tests stat ci-dessous
       )
 
+  # On enregistre les labels originaux pour si total = T
+  levels_origin_group <- levels(data_W$variables[[deparse(substitute(group))]])
+
   # On convertit egalement la variable de group.fill en facteur si facet non-NULL
   if(!quo_is_null(quo_group.fill)){
     data_W <- data_W |>
@@ -370,7 +373,7 @@ central_group <- function(data,
 
   # On calcule l'indicateur par groupe (mean ou median selon la fonction appelee)
   # Si pas de total
-  if(total == FALSE | !quo_is_null(quo_group.fill)) {
+  if(total == FALSE) {
     tab <- data_W |>
       summarise( # pas cascade si total == F
         indice = if (type == "median") {
@@ -382,24 +385,41 @@ central_group <- function(data,
       ungroup()
   }
   # Si total
-  if(total == TRUE & quo_is_null(quo_group.fill)) {
+  if(total == TRUE) {
     tab <- data_W |>
-      cascade(
+      summarise(
         indice = if (type == "median") {
           survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
         } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
-        n_weighted = survey_total(vartype = "ci"),
-        .fill = total_name # Le total
+        n_weighted = survey_total(vartype = "ci")
       ) |>
       ungroup()
 
-    # On supprime la facet qui est le total => pas utile
-    if(!quo_is_null(quo_facet)) {
-      tab <- tab |>
-        filter({{ facet }} != total_name | is.na({{ facet }})) |>
-        mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
+    # On calcule les proportions pour le total
+    if (quo_is_null(quo_facet)) { # On refait un grouping mais sans group (=> pour le total)
+      data_W <- data_W |>
+        group_by({{ group.fill }})
     }
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W |>
+        group_by({{ facet }}, {{ group.fill }})
+    }
+
+    tab_tot <- data_W |>
+      summarise(
+        indice = if (type == "median") {
+          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+        n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
+        n_weighted = survey_total(vartype = "ci")
+      ) |>
+      ungroup() |>
+      mutate("{{ group }}" := total_name)
+
+    # On joint les resultats par groupe et pour le total
+    tab <- bind_rows(tab, tab_tot) |>
+      mutate("{{ group }}" := factor({{ group }}, levels = c(levels_origin_group, total_name))) # On recree un facteur avec l'ordre original + total
   }
 
 
@@ -498,7 +518,7 @@ central_group <- function(data,
   }
 
   # Pour enlever le level "Total" si group.fill (car pas calcule) ou total == F
-  if(!quo_is_null(quo_group.fill) | total == FALSE) {
+  if(total == FALSE) {
     levels <- levels[levels != total_name]
   }
 
@@ -548,6 +568,22 @@ central_group <- function(data,
     ) +
     coord_flip()
 
+  # On assombrit la barre du total (si total = T)
+  if(total == TRUE & !quo_is_null(quo_group.fill)) {
+    graph <- graph +
+      geom_bar(
+        aes(
+          x = {{ group }},
+          y = ifelse({{ group }} == total_name, indice, NA),
+          group = {{ group.fill }}
+        ),
+        fill = "grey10",
+        alpha = .4,
+        width = dodge,
+        stat = "identity",
+        position = "dodge"
+      )
+  }
 
   # Le resultat du test stat => uniquement si non group.fill
   if (quo_is_null(quo_group.fill)) {

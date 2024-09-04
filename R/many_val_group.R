@@ -447,7 +447,7 @@ many_val_group = function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-  # Pour enlever le level "Total" si group.fill (car pas calcule) ou total == F
+  # Pour enlever le level "Total" si total == F
   if(total == FALSE) {
     levels <- levels[levels != total_name]
   }
@@ -512,6 +512,7 @@ many_val_group = function(data,
                                reverse = TRUE)) +
     coord_flip()
 
+  # On assombrit la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
       geom_bar(
@@ -520,8 +521,8 @@ many_val_group = function(data,
           y = ifelse({{ group }} == total_name, indice, NA),
           group = list_col
         ),
-        fill = "black",
-        alpha = .4,
+        fill = "grey30",
+        alpha = .6,
         width = dodge,
         stat = "identity",
         position = position

@@ -20,7 +20,7 @@ esth_graph(
   digits = 2,
   unit = "",
   dec = ",",
-  fill = "indianred4",
+  pal = "indianred4",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -28,7 +28,8 @@ esth_graph(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  caption = NULL
+  caption = NULL,
+  theme = "fonctionr"
 )
 }
 \arguments{
@@ -62,7 +63,7 @@ esth_graph(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{fill}{Colour of the bars.}
+\item{pal}{Colour of the bars.}
 
 \item{dodge}{Width of the bar, between 0 and 1.}
 
@@ -79,6 +80,8 @@ esth_graph(
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.}
 
 \item{caption}{Caption of the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 }
 \value{
 A ggplot graphic.

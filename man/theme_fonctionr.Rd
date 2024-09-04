@@ -4,10 +4,12 @@
 \alias{theme_fonctionr}
 \title{theme_fonctionr}
 \usage{
-theme_fonctionr(font = "Roboto")
+theme_fonctionr(font = "Roboto", theme = "fonctionr")
 }
 \arguments{
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+
+\item{theme}{The theme you want for the graphic. Available themes: the default theme and “IWEPS”.}
 }
 \description{
 theme_fonctionr

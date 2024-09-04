@@ -17,7 +17,9 @@ distrib_group_discrete(
   na.rm.var = T,
   prop_method = "beta",
   show_value = TRUE,
-  show_lab = TRUE,
+  show_labs = TRUE,
+  total = TRUE,
+  total_name = "Total",
   scale = 100,
   digits = 0,
   unit = "",
@@ -35,6 +37,7 @@ distrib_group_discrete(
   ylab = NULL,
   legend_lab = NULL,
   caption = NULL,
+  theme = "fonctionr",
   export_path = NULL
 )
 
@@ -63,7 +66,11 @@ distrib_group_d(...)
 
 \item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.}
 
-\item{show_lab}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
+
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
+\item{total_name}{Name of the total shown on the graphic. Default is "Total".}
 
 \item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
 
@@ -98,6 +105,8 @@ distrib_group_d(...)
 \item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be quali_var. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

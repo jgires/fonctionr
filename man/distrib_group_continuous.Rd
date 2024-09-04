@@ -31,7 +31,7 @@ distrib_group_continuous(
   show_moustache = TRUE,
   show_n = FALSE,
   show_value = TRUE,
-  show_lab = TRUE,
+  show_labs = TRUE,
   digits = 0,
   unit = "",
   dec = ",",
@@ -46,6 +46,7 @@ distrib_group_continuous(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
+  theme = "fonctionr",
   export_path = NULL
 )
 
@@ -102,7 +103,7 @@ distrib_group_c(...)
 
 \item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
-\item{show_lab}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
 
 \item{digits}{Numbers of digits showed on the value labels on the graphic. Default is 0.}
 
@@ -131,6 +132,8 @@ distrib_group_c(...)
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
 
 \item{caption}{Caption of the graphic.}
+
+\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

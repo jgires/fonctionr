@@ -18,6 +18,20 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.8
+
+Date : 2024-09-04
+
+-   Ajout du calcul de totaux pour `central_group()` et `prop_group()` avec les `group.fill` activés.
+
+-   Ajout du calcul de totaux pour `distrib_group_d` et `many_val_group()`.
+
+-   Ajout d'un theme "IWEPS" pour les graphiques.
+
+-   L'argument `show_lab` devient `show_labs` (avec un s) pour toutes les fonctions.
+
+-   L'argument de couleur `fill` devient `pal` pour toutes les fonctions (par cohérence).
+
 ## fonctionr 0.3.7
 
 Date : 2024-08-04

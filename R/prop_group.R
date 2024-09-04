@@ -296,6 +296,9 @@ prop_group <- function(data,
       )
   }
 
+  # On enregistre les labels originaux pour si total = T
+  levels_origin_group <- levels(data_W$variables[[deparse(substitute(group))]])
+
   # On convertit egalement la variable de group.fill en facteur si facet non-NULL
   if(!quo_is_null(quo_group.fill)){
     data_W <- data_W |>
@@ -391,7 +394,7 @@ prop_group <- function(data,
 
   # On calcule les proportions par groupe
   # Si pas de total
-  if(total == FALSE | !quo_is_null(quo_group.fill)) {
+  if(total == FALSE) {
     tab <- data_W |>
       summarise( # pas cascade si total == F
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
@@ -402,23 +405,39 @@ prop_group <- function(data,
       ungroup()
   }
   # Si total
-  if(total == TRUE & quo_is_null(quo_group.fill)) {
+  if(total == TRUE) {
     tab <- data_W |>
-      cascade(
+      summarise(
         prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
         n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
-        n_tot_weighted = survey_total(vartype = "ci"),
-        .fill = total_name # Le total = colonne "Total"
+        n_tot_weighted = survey_total(vartype = "ci")
       ) |>
       ungroup()
 
-    # On supprime la facet qui est le total => pas utile
-    if(!quo_is_null(quo_facet)) {
-      tab <- tab |>
-        filter({{ facet }} != total_name | is.na({{ facet }})) |>
-        mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
+    # On calcule les proportions pour le total
+    if (quo_is_null(quo_facet)) { # On refait un grouping mais sans group (=> pour le total)
+      data_W <- data_W |>
+        group_by({{ group.fill }})
     }
+    if (!quo_is_null(quo_facet)) {
+      data_W <- data_W |>
+        group_by({{ facet }}, {{ group.fill }})
+    }
+
+    tab_tot <- data_W |>
+      summarise(
+        prop = survey_mean(fonctionr_express_bin, na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+        n_sample = unweighted(n()), # On peut faire n(), car avec na.prop == "rm", les NA ont ete supprimes partout dans l'expression et avec "include", ils ont ete transformes en 0 => plus de NA
+        n_true_weighted = survey_total({{ prop_exp }}, na.rm = T, vartype = "ci"),
+        n_tot_weighted = survey_total(vartype = "ci")
+      ) |>
+      ungroup() |>
+      mutate("{{ group }}" := total_name)
+
+    # On joint les resultats par groupe et pour le total
+    tab <- bind_rows(tab, tab_tot) |>
+      mutate("{{ group }}" := factor({{ group }}, levels = c(levels_origin_group, total_name))) # On recree un facteur avec l'ordre original + total
   }
 
 
@@ -509,8 +528,8 @@ prop_group <- function(data,
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
   }
-  # Pour enlever le level "Total" si group.fill (car pas calcule) ou total == F
-  if(!quo_is_null(quo_group.fill) | total == FALSE) {
+  # Pour enlever le level "Total" si total == F
+  if(total == FALSE) {
     levels <- levels[levels != total_name]
   }
 
@@ -558,6 +577,23 @@ prop_group <- function(data,
       subtitle = subtitle
     ) +
     coord_flip()
+
+  # On assombrit la barre du total (si total = T)
+  if(total == TRUE & !quo_is_null(quo_group.fill)) {
+    graph <- graph +
+      geom_bar(
+        aes(
+          x = {{ group }},
+          y = ifelse({{ group }} == total_name, prop, NA),
+          group = {{ group.fill }}
+        ),
+        fill = "grey10",
+        alpha = .4,
+        width = dodge,
+        stat = "identity",
+        position = "dodge"
+      )
+  }
 
   # Le resultat du test stat => uniquement si non group.fill
   if (quo_is_null(quo_group.fill)) {
