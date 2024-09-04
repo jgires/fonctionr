@@ -288,7 +288,8 @@ Date : 2024-02-14
 
 -   Ajouter le check pour l'argument `pvalue`.
 
--   Régler le pb si multiples `NA` + voir si un pb se pose avec multiples totaux.
+-   Régler le pb si multiples `NA` + voir si un pb se pose avec multiples totaux.\
+    =\> BUG : la condition stoppe si multiples `NAs` avec facettes même si 1 seul `NA` par facette (condition trop stricte =\> ça doit passer)
 
 ### Améliorations
 
