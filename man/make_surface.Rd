@@ -79,6 +79,8 @@ make_surface(
 \item{subtitle}{Subtitle of the graphic.}
 
 \item{caption}{Caption of the graphic.}
+
+\item{hjust.title}{Horizontal alignment of title & subtitle.}
 }
 \value{
 A ggplot graphic.

@@ -19,6 +19,8 @@
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
 #' @param show_lab TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
+#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
+#' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
@@ -36,6 +38,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param legend_lab Legend (fill) label on the graphic.
 #' @param caption Caption of the graphic.
+#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table and a graphic
@@ -89,6 +92,8 @@ many_val_group = function(data,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_lab = TRUE,
+                          total = TRUE,
+                          total_name = "Total",
                           scale = NULL,
                           digits = 0,
                           unit = NULL,
@@ -106,6 +111,7 @@ many_val_group = function(data,
                           ylab = NULL,
                           legend_lab = NULL,
                           caption = NULL,
+                          theme = "fonctionr",
                           export_path = NULL){
 
 
@@ -275,48 +281,98 @@ many_val_group = function(data,
 
   # 3. CALCUL DES INDICATEURS --------------------
 
-  # Si non facet
-  if (quo_is_null(quo_facet)) {
-    data_W <- data_W |>
-      group_by({{ group }})
-  }
   # Si facet
   if (!quo_is_null(quo_facet)) {
     data_W <- data_W |>
-      group_by({{ facet }}, {{ group }})
+      group_by({{ facet }})
   }
+  # Group (dans tous les cas)
+  data_W <- data_W |>
+    group_by({{ group }}, .add = TRUE)
+
   tab <- tibble()
-  # On calcule les proportions par groupe
-  if(type == "prop"){
-    for(i in vec_list_vars) {
-      tab_i <- data_W |>
-        summarise(
-          list_col = i,
-          indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-          n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
-          n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-        )
 
-      tab <- rbind(tab, tab_i)
+  # Si total
+  if(total == TRUE) {
+
+    # On calcule les proportions par groupe
+    if(type == "prop"){
+      for(i in vec_list_vars) {
+        tab_i <- data_W |>
+          cascade(
+            list_col = i,
+            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+            n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+            n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            .fill = total_name # Le total
+          )
+
+        tab <- rbind(tab, tab_i)
+      }
+    }
+    # On calcule les moyennes/medianes par groupe
+    if(type == "median" | type == "mean"){
+      for(i in vec_list_vars) {
+        tab_i <- data_W |>
+          cascade(
+            list_col = i,
+            indice = if (type == "median") {
+              survey_median(.data[[i]], na.rm = T, vartype = "ci")
+            } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+            n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            .fill = total_name # Le total
+          )
+
+        tab <- rbind(tab, tab_i)
+      }
+    }
+
+    # On supprime la facet qui est le total => pas utile
+    if(!quo_is_null(quo_facet)) {
+      tab <- tab |>
+        filter({{ facet }} != total_name | is.na({{ facet }})) |>
+        mutate("{{ facet }}" := droplevels(as.factor({{ facet }}))) # Pour enlever le level "Total"
     }
   }
-  # On calcule les moyennes/medianes par groupe
-  if(type == "median" | type == "mean"){
-    for(i in vec_list_vars) {
-      tab_i <- data_W |>
-        summarise(
-          list_col = i,
-          indice = if (type == "median") {
-            survey_median(.data[[i]], na.rm = T, vartype = "ci")
-          } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
-          n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-          n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-        )
 
-      tab <- rbind(tab, tab_i)
+  # Si pas total
+  if(total != TRUE) {
+
+    # On calcule les proportions par groupe
+    if(type == "prop"){
+      for(i in vec_list_vars) {
+        tab_i <- data_W |>
+          summarise(
+            list_col = i,
+            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+            n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+            n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+          )
+
+        tab <- rbind(tab, tab_i)
+      }
+    }
+    # On calcule les moyennes/medianes par groupe
+    if(type == "median" | type == "mean"){
+      for(i in vec_list_vars) {
+        tab_i <- data_W |>
+          summarise(
+            list_col = i,
+            indice = if (type == "median") {
+              survey_median(.data[[i]], na.rm = T, vartype = "ci")
+            } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+            n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
+            )
+
+        tab <- rbind(tab, tab_i)
+      }
     }
   }
+
   tab <- tab |>
     ungroup()
 
@@ -375,11 +431,14 @@ many_val_group = function(data,
 
   # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
   levels <- c(
+    total_name,
     NA,
     rev(
       levels(
         tab[[deparse(substitute(group))]]
-      )
+      )[levels(
+        tab[[deparse(substitute(group))]]
+      ) != total_name]
     )
   )
 
@@ -387,6 +446,10 @@ many_val_group = function(data,
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
   if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
     levels <- levels[!is.na(levels)]
+  }
+  # Pour enlever le level "Total" si group.fill (car pas calcule) ou total == F
+  if(total == FALSE) {
+    levels <- levels[levels != total_name]
   }
 
   # On definit le nom de l'indicateur (proportion, mediane ou moyenne) et l'echelle qui seront affichees dans le graphique ggplot
@@ -429,7 +492,8 @@ many_val_group = function(data,
       stat = "identity",
       position = position
     ) +
-    theme_fonctionr(font = font) +
+    theme_fonctionr(font = font,
+                    theme = theme) +
     theme(
       legend.position = "bottom"
     ) +
@@ -447,6 +511,22 @@ many_val_group = function(data,
     guides(fill = guide_legend(ncol = legend_ncol,
                                reverse = TRUE)) +
     coord_flip()
+
+  if(total == TRUE) {
+    graph <- graph +
+      geom_bar(
+        aes(
+          x = {{ group }},
+          y = ifelse({{ group }} == total_name, indice, NA),
+          group = list_col
+        ),
+        fill = "black",
+        alpha = .4,
+        width = dodge,
+        stat = "identity",
+        position = position
+      )
+  }
 
   # Ajouter les axes
   if(show_lab == TRUE){

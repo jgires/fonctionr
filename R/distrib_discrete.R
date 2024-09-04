@@ -94,7 +94,7 @@ distrib_discrete <- function(data,
                              xlab = NULL,
                              ylab = NULL,
                              caption = NULL,
-                             theme = "fonctionr"
+                             theme = "fonctionr",
                              export_path = NULL) {
 
 

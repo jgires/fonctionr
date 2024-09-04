@@ -23,6 +23,7 @@
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_lab Number of characters before going to the line for the labels of the categories of var. Default is 20.
 #' @param title Title of the graphic.
+#' @param hjust.title Horizontal alignment of title & subtitle.
 #' @param subtitle Subtitle of the graphic.
 #' @param caption Caption of the graphic.
 #'
@@ -55,6 +56,7 @@ make_surface <- function(tab,
                          font = "Roboto",
                          wrap_width_lab = 20,
                          title = NULL,
+                         hjust.title = 0,
                          subtitle = NULL,
                          caption = NULL) {
 
@@ -95,7 +97,8 @@ make_surface <- function(tab,
       digits = digits,
       direction = direction,
       ratio = ratio,
-      wrap_width_lab = wrap_width_lab
+      wrap_width_lab = wrap_width_lab,
+      hjust.title = hjust.title
     ),
     type = "numeric"
   )
@@ -246,7 +249,6 @@ make_surface <- function(tab,
       ) |>
       ungroup()
   }
-  print(tab)
 
 
   # 4. CREATION DU GRAPHIQUE --------------------
@@ -342,7 +344,9 @@ make_surface <- function(tab,
       text = element_text(family = font),
       plot.caption = element_text(
         color = "grey30"
-      )
+      ),
+      plot.title = element_text(hjust = hjust.title),
+      plot.subtitle = element_text(hjust = hjust.title)
     ) +
     # guides(fill="none") +
     labs(
@@ -407,10 +411,10 @@ make_surface <- function(tab,
           width = indice_sqrt,
           height = indice_sqrt
         ),
-        alpha = .3,
+        alpha = .1,
         fill = NA,
         linewidth = .5,
-        linetype = "longdash"
+        linetype = "dashed"
       ) +
       geom_tile(
         aes(
@@ -421,10 +425,10 @@ make_surface <- function(tab,
           width = sqrt({{ error_low }}),
           height = sqrt({{ error_low }})
         ),
-        alpha = .3,
+        alpha = .1,
         fill = NA,
         linewidth = .5,
-        linetype = "longdash"
+        linetype = "dashed"
       )
   }
 

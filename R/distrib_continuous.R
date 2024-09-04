@@ -76,7 +76,7 @@ distrib_continuous <- function(data,
                           xlab = NULL,
                           ylab = NULL,
                           caption = NULL,
-                          theme = "fonctionr"
+                          theme = "fonctionr",
                           export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
