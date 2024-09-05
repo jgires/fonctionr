@@ -515,17 +515,25 @@ many_val_group = function(data,
   # On assombrit la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
+      # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +
+      # geom_vline(xintercept = 1.5, linetype = "dotted", color = "grey50", linewidth = .1) +
       geom_bar(
         aes(
           x = {{ group }},
           y = ifelse({{ group }} == total_name, indice, NA),
-          group = list_col
+          group = list_col,
+          color = list_col
         ),
-        fill = "grey30",
-        alpha = .6,
+        fill = "white",
+        linewidth = .8,
+        alpha = .8,
         width = dodge,
         stat = "identity",
         position = position
+      ) +
+      scale_colour_manual(
+        values = palette,
+        guide = "none"
       )
   }
 
