@@ -512,7 +512,7 @@ many_val_group = function(data,
                                reverse = TRUE)) +
     coord_flip()
 
-  # On assombrit la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
       # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +

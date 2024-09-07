@@ -454,18 +454,43 @@ distrib_group_discrete <- function(data,
     ) +
     coord_flip()
 
-  # On assombrit la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
       geom_bar(
         aes(
           x = {{ group }},
-          y = ifelse({{ group }} == total_name, prop, NA)
+          y = ifelse({{ group }} == total_name, prop, NA),
+          color = {{ quali_var }}
         ),
-        fill = "grey20",
-        alpha = .6,
+        fill = "white",
+        linewidth = .8,
+        alpha = .8,
         width = dodge,
-        stat = "identity"
+        stat = "identity",
+        position = position_stack(reverse = TRUE)
+      ) +
+
+      scale_colour_manual(
+        values = palette,
+        guide = "none"
+      ) +
+      geom_text(
+        aes(
+          y = ifelse({{ group }} == total_name, prop, NA),
+          label = ifelse(prop > 0.02,
+                         paste0(stringr::str_replace(round(prop * scale,
+                                                           digits = digits),
+                                                     "[.]",
+                                                     dec),
+                                unit),
+                         NA),
+          family = font),
+        size = 3.5,
+        alpha = .6,
+        color = "black",
+        position = position_stack(vjust = .5,
+                                  reverse = TRUE)
       )
   }
 
@@ -561,6 +586,7 @@ distrib_group_discrete <- function(data,
     graph <- graph +
       geom_text(
         aes(
+          y = ifelse({{ group }} != total_name, prop, NA),
           label = ifelse(prop > 0.02,
                          paste0(stringr::str_replace(round(prop * scale,
                                                            digits = digits),

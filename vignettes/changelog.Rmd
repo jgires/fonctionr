@@ -210,7 +210,7 @@ Date : 2024-02-14
 
 #### En général
 
--   **GROS BUG : si une variable de design == le nom d'un objet externe, ça fonctionne !!! =\> APPROFONDIR ET REGLER CA !**
+-   **BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?**
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
@@ -265,12 +265,10 @@ Date : 2024-02-14
 #### distrib_group_d
 
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
--   Ajouter un total ? Il faudrait une autre couleur, sinon pas clair.
 
 #### many_val_group
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
--   Ajouter la possibilité d'un total.
 -   **Fusionner `many_val_group()` et `many_val()` !\
     =\> + Ajouter la possibilité de group.fill pour les deux**
 

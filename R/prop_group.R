@@ -578,20 +578,25 @@ prop_group <- function(data,
     ) +
     coord_flip()
 
-  # On assombrit la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = T)
   if(total == TRUE & !quo_is_null(quo_group.fill)) {
     graph <- graph +
       geom_bar(
         aes(
           x = {{ group }},
           y = ifelse({{ group }} == total_name, prop, NA),
-          group = {{ group.fill }}
+          color = {{ group.fill }}
         ),
-        fill = "grey10",
-        alpha = .4,
+        fill = "white",
+        linewidth = .8,
+        alpha = .8,
         width = dodge,
         stat = "identity",
         position = "dodge"
+      ) +
+      scale_colour_manual(
+        values = palette,
+        guide = "none"
       )
   }
 
