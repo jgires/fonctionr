@@ -44,7 +44,7 @@ many_val_group(
   ylab = NULL,
   legend_lab = NULL,
   caption = NULL,
-  theme = "fonctionr",
+  theme = NULL,
   export_path = NULL
 )
 

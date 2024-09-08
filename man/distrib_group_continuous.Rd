@@ -46,7 +46,8 @@ distrib_group_continuous(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
-  theme = "fonctionr",
+  lang = "fr",
+  theme = NULL,
   export_path = NULL
 )
 
@@ -132,6 +133,8 @@ distrib_group_c(...)
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
 
 \item{caption}{Caption of the graphic.}
+
+\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
 \item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 

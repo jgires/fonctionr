@@ -111,7 +111,7 @@ many_val_group = function(data,
                           ylab = NULL,
                           legend_lab = NULL,
                           caption = NULL,
-                          theme = "fonctionr",
+                          theme = NULL,
                           export_path = NULL){
 
 
@@ -141,7 +141,8 @@ many_val_group = function(data,
       xlab = xlab,
       ylab = ylab,
       legend_lab = legend_lab,
-      caption = caption
+      caption = caption,
+      theme = theme
     ),
     type = "character"
   )
@@ -512,7 +513,7 @@ many_val_group = function(data,
                                reverse = TRUE)) +
     coord_flip()
 
-  # On assombrit la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
       # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +

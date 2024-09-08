@@ -76,7 +76,7 @@ distrib_continuous <- function(data,
                           xlab = NULL,
                           ylab = NULL,
                           caption = NULL,
-                          theme = "fonctionr",
+                          theme = NULL,
                           export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -98,7 +98,8 @@ distrib_continuous <- function(data,
       subtitle = subtitle,
       xlab = xlab,
       ylab = ylab,
-      caption = caption
+      caption = caption,
+      theme = theme
     ),
     type = "character"
   )

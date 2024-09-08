@@ -33,6 +33,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be quali_var. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
@@ -103,7 +104,8 @@ distrib_group_discrete <- function(data,
                                    ylab = NULL,
                                    legend_lab = NULL,
                                    caption = NULL,
-                                   theme = "fonctionr",
+                                   lang = "fr",
+                                   theme = NULL,
                                    export_path = NULL) {
 
 
@@ -133,6 +135,8 @@ distrib_group_discrete <- function(data,
       ylab = ylab,
       legend_lab = legend_lab,
       caption = caption,
+      lang = lang,
+      theme = theme,
       export_path = export_path
     ),
     type = "character"
@@ -193,6 +197,23 @@ distrib_group_discrete <- function(data,
   # Un check sur quali_var
   if(length(vec_quali_var) != 1){
     stop("quali_var ne doit comprendre qu'une seule variable")
+  }
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
+    lang_khi2_error <- paste0("Khi2 d'ind","\u00e9","pendance : conditions non remplies")
+    lang_distribution <- "Distribution : "
+  }
+  if(lang == "nl"){
+    lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
+    lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
+    lang_distribution <- "Distributie: "
+  }
+  if(lang == "en"){
+    lang_khi2 <- "Chi-square of independence: "
+    lang_khi2_error <- "Chi-square of independence: conditions not met"
+    lang_distribution <- "Distribution: "
   }
 
 
@@ -454,18 +475,43 @@ distrib_group_discrete <- function(data,
     ) +
     coord_flip()
 
-  # On assombrit la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = T)
   if(total == TRUE) {
     graph <- graph +
       geom_bar(
         aes(
           x = {{ group }},
-          y = ifelse({{ group }} == total_name, prop, NA)
+          y = ifelse({{ group }} == total_name, prop, NA),
+          color = {{ quali_var }}
         ),
-        fill = "grey20",
-        alpha = .6,
+        fill = "white",
+        linewidth = .8,
+        alpha = .8,
         width = dodge,
-        stat = "identity"
+        stat = "identity",
+        position = position_stack(reverse = TRUE)
+      ) +
+
+      scale_colour_manual(
+        values = palette,
+        guide = "none"
+      ) +
+      geom_text(
+        aes(
+          y = ifelse({{ group }} == total_name, prop, NA),
+          label = ifelse(prop > 0.02,
+                         paste0(stringr::str_replace(round(prop * scale,
+                                                           digits = digits),
+                                                     "[.]",
+                                                     dec),
+                                unit),
+                         NA),
+          family = font),
+        size = 3.5,
+        alpha = .6,
+        color = "black",
+        position = position_stack(vjust = .5,
+                                  reverse = TRUE)
       )
   }
 
@@ -480,7 +526,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind","\u00e9","pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            lang_khi2, scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )
@@ -489,7 +535,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind","\u00e9","pendance : conditions non remplies",
+            lang_khi2_error,
             caption
           )
         )
@@ -510,7 +556,7 @@ distrib_group_discrete <- function(data,
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
         labs(y = ifelse(is.null(xlab),
-                        paste0("Distribution : ", deparse(substitute(quali_var))),
+                        paste0(lang_distribution, deparse(substitute(quali_var))),
                         xlab))
     }
     if(all(!is.null(xlab), xlab == "")){
@@ -561,6 +607,7 @@ distrib_group_discrete <- function(data,
     graph <- graph +
       geom_text(
         aes(
+          y = ifelse({{ group }} != total_name, prop, NA),
           label = ifelse(prop > 0.02,
                          paste0(stringr::str_replace(round(prop * scale,
                                                            digits = digits),

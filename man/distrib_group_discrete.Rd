@@ -37,7 +37,8 @@ distrib_group_discrete(
   ylab = NULL,
   legend_lab = NULL,
   caption = NULL,
-  theme = "fonctionr",
+  lang = "fr",
+  theme = NULL,
   export_path = NULL
 )
 
@@ -105,6 +106,8 @@ distrib_group_d(...)
 \item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be quali_var. To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
+
+\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
 \item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
 

@@ -97,7 +97,7 @@ many_val = function(data,
                     xlab = NULL,
                     ylab = NULL,
                     caption = NULL,
-                    theme = "fonctionr",
+                    theme = NULL,
                     export_path = NULL){
 
 
@@ -125,7 +125,8 @@ many_val = function(data,
       subtitle = subtitle,
       xlab = xlab,
       ylab = ylab,
-      caption = caption
+      caption = caption,
+      theme = theme
     ),
     type = "character"
   )
