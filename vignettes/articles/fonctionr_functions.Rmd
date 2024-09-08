@@ -772,10 +772,15 @@ distrib_income_2$graph
 
 -   `dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
 
--   Les couleurs des barres peuvent être indiquées dans les arguments `fill` et `pal`.
+-   Les couleurs des barres sont indiquées dans l'argument `pal`.
 
-    -   `fill` est utilisé pour les graphiques monochrome (`central_group()` et ses alias, `distrib_discrete()`<!--# et esth_graph(), mais déplacé dans une autre page -->). Les couleurs de base de R ou un code couleur hexadécimal peuvent être indiqués dans `fill`.
-    -   `pal` est utilisé pour les graphiques qui peuvent présenter plusieurs couleurs. `pal` doit alors généralement prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé.
+Dans les graphiques monochrome, `pal` peut prendre la valeur d'une couleur de base de R ou d'un code couleur hexadécimal. C'est le cas pour `distrib_discrete()`, `prop_group()` et `central_group()` quand il n'y a pas d'argument `group.fill`.
+
+PALLETTE DE COULEURS
+
+DEUX COULEURS
+
+-   `pal` est utilisé pour les graphiques qui peuvent présenter plusieurs couleurs. `pal` doit alors généralement prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé.
 
 Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou `pal`. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter la confusion des graphiques.
 
@@ -804,21 +809,21 @@ Dans certains cas, on peut indiquer dans `pal` soit une couleur unique, soit une
 # Avec sous-groupes
 eusilc_prop_sub_group <- prop_group(
   eusilc,
-  group = rb090,
+  group =pb220a ,
   prop_exp = pl030_rec == "Working part time",
-  group.fill = db040,
+  group.fill = rb090,
   weights = rb050,
-  title = "% of ind. working part time by sex & region",
+  title = "% of ind. working part time by nationality & sex",
   subtitle = "(with sub-groups)",
   pal = "Neon"
 )
 # Sans sous-groupes
 eusilc_prop_no_sub_group <- prop_group(
   eusilc,
-  group = rb090,
+  group = pb220a,
   prop_exp = pl030_rec == "Working part time",
   weights = rb050,
-  title = "% of ind. working part time by sex",
+  title = "% of ind. working part time by nationality",
   subtitle = "(no sub-groups)",
   pal = "gold"
 )
