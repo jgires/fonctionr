@@ -210,6 +210,11 @@ distrib_group_discrete <- function(data,
     lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
     lang_distribution <- "Distributie: "
   }
+  if(lang == "en"){
+    lang_khi2 <- "Chi-Square of independence: "
+    lang_khi2_error <- "Chi-Square of independence: conditions not met"
+    lang_distribution <- "Distribution: "
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------

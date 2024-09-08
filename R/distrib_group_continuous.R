@@ -236,6 +236,11 @@ distrib_group_continuous <- function(data,
     lang_anova <- "ANOVA: "
     lang_kruskal <- "Kruskal Wallis: "
   }
+  if(lang == "en"){
+    lang_prop_obs <- "Proportion of observations"
+    lang_anova <- "ANOVA: "
+    lang_kruskal <- "Kruskal Wallis: "
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------

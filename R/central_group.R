@@ -219,6 +219,12 @@ central_group <- function(data,
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
   }
+  if(lang == "en"){
+    lang_anova <- "ANOVA: "
+    lang_kruskal <- "Kruskal Wallis: "
+    lang_mean <- "Mean: "
+    lang_median <- "Median: "
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------
