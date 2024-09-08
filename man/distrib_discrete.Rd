@@ -33,7 +33,7 @@ distrib_discrete(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
-  theme = "fonctionr",
+  theme = NULL,
   export_path = NULL
 )
 

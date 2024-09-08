@@ -37,6 +37,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
@@ -110,7 +111,8 @@ prop_group <- function(data,
                        ylab = NULL,
                        legend_lab = NULL,
                        caption = NULL,
-                       theme = "fonctionr",
+                       lang = "fr",
+                       theme = NULL,
                        export_path = NULL) {
 
   # start_time <- Sys.time()
@@ -131,6 +133,7 @@ prop_group <- function(data,
       total_name = total_name,
       unit = unit,
       dec = dec,
+      pal = pal,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -138,6 +141,8 @@ prop_group <- function(data,
       ylab = ylab,
       legend_lab = legend_lab,
       caption = caption,
+      lang = lang,
+      theme = theme,
       export_path = export_path
     ),
     type = "character"
@@ -226,6 +231,18 @@ prop_group <- function(data,
     if("is.na" %in% names_expression){
       stop("is.na() est detecte dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes lorsque na.prop == 'rm'")
     }
+  }
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
+    lang_khi2_error <- paste0("Khi2 d'ind","\u00e9","pendance : conditions non remplies")
+    lang_prop <- "Proportion : "
+  }
+  if(lang == "nl"){
+    lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
+    lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
+    lang_prop <- "Aandeel: "
   }
 
 
@@ -463,20 +480,23 @@ prop_group <- function(data,
 
   if(!quo_is_null(quo_group.fill)) {
     # On cree la palette avec le package MetBrewer
-    if(!is.null(pal) & pal %in% names(MetBrewer::MetPalettes)){
+    if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
       palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec le package MoMAColors
-    } else if(!is.null(pal) & pal %in% names(MoMAColors::MoMAPalettes)){
+    } else if(!is.null(pal) & all(pal %in% names(MoMAColors::MoMAPalettes))){
       palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avecle package PrettyCols
-    } else if(!is.null(pal) & pal %in% names(PrettyCols::PrettyColsPalettes)){
+    } else if(!is.null(pal) & all(pal %in% names(PrettyCols::PrettyColsPalettes))){
       palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec la fonction interne official_pal()
-    } else if(!is.null(pal) & pal %in% official_pal(list_pal_names = T)){
+    } else if(!is.null(pal) & all(pal %in% official_pal(list_pal_names = T))){
       palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), direction = direction))
+
+    } else if(is.null(pal)) {
+      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
     } else {
       palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
@@ -612,9 +632,7 @@ prop_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind",
-            "\u00e9",
-            "pendance : ", scales::pvalue(test.stat$p.value, add_p = T),
+            lang_khi2, scales::pvalue(test.stat$p.value, add_p = T),
             caption
           )
         )
@@ -623,9 +641,7 @@ prop_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Khi2 d'ind",
-            "\u00e9",
-            "pendance : conditions non remplies",
+            lang_khi2_error,
             caption
           )
         )
@@ -644,7 +660,7 @@ prop_group <- function(data,
     if(any(is.null(xlab), xlab != "")){
       graph <- graph +
         labs(y = ifelse(is.null(xlab),
-                        paste0("Proportion : ", deparse(substitute(prop_exp))),
+                        paste0(lang_prop, deparse(substitute(prop_exp))),
                         xlab))
     }
     if(all(!is.null(xlab), xlab == "")){

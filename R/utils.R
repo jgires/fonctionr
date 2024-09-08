@@ -431,7 +431,7 @@ official_pal <- function(inst,
 #' @examples
 #'
 theme_fonctionr <- function(font = "Roboto",
-                            theme = "fonctionr") {
+                            theme = NULL) {
   load_and_active_fonts()
 
   theme_fonctionr_def <- theme_minimal() +
@@ -451,11 +451,14 @@ theme_fonctionr <- function(font = "Roboto",
         color = "grey30"
       )
     )
-  if (theme == "IWEPS") {
-    theme_fonctionr_def <- theme_fonctionr_def + theme(
-      axis.line.y = element_line(color = "black"),
-      axis.ticks.y = element_line(color = "black")
-    )
+
+  if (!is.null(theme)) {
+    if (theme == "IWEPS") {
+      theme_fonctionr_def <- theme_fonctionr_def + theme(
+        axis.line.y = element_line(color = "black"),
+        axis.ticks.y = element_line(color = "black")
+        )
+    }
   }
 
   return(theme_fonctionr_def)

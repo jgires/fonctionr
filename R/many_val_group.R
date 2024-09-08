@@ -111,7 +111,7 @@ many_val_group = function(data,
                           ylab = NULL,
                           legend_lab = NULL,
                           caption = NULL,
-                          theme = "fonctionr",
+                          theme = NULL,
                           export_path = NULL){
 
 
@@ -141,7 +141,8 @@ many_val_group = function(data,
       xlab = xlab,
       ylab = ylab,
       legend_lab = legend_lab,
-      caption = caption
+      caption = caption,
+      theme = theme
     ),
     type = "character"
   )

@@ -37,6 +37,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
@@ -103,7 +104,8 @@ central_group <- function(data,
                           ylab = NULL,
                           legend_lab = NULL,
                           caption = NULL,
-                          theme = "fonctionr",
+                          lang = "fr",
+                          theme = NULL,
                           export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -131,6 +133,8 @@ central_group <- function(data,
       ylab = ylab,
       legend_lab = legend_lab,
       caption = caption,
+      lang = lang,
+      theme = theme,
       export_path = export_path
     ),
     type = "character"
@@ -201,6 +205,20 @@ central_group <- function(data,
   # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_anova <- "ANOVA : "
+    lang_kruskal <- "Kruskal Wallis : "
+    lang_mean <- "Moyenne : "
+    lang_median <- paste0("M","\u00e9","diane : ")
+  }
+  if(lang == "nl"){
+    lang_anova <- "ANOVA: "
+    lang_kruskal <- "Kruskal Wallis: "
+    lang_mean <- "Gemiddelde: "
+    lang_median <- "Mediaan: "
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------
@@ -451,20 +469,23 @@ central_group <- function(data,
 
   if(!quo_is_null(quo_group.fill)) {
     # On cree la palette avec le package MetBrewer
-    if(!is.null(pal) & pal %in% names(MetBrewer::MetPalettes)){
+    if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
       palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec le package MoMAColors
-    } else if(!is.null(pal) & pal %in% names(MoMAColors::MoMAPalettes)){
+    } else if(!is.null(pal) & all(pal %in% names(MoMAColors::MoMAPalettes))){
       palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avecle package PrettyCols
-    } else if(!is.null(pal) & pal %in% names(PrettyCols::PrettyColsPalettes)){
+    } else if(!is.null(pal) & all(pal %in% names(PrettyCols::PrettyColsPalettes))){
       palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
       # On cree la palette avec la fonction interne official_pal()
-    } else if(!is.null(pal) & pal %in% official_pal(list_pal_names = T)){
+    } else if(!is.null(pal) & all(pal %in% official_pal(list_pal_names = T))){
       palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), direction = direction))
+
+    } else if(is.null(pal)) {
+      palette <- as.character(PrettyCols::prettycols(palette = "Peppers", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
 
     } else {
       palette <- as.character(PrettyCols::prettycols(palette = "Peppers", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
@@ -602,7 +623,7 @@ central_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "ANOVA : ", scales::pvalue(test.stat$p[1], add_p = T),
+            lang_anova, scales::pvalue(test.stat$p[1], add_p = T),
             caption
           )
         )
@@ -611,7 +632,7 @@ central_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            "Kruskal Wallis : ", scales::pvalue(test.stat$p.value[1], add_p = T),
+            lang_kruskal, scales::pvalue(test.stat$p.value[1], add_p = T),
             caption
           )
         )
@@ -631,13 +652,13 @@ central_group <- function(data,
       if (type == "mean") {
         graph <- graph +
           labs(y = ifelse(is.null(xlab),
-                          paste0("Moyenne : ", deparse(substitute(quanti_exp))),
+                          paste0(lang_mean, deparse(substitute(quanti_exp))),
                           xlab))
       }
       if (type == "median") {
         graph <- graph +
           labs(y = ifelse(is.null(xlab),
-                          paste0("M","\u00e9","diane : ", deparse(substitute(quanti_exp))),
+                          paste0(lang_median, deparse(substitute(quanti_exp))),
                           xlab))
       }
     }

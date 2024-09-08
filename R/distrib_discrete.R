@@ -94,7 +94,7 @@ distrib_discrete <- function(data,
                              xlab = NULL,
                              ylab = NULL,
                              caption = NULL,
-                             theme = "fonctionr",
+                             theme = NULL,
                              export_path = NULL) {
 
 
@@ -117,6 +117,7 @@ distrib_discrete <- function(data,
       subtitle = subtitle,
       xlab = xlab,
       caption = caption,
+      theme = theme,
       export_path = export_path
     ),
     type = "character"

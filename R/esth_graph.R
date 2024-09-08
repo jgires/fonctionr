@@ -60,7 +60,7 @@ esth_graph <- function(tab,
                        xlab = NULL,
                        ylab = NULL,
                        caption = NULL,
-                       theme = "fonctionr") {
+                       theme = NULL) {
 
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -94,7 +94,8 @@ esth_graph <- function(tab,
       subtitle = subtitle,
       xlab = xlab,
       ylab = ylab,
-      caption = caption
+      caption = caption,
+      theme = theme
     ),
     type = "character"
   )
