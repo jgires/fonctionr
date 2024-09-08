@@ -245,8 +245,8 @@ prop_group <- function(data,
     lang_prop <- "Aandeel: "
   }
   if(lang == "en"){
-    lang_khi2 <- "Chi-Square of independence: "
-    lang_khi2_error <- "Chi-Square of independence: conditions not met"
+    lang_khi2 <- "Chi-square of independence: "
+    lang_khi2_error <- "Chi-square of independence: conditions not met"
     lang_prop <- "Proportion: "
   }
 
