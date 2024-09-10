@@ -545,6 +545,25 @@ eusilc_prop_NA_excl$graph
 
 Les arguments clés sont des arguments qui ne sont pas indispensable mais qui influencent les résultats. On y retrouve plusieurs types d'arguments.
 
+-   `group.fill` permet d'indiquer une variable de sous-groupes pour différencier les résultats plus finement. Cet argument n'est que disponible dans `prop_group()` et `central_group()`. Dans l'exemple ci-dessous, on compare les revenus moyens par statut socio-économique et sexe.
+
+    ```{r}
+    eusilc_income_status_sex <- mean_group(
+      eusilc,
+      group = pl030_rec,
+      group.fill = rb090,
+      quanti_exp = eqIncome/12,
+      weights = rb050,
+      title = "mean mensual equivalent income according to socio-economic status and sex",
+      subtitle = "Example with austrian SILC data from 'laeken' package",
+      unit = "€"
+    )
+
+    eusilc_income_status_sex$graph
+
+
+    ```
+
 -   `facet` permet d'indiquer une variable qualitative pour différencier les résultats selon les différentes modalités de cette variable, dans le graphique `ggplot2` et le dataframe de résultat `tab`. Dans le graphique, elle produit des "facettes", d'où le nom de l'argument. Comme `group` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on calcule la distribution des différents statuts socio-économiques par région (indiquée comme variable de facettes) :
 
 ```{r}
