@@ -106,7 +106,7 @@ eusilc_dist_group_d <- distrib_group_d(
   quali_var = pl030_rec,
   title = "Distribution of socio-economic status according to nationality",
   subtitle = "Example with austrian SILC data from 'laeken' package"
-)
+  )
 ```
 
 ```{r}
@@ -133,7 +133,7 @@ eusilc_prop <- prop_group(
   weights = rb050,
   title = "% of ind. receiving unemployment benefits in their hh by soc.-eco. stat.",
   subtitle = "Example with austrian SILC data from 'laeken' package"
-)
+  )
 ```
 
 ```{r}
@@ -578,7 +578,7 @@ eusilc_dist_d$graph
 
 Nous expliquons ici plus précisément le traitement des `NA` dans les fonctions, car les possibilités sont multiples. Nous avons décidé de laisser des possibilités différentes selon les variables dans lesquelles se trouvent les `NA` : groupes, variables d'intérêts, expressions, etc.
 
--   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés dans les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses.
+-   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés dans les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses. Actuellement, `na.rm.group` influence le traitement des NA, tant pour la variable `group` que la variable `group.fill`.
 
 Dans l'exemple ci-dessous, on compare la distribution des statuts socio-professionnels entre régions, en y ajoutant une modalité `NA` pour le statut (il s'agit des personnes de moins de 16 ans qui ne sont pas interrogées), en filtrant les données pour ne conserver que les personnes de plus de 11 ans et introduisant la variable sexe comme facette. Comme nous le verrons, la couleur des `NA` est toujours grise et ne dépend pas de la palette de couleur, de manière à les identifier spécifiquement.
 
@@ -769,40 +769,21 @@ distrib_income_2$graph
 
 ### L'esthétique graphique
 
--   `dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
+`dodge` indique l'épaisseur des barres et peut aller de `0` (barre invisible car d'épaisseur nulle) à `1` (barre se touchant car ne laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
 
--   Les couleurs des barres sont indiquées dans l'argument `pal`.
+Les couleurs des barres sont indiquées dans l'argument `pal`.
 
-Dans les graphiques monochrome, `pal` peut prendre la valeur d'une couleur de base de R ou d'un code couleur hexadécimal. C'est le cas pour `distrib_discrete()`, `prop_group()` et `central_group()` quand il n'y a pas d'argument `group.fill`.
+-   Dans les graphiques monochrome, `pal` peut prendre la valeur d'une couleur de base de R ou d'un code couleur hexadécimal. C'est le cas pour `distrib_discrete()`, `prop_group()` et `central_group()` quand il n'y a pas de `group.fill`.
 
-PALLETTE DE COULEURS
+-   Dans les graphiques avec une palette de couleurs différentes, `pal` doit prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. C'est le cas de `distrib_group_``discrete``()`, `many_val_group()`, et de `prop_group()` et `central_group()` quand il y a un `group.fill`.
 
-DEUX COULEURS
+-   Dans `many_val()` et ses alias, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. Cela permet de choisir de produire un graphique monochrome, ou un graphique qui différencie chromatiquement chaque variable.0
 
--   `pal` est utilisé pour les graphiques qui peuvent présenter plusieurs couleurs. `pal` doit alors généralement prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé.
+-   Les couleurs des `NA` et des totaux, quand ils sont présents, ne sont pas modifiables directement par l'utilisateur. La modalité `NA` est toujours grise (`grey`). Le total est coloré de deux manière selon qu'il existe un seul total (dans les graphiques monochromes comme `prop_group()` et `central_group()` quand il n'y a pas d'argument `group.fill`) ou qu'il existe des totaux différents pour chaque modalité ou variable (dans les graphique avec palette de couleur, comme `distrib_group_d()`, de `prop_group()` et `central_group()` quand il y a un argument `group.fill`). Dans le premier cas, la couleur est gris foncé (`grey40`). Dans le second cas, chaque total a une couleur de remplissage identique à la couleur de sa modalité ou variable, mais plus claire et a une couleur de bordure identique à sa couleur de modalité ou variable.
 
-Les couleurs des `NA` et des totaux, quand ils sont présents sont toujours gris (`grey`) et gris foncé (`grey40`) et ne sont pas modifiable par les arguments `fill` ou `pal`. Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter la confusion des graphiques.
+-   Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter la confusion des graphiques.
 
-Dans l'exemple ci-dessous, on utilise une autre palette de couleur et des barres plus fines.
-
-```{r}
-eusilc_dist_group_d <- distrib_group_d(
-  eusilc,
-  group = db040,
-  quali_var = pl030_rec,
-  weights = rb050,
-  pal = "VanGogh2",
-  dodge = .5,
-  title = "Distribution of socio-economic status according to region",
-  subtitle = "Example with austrian SILC data from 'laeken' package"
-)
-```
-
-```{r}
-eusilc_dist_group_d$graph 
-```
-
-Dans certains cas, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. C'est le cas pour `many_val()` et ses alias, où `pal` peut aussi prendre une couleur unie (couleur de R ou code hexadécimal) si l'utilisateur souhaite un graphique monochrome. C'est également le cas pour `prop_group()` : lorsque l'on indique une variable de sous-groupes dans l'argument `group.fill`, il faut pouvoir différencier les catégories des sous-groupes avec une couleur, et alors il faut indiquer une palette des trois packages mentionnés. Par contre, lorsqu'il n'y a pas de sous-groupes, il faut indiquer une couleur unique. L'exemple ci-dessous montre les deux usages de `pal` avec `prop_group()`. On calcule la proportion de travailleurs à temps partiel selon le sexe. Dans le premier graphique, on différencie les proportions selon la région ; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols`). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`.
+Dans l'exemple ci-dessous, on compare deux grpahiques issus de `prop_group()` : l'un avec l'argument `group.fill`, et l'autre sans. On calcule la proportion de travailleurs à temps partiel selon la nationalité. Dans le premier graphique, on différencie les proportions selon le sexe; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols` a été indiquée). En outre, dans ce premier graphique, les barres sont plus fines (`dodge` prend une valeur de 0.7). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`. On remarque aussi comment les totaux sont représentés différemment.
 
 ```{r}
 # Avec sous-groupes
@@ -814,7 +795,8 @@ eusilc_prop_sub_group <- prop_group(
   weights = rb050,
   title = "% of ind. working part time by nationality & sex",
   subtitle = "(with sub-groups)",
-  pal = "Neon"
+  pal = "Neon",
+  dodge = .7
 )
 # Sans sous-groupes
 eusilc_prop_no_sub_group <- prop_group(
