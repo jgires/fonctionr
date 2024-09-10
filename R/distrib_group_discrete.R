@@ -508,7 +508,7 @@ distrib_group_discrete <- function(data,
                          NA),
           family = font),
         size = 3.5,
-        alpha = .6,
+        alpha = .9,
         color = "black",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)
@@ -607,7 +607,7 @@ distrib_group_discrete <- function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = ifelse({{ group }} != total_name, prop, NA),
+          y = ifelse({{ group }} != total_name|is.na({{ group }}), prop, NA),
           label = ifelse(prop > 0.02,
                          paste0(stringr::str_replace(round(prop * scale,
                                                            digits = digits),

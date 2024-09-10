@@ -535,6 +535,23 @@ many_val_group = function(data,
       scale_colour_manual(
         values = palette,
         guide = "none"
+      ) +
+      geom_text(
+        aes(
+          y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
+          label = paste0(stringr::str_replace(round(indice * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
+                         unit),
+          family = font),
+        size = 3,
+        vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+        hjust = if (position == "dodge") "left" else "center",
+        color = "black",
+        alpha = 0.9,
+        # position = position_stack(vjust = .5))
+        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
       )
   }
 
@@ -625,7 +642,7 @@ many_val_group = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = if (position == "dodge") (indice) + (0.01 * max_ggplot) else indice,
+          y = if (position == "dodge") (ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA),
           label = paste0(stringr::str_replace(round(indice * scale,
                                                     digits = digits),
                                               "[.]",
