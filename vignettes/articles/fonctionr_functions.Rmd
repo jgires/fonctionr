@@ -554,7 +554,7 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
       group.fill = rb090,
       quanti_exp = eqIncome/12,
       weights = rb050,
-      title = "mean mensual equivalent income according to socio-economic status and sex",
+      title = "Mean mensual equivalent income according to status and sex",
       subtitle = "Example with austrian SILC data from 'laeken' package",
       unit = "€"
     )
