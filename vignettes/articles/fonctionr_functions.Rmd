@@ -26,7 +26,7 @@ Ce guide se structure de la manière suivante. Dans un premier temps on décrit 
 
 La plupart des fonctions de `fonctionr` permettent, à partir de données issues d'un sondage (complexe mais aussi simple), de produire une liste qui contient la plupart du temps ces trois éléments :
 
--   Un graphique qui permet la visualisation des indicateurs calculés avec leurs intervalles de confiance. Il s'agit d'un objet `ggplot2` qui peut donc aussi être modifié par la suite. Le graphique se veut suffisamment finalisé pour être directement utilisable dans une publication ;
+-   Un graphique qui permet la visualisation des indicateurs calculés avec leurs intervalles de confiance. Il s'agit d'un objet `ggplot2` qui peut donc être modifié par la suite. Ce graphique est suffisamment finalisé pour être directement utilisable dans une publication ;
 
 -   Un ou plusieurs dataframe qui reprennent les chiffres sur base desquels le graphique est construit. Ceux-ci reprennent généralement le nom de l'indicateur, sa valeur, les bornes d'intervalle de confiance, le nombre de personnes dans l'échantillon dans chaque catégorie, l'estimation du nombre de personnes dans la population dans chaque catégorie et les bornes de l'intervalle de confiance de cette estimation ;
 
@@ -38,7 +38,7 @@ Dans la suite de cette partie, nous passons les fonctions en revue en indiquant 
 
 ## `distrib_discrete()` : distribution d'une variable catégorielle
 
-`distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
+`distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données anonymisée de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
 
 ```{r}
 library(fonctionr)
@@ -94,7 +94,7 @@ eusilc_dist_d$test.stat
 
 ## `distrib_group_discrete()` : distribution d'une variable catégorielle par groupe
 
-`distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution (en pourcentages) des différentes modalités d'une variables qualitative selon les modalités d'une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
+`distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution (en pourcentages) des différentes modalités d'une variables qualitative selon les modalités d'une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le graphique et le tableau contiennent aussi une modalité `Total` qui reprend l'estimation de la distribution des différentes modalités pour l'ensemble de la population de référence. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
 
 L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques (`pl030_rec`) selon la nationalité (`pb220a`).
 
@@ -140,14 +140,14 @@ eusilc_prop <- prop_group(
 eusilc_prop$graph
 ```
 
-Le graphique et le tableau contiennent une modalité `Total` qui reprend l'estimation de la proportion pour l'ensemble de la population de référence. Dans le dataframe `tab` produit, on trouve :
+Le graphique et le tableau contiennent aussi une modalité `Total` qui reprend l'estimation de la proportion pour l'ensemble de la population de référence. Dans le dataframe `tab` produit, on trouve :
 
 -   l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (`n_true_weighted`) accompagné de ses bornes inférieure (`n_true_weighted_low`) et supérieure (`n_true_weighted_upp`) de l'intervalle de confiance à un niveau de confiance de 95% ;
 -   le nombre total de personnes dans la population pour lesquelles les données sont valides[^2] (`n_tot_weighted`) accompagné de ses bornes inférieure (`n_tot_weighted_low`) et supérieure (`n_tot_weighted_upp`) de l'intervalle de confiance.
 
-[^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur `NA` et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans `n_tot_weighted,` de manière à ce que le ratio entre `n_true_weighted` et `n_tot_weighted` soit égal à `prop`.
+[^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur `NA` et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans `n_tot_weighted,` de manière à ce que le ratio entre `n_true_weighted` et `n_tot_weighted` soit égal à `prop`. La question de l'exclusion de certaines personnes de l'échantillon est abordée en détail dans la section traitant des arguments clés.
 
-Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (les variables dichotomique *proportion vraie-fausse* et de groupe) soient statistiquement indépendantes .
+Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (la variable dichotomique *proportion vraie-fausse* et la variable de groupe) soient statistiquement indépendantes .
 
 ```{r}
 eusilc_prop$tab
@@ -157,7 +157,7 @@ eusilc_prop$tab
 eusilc_prop$test.stat
 ```
 
-La fonction `prop_group()` permet également de différencier le calcul de proportion en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
+La fonction `prop_group()` permet également de différencier le calcul de proportions en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
 
 ```{r}
 eusilc_prop_sex <- prop_group(
@@ -244,7 +244,7 @@ eusilc_many_mean$tab
 
 ## `many_val_group()` : calculer plusieurs indicateurs par groupe
 
-`many_val_group()` fonctionne comme `many_val()`, mais permet d'indiquer une variable qualitative de groupes : les résultats sont alors différenciés selon les différentes modalités de cette variable (= les groupes). Trois calculs sont possibles :
+`many_val_group()` fonctionne comme `many_val()`, mais permet d'indiquer une variable qualitative de groupes : les résultats sont alors différenciés selon les différentes modalités de cette variable (= les groupes). Ici aussi, aucun test statistique n'est effectué. Trois calculs sont possibles :
 
 -   La comparaison de proportions quand l'argument `type = "prop"` ou pour l'alias `many_prop_group()` ;
 -   La comparaison de moyennes quand l'argument `type = "mean"` ou pour l'alias `many_mean_group()` ;
@@ -292,7 +292,7 @@ distrib_age$graph
 distrib_age$tab
 ```
 
-L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
+L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a pour le moment pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
 
 ```{r}
 head(distrib_age$dens)
@@ -589,6 +589,8 @@ eusilc_dist_d$graph
 
 -   `quantiles` est un argument qui permet de choisir, sous forme d'un vecteur, les quantiles à calculer et à indiquer sur le graphique dans `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, ce sont des déciles qui sont calculés.
 
+-   `total` est un argument qui permet de calculer l'indicateur ou la distribution de la variable pour le total, et pas uniquement pour les groupes. Cela permet de comparer non seulement les groupes entre-eux, mais aussi à l'ensemble de la population. Cet argument n'est disponible que pour `prop_group()`, `central_group()`, `distrib_group_d()` et `many_val_group()`. Par défaut le total s'affiche (`total = TRUE`). Il s'agit d'un argument clé et pas uniquement d'un argument esthétique, car la présence du total dans `tab` et dans l'export Excell dépend de la valeur prise par cet argument.
+
 [^4]: Voir : <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
 
 [^5]: Voir : <https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html>
@@ -719,7 +721,7 @@ eusilc_many_mean_group_2a$graph | eusilc_many_mean_group_2b$graph
 
 Faute de représentation graphique adéquate, `show_ci` n'est pas un argument de la fonction `distrib_group_discrete()`. Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans le dataframe `tab`. C'est aussi le cas pour `many_val_group()` et ses alias quand `position = "stack"`. Précisons aussi que dans `distrib_group_discrete()`, seules les valeurs supérieures à 2% sont indiquées sur le graphique pour des raisons de lisibilité. Pour `distrib_continuous()` l'argument `show_n` indique les effectifs de l'échantillon pour chaque quantile.
 
--   `total_name` indique le nom qui doit être mentionné à côté du résulat du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+-   `total_name` indique le nom qui doit être mentionné à côté du résultat du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
 
 Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changé le nom du "Total".
 
@@ -911,7 +913,11 @@ Les arguments de label ne sont utilisés que si `show_lab = TRUE`, qui est la va
 
 -   Comme argument de label, on peut aussi mentionner l'argument `lists_vars_lab` que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label.
 
-Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende. On a également introduit manuellement les titres, sous-titres, *caption* et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées.
+-   L'argument `lang` permet de déterminer la langue des textes automatiques. Trois valeurs sont possibles : `lang = "fr"` pour le français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour l'anglais. Par défaut, c'est le français qui est utilisé.
+
+-   L'argument `theme`, qui est un argument d'esthétique graphique plutôt que de label, permet de modifier le thème du graphique. Le thème de base (`theme = NULL`) est celui qu'on retrouve dans tous les graphiques dans ce document, mais le thème IWEPS (`theme = "IWEPS"`) permet d'ajouter un axe gradué pour les ordonnées.
+
+Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende. On a également introduit manuellement les titres, sous-titres, *caption* et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées. La langue des textes automatique est le néerlandais et on tracé l'axe des ordonnées (`theme = "IWEPS"`).
 
 ```{r}
 eusilc_dist_group_d <- distrib_group_d(
@@ -927,7 +933,9 @@ eusilc_dist_group_d <- distrib_group_d(
   subtitle = "Example with austrian SILC data from 'laeken' package",
   ylab = "",
   legend_lab = "Status",
-  caption = "Source : EU-SILC"
+  caption = "Bron : EU-SILC",
+  lang = "nl",
+  theme = "IWEPS"
 )
 ```
 
