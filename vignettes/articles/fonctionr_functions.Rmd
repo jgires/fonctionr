@@ -292,7 +292,7 @@ distrib_age$graph
 distrib_age$tab
 ```
 
-L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a pour le moment pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
+L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a, pour le moment, pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
 
 ```{r}
 head(distrib_age$dens)
