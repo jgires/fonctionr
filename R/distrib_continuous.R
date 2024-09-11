@@ -33,6 +33,7 @@
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param caption Caption of the graphic.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
@@ -76,6 +77,7 @@ distrib_continuous <- function(data,
                           xlab = NULL,
                           ylab = NULL,
                           caption = NULL,
+                          lang = "fr",
                           theme = NULL,
                           export_path = NULL) {
 
@@ -99,6 +101,7 @@ distrib_continuous <- function(data,
       xlab = xlab,
       ylab = ylab,
       caption = caption,
+      lang = lang,
       theme = theme
     ),
     type = "character"
@@ -174,6 +177,20 @@ distrib_continuous <- function(data,
   # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_test_uni <- NULL
+    lang_dens <- paste0("Densit","\u00e9")
+  }
+  if(lang == "nl"){
+    lang_test_uni <- NULL
+    lang_dens <- "Densiteit"
+  }
+  if(lang == "en"){
+    lang_test_uni <- NULL
+    lang_dens <- "Density"
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------
@@ -456,7 +473,7 @@ distrib_continuous <- function(data,
   graph <- graph +
     labs(
       caption = paste0(
-        "",
+        lang_test_uni,
         caption
       )
     )
@@ -597,7 +614,7 @@ distrib_continuous <- function(data,
       }
       if(is.null(ylab)){
         graph <- graph +
-          labs(y = paste0("Densit","\u00e9"))
+          labs(y = lang_dens)
       }
     }
     if(all(!is.null(ylab), ylab == "")){

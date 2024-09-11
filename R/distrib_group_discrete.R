@@ -86,7 +86,7 @@ distrib_group_discrete <- function(data,
                                    prop_method = "beta",
                                    show_value = TRUE,
                                    show_labs = TRUE,
-                                   total_name = "Total",
+                                   total_name = NULL,
                                    scale = 100,
                                    digits = 0,
                                    unit = "",
@@ -201,16 +201,25 @@ distrib_group_discrete <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
+    if(is.null(total_name)){
+      total_name <- "Total"
+    }
     lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
     lang_khi2_error <- paste0("Khi2 d'ind","\u00e9","pendance : conditions non remplies")
     lang_distribution <- "Distribution : "
   }
   if(lang == "nl"){
+    if(is.null(total_name)){
+      total_name <- "Totaal"
+    }
     lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
     lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
     lang_distribution <- "Distributie: "
   }
   if(lang == "en"){
+    if(is.null(total_name)){
+      total_name <- "Total"
+    }
     lang_khi2 <- "Chi-square of independence: "
     lang_khi2_error <- "Chi-square of independence: conditions not met"
     lang_distribution <- "Distribution: "

@@ -87,12 +87,7 @@ central_group <- function(data,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_labs = TRUE,
-<<<<<<< HEAD
-                          total = TRUE,
                           total_name = NULL,
-=======
-                          total_name = "Total",
->>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
                           digits = 0,
                           unit = "",
                           dec = ",",
@@ -213,40 +208,28 @@ central_group <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
-<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Total"
       }
-    lang_anova <- "ANOVA : "
-=======
     lang_anova <- "Test de Wald : "
->>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis : "
     lang_mean <- "Moyenne : "
     lang_median <- paste0("M","\u00e9","diane : ")
   }
   if(lang == "nl"){
-<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Totaal"
     }
-    lang_anova <- "ANOVA: "
-=======
     lang_anova <- "Wald-test: "
->>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
   }
   if(lang == "en"){
-<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Total"
     }
-    lang_anova <- "ANOVA: "
-=======
     lang_anova <- "Wald test: "
->>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Mean: "
     lang_median <- "Median: "

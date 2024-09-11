@@ -29,6 +29,7 @@
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Distribution (total : 100 percent)". To show no X label, use xlab = "".
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".
 #' @param caption Caption in the graphic.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).
 #'
@@ -93,6 +94,7 @@ distrib_discrete <- function(data,
                              subtitle = NULL,
                              xlab = NULL,
                              ylab = NULL,
+                             lang = "fr",
                              caption = NULL,
                              theme = NULL,
                              export_path = NULL) {
@@ -116,6 +118,7 @@ distrib_discrete <- function(data,
       title = title,
       subtitle = subtitle,
       xlab = xlab,
+      lang = lang,
       caption = caption,
       theme = theme,
       export_path = export_path
@@ -182,6 +185,20 @@ distrib_discrete <- function(data,
   # Un check sur quali_var
   if(length(vec_quali_var) != 1){
     stop("quali_var ne doit comprendre qu'une seule variable")
+  }
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_khi2_ad <- paste0("Khi2 d'ad","\u00e9","quation : ")
+    lang_distrib <- "Distribution (total : 100%)"
+  }
+  if(lang == "nl"){
+    lang_khi2_ad <- "Chikwadraat goodness of fit: "
+    lang_distrib <- "Distributie (totaal: 100%)"
+  }
+  if(lang == "en"){
+    lang_khi2_ad <- "Chi-square goodness of fit: "
+    lang_distrib <- "Distribution (total: 100%)"
   }
 
 
@@ -361,7 +378,7 @@ distrib_discrete <- function(data,
     labs(title = title,
          subtitle = subtitle,
          caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
-           "Khi2 d'ad","\u00e9","quation : ", scales::pvalue(test.stat$p.value, add_p = T),
+           lang_khi2_ad, scales::pvalue(test.stat$p.value, add_p = T),
            caption) else stringr::str_wrap(caption, width = 100)
          )
 
@@ -372,7 +389,7 @@ distrib_discrete <- function(data,
       graph <- graph +
         labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (a voir si c'est adapte dans tous les cas)
              y = ifelse(is.null(xlab),
-                        paste0("Distribution (total : 100%)"),
+                        lang_distrib,
                         xlab))
     }
     if(all(!is.null(xlab), xlab == "")){
