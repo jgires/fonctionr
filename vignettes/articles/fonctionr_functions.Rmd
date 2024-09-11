@@ -432,8 +432,9 @@ tableau_recap <- tibble::tribble(
                  "export",    0L,      "string",    "export_path",             "export_path",             "export_path",    "export_path",             "export_path",                "export_path",    "export_path",             "export_path"
   )
 
+names(tableau_recap)[1] <- "Catégorie d’argument"
 
-
+  
 del_to_empty <- function(x){
   x[stringr::str_detect(x, "to_delete")] <- ""
   x[is.na(x)] <- ""

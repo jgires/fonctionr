@@ -17,13 +17,13 @@ central_group(
   ...,
   na.rm.group = T,
   na.rm.facet = T,
+  total = TRUE,
   reorder = F,
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
-  total = TRUE,
-  total_name = "Total",
+  total_name = NULL,
   digits = 0,
   unit = "",
   dec = ",",
@@ -70,6 +70,8 @@ mean_group(..., type = "mean")
 
 \item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
 
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
 \item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
@@ -79,8 +81,6 @@ mean_group(..., type = "mean")
 \item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
 \item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{total_name}{Name of the total bar on the graphic. Default is Total.}
 

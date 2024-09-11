@@ -19,13 +19,13 @@ many_val_group(
   na.rm.group = T,
   na.rm.facet = T,
   na.vars = "rm",
+  total = TRUE,
   prop_method = "beta",
   position = "dodge",
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
-  total = TRUE,
   total_name = "Total",
   scale = NULL,
   digits = 0,
@@ -77,6 +77,8 @@ many_mean_group(..., type = "mean")
 
 \item{na.vars}{The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
 
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
 \item{position}{Position adjustment for geom_bar.}
@@ -88,8 +90,6 @@ many_mean_group(..., type = "mean")
 \item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
 
 \item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{total_name}{Name of the total bar on the graphic. Default is Total.}
 

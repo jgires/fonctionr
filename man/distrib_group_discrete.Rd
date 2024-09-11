@@ -15,11 +15,11 @@ distrib_group_discrete(
   na.rm.group = T,
   na.rm.facet = T,
   na.rm.var = T,
+  total = TRUE,
   prop_method = "beta",
   show_value = TRUE,
   show_labs = TRUE,
-  total = TRUE,
-  total_name = "Total",
+  total_name = NULL,
   scale = 100,
   digits = 0,
   unit = "",
@@ -63,13 +63,13 @@ distrib_group_d(...)
 
 \item{na.rm.var}{TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with the NA value for the discrete variable. Default is TRUE.}
 
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
 \item{prop_method}{Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}
 
 \item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.}
 
 \item{show_labs}{TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.}
-
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{total_name}{Name of the total shown on the graphic. Default is "Total".}
 

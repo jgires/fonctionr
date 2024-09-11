@@ -15,14 +15,14 @@ prop_group(
   na.rm.group = T,
   na.rm.facet = T,
   na.prop = "rm",
+  total = TRUE,
   prop_method = "beta",
   reorder = F,
   show_ci = T,
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
-  total = TRUE,
-  total_name = "Total",
+  total_name = NULL,
   scale = 100,
   digits = 0,
   unit = "\%",
@@ -66,6 +66,8 @@ prop_group(
 
 \item{na.prop}{"rm" to remove the NA in the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". When "rm" NA are not allowed in prop_exp.}
 
+\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
 \item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
@@ -77,8 +79,6 @@ prop_group(
 \item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
 
 \item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
-
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{total_name}{Name of the total shown on the graphic. Default is "Total".}
 
