@@ -87,7 +87,7 @@ central_group <- function(data,
                           show_value = TRUE,
                           show_labs = TRUE,
                           total = TRUE,
-                          total_name = "Total",
+                          total_name = NULL,
                           digits = 0,
                           unit = "",
                           dec = ",",
@@ -208,18 +208,27 @@ central_group <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
+    if(is.null(total_name)){
+      total_name <- "Total"
+      }
     lang_anova <- "ANOVA : "
     lang_kruskal <- "Kruskal Wallis : "
     lang_mean <- "Moyenne : "
     lang_median <- paste0("M","\u00e9","diane : ")
   }
   if(lang == "nl"){
+    if(is.null(total_name)){
+      total_name <- "Totaal"
+    }
     lang_anova <- "ANOVA: "
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
   }
   if(lang == "en"){
+    if(is.null(total_name)){
+      total_name <- "Total"
+    }
     lang_anova <- "ANOVA: "
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Mean: "
