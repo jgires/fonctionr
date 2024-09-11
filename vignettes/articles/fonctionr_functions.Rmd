@@ -26,7 +26,7 @@ Ce guide se structure de la manière suivante. Dans un premier temps on décrit 
 
 La plupart des fonctions de `fonctionr` permettent, à partir de données issues d'un sondage (complexe mais aussi simple), de produire une liste qui contient la plupart du temps ces trois éléments :
 
--   Un graphique qui permet la visualisation des indicateurs calculés avec leurs intervalles de confiance. Il s'agit d'un objet `ggplot2` qui peut donc aussi être modifié par la suite. Le graphique se veut suffisamment finalisé pour être directement utilisable dans une publication ;
+-   Un graphique qui permet la visualisation des indicateurs calculés avec leurs intervalles de confiance. Il s'agit d'un objet `ggplot2` qui peut donc être modifié par la suite. Ce graphique est suffisamment finalisé pour être directement utilisable dans une publication ;
 
 -   Un ou plusieurs dataframe qui reprennent les chiffres sur base desquels le graphique est construit. Ceux-ci reprennent généralement le nom de l'indicateur, sa valeur, les bornes d'intervalle de confiance, le nombre de personnes dans l'échantillon dans chaque catégorie, l'estimation du nombre de personnes dans la population dans chaque catégorie et les bornes de l'intervalle de confiance de cette estimation ;
 
@@ -38,7 +38,7 @@ Dans la suite de cette partie, nous passons les fonctions en revue en indiquant 
 
 ## `distrib_discrete()` : distribution d'une variable catégorielle
 
-`distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
+`distrib_discrete()`, avec `distrib_d()` comme alias, calcule la distribution (en proportions relatives) des différentes modalités d'une variables qualitative. Pour l'exemple, nous utilisons la base de données anonymisée de l'enquête SILC menée en Autriche en 2006, contenue dans le package `laeken`. Nous chargeons d'abord les données et recodons le statut socio-économiques (`pl030`) pour lui donner des labels intelligibles, utilisés dans la suite des exemples :
 
 ```{r}
 library(fonctionr)
@@ -94,7 +94,7 @@ eusilc_dist_d$test.stat
 
 ## `distrib_group_discrete()` : distribution d'une variable catégorielle par groupe
 
-`distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution (en pourcentages) des différentes modalités d'une variables qualitative selon les modalités d'une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
+`distrib_group_discrete()`, avec `distrib_group_d()` comme alias, calcule la distribution (en pourcentages) des différentes modalités d'une variables qualitative selon les modalités d'une autre variable qualitative, que l'on peut considérer comme des groupes. Par rapport aux autres fonctions, faute de représentation adéquate, les intervalles de confiance ne sont pas indiqués sur le graphique. Le graphique et le tableau contiennent aussi une modalité `Total` qui reprend l'estimation de la distribution des différentes modalités pour l'ensemble de la population de référence. Le test statistique repris est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (d'intérêt et de groupe) soient statistiquement indépendantes.
 
 L'exemple ci-dessous montre la distribution des fréquences des différents statuts socio-économiques (`pl030_rec`) selon la nationalité (`pb220a`).
 
@@ -140,14 +140,14 @@ eusilc_prop <- prop_group(
 eusilc_prop$graph
 ```
 
-Le graphique et le tableau contiennent une modalité `Total` qui reprend l'estimation de la proportion pour l'ensemble de la population de référence. Dans le dataframe `tab` produit, on trouve :
+Le graphique et le tableau contiennent aussi une modalité `Total` qui reprend l'estimation de la proportion pour l'ensemble de la population de référence. Dans le dataframe `tab` produit, on trouve :
 
 -   l'estimation du nombre de personnes dans la population pour lesquelles le critère de proportion est vérifié (`n_true_weighted`) accompagné de ses bornes inférieure (`n_true_weighted_low`) et supérieure (`n_true_weighted_upp`) de l'intervalle de confiance à un niveau de confiance de 95% ;
 -   le nombre total de personnes dans la population pour lesquelles les données sont valides[^2] (`n_tot_weighted`) accompagné de ses bornes inférieure (`n_tot_weighted_low`) et supérieure (`n_tot_weighted_upp`) de l'intervalle de confiance.
 
-[^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur `NA` et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans `n_tot_weighted,` de manière à ce que le ratio entre `n_true_weighted` et `n_tot_weighted` soit égal à `prop`.
+[^2]: Les personnes exclues, parce que, par exemple, la variable dichotomique prend une valeur `NA` et que l'on a décidé de ne pas les prendre en compte, ne sont pas reprises dans `n_tot_weighted,` de manière à ce que le ratio entre `n_true_weighted` et `n_tot_weighted` soit égal à `prop`. La question de l'exclusion de certaines personnes de l'échantillon est abordée en détail dans la section traitant des arguments clés.
 
-Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (les variables dichotomique *proportion vraie-fausse* et de groupe) soient statistiquement indépendantes .
+Le test statistique réalisé est celui du khi2 de Pearson avec l'ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse nulle le fait que les deux variables qualitatives (la variable dichotomique *proportion vraie-fausse* et la variable de groupe) soient statistiquement indépendantes .
 
 ```{r}
 eusilc_prop$tab
@@ -157,7 +157,7 @@ eusilc_prop$tab
 eusilc_prop$test.stat
 ```
 
-La fonction `prop_group()` permet également de différencier le calcul de proportion en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
+La fonction `prop_group()` permet également de différencier le calcul de proportions en différents sous-groupes au sein des groupes. Par exemple, l'opération ci-dessous procède au même calcul de la proportion des individus qui bénéficient d'une allocation de chômage par statut socio-économique, mais en différenciant les hommes et les femmes au sein de chacun de ces statuts. La variable de sous-groupe doit être indiquée dans l'argument `group.fill`. Pour des raisons de lisibilité, il n'y a pas de calcul de test statistique lorsque des sous-groupes sont définis.
 
 ```{r}
 eusilc_prop_sex <- prop_group(
@@ -182,7 +182,7 @@ eusilc_prop_sex$graph
 
 L'argument `type` est prédéfini pour les fonctions "alias". Il ne doit pas être utilisé par l'utilisateur s'il utilise les fonctions "alias". Pour indiquer la tendance centrale à calculer, l'utilisateur peut indiquer soit une variable quantitative, soit directement une expression (sans mentionner le dataframe et sans guillemet, à la manière du `tidyverse`) à partir de laquelle une nouvelle variable quantitative est calculée. L'exemple ci-dessous compare le revenu équivalent mensuel moyen (calculé avec l'expression `eqIncome / 12`) selon les différents statuts socio-économiques des personnes (`pl030_rec`). Le graphique et le tableau contiennent une modalité "Total" qui reprend l'estimation de tendance centrale pour l'ensemble de la population de référence.
 
-Pour `mean_group()`, le test statistique effectué est un test de Wald[^3]. Ce test est réalisé avec comme hypothèse nulle le fait que les coefficients d'une régression linéaire pour les modalités de la variable qualitative (les groupes) sur la variable quantitative soient nuls. Pour `median_group()`, le test statistique effectué est celui de Kruskal Wallis.
+Pour `mean_group()`, le test statistique effectué est un test de Wald, qui est un test équivalent à une analyse de variance (ANOVA) mais pour des données issues d'un sondage complex[^3]. Ce test est réalisé avec comme hypothèse nulle le fait que les coefficients d'une régression linéaire pour les modalités de la variable qualitative (les groupes) sur la variable quantitative soient nuls. Pour `median_group()`, le test statistique effectué est celui de Kruskal Wallis.
 
 [^3]: Voir : <https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r>
 
@@ -244,7 +244,7 @@ eusilc_many_mean$tab
 
 ## `many_val_group()` : calculer plusieurs indicateurs par groupe
 
-`many_val_group()` fonctionne comme `many_val()`, mais permet d'indiquer une variable qualitative de groupes : les résultats sont alors différenciés selon les différentes modalités de cette variable (= les groupes). Trois calculs sont possibles :
+`many_val_group()` fonctionne comme `many_val()`, mais permet d'indiquer une variable qualitative de groupes : les résultats sont alors différenciés selon les différentes modalités de cette variable (= les groupes). Ici aussi, aucun test statistique n'est effectué. Trois calculs sont possibles :
 
 -   La comparaison de proportions quand l'argument `type = "prop"` ou pour l'alias `many_prop_group()` ;
 -   La comparaison de moyennes quand l'argument `type = "mean"` ou pour l'alias `many_mean_group()` ;
@@ -292,7 +292,7 @@ distrib_age$graph
 distrib_age$tab
 ```
 
-L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
+L'objet `dens` reprend la densité calculée, et l'objet `quant` reprend les différents quantiles retenus. Dans cette fonction, il n'y a, pour le moment, pas de test statistique calculé <!--# A terme si => à changer à ce moment là -->.
 
 ```{r}
 head(distrib_age$dens)
@@ -304,7 +304,7 @@ distrib_age$quant
 
 ## `distrib_group_continuous()` : distribution d'une variable continue par groupe
 
-`distrib_group_continuous()`, avec `distrib_group_c()` comme alias, calcule la distribution d'une variables continue selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Comme pour `distrib_continous()`, la fonction produit une liste contenant un graphique (`graph`), une densité (`dens`), une table (`tab`), les quantiles retenus (`quant`). On trouve aussi une boite à moustache (`moustache`) qui indique les bornes dans lesquelles on trouve différentes proportions de la population autour de la médiane (par défaut : 50%, 75% et 95% - les proportions peuvent être paramétrées dans l'argument `moustache_probs`). Un test statistique est aussi implémenté. Comme pour `central_group()`, si l'utilisateur choisi de calculer la médiane (le choix par défaut), le test statistique effectué est celui de Kruskal Wallis ; s'il ou elle choisi de calculer la moyenne, test statistique effectué est un test de Wald.
+`distrib_group_continuous()`, avec `distrib_group_c()` comme alias, calcule la distribution d'une variables continue selon les modalités d'une variable qualitative, que l'on peut considérer comme des groupes. Comme pour `distrib_continous()`, la fonction produit une liste contenant un graphique (`graph`), une densité (`dens`), une table (`tab`), les quantiles retenus (`quant`). On trouve aussi une boite à moustache (`moustache`) qui indique les bornes dans lesquelles on trouve différentes proportions de la population autour de la médiane (par défaut : 50%, 75% et 95% - les proportions peuvent être paramétrées dans l'argument `moustache_probs`). Un test statistique est aussi implémenté. Comme pour `central_group()`, si l'utilisateur choisi de calculer la médiane (le choix par défaut), le test statistique effectué est celui de Kruskal Wallis ; s'il ou elle choisi de calculer la moyenne, test statistique effectué est un test de Wald. Les test effectués sont les mêmes que pour `central_group()`.
 
 L'exemple ci-dessous compare la distribution des revenus équivalents selon le statut socio-économique. Comme pour `central_group()`, il est possible d'utiliser une expression quantitative au lieu d'une variable. Ici, c'est le revenu équivalent annuel divisé par 12 qui est retenu pour qu'il soit exprimé en montant mensuel.
 
@@ -343,11 +343,13 @@ head(distrib_income$moustache)
 
 ## Tableau récapitulatif des arguments
 
-Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des arguments en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés (c'est-à-dire pas obligatoire mais ayant une influence sur les résultats) et les arguments esthétiques - qui influencent le graphique.
+Comme nous l'avons vu, la majorité des fonctions de `fonctionr` se ressemblent. La plupart des arguments se retrouvent dans plusieurs fonctions. Le tableau ci-dessous reprend la totalité des arguments en indiquant chaque fois pour quelle(s) fonction(s) il est utilisé. L'ordre repris est celui des fonctions et les couleurs regroupent les arguments selon leur "catégorie". Cette dernière a une visée pédagogique et regroupe ensemble des arguments dont le rôle est similaire. Dans la suite, nous aborderons successivement les arguments liés à la base de donnée utilisée, les arguments indispensables qui doivent obligatoirement être mentionnés, les arguments clés – c'est-à-dire pas obligatoires mais ayant une influence sur les résultats – et les arguments esthétiques – c'est-à-dire qui n'influencent que le graphique.
 
 ```{r, echo=FALSE}
 library(knitr)
 library(kableExtra)
+
+
 
 tableau_recap <- tibble::tribble(
   ~`Catégorie.d’argument`, ~Site,         ~type,      ~prop_group,           ~many_val_group,                 ~many_val,   ~central_group,          ~distrib_group_c,                   ~distrib_c, ~distrib_group_d,                ~distrib_d,
@@ -377,6 +379,7 @@ tableau_recap <- tibble::tribble(
            "Argument clé",    1L,      "string",               NA,                        NA,                        NA,               NA,                        NA,                           NA,      "na.rm.var",               "na.rm.var",
            "Argument clé",    1L,     "numeric",               NA,                        NA,                        NA,               NA,                        NA,                           NA,               NA,                   "probs",
            "Argument clé",    0L,     "numeric",               NA,                        NA,                        NA,               NA,                        NA, "to_delete mu A IMPLEMENTER",               NA,                        NA,
+           "Argument clé",    1L,     "logical",          "total",                   "total",                        NA,          "total",                        NA,                           NA,          "total",                        NA,
            "Argument clé",    1L,      "string",    "prop_method",             "prop_method",             "prop_method",               NA,                        NA,                           NA,    "prop_method",             "prop_method",
            "Argument clé",    1L,     "numeric",               NA,                        NA,                        NA,               NA,               "quantiles",                  "quantiles",               NA,                        NA,
            "Argument clé",    1L,     "numeric",               NA,                        NA,                        NA,               NA,         "moustache_probs",          "to_delete UTILE ?",               NA,                        NA,
@@ -399,7 +402,6 @@ tableau_recap <- tibble::tribble(
      "Esthétique de base",    1L,     "logical",         "show_n",                  "show_n",                  "show_n",         "show_n",       "to_delete UTILE ?",                     "show_n",               NA,                  "show_n",
      "Esthétique de base",    1L,     "logical",     "show_value",              "show_value",              "show_value",     "show_value",              "show_value",                 "show_value",     "show_value",              "show_value",
      "Esthétique de base",    1L,     "logical",      "show_labs",               "show_labs",               "show_labs",      "show_labs",               "show_labs",                  "show_labs",      "show_labs",               "show_labs",
-           "Argument clé",    1L,     "logical",          "total",                   "total",                        NA,          "total",                   "total",                           NA,               NA,                        NA,
      "Esthétique de base",    1L,      "string",     "total_name",              "total_name",                        NA,     "total_name",              "total_name",                           NA,               NA,                        NA,
      "Esthétique de base",    0L,      "string",               NA,                        NA,                        NA,               NA,                        NA,                           NA,               NA,                        NA,
    "Esthétique: chiffres",    1L,     "numeric",          "scale",                   "scale",                   "scale",               NA,                        NA,                           NA,          "scale",                   "scale",
@@ -426,8 +428,11 @@ tableau_recap <- tibble::tribble(
      "Esthétique: labels",    1L,      "string",     "legend_lab",              "legend_lab",                        NA,     "legend_lab", "to_delete A IMPLEMENTER",                           NA,     "legend_lab",                        NA,
      "Esthétique: labels",    1L,      "string",        "caption",                 "caption",                 "caption",        "caption",                 "caption",                    "caption",        "caption",                 "caption",
      "Esthétique: labels",    1L,      "string",           "lang", "to_delete A IMPLEMENTER", "to_delete A IMPLEMENTER",           "lang",                    "lang",    "to_delete A IMPLEMENTER",           "lang", "to_delete A IMPLEMENTER",
-  "Esthétique: graphique",    1L,      "string",          "theme",                   "theme",                   "theme",          "theme",                   "theme",                      "theme",          "theme",                   "theme"
+  "Esthétique: graphique",    1L,      "string",          "theme",                   "theme",                   "theme",          "theme",                   "theme",                      "theme",          "theme",                   "theme",
+                 "export",    0L,      "string",    "export_path",             "export_path",             "export_path",    "export_path",             "export_path",                "export_path",    "export_path",             "export_path"
   )
+
+
 
 del_to_empty <- function(x){
   x[stringr::str_detect(x, "to_delete")] <- ""
@@ -468,9 +473,9 @@ kbl() |>
 
 `data` est bien entendu un argument fondamental car il indique la base de donnée à utiliser. Comme l'objectif du package est de permettre une analyse des sondages complexes, il peut s'agir d'un objet `survey` ou d'un objet `srvyr`, qui contiennent les différentes informations sur le plan de sondage (poids, strates, PSU...). Il est possible que l'objet `survey` ou `srvyr` soit un objet avec avec des *replicate weights* pour utiliser les méthodes de rééchantillonnage pour estimer la variance d'échantillonnage.
 
-Il est également possible que `data` soit un dataframe. Dans ce cas, si aucune autre précision n'est apportée, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, `fonctionr` peut être utilisé pour l'analyse des sondages complexes mais aussi des sondages aléatoires simple. Mais `fonctionr` peut créer un objet de sondage complexe à partir d'un dataframe. Les arguments définissant le design de l'enquête (poids, strates, etc.) doivent alors être indiqués dans l'argument `…` (dot-dot-dot). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des *replicate weights*. Si l'ont veut intégrer des *replicates weights*, il est nécessaire de créer d'abord un objet `survey` ou `srvyr` et d'utiliser cet objet dans `fonctionr`.
+Il est également possible que `data` soit un dataframe. Dans ce cas, si aucune autre précision n'est apportée, les fonctions font l'hypothèse d'un sondage aléatoire simple. Ainsi, `fonctionr` peut être utilisé pour l'analyse des sondages complexes mais aussi des sondages aléatoires simples. Mais `fonctionr` peut aussi créer un objet de sondage complexe à partir d'un dataframe. Les arguments définissant le design de l'enquête (poids, strates, etc.) doivent alors être indiqués dans l'argument `…` (dot-dot-dot). Cette manière de procéder fonctionne pour les sondages complexes classiques mais pas pour les sondages complexes intégrant des *replicate weights*. Si l'ont veut intégrer des *replicates weights*, il est nécessaire de créer d'abord un objet `survey` ou `srvyr` et d'utiliser cet objet dans `fonctionr`.
 
-Les exemples ci-dessous montrent trois manière différentes de prendre en compte un même plan de sondage : en l'indiquant directement dans la fonction de `fonctionr`, en créant d'abord un objet `survey` et en créant d'abord un objet `srvyr`.
+Les exemples ci-dessous montrent trois manière différentes de prendre en compte un même plan de sondage : en l'indiquant directement dans la fonction de `fonctionr`, en créant au préalable un objet `survey` et en créant au préalable un objet `srvyr`.
 
 ```{r}
 library(survey)
@@ -516,15 +521,15 @@ eusilc_prop_1$graph | eusilc_prop_2$graph | eusilc_prop_3$graph
 
 ## Les arguments indispensables
 
-Les arguments indispensable sont des arguments qui sont nécessaire au bon fonctionnement des fonctions et qui ne peuvent prendre aucune valeur par défaut. Ces arguments sont principalement de différents types : variables qualitatives, expressions ou listes de variables. Les variables/colonnes sont toujours indiquées sans mentionner le dataframe et sans guillemet, à la manière du `tidyverse`.
+Les arguments indispensable sont des arguments qui sont nécessaires au bon fonctionnement des fonctions et qui ne peuvent prendre aucune valeur par défaut. Ces arguments sont principalement de différents types : variables qualitatives, expressions ou listes de variables. Les variables/colonnes sont toujours indiquées sans mentionner le dataframe et sans guillemet, à la manière du `tidyverse`.
 
 -   `group` et `quali_var` sont des variables qualitatives qui indiquent les groupes ou variables qualitative dont on veut calculer la distribution. Les variables indiquées pour ces arguments sont transformées en facteurs pour leur usage dans la fonction.
 
 -   `prop_exp` et `quanti_exp` sont des expressions qui permettent de calculer les proportions ou tendances centrales. Dans `fonctionr`, tous les arguments pouvant contenir une expression terminent par `_exp`. Ces arguments peuvent être des variables (une variable binaire 0-1 pour `prop_exp` et une variable numérique pour `quanti_exp`) ou une expression qui produit une variable (binaire pour `prop_exp` et quantitative pour `quanti_exp`). Ainsi, il n'est pas nécessaire de préparer à l'avance les variables binaire ou la quantitative, elles peuvent être calculées "à la volée". Précisons que seuls les variables de la base de données, les opérateurs et les valeurs numérique sont autorisés dans les expressions ; les objets extérieurs (par exemple un seuil contenu dans un vecteur stocké dans l'environnement global) ne sont pas autorisés.
 
--   `list_vars` doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions `many_val()` et `many_val_group()` ainsi que leurs alias. Pour `many_prop()` et `many_prop_group()`, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour `many_mean()`, `many_mean_group()`, `many_median()` et `many_median_group()`, les variables doivent être numériques. L'argument `list_vars_lab` permet d'indiquer le label pour les variables à l'aide d'un vecteur. Bien qu'il ne s'agisse pas d'un argument indispensable, nous l'avons placé juste après `list_vars` pour faciliter l'utilisation des fonctions. Pour cet argument, les guillemets doivent être utilisé pour indiquer les labels des variables.
+-   `list_vars` doit être un vecteur reprenant l'ensemble des variables reprises dans les fonctions `many_val()` et `many_val_group()` ainsi que leurs alias. Pour `many_prop()` et `many_prop_group()`, les variables doivent être binaires (il aurait été trop compliqué d'introduire ici des expressions) et pour `many_mean()`, `many_mean_group()`, `many_median()` et `many_median_group()`, les variables doivent être numériques. L'argument `list_vars_lab` permet d'indiquer le label pour les variables à l'aide d'un vecteur. Bien qu'il ne s'agisse pas d'un argument indispensable, nous l'avons placé juste après `list_vars` pour faciliter l'utilisation des fonctions. Pour `list_vars_lab`, les guillemets doivent être utilisé pour indiquer les labels des variables.
 
-Dans l'exemple ci-dessous, on calcule la proportion des répondant qui travaillent et dont le salaire net annuel était inférieur à 12000€. On peut ainsi introduire des expressions complexe dans les fonctions.
+Dans l'exemple ci-dessous, on calcule selon le sexe la proportion des répondants qui travaillent et dont le salaire net annuel était inférieur à 12000€. On peut ainsi introduire des expressions complexes dans les fonctions.
 
 ```{r}
 eusilc_prop_NA_excl <- prop_group(
@@ -543,9 +548,9 @@ eusilc_prop_NA_excl$graph
 
 ## Les arguments clés : pas obligatoires mais influençant les résultats
 
-Les arguments clés sont des arguments qui ne sont pas indispensable mais qui influencent les résultats. On y retrouve plusieurs types d'arguments.
+Les arguments clés sont des arguments qui ne sont pas indispensables mais qui influencent les résultats. On y retrouve plusieurs types d'arguments.
 
--   `group.fill` permet d'indiquer une variable de sous-groupes pour différencier les résultats plus finement. Cet argument n'est que disponible dans `prop_group()` et `central_group()`. Dans l'exemple ci-dessous, on compare les revenus moyens par statut socio-économique et sexe.
+-   `group.fill` permet d'indiquer une variable de sous-groupes pour différencier les résultats plus finement. Cet argument n'est que disponible dans `prop_group()` et `central_group()`. Comme `group` et `quali_var`, la variable indiquée pour `group.fill` est transformée en facteur pour son usage dans la fonction. Dans l'exemple ci-dessous, on compare les revenus moyens par statut socio-économique et sexe.
 
     ```{r}
     eusilc_income_status_sex <- mean_group(
@@ -564,7 +569,7 @@ Les arguments clés sont des arguments qui ne sont pas indispensable mais qui in
 
     ```
 
--   `facet` permet d'indiquer une variable qualitative pour différencier les résultats selon les différentes modalités de cette variable, dans le graphique `ggplot2` et le dataframe de résultat `tab`. Dans le graphique, elle produit des "facettes", d'où le nom de l'argument. Comme `group` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on calcule la distribution des différents statuts socio-économiques par région (indiquée comme variable de facettes) :
+-   `facet` permet d'indiquer une variable qualitative pour différencier les résultats selon les différentes modalités de cette variable, dans le graphique `ggplot2` et le dataframe de résultat `tab`. Dans le graphique, elle produit des "facettes", d'où le nom de l'argument. Comme `group`, `group.fill` et `quali_var`, la variable indiquée pour cet argument est transformée en facteur pour leur usage dans la fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on calcule la distribution des différents statuts socio-économiques par région (indiquée comme variable de facettes) :
 
 ```{r}
 # Computation, taking sample design into account
@@ -583,9 +588,11 @@ eusilc_dist_d <- distrib_d(
 eusilc_dist_d$graph
 ```
 
--   `filter_exp` est une expression qui permet de filtrer les données de manière à produire les résultats sur une partie de l'échantillon. Comme il s'agit d'une expression, il est possible de mettre en oeuvre des conditions de filtres complexe et multiples, par exemple sélectionner uniquement les personnes âgées de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Si une possibilité de filtrage est inclue dans les fonctions, c'est pour que le filtrage des données soit réalisé après la définition du plan de sondage, afin que le filtrage ne modifie pas celui-ci[^4]. Ici aussi, seules les variables de la base de données, les opérateurs et les valeurs numérique sont autorisés dans les expressions.
+-   `filter_exp` est une expression qui permet de filtrer les données de manière à produire les résultats sur une partie de l'échantillon. Comme il s'agit d'une expression, il est possible de mettre en oeuvre des conditions de filtres complexe et multiple, par exemple sélectionner uniquement les personnes âgées de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Si une possibilité de filtrage est inclue dans les fonctions, c'est pour que le filtrage des données soit réalisé après la définition du plan de sondage, afin que le filtrage ne modifie pas celui-ci comme le recommande Thomas Lumley, l'auteur de `survey`[^4]. Ici aussi, seules les variables de la base de données, les opérateurs et les valeurs numérique sont autorisés dans les expressions.
 
--   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans l'argument method de `svyciprop()` du package `survey`[^5]. Par défaut, c'est la méthode `"beta"` qui est utilisée.
+-   `total` est un argument qui permet de calculer l'indicateur ou la distribution de la variable pour le total, et pas uniquement pour les groupes. Cela permet de comparer non seulement les groupes entre-eux, mais aussi à l'ensemble de la population. Cet argument n'est disponible que pour `prop_group()`, `central_group()`, `distrib_group_d()` et `many_val_group()`, et leurs alias. Par défaut le total s'affiche (`total = TRUE`). Il s'agit d'un argument clé et pas uniquement d'un argument esthétique, car la présence du total dans `tab` et dans l'export Excell dépend de la valeur prise par cet argument.
+
+-   `prop_method` est un argument qui permet de choisir le type de correction pour l'estimation des intervalles de confiance d'une proportion, notamment pour éviter d'avoir des bornes inférieures à 0 ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans l'argument `method` de `svyciprop()` du package `survey`[^5]. Par défaut, c'est la méthode `"beta"` qui est utilisée. Précisons que cette correction ne s'applique qu'aux intervalles de confiance des proportions et pas aux intervalles de confiance des estimations du nombre de personnes dans la population, qui se retrouvent dans `tab`.
 
 -   `quantiles` est un argument qui permet de choisir, sous forme d'un vecteur, les quantiles à calculer et à indiquer sur le graphique dans `distrib_continuous()` et `distrib_group_continuous()`. Par défaut, ce sont des déciles qui sont calculés.
 
@@ -595,9 +602,9 @@ eusilc_dist_d$graph
 
 ### Le traitement des `NA`
 
-Nous expliquons ici plus précisément le traitement des `NA` dans les fonctions, car les possibilités sont multiples. Nous avons décidé de laisser des possibilités différentes selon les variables dans lesquelles se trouvent les `NA` : groupes, variables d'intérêts, expressions, etc.
+Nous expliquons ici plus précisément le traitement des `NA` dans les fonctions, car cette question est complexe. Nous avons décidé de laisser des possibilités différentes selon les variables dans lesquelles se trouvent les `NA` : groupes, variables d'intérêts, expressions, etc.
 
--   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés dans les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses. Actuellement, `na.rm.group` influence le traitement des NA, tant pour la variable `group` que la variable `group.fill`.
+-   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement la manière dont les éventuels `NA` dans les variables `group`, `facet` et dans `quali_var` sont traités. Si l'argument est `TRUE`, les `NA` sont retirés dans les calculs. Si l'argument est `FALSE`, une modalité spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours la couleur gris clair sur le graphique, pour pointer leur spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour calculer le total, le cas échéant. Par défaut, l'argument prend la valeur `FALSE`, c'est-à-dire que les `NA` sont supprimés des analyses. Actuellement, `na.rm.group` influence le traitement des NA, tant pour la variable `group` que la variable `group.fill`, si cette dernière est présente.
 
 Dans l'exemple ci-dessous, on compare la distribution des statuts socio-professionnels entre régions, en y ajoutant une modalité `NA` pour le statut (il s'agit des personnes de moins de 16 ans qui ne sont pas interrogées), en filtrant les données pour ne conserver que les personnes de plus de 11 ans et introduisant la variable sexe comme facette. Comme nous le verrons, la couleur des `NA` est toujours grise et ne dépend pas de la palette de couleur, de manière à les identifier spécifiquement.
 
@@ -619,9 +626,9 @@ eusilc_dist_group_d <- distrib_group_d(
 eusilc_dist_group_d$graph
 ```
 
--   `na.prop` indique la manière dont les éventuels `NA` sont traités dans les variables introduites dans `prop_exp`. Si l'argument prend la valeur `"rm"`, tous les `NA` présents dans au moins une des variable faisant partie de `prop_exp` sont exclus avant de procéder aux calculs. De cette manière, la proportion est calculée uniquement sur les observations "valides". Dans ce cas, pour des raisons évidentes, il n'est pas possible d'utiliser la fonction `is.na()` dans `prop_exp` (on ne peut pas calculer la proportion de personnes dont le statut professionnel est `NA` si on a supprimé les `NA`). Si l'argument prend la valeur `"include"`, les `NA` ne sont pas retirés avant de procéder aux calculs et la proportion est calculée sur l'ensemble des observations, `NA` compris. Cela peut être utile quand les `NA` n'indiquent pas une valeur manquante mais une situation spécifique. Par exemple, dans une variable mesurant les points obtenu par des étudiants à un examen, le `NA` peut indiquer que l'étudiant était absent ; on peut donc vouloir calculer la proportion d'étudiants ayant au moins 12/20 en conservant les absents au dénominateur, ce qui est possible avec `na.prop = "include"`. Par défaut, `na.prop` prend la valeur `"rm"`. Précisons que pour `central_group()` et ses alias `mean_group()` et `median_group()`, il n'y a pas d'argument permettant de choisir le traitement des `NA` dans `quanti_exp`. Les observations comprenant au moins un `NA` dans une variable indiquée dans `quanti_exp` sont automatiquement exclues des calculs, car il n'y a pas d'autres possibilité qui soit pertinente.
+-   `na.prop` indique la manière dont les éventuels `NA` sont traités dans les variables introduites dans `prop_exp`. Si l'argument prend la valeur `"rm"`, tous les `NA` présents dans au moins une des variable faisant partie de `prop_exp` sont exclus avant de procéder aux calculs. De cette manière, la proportion est calculée uniquement sur les observations "valides". Dans ce cas, pour des raisons évidentes, il n'est pas possible d'utiliser la fonction `is.na()` dans `prop_exp` (on ne peut pas calculer la proportion de personnes dont le statut professionnel est `NA` si on a supprimé les `NA`). Si l'argument prend la valeur `"include"`, les `NA` ne sont pas retirés avant de procéder aux calculs et la proportion est calculée sur l'ensemble des observations, `NA` compris. Cela peut être utile quand les `NA` n'indiquent pas une valeur manquante mais une situation spécifique. Par exemple, dans une variable mesurant les points obtenu par des étudiants à un examen, le `NA` peut indiquer que l'étudiant était absent ; on peut donc vouloir calculer la proportion d'étudiants ayant au moins 12/20 en conservant les absents au dénominateur, ce qui est possible avec `na.prop = "include"`. Par défaut, `na.prop` prend la valeur `"rm"`. Précisons que pour `central_group()` et ses alias `mean_group()` et `median_group()`, il n'y a pas d'argument permettant de choisir le traitement des `NA` dans `quanti_exp`. Les observations comprenant au moins un `NA` dans une variable indiquée dans `quanti_exp` sont automatiquement exclues des calculs, car il n'y a pas d'autre possibilité qui soit pertinente.
 
-Les deux graphiques ci-dessous comparent la part de travailleurs selon le sexe en excluant ou en incluant les `NA`. Les taux du second graphique sont plus faible, car dans celui-ci les personnes n'ayant pas de statut socio-professionnel (ex. les enfants) sont comptabilisés dans le dénominateur.
+Les deux graphiques ci-dessous comparent la part de travailleurs selon le sexe en excluant ou en incluant les `NA`. Les taux du second graphique sont plus faible, car dans celui-ci les personnes n'ayant pas de statut socio-professionnel (c'est-à-dire les enfants) sont comptabilisées dans le dénominateur.
 
 ```{r}
 eusilc_prop_NA_excl <- prop_group(
@@ -647,17 +654,17 @@ eusilc_prop_NA_incl <- prop_group(
 eusilc_prop_NA_excl$graph | eusilc_prop_NA_incl$graph
 ```
 
--   `na.vars` indique la manière dont les `NA` doivent être traités dans les différentes variables de `many_val()` et `many_val_group()`. Si l'argument prend la valeur `"rm"`, les `NA` sont exclus séparément dans chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculées, mais on conserve un maximum d'observations. Si l'argument prend la valeur `"rm.all"`, les observations qui comprennent au moins un `NA` dans n'importe quelle des variables de `list_vars` sont exclues. Cette manière de procéder exclut plus d'observations mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut, `na.vars` prend la valeur `"rm"`. <!--# François : Je me demande s'il ne faut pas mettre un exemple sur na.vars ici, mais je n'en vois pas de bien à partir du jeu de données SILC Autriche -->
+-   `na.vars` indique la manière dont les `NA` doivent être traités dans les différentes variables de `many_val()` et `many_val_group()`. Si l'argument prend la valeur `"rm"`, les `NA` sont exclus séparément pour chaque variable. Il en résulte que l'échantillon ne sera pas toujours le même pour chacune des variables calculées, mais on conserve un maximum d'observations. Si l'argument prend la valeur `"rm.all"`, les observations qui comprennent au moins un `NA` dans n'importe quelle des variables de `list_vars` sont exclues. Cette manière de procéder exclut plus d'observations mais permet d'avoir un échantillon identique pour toutes les variables. Par défaut, `na.vars` prend la valeur `"rm"`. <!--# François : Je me demande s'il ne faut pas mettre un exemple sur na.vars ici, mais je n'en vois pas de bien à partir du jeu de données SILC Autriche -->
 
 ## Les arguments esthétiques
 
-Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogique, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d'esthétique des chiffres, d'esthétique des lettres et les labels.
+Les arguments esthétiques sont des arguments qui affectent uniquement le graphique produit et pas la table, ni le test statistique. Pour des raisons pédagogiques, nous aborderons successivement les arguments d'esthétique de base, d'esthétique graphique, d'esthétique des chiffres, d'esthétique des lettres et les labels. Aucun de ces arguments n'est obligatoire.
 
 ### L'esthétique de base
 
--   `reorder` est un argument qui, en prenant la valeur `TRUE`, permet de réordonner les catégories selon leur valeur décroissante. Si `reorder = FALSE`, les catégories ne sont pas réordonnées et c'est l'ordre des *levels* de la variable qui est utilisé si c'est un facteur, ou l'ordre alphabétique si c'est une variable string. La catégorie `NA` - quand elle existe (par exemple avec `na.rm.group = FALSE`) - et la catégorie "Total" ne sont jamais réordonnées et sont toujours positionnées dans le bas du graphique. En cas de facettes, les catégories sont réordonnées sur base de chaque catégorie médiane. Par exemple, si l'on utilise des facettes dans `prop_group()`, la fonction identifie, pour chaque groupe, quelle est la proportion médiane par groupe et puis elle va ordonner les groupes sur bases de ces médianes. Par défaut, `reorder` prend la valeur de `FALSE`. `reorder` n'est pas disponible dans `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias (`many_prop_group()`, `many_mean_group()` et `many_median_group()`), car il y a plusieurs proportions ou indicateurs et il est difficile de choisir sur lequel ou laquelle réordonner.
+-   `reorder` est un argument qui, en prenant la valeur `TRUE`, permet de réordonner les catégories selon leur valeur décroissante. Si `reorder = FALSE`, les catégories ne sont pas réordonnées et c'est l'ordre des *levels* de la variable qui est utilisé si c'est un facteur, ou l'ordre alphabétique si c'est une variable string. La catégorie `NA` – quand elle existe (par exemple avec `na.rm.group = FALSE`) – et la catégorie "Total" ne sont jamais réordonnées et sont toujours positionnées dans le bas du graphique. En cas de facettes, les catégories sont réordonnées sur base de chaque catégorie médiane. Par exemple, si l'on utilise des facettes dans `prop_group()`, la fonction identifie, pour chaque groupe, quelle est la proportion médiane par groupe et puis elle va ordonner les groupes sur bases de ces médianes. Par défaut, `reorder` prend la valeur de `FALSE`. `reorder` n'est pas disponible dans `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias (`many_prop_group()`, `many_mean_group()` et `many_median_group()`), car il y a plusieurs proportions ou indicateurs et il est difficile de choisir sur laquelle ou lequel réordonner.
 
-Dans l'exemple ci-dessous, les revenus moyens des statut socio-économique sont réordonnés. Comme il y a des facettes, c'est le médian de chaque catégorie qui est utilisée pour construire. Par exemple, la catégorie "Permanently disabled" se situe en troisième position, car sa valeur médiane (15199€) se entre entre le médian de la catégorie "Student" (15097€) et de la catégorie "Working part time" (16511€).
+Dans l'exemple ci-dessous, les revenus moyens des statuts socio-économiques sont réordonnés. Comme il y a des facettes, c'est le médian de chaque catégorie (ici statut) qui est utilisée pour construire l'ordre. Par exemple, la catégorie "Permanently disabled" se situe en troisième position, car sa valeur médiane (15199€) se situe entre le médian de la catégorie "Student" (15097€) et de la catégorie "Working part time" (16511€).
 
 ```{r}
 eusilc_mean_reorder <- mean_group(
@@ -719,7 +726,7 @@ eusilc_many_mean_group_2a$graph | eusilc_many_mean_group_2b$graph
 
 Faute de représentation graphique adéquate, `show_ci` n'est pas un argument de la fonction `distrib_group_discrete()`. Pour cette fonction, il est pas possible de représenter les intervalles de confiance sur le graphique, mais ils sont bien calculé dans le dataframe `tab`. C'est aussi le cas pour `many_val_group()` et ses alias quand `position = "stack"`. Précisons aussi que dans `distrib_group_discrete()`, seules les valeurs supérieures à 2% sont indiquées sur le graphique pour des raisons de lisibilité. Pour `distrib_continuous()` l'argument `show_n` indique les effectifs de l'échantillon pour chaque quantile.
 
--   `total_name` indique le nom qui doit être mentionné à côté du résulat du total dans le graphique. Par défaut, il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique.
+-   `total_name` indique le nom qui doit être mentionné à côté du résultat du total dans le graphique. Par défaut, quand `lang = "fr"` (voir ci-dessous), il s'agit de "Total", mais l'utilisateur peut indiquer autre chose de plus spécifique, par exemple "Belgique", "Population active totale", etc.
 
 Dans l'exemple ci-dessous, on ne montre plus les intervalles de confiances, les valeurs de l'indicateur et les labels des titres, par contre on montre le nombre de personnes dans l'échantillon et on a changé le nom du "Total".
 
@@ -750,13 +757,13 @@ Certains arguments sont spécifiques aux fonctions `distrib_continous()` et `dis
 -   D'autres arguments de type `show_*` sont spécifiques à ces deux fonctions. C'est le cas de `show_mid_line`, `show_ci_lines`, `show_ci_area`, `show_quant_lines` qui se retrouvent dans les deux fonctions de distribution continue et `show_mid_point`, `show_ci_errorbar` et `show_moustache` qui sont spécifiques à `distrib_group_continuous()`.
 
     -   `show_mid_point` et `show_mid_line` permettent de montrer la valeur centrale, médiane ou moyenne, sous la forme d'un point ou d'une ligne.
-    -   `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur de lignes en pointillée ou d'une aire colorée.
+    -   `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de montrer l'intervalle de confiance de la valeur centrale sous la forme d'une barre d'erreur, de lignes en pointillé, ou d'une aire colorée.
     -   `show_quant_lines` permet de tracer des lignes pour les valeurs des quantiles sur le graphique.
     -   `show_moustache` permet de montrer la boite à moustache.
 
 Par défaut, `distrib_continuous()` indique la la valeur centrale par une ligne et ses intervalles de confiance par des lignes pointillées et ne trace pas de ligne pour les quantiles. Par défaut, `distrib_group_continuous()` indique les valeurs centrales par des points et leurs intervalles de confiance par des barres d'erreurs, et ne dessine pas d'autres éléments que la moustache sur le graphique .
 
-Dans l'exemple ci-dessous, nous comparons les revenus du travail des travailleurs à temps partiel selon la région, en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales. `resolution` étant plus faible, on peut déceler les droites qui composent les courbes de densité. `limits` permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui contient la grande majorité des observations. `height` a été défini pour que les aires de densité se chevauchent. Pour que ce chevauchement soit esthétique, `alpha` a été réglé à `.3` pour des aires transparentes et une bordure a été ajoutée avec `color = black`. On a indiqué la médiane sous la forme d'une ligne. Ses intervalles de confiance sont indiqués par deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que le revenu du travail mensuel est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
+Dans l'exemple ci-dessous, nous comparons les revenus du travail des travailleurs à temps partiel selon la région, en modifiant de nombreuses options graphiques. `bw` étant plus faible, la distribution est moins lissée et on peut y observer des variations de densités plus locales. `resolution` étant plus faible, on peut déceler les droites qui composent les courbes de densité. `limits` permet de se concentrer sur la plage de valeur (de -500€ à 3000€) qui contient la grande majorité des observations. `height` a été défini pour que les aires de densité se chevauchent. Pour que ce chevauchement soit esthétique, `alpha` a été réglé à `.3` pour des aires transparentes et une bordure a été ajoutée avec `color = black` – ces deux arguments seront détaillés plus bas. On a indiqué la médiane sous la forme d'une ligne. Ses intervalles de confiance sont indiqués par deux lignes en pointillées et une aire colorées. Les déciles sont indiqués par des lignes verticales grises et on a masqué la moustache. Notez que le revenu du travail mensuel est directement calculé dans l'expression en additionnant le salaire avec le revenu d'une activité indépendante avant de diviser le tout par 12.
 
 ```{r}
 distrib_income_2 <- distrib_group_c(
@@ -794,15 +801,15 @@ Les couleurs des barres sont indiquées dans l'argument `pal`.
 
 -   Dans les graphiques monochrome, `pal` peut prendre la valeur d'une couleur de base de R ou d'un code couleur hexadécimal. C'est le cas pour `distrib_discrete()`, `prop_group()` et `central_group()` quand il n'y a pas de `group.fill`.
 
--   Dans les graphiques avec une palette de couleurs différentes, `pal` doit prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. C'est le cas de `distrib_group_``discrete``()`, `many_val_group()`, et de `prop_group()` et `central_group()` quand il y a un `group.fill`.
+-   Dans les graphiques avec une palette de couleurs différentes, `pal` doit prendre le nom d'une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols` (sauf pour la distribution d'une variable quantitative, voir ci-dessous). L'argument `direction` permet d'inverser le sens de la palette, en remplaçant le `1`, par défaut, par `-1` pour avoir le sens opposé. C'est le cas de `distrib_group_discrete()`, `many_val_group()`, et de `prop_group()` et `central_group()` quand il y a un `group.fill`.
 
--   Dans `many_val()` et ses alias, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. Cela permet de choisir de produire un graphique monochrome, ou un graphique qui différencie chromatiquement chaque variable.0
+-   Dans `many_val()` et ses alias, on peut indiquer dans `pal` soit une couleur unique, soit une palette des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`. Cela permet de choisir de produire un graphique monochrome, ou un graphique qui différencie chromatiquement chaque variable.
 
--   Les couleurs des `NA` et des totaux, quand ils sont présents, ne sont pas modifiables directement par l'utilisateur. La modalité `NA` est toujours grise (`grey`). Le total est coloré de deux manière selon qu'il existe un seul total (dans les graphiques monochromes comme `prop_group()` et `central_group()` quand il n'y a pas d'argument `group.fill`) ou qu'il existe des totaux différents pour chaque modalité ou variable (dans les graphique avec palette de couleur, comme `distrib_group_d()`, de `prop_group()` et `central_group()` quand il y a un argument `group.fill`). Dans le premier cas, la couleur est gris foncé (`grey40`). Dans le second cas, chaque total a une couleur de remplissage identique à la couleur de sa modalité ou variable, mais plus claire et a une couleur de bordure identique à sa couleur de modalité ou variable.
+-   Les couleurs des `NA` et des totaux, quand ils sont présents, ne sont pas modifiables directement par l'utilisateur. La modalité `NA` est toujours grise (`grey`). Le total est coloré de deux manière selon qu'il existe un seul total (dans les graphiques monochromes comme `prop_group()` et `central_group()` quand il n'y a pas d'argument `group.fill`) ou qu'il existe des totaux différents pour chaque modalité ou variable (dans les graphiques avec palette de couleur, comme `distrib_group_d()`, `many_val_group()`, de `prop_group()` et `central_group()` quand il y a un argument `group.fill`). Dans le premier cas, la couleur est gris foncé (`grey40`). Dans le second cas, chaque total a une bordure de la couleur de sa modalité ou variable et a une couleur de remplissage identique mais plus claire.
 
--   Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter la confusion des graphiques.
+-   Par défaut, des couleurs ou des palettes de couleurs différentes ont été choisies pour chacune des fonctions, y compris les alias, pour éviter une confusion entre graphiques différents.
 
-Dans l'exemple ci-dessous, on compare deux grpahiques issus de `prop_group()` : l'un avec l'argument `group.fill`, et l'autre sans. On calcule la proportion de travailleurs à temps partiel selon la nationalité. Dans le premier graphique, on différencie les proportions selon le sexe; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols` a été indiquée). En outre, dans ce premier graphique, les barres sont plus fines (`dodge` prend une valeur de 0.7). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`. On remarque aussi comment les totaux sont représentés différemment.
+Dans l'exemple ci-dessous, on compare deux graphiques issus de `prop_group()` : l'un avec l'argument `group.fill`, et l'autre sans. On calcule la proportion de travailleurs à temps partiel selon la nationalité. Dans le premier graphique, on différencie les proportions selon le sexe; `pal` prend alors le nom d'une palette (ici `"Neon"` de `PrettyCols` a été indiquée). En outre, dans ce premier graphique, les barres sont plus fines (`dodge` prend une valeur de 0.7). Dans le deuxième, il n'y a pas de sous-groupes. `pal` n'a alors besoin que d'une unique couleur, et on a indiqué la couleur de base de R `"gold"`. On remarque aussi les deux manières différentes dont les totaux sont représentés.
 
 ```{r}
 # Avec sous-groupes
@@ -860,9 +867,9 @@ distrib_age_2$graph
 
 ### L'esthétique des chiffres
 
-L'esthétique des chiffres concernent la manière dont l'estimation de l'indicateur est affichée sur le graphique. Ainsi, ces argument n'ont une utilité que si `show_value = TRUE`.
+L'esthétique des chiffres concernent la manière dont l'estimation de l'indicateur est affichée sur le graphique. Ainsi, ces arguments n'ont une utilité que si `show_value = TRUE`.
 
--   `scale` est un argument qui n'est utilisé que dans les graphique exprimant des proportion. Il indique le dénominateur par lequel il faut interpréter le chiffre. Par défaut, `scale = 100` pour interpréter les chiffres mentionnés en pourcentage. Par exemple on peut donner une valeur de `1000` pour interpréter les chiffres en pour mille ou une valeur de `1` pour interpréter les chiffres comme de simple proportions.
+-   `scale` est un argument qui n'est utilisé que dans les graphique exprimant des proportion. Il indique le dénominateur par lequel il faut interpréter le chiffre. Par défaut, `scale = 100` pour interpréter les chiffres mentionnés en pourcentage. On peut donner par exemple une valeur de `1000` pour interpréter les chiffres en pour mille ou une valeur de `1` pour interpréter les chiffres comme de simple proportions.
 
 -   `digits` indique le nombre de décimales qui doivent être affichées pour les valeurs sur le graphique. Par défaut, `digit = 0`, ce qui conduit à ne pas afficher de décimales.
 
@@ -895,23 +902,27 @@ eusilc_prop$graph
 
 -   `font` indique la police qui est utilisée pour l'ensemble du texte dans le graphique. Plusieurs polices sont directement incluses dans `fonctionr` afin qu'elles soient utilisables sur tous les systèmes. Pour prendre connaissance des polices disponibles, voir `load_and_active_fonts()`.
 
--   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()`, `many_val_group()` et ses alias et `prop_group()` lorsqu'on définit des sous-groupes. Précisons aussi que le `_y` renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
+-   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères avant d'aller à la ligne, pour respectivement les différent labels de l'axe des ordonnées et les différents labels de la légende. Ces valeurs sont par défaut de 25 caractères. `wrap_width_leg` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()`, `many_val_group()` et ses alias et `prop_group()` et `central_group()` quand il y a un argument `group.fill`). Précisons aussi que le `_y` renvoie à l'axe des y tel qu'il est situé sur le graphique, après la transformation `coord_flip()` qui a lieu dans les fonctions. Ainsi, il s'agit souvent des groupes, de la variable qualitative pour `distrib_discrete()` ou de la liste des variables pour `many_val()` et `many_val_group(`) et leurs alias.
 
--   `legend_ncol` indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. `legend_ncol` n'est aussi présent que pour les graphiques ayant une légende : `distrib_group_discrete(`) et `many_val_group()` et ses alias et `prop_group()` lorsqu'on définit des sous-groupes.
+-   `legend_ncol` indique le nombre maximum de colonnes dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans la légende s'ajuste au nombre maximum de colonnes. Comme `wrap_width_leg` , `legend_ncol` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete(`) et `many_val_group()` et ses alias et `prop_group()` et `central_group()` quand il y a un argument `group.fill`.
 
 ### Les labels
 
 Les arguments de label ne sont utilisés que si `show_lab = TRUE`, qui est la valeur par défaut. Si `show_lab = FALSE`, aucun des labels ci-dessous n'est indiqué.
 
--   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption` indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que `xlab` et `ylab` font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation `coord_flip()` qui a lieu dans les fonctions. `legend_lab` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias et `prop_group()` lorsqu'on définit des sous-groupes. Le *caption* étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'utilisation de l'argument `caption` ajoute un texte en dessous de la mention de la p valeur du test statistique.
+-   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption` indiquent les textes à reprendre comme titre du graphique, sous-titre du graphique, titre de l'axe des abscisses, titre de l'axe des ordonnées, titre de la légende et de *caption* (la petite légende en bas à droite du graphique). Précisons que `xlab` et `ylab` font référence aux axes tels qu'ils sont situés sur le graphique, c'est-à-dire après la transformation `coord_flip()` qui a lieu dans les fonctions. `legend_lab` n'est présent que pour les graphiques ayant une légende : `distrib_group_discrete()` et `many_val_group()` ainsi que ses alias et `prop_group()` et `central_group()` quand il y a un argument `group.fill`. Le *caption* étant souvent déjà utilisé pour indiquer la p valeur du test statistique, l'argument `caption` ajoute un texte en dessous de la mention de la p valeur du test statistique.
 
 -   Dans le cas où les arguments de label ne sont pas renseignés par l'utilisateur, il n'y a pas de titre, pas de sous-titre et pas de *caption* (autre que la p valeur du test statistique). Par contre, `xlab`, `ylab` et, pour les graphiques avec légende, `legend_lab` indiquent par défaut les noms de la variable ou de l'expression qui est, pour `xlab`, précédé d'une précision sur la nature du calcul : "Moyenne : ...", "Distribution : ..."
 
 -   Il est possible d'indiquer certains label et d'autres non, par exemple si l'on souhaite un titre mais pas de sous-titre. Il suffit de ne compléter que les arguments de labels que l'on souhaite voir écrits sur le graphique. Cependant, pour `xlab`, `ylab` et `legend_lab`, le label par défaut, basé sur le nom des variables, est alors écrit sur le graphique. Si l'on souhaite avoir un label vide, il faut indiquer, respectivement, `xlab = ""`, `ylab =""` ou `legend_lab = ""`. L'utilisation de `xlab = NULL`, `ylab = NULL` ou `legend_lab = NULL` conduira à l'écriture du label par défaut.
 
--   Comme argument de label, on peut aussi mentionner l'argument `lists_vars_lab` que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label.
+-   On peut aussi mentionner l'argument `lists_vars_lab` que l'on a déjà expliqué plus haut et qui peut être aussi considéré comme un label.
 
-Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende. On a également introduit manuellement les titres, sous-titres, *caption* et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées.
+-   L'argument `lang` permet de déterminer la langue des textes automatiques. Trois valeurs sont possibles : `lang = "fr"` pour le français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour l'anglais. Par défaut, c'est le français qui est utilisé.
+
+-   L'argument `theme`, qui est un argument d'esthétique graphique plutôt que de label, permet de modifier le thème du graphique. Le thème de base (`theme = NULL`) est celui qu'on retrouve dans tous les graphiques dans ce document, mais le thème IWEPS (`theme = "IWEPS"`) permet d'ajouter un axe gradué pour les ordonnées.
+
+Dans l'exemple ci-dessous, on a changé la police (Montserrat), on a mis à la ligne les labels de l'ordonnée à partir de 10 caractères et ceux de la légende à partir de 15 caractères et on a limité à trois colonnes pour la légende. On a également introduit manuellement les titres, sous-titres, *caption* et titre de légende, en conservant le label par défaut pour le titre de l'axe des abscisses et en n'ayant pas de titre pour l'axe des ordonnées. La langue des textes automatiques est le néerlandais et l'on a tracé l'axe des ordonnées (`theme = "IWEPS"`).
 
 ```{r}
 eusilc_dist_group_d <- distrib_group_d(
@@ -927,7 +938,9 @@ eusilc_dist_group_d <- distrib_group_d(
   subtitle = "Example with austrian SILC data from 'laeken' package",
   ylab = "",
   legend_lab = "Status",
-  caption = "Source : EU-SILC"
+  caption = "Bron : EU-SILC",
+  lang = "nl",
+  theme = "IWEPS"
 )
 ```
 

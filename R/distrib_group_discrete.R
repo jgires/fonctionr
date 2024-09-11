@@ -11,10 +11,10 @@
 #' @param na.rm.group TRUE if you want to remove the NAs in quali_var, group and facet. FALSE if you want to create NA categories for quali_var, group and facet. Default is TRUE.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA value for the facet variable. Default is TRUE.
 #' @param na.rm.var TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with the NA value for the discrete variable. Default is TRUE.
+#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
-#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param total_name Name of the total shown on the graphic. Default is "Total".
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
@@ -82,10 +82,10 @@ distrib_group_discrete <- function(data,
                                    na.rm.group = T,
                                    na.rm.facet = T,
                                    na.rm.var = T,
+                                   total = TRUE,
                                    prop_method = "beta",
                                    show_value = TRUE,
                                    show_labs = TRUE,
-                                   total = TRUE,
                                    total_name = "Total",
                                    scale = 100,
                                    digits = 0,

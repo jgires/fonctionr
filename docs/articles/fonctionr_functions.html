@@ -114,8 +114,8 @@ produire une liste qui contient la plupart du temps ces trois éléments
 <ul>
 <li><p>Un graphique qui permet la visualisation des indicateurs calculés
 avec leurs intervalles de confiance. Il s’agit d’un objet
-<code>ggplot2</code> qui peut donc aussi être modifié par la suite. Le
-graphique se veut suffisamment finalisé pour être directement utilisable
+<code>ggplot2</code> qui peut donc être modifié par la suite. Ce
+graphique est suffisamment finalisé pour être directement utilisable
 dans une publication ;</p></li>
 <li><p>Un ou plusieurs dataframe qui reprennent les chiffres sur base
 desquels le graphique est construit. Ceux-ci reprennent généralement le
@@ -141,9 +141,9 @@ catégorielle<a class="anchor" aria-label="anchor" href="#distrib_discrete-distr
 <p><code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>, avec <code><a href="../reference/distrib_discrete.html">distrib_d()</a></code> comme
 alias, calcule la distribution (en proportions relatives) des
 différentes modalités d’une variables qualitative. Pour l’exemple, nous
-utilisons la base de données de l’enquête SILC menée en Autriche en
-2006, contenue dans le package <code>laeken</code>. Nous chargeons
-d’abord les données et recodons le statut socio-économiques
+utilisons la base de données anonymisée de l’enquête SILC menée en
+Autriche en 2006, contenue dans le package <code>laeken</code>. Nous
+chargeons d’abord les données et recodons le statut socio-économiques
 (<code>pl030</code>) pour lui donner des labels intelligibles, utilisés
 dans la suite des exemples :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -243,10 +243,13 @@ pourcentages) des différentes modalités d’une variables qualitative
 selon les modalités d’une autre variable qualitative, que l’on peut
 considérer comme des groupes. Par rapport aux autres fonctions, faute de
 représentation adéquate, les intervalles de confiance ne sont pas
-indiqués sur le graphique. Le test statistique repris est celui du khi2
-de Pearson avec l’ajustement de Rao &amp; Scott. Ce test est réalisé
-avec comme hypothèse nulle le fait que les deux variables qualitatives
-(d’intérêt et de groupe) soient statistiquement indépendantes.</p>
+indiqués sur le graphique. Le graphique et le tableau contiennent aussi
+une modalité <code>Total</code> qui reprend l’estimation de la
+distribution des différentes modalités pour l’ensemble de la population
+de référence. Le test statistique repris est celui du khi2 de Pearson
+avec l’ajustement de Rao &amp; Scott. Ce test est réalisé avec comme
+hypothèse nulle le fait que les deux variables qualitatives (d’intérêt
+et de groupe) soient statistiquement indépendantes.</p>
 <p>L’exemple ci-dessous montre la distribution des fréquences des
 différents statuts socio-économiques (<code>pl030_rec</code>) selon la
 nationalité (<code>pb220a</code>).</p>
@@ -313,7 +316,7 @@ socio-économiques (<code>pl030_rec</code>).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
 <p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" width="100%"></p>
-<p>Le graphique et le tableau contiennent une modalité
+<p>Le graphique et le tableau contiennent aussi une modalité
 <code>Total</code> qui reprend l’estimation de la proportion pour
 l’ensemble de la population de référence. Dans le dataframe
 <code>tab</code> produit, on trouve :</p>
@@ -330,14 +333,16 @@ variable dichotomique prend une valeur &lt;code&gt;NA&lt;/code&gt; et que l’on
 décidé de ne pas les prendre en compte, ne sont pas reprises dans
 &lt;code&gt;n_tot_weighted,&lt;/code&gt; de manière à ce que le ratio entre
 &lt;code&gt;n_true_weighted&lt;/code&gt; et &lt;code&gt;n_tot_weighted&lt;/code&gt; soit égal à
-&lt;code&gt;prop&lt;/code&gt;.&lt;/p&gt;"><sup>2</sup></a> (<code>n_tot_weighted</code>) accompagné de
+&lt;code&gt;prop&lt;/code&gt;. La question de l’exclusion de certaines personnes de
+l’échantillon est abordée en détail dans la section traitant des
+arguments clés.&lt;/p&gt;"><sup>2</sup></a> (<code>n_tot_weighted</code>) accompagné de
 ses bornes inférieure (<code>n_tot_weighted_low</code>) et supérieure
 (<code>n_tot_weighted_upp</code>) de l’intervalle de confiance.</li>
 </ul>
 <p>Le test statistique réalisé est celui du khi2 de Pearson avec
 l’ajustement de Rao &amp; Scott. Ce test est réalisé avec comme
-hypothèse nulle le fait que les deux variables qualitatives (les
-variables dichotomique <em>proportion vraie-fausse</em> et de groupe)
+hypothèse nulle le fait que les deux variables qualitatives (la variable
+dichotomique <em>proportion vraie-fausse</em> et la variable de groupe)
 soient statistiquement indépendantes .</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">tab</span></span>
@@ -362,7 +367,7 @@ soient statistiquement indépendantes .</p>
 <span><span class="co">#&gt; data:  NextMethod()</span></span>
 <span><span class="co">#&gt; F = 485.82, ndf = 5.9943, ddf = 72567.0400, p-value &lt; 2.2e-16</span></span></code></pre></div>
 <p>La fonction <code><a href="../reference/prop_group.html">prop_group()</a></code> permet également de
-différencier le calcul de proportion en différents sous-groupes au sein
+différencier le calcul de proportions en différents sous-groupes au sein
 des groupes. Par exemple, l’opération ci-dessous procède au même calcul
 de la proportion des individus qui bénéficient d’une allocation de
 chômage par statut socio-économique, mais en différenciant les hommes et
@@ -412,11 +417,12 @@ socio-économiques des personnes (<code>pl030_rec</code>). Le graphique
 et le tableau contiennent une modalité “Total” qui reprend l’estimation
 de tendance centrale pour l’ensemble de la population de référence.</p>
 <p>Pour <code><a href="../reference/central_group.html">mean_group()</a></code>, le test statistique effectué est un
-test de Wald<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r" class="external-link uri"&gt;https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a>. Ce test est réalisé avec comme hypothèse
-nulle le fait que les coefficients d’une régression linéaire pour les
-modalités de la variable qualitative (les groupes) sur la variable
-quantitative soient nuls. Pour <code><a href="../reference/central_group.html">median_group()</a></code>, le test
-statistique effectué est celui de Kruskal Wallis.</p>
+test de Wald, qui est un test équivalent à une analyse de variance
+(ANOVA) mais pour des données issues d’un sondage complex<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r" class="external-link uri"&gt;https://stackoverflow.com/questions/72843411/one-way-anova-using-the-survey-package-in-r&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a>. Ce test est réalisé
+avec comme hypothèse nulle le fait que les coefficients d’une régression
+linéaire pour les modalités de la variable qualitative (les groupes) sur
+la variable quantitative soient nuls. Pour <code><a href="../reference/central_group.html">median_group()</a></code>,
+le test statistique effectué est celui de Kruskal Wallis.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -512,8 +518,8 @@ groupe<a class="anchor" aria-label="anchor" href="#many_val_group-calculer-plusi
 <p><code><a href="../reference/many_val_group.html">many_val_group()</a></code> fonctionne comme
 <code><a href="../reference/many_val.html">many_val()</a></code>, mais permet d’indiquer une variable qualitative
 de groupes : les résultats sont alors différenciés selon les différentes
-modalités de cette variable (= les groupes). Trois calculs sont
-possibles :</p>
+modalités de cette variable (= les groupes). Ici aussi, aucun test
+statistique n’est effectué. Trois calculs sont possibles :</p>
 <ul>
 <li>La comparaison de proportions quand l’argument
 <code>type = "prop"</code> ou pour l’alias
@@ -594,7 +600,7 @@ et <code>tab</code>, comme dans les autres fonction.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  39.2     38.8     39.6    <span style="text-decoration: underline;">14</span>827      <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827          <span style="text-decoration: underline;">14</span>827</span></span></code></pre></div>
 <p>L’objet <code>dens</code> reprend la densité calculée, et l’objet
 <code>quant</code> reprend les différents quantiles retenus. Dans cette
-fonction, il n’y a pas de test statistique calculé
+fonction, il n’y a, pour le moment, pas de test statistique calculé
 <!--# A terme si => à changer à ce moment là -->.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">distrib_age</span><span class="op">$</span><span class="va">dens</span><span class="op">)</span></span>
@@ -639,7 +645,8 @@ aussi implémenté. Comme pour <code><a href="../reference/central_group.html">c
 l’utilisateur choisi de calculer la médiane (le choix par défaut), le
 test statistique effectué est celui de Kruskal Wallis ; s’il ou elle
 choisi de calculer la moyenne, test statistique effectué est un test de
-Wald.</p>
+Wald. Les test effectués sont les mêmes que pour
+<code><a href="../reference/central_group.html">central_group()</a></code>.</p>
 <p>L’exemple ci-dessous compare la distribution des revenus équivalents
 selon le statut socio-économique. Comme pour
 <code><a href="../reference/central_group.html">central_group()</a></code>, il est possible d’utiliser une expression
@@ -718,9 +725,9 @@ dernière a une visée pédagogique et regroupe ensemble des arguments dont
 le rôle est similaire. Dans la suite, nous aborderons successivement les
 arguments liés à la base de donnée utilisée, les arguments
 indispensables qui doivent obligatoirement être mentionnés, les
-arguments clés (c’est-à-dire pas obligatoire mais ayant une influence
-sur les résultats) et les arguments esthétiques - qui influencent le
-graphique.</p>
+arguments clés – c’est-à-dire pas obligatoires mais ayant une influence
+sur les résultats – et les arguments esthétiques – c’est-à-dire qui
+n’influencent que le graphique.</p>
 <table class="table  lightable-paper" style='font-size: 12px; font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
 <thead><tr>
 <th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(89, 89, 89, 255) !important;">
@@ -1204,6 +1211,31 @@ probs
 Argument clé
 </td>
 <td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+total
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;">
+Argument clé
+</td>
+<td style="text-align:left;">
 prop_method
 </td>
 <td style="text-align:left;">
@@ -1676,31 +1708,6 @@ show_labs
 </td>
 <td style="text-align:left;">
 show_labs
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;color: black !important;background-color: white !important;">
-Argument clé
-</td>
-<td style="text-align:left;">
-total
-</td>
-<td style="text-align:left;">
-total
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-total
-</td>
-<td style="text-align:left;">
-total
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
 </td>
 </tr>
 <tr>
@@ -2339,10 +2346,10 @@ estimer la variance d’échantillonnage.</p>
 Dans ce cas, si aucune autre précision n’est apportée, les fonctions
 font l’hypothèse d’un sondage aléatoire simple. Ainsi,
 <code>fonctionr</code> peut être utilisé pour l’analyse des sondages
-complexes mais aussi des sondages aléatoires simple. Mais
-<code>fonctionr</code> peut créer un objet de sondage complexe à partir
-d’un dataframe. Les arguments définissant le design de l’enquête (poids,
-strates, etc.) doivent alors être indiqués dans l’argument
+complexes mais aussi des sondages aléatoires simples. Mais
+<code>fonctionr</code> peut aussi créer un objet de sondage complexe à
+partir d’un dataframe. Les arguments définissant le design de l’enquête
+(poids, strates, etc.) doivent alors être indiqués dans l’argument
 <code>…</code> (dot-dot-dot). Cette manière de procéder fonctionne pour
 les sondages complexes classiques mais pas pour les sondages complexes
 intégrant des <em>replicate weights</em>. Si l’ont veut intégrer des
@@ -2351,8 +2358,8 @@ intégrant des <em>replicate weights</em>. Si l’ont veut intégrer des
 <code>fonctionr</code>.</p>
 <p>Les exemples ci-dessous montrent trois manière différentes de prendre
 en compte un même plan de sondage : en l’indiquant directement dans la
-fonction de <code>fonctionr</code>, en créant d’abord un objet
-<code>survey</code> et en créant d’abord un objet
+fonction de <code>fonctionr</code>, en créant au préalable un objet
+<code>survey</code> et en créant au préalable un objet
 <code>srvyr</code>.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://r-survey.r-forge.r-project.org/survey/" class="external-link">survey</a></span><span class="op">)</span></span>
@@ -2397,10 +2404,10 @@ fonction de <code>fonctionr</code>, en créant d’abord un objet
 <div class="section level3">
 <h3 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
 </h3>
-<p>Les arguments indispensable sont des arguments qui sont nécessaire au
-bon fonctionnement des fonctions et qui ne peuvent prendre aucune valeur
-par défaut. Ces arguments sont principalement de différents types :
-variables qualitatives, expressions ou listes de variables. Les
+<p>Les arguments indispensable sont des arguments qui sont nécessaires
+au bon fonctionnement des fonctions et qui ne peuvent prendre aucune
+valeur par défaut. Ces arguments sont principalement de différents types
+: variables qualitatives, expressions ou listes de variables. Les
 variables/colonnes sont toujours indiquées sans mentionner le dataframe
 et sans guillemet, à la manière du <code>tidyverse</code>.</p>
 <ul>
@@ -2436,12 +2443,13 @@ L’argument <code>list_vars_lab</code> permet d’indiquer le label pour
 les variables à l’aide d’un vecteur. Bien qu’il ne s’agisse pas d’un
 argument indispensable, nous l’avons placé juste après
 <code>list_vars</code> pour faciliter l’utilisation des fonctions. Pour
-cet argument, les guillemets doivent être utilisé pour indiquer les
-labels des variables.</p></li>
+<code>list_vars_lab</code>, les guillemets doivent être utilisé pour
+indiquer les labels des variables.</p></li>
 </ul>
-<p>Dans l’exemple ci-dessous, on calcule la proportion des répondant qui
-travaillent et dont le salaire net annuel était inférieur à 12000€. On
-peut ainsi introduire des expressions complexe dans les fonctions.</p>
+<p>Dans l’exemple ci-dessous, on calcule selon le sexe la proportion des
+répondants qui travaillent et dont le salaire net annuel était inférieur
+à 12000€. On peut ainsi introduire des expressions complexes dans les
+fonctions.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2459,7 +2467,7 @@ peut ainsi introduire des expressions complexe dans les fonctions.</p>
 <h3 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
 résultats<a class="anchor" aria-label="anchor" href="#les-arguments-cl%C3%A9s-pas-obligatoires-mais-influen%C3%A7ant-les-r%C3%A9sultats"></a>
 </h3>
-<p>Les arguments clés sont des arguments qui ne sont pas indispensable
+<p>Les arguments clés sont des arguments qui ne sont pas indispensables
 mais qui influencent les résultats. On y retrouve plusieurs types
 d’arguments.</p>
 <ul>
@@ -2467,8 +2475,11 @@ d’arguments.</p>
 <p><code>group.fill</code> permet d’indiquer une variable de
 sous-groupes pour différencier les résultats plus finement. Cet argument
 n’est que disponible dans <code><a href="../reference/prop_group.html">prop_group()</a></code> et
-<code><a href="../reference/central_group.html">central_group()</a></code>. Dans l’exemple ci-dessous, on compare les
-revenus moyens par statut socio-économique et sexe.</p>
+<code><a href="../reference/central_group.html">central_group()</a></code>. Comme <code>group</code> et
+<code>quali_var</code>, la variable indiquée pour
+<code>group.fill</code> est transformée en facteur pour son usage dans
+la fonction. Dans l’exemple ci-dessous, on compare les revenus moyens
+par statut socio-économique et sexe.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_income_status_sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2488,12 +2499,12 @@ revenus moyens par statut socio-économique et sexe.</p>
 pour différencier les résultats selon les différentes modalités de cette
 variable, dans le graphique <code>ggplot2</code> et le dataframe de
 résultat <code>tab</code>. Dans le graphique, elle produit des
-“facettes”, d’où le nom de l’argument. Comme <code>group</code> et
-<code>quali_var</code>, la variable indiquée pour cet argument est
-transformée en facteur pour leur usage dans la fonction. Par défaut, les
-facettes ne sont pas produites. Ci-dessous, on calcule la distribution
-des différents statuts socio-économiques par région (indiquée comme
-variable de facettes) :</p></li>
+“facettes”, d’où le nom de l’argument. Comme <code>group</code>,
+<code>group.fill</code> et <code>quali_var</code>, la variable indiquée
+pour cet argument est transformée en facteur pour leur usage dans la
+fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on
+calcule la distribution des différents statuts socio-économiques par
+région (indiquée comme variable de facettes) :</p></li>
 </ul>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
@@ -2513,21 +2524,36 @@ variable de facettes) :</p></li>
 <li><p><code>filter_exp</code> est une expression qui permet de filtrer
 les données de manière à produire les résultats sur une partie de
 l’échantillon. Comme il s’agit d’une expression, il est possible de
-mettre en oeuvre des conditions de filtres complexe et multiples, par
+mettre en oeuvre des conditions de filtres complexe et multiple, par
 exemple sélectionner uniquement les personnes âgées de moins de 60 ans,
 dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires.
 Si une possibilité de filtrage est inclue dans les fonctions, c’est pour
 que le filtrage des données soit réalisé après la définition du plan de
-sondage, afin que le filtrage ne modifie pas celui-ci<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri"&gt;https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Ici aussi, seules les
+sondage, afin que le filtrage ne modifie pas celui-ci comme le
+recommande Thomas Lumley, l’auteur de <code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri"&gt;https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Ici aussi, seules les
 variables de la base de données, les opérateurs et les valeurs numérique
 sont autorisés dans les expressions.</p></li>
+<li><p><code>total</code> est un argument qui permet de calculer
+l’indicateur ou la distribution de la variable pour le total, et pas
+uniquement pour les groupes. Cela permet de comparer non seulement les
+groupes entre-eux, mais aussi à l’ensemble de la population. Cet
+argument n’est disponible que pour <code><a href="../reference/prop_group.html">prop_group()</a></code>,
+<code><a href="../reference/central_group.html">central_group()</a></code>, <code><a href="../reference/distrib_group_discrete.html">distrib_group_d()</a></code> et
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code>, et leurs alias. Par défaut le total
+s’affiche (<code>total = TRUE</code>). Il s’agit d’un argument clé et
+pas uniquement d’un argument esthétique, car la présence du total dans
+<code>tab</code> et dans l’export Excell dépend de la valeur prise par
+cet argument.</p></li>
 <li><p><code>prop_method</code> est un argument qui permet de choisir le
 type de correction pour l’estimation des intervalles de confiance d’une
 proportion, notamment pour éviter d’avoir des bornes inférieures à 0 ou
 supérieures à 1. Les valeurs peuvent prendre celles mentionnées dans
-l’argument method de <code><a href="https://rdrr.io/pkg/survey/man/svyciprop.html" class="external-link">svyciprop()</a></code> du package
+l’argument <code>method</code> de <code><a href="https://rdrr.io/pkg/survey/man/svyciprop.html" class="external-link">svyciprop()</a></code> du package
 <code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html" class="external-link uri"&gt;https://search.r-project.org/CRAN/refmans/survey/html/svyciprop.html&lt;/a&gt;&lt;/p&gt;'><sup>5</sup></a>. Par défaut, c’est la méthode
-<code>"beta"</code> qui est utilisée.</p></li>
+<code>"beta"</code> qui est utilisée. Précisons que cette correction ne
+s’applique qu’aux intervalles de confiance des proportions et pas aux
+intervalles de confiance des estimations du nombre de personnes dans la
+population, qui se retrouvent dans <code>tab</code>.</p></li>
 <li><p><code>quantiles</code> est un argument qui permet de choisir,
 sous forme d’un vecteur, les quantiles à calculer et à indiquer sur le
 graphique dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
@@ -2538,7 +2564,7 @@ qui sont calculés.</p></li>
 <h4 id="le-traitement-des-na">Le traitement des <code>NA</code><a class="anchor" aria-label="anchor" href="#le-traitement-des-na"></a>
 </h4>
 <p>Nous expliquons ici plus précisément le traitement des
-<code>NA</code> dans les fonctions, car les possibilités sont multiples.
+<code>NA</code> dans les fonctions, car cette question est complexe.
 Nous avons décidé de laisser des possibilités différentes selon les
 variables dans lesquelles se trouvent les <code>NA</code> : groupes,
 variables d’intérêts, expressions, etc.</p>
@@ -2557,7 +2583,8 @@ compte pour calculer le total, le cas échéant. Par défaut, l’argument
 prend la valeur <code>FALSE</code>, c’est-à-dire que les <code>NA</code>
 sont supprimés des analyses. Actuellement, <code>na.rm.group</code>
 influence le traitement des NA, tant pour la variable <code>group</code>
-que la variable <code>group.fill</code>.</li>
+que la variable <code>group.fill</code>, si cette dernière est
+présente.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, on compare la distribution des statuts
 socio-professionnels entre régions, en y ajoutant une modalité
@@ -2610,14 +2637,14 @@ Précisons que pour <code><a href="../reference/central_group.html">central_grou
 d’argument permettant de choisir le traitement des <code>NA</code> dans
 <code>quanti_exp</code>. Les observations comprenant au moins un
 <code>NA</code> dans une variable indiquée dans <code>quanti_exp</code>
-sont automatiquement exclues des calculs, car il n’y a pas d’autres
+sont automatiquement exclues des calculs, car il n’y a pas d’autre
 possibilité qui soit pertinente.</li>
 </ul>
 <p>Les deux graphiques ci-dessous comparent la part de travailleurs
 selon le sexe en excluant ou en incluant les <code>NA</code>. Les taux
 du second graphique sont plus faible, car dans celui-ci les personnes
-n’ayant pas de statut socio-professionnel (ex. les enfants) sont
-comptabilisés dans le dénominateur.</p>
+n’ayant pas de statut socio-professionnel (c’est-à-dire les enfants)
+sont comptabilisées dans le dénominateur.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2645,7 +2672,7 @@ comptabilisés dans le dénominateur.</p>
 doivent être traités dans les différentes variables de
 <code><a href="../reference/many_val.html">many_val()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>. Si l’argument
 prend la valeur <code>"rm"</code>, les <code>NA</code> sont exclus
-séparément dans chaque variable. Il en résulte que l’échantillon ne sera
+séparément pour chaque variable. Il en résulte que l’échantillon ne sera
 pas toujours le même pour chacune des variables calculées, mais on
 conserve un maximum d’observations. Si l’argument prend la valeur
 <code>"rm.all"</code>, les observations qui comprennent au moins un
@@ -2664,9 +2691,10 @@ toutes les variables. Par défaut, <code>na.vars</code> prend la valeur
 </h3>
 <p>Les arguments esthétiques sont des arguments qui affectent uniquement
 le graphique produit et pas la table, ni le test statistique. Pour des
-raisons pédagogique, nous aborderons successivement les arguments
+raisons pédagogiques, nous aborderons successivement les arguments
 d’esthétique de base, d’esthétique graphique, d’esthétique des chiffres,
-d’esthétique des lettres et les labels.</p>
+d’esthétique des lettres et les labels. Aucun de ces arguments n’est
+obligatoire.</p>
 <div class="section level4">
 <h4 id="lesthétique-de-base">L’esthétique de base<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-de-base"></a>
 </h4>
@@ -2677,8 +2705,8 @@ d’esthétique des lettres et les labels.</p>
 décroissante. Si <code>reorder = FALSE</code>, les catégories ne sont
 pas réordonnées et c’est l’ordre des <em>levels</em> de la variable qui
 est utilisé si c’est un facteur, ou l’ordre alphabétique si c’est une
-variable string. La catégorie <code>NA</code> - quand elle existe (par
-exemple avec <code>na.rm.group = FALSE</code>) - et la catégorie “Total”
+variable string. La catégorie <code>NA</code> – quand elle existe (par
+exemple avec <code>na.rm.group = FALSE</code>) – et la catégorie “Total”
 ne sont jamais réordonnées et sont toujours positionnées dans le bas du
 graphique. En cas de facettes, les catégories sont réordonnées sur base
 de chaque catégorie médiane. Par exemple, si l’on utilise des facettes
@@ -2691,15 +2719,15 @@ ordonner les groupes sur bases de ces médianes. Par défaut,
 ainsi que ses alias (<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>,
 <code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et <code><a href="../reference/many_val_group.html">many_median_group()</a></code>), car
 il y a plusieurs proportions ou indicateurs et il est difficile de
-choisir sur lequel ou laquelle réordonner.</li>
+choisir sur laquelle ou lequel réordonner.</li>
 </ul>
-<p>Dans l’exemple ci-dessous, les revenus moyens des statut
-socio-économique sont réordonnés. Comme il y a des facettes, c’est le
-médian de chaque catégorie qui est utilisée pour construire. Par
-exemple, la catégorie “Permanently disabled” se situe en troisième
-position, car sa valeur médiane (15199€) se entre entre le médian de la
-catégorie “Student” (15097€) et de la catégorie “Working part time”
-(16511€).</p>
+<p>Dans l’exemple ci-dessous, les revenus moyens des statuts
+socio-économiques sont réordonnés. Comme il y a des facettes, c’est le
+médian de chaque catégorie (ici statut) qui est utilisée pour construire
+l’ordre. Par exemple, la catégorie “Permanently disabled” se situe en
+troisième position, car sa valeur médiane (15199€) se situe entre le
+médian de la catégorie “Student” (15097€) et de la catégorie “Working
+part time” (16511€).</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2787,9 +2815,10 @@ les effectifs de l’échantillon pour chaque quantile.</p>
 <ul>
 <li>
 <code>total_name</code> indique le nom qui doit être mentionné à
-côté du résulat du total dans le graphique. Par défaut, il s’agit de
-“Total”, mais l’utilisateur peut indiquer autre chose de plus
-spécifique.</li>
+côté du résultat du total dans le graphique. Par défaut, quand
+<code>lang = "fr"</code> (voir ci-dessous), il s’agit de “Total”, mais
+l’utilisateur peut indiquer autre chose de plus spécifique, par exemple
+“Belgique”, “Population active totale”, etc.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, on ne montre plus les intervalles de
 confiances, les valeurs de l’indicateur et les labels des titres, par
@@ -2849,8 +2878,8 @@ point ou d’une ligne.</li>
 <li>
 <code>show_ci_errorbar</code>, <code>show_ci_lines</code> et
 <code>show_ci_area</code> permettent de montrer l’intervalle de
-confiance de la valeur centrale sous la forme d’une barre d’erreur de
-lignes en pointillée ou d’une aire colorée.</li>
+confiance de la valeur centrale sous la forme d’une barre d’erreur, de
+lignes en pointillé, ou d’une aire colorée.</li>
 <li>
 <code>show_quant_lines</code> permet de tracer des lignes pour les
 valeurs des quantiles sur le graphique.</li>
@@ -2878,13 +2907,13 @@ la grande majorité des observations. <code>height</code> a été défini
 pour que les aires de densité se chevauchent. Pour que ce chevauchement
 soit esthétique, <code>alpha</code> a été réglé à <code>.3</code> pour
 des aires transparentes et une bordure a été ajoutée avec
-<code>color = black</code>. On a indiqué la médiane sous la forme d’une
-ligne. Ses intervalles de confiance sont indiqués par deux lignes en
-pointillées et une aire colorées. Les déciles sont indiqués par des
-lignes verticales grises et on a masqué la moustache. Notez que le
-revenu du travail mensuel est directement calculé dans l’expression en
-additionnant le salaire avec le revenu d’une activité indépendante avant
-de diviser le tout par 12.</p>
+<code>color = black</code> – ces deux arguments seront détaillés plus
+bas. On a indiqué la médiane sous la forme d’une ligne. Ses intervalles
+de confiance sont indiqués par deux lignes en pointillées et une aire
+colorées. Les déciles sont indiqués par des lignes verticales grises et
+on a masqué la moustache. Notez que le revenu du travail mensuel est
+directement calculé dans l’expression en additionnant le salaire avec le
+revenu d’une activité indépendante avant de diviser le tout par 12.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2933,16 +2962,15 @@ pas de <code>group.fill</code>.</p></li>
 quantitative, voir ci-dessous). L’argument <code>direction</code> permet
 d’inverser le sens de la palette, en remplaçant le <code>1</code>, par
 défaut, par <code>-1</code> pour avoir le sens opposé. C’est le cas de
-<code>distrib_group_``discrete``()</code>,
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code>, et de <code><a href="../reference/prop_group.html">prop_group()</a></code> et
-<code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un
-<code>group.fill</code>.</p></li>
+<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, <code><a href="../reference/many_val_group.html">many_val_group()</a></code>, et
+de <code><a href="../reference/prop_group.html">prop_group()</a></code> et <code><a href="../reference/central_group.html">central_group()</a></code> quand il y
+a un <code>group.fill</code>.</p></li>
 <li><p>Dans <code><a href="../reference/many_val.html">many_val()</a></code> et ses alias, on peut indiquer dans
 <code>pal</code> soit une couleur unique, soit une palette des packages
 <code>MetBrewer</code>, <code>MoMAColors</code> ou
 <code>PrettyCols</code>. Cela permet de choisir de produire un graphique
 monochrome, ou un graphique qui différencie chromatiquement chaque
-variable.0</p></li>
+variable.</p></li>
 <li><p>Les couleurs des <code>NA</code> et des totaux, quand ils sont
 présents, ne sont pas modifiables directement par l’utilisateur. La
 modalité <code>NA</code> est toujours grise (<code>grey</code>). Le
@@ -2950,19 +2978,19 @@ total est coloré de deux manière selon qu’il existe un seul total (dans
 les graphiques monochromes comme <code><a href="../reference/prop_group.html">prop_group()</a></code> et
 <code><a href="../reference/central_group.html">central_group()</a></code> quand il n’y a pas d’argument
 <code>group.fill</code>) ou qu’il existe des totaux différents pour
-chaque modalité ou variable (dans les graphique avec palette de couleur,
-comme <code><a href="../reference/distrib_group_discrete.html">distrib_group_d()</a></code>, de <code><a href="../reference/prop_group.html">prop_group()</a></code> et
+chaque modalité ou variable (dans les graphiques avec palette de
+couleur, comme <code><a href="../reference/distrib_group_discrete.html">distrib_group_d()</a></code>,
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code>, de <code><a href="../reference/prop_group.html">prop_group()</a></code> et
 <code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un argument
 <code>group.fill</code>). Dans le premier cas, la couleur est gris foncé
-(<code>grey40</code>). Dans le second cas, chaque total a une couleur de
-remplissage identique à la couleur de sa modalité ou variable, mais plus
-claire et a une couleur de bordure identique à sa couleur de modalité ou
-variable.</p></li>
+(<code>grey40</code>). Dans le second cas, chaque total a une bordure de
+la couleur de sa modalité ou variable et a une couleur de remplissage
+identique mais plus claire.</p></li>
 <li><p>Par défaut, des couleurs ou des palettes de couleurs différentes
 ont été choisies pour chacune des fonctions, y compris les alias, pour
-éviter la confusion des graphiques.</p></li>
+éviter une confusion entre graphiques différents.</p></li>
 </ul>
-<p>Dans l’exemple ci-dessous, on compare deux grpahiques issus de
+<p>Dans l’exemple ci-dessous, on compare deux graphiques issus de
 <code><a href="../reference/prop_group.html">prop_group()</a></code> : l’un avec l’argument
 <code>group.fill</code>, et l’autre sans. On calcule la proportion de
 travailleurs à temps partiel selon la nationalité. Dans le premier
@@ -2973,7 +3001,8 @@ outre, dans ce premier graphique, les barres sont plus fines
 (<code>dodge</code> prend une valeur de 0.7). Dans le deuxième, il n’y a
 pas de sous-groupes. <code>pal</code> n’a alors besoin que d’une unique
 couleur, et on a indiqué la couleur de base de R <code>"gold"</code>. On
-remarque aussi comment les totaux sont représentés différemment.</p>
+remarque aussi les deux manières différentes dont les totaux sont
+représentés.</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Avec sous-groupes</span></span>
 <span><span class="va">eusilc_prop_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
@@ -3061,14 +3090,14 @@ densité en rouge.</p>
 <h4 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
 </h4>
 <p>L’esthétique des chiffres concernent la manière dont l’estimation de
-l’indicateur est affichée sur le graphique. Ainsi, ces argument n’ont
+l’indicateur est affichée sur le graphique. Ainsi, ces arguments n’ont
 une utilité que si <code>show_value = TRUE</code>.</p>
 <ul>
 <li><p><code>scale</code> est un argument qui n’est utilisé que dans les
 graphique exprimant des proportion. Il indique le dénominateur par
 lequel il faut interpréter le chiffre. Par défaut,
 <code>scale = 100</code> pour interpréter les chiffres mentionnés en
-pourcentage. Par exemple on peut donner une valeur de <code>1000</code>
+pourcentage. On peut donner par exemple une valeur de <code>1000</code>
 pour interpréter les chiffres en pour mille ou une valeur de
 <code>1</code> pour interpréter les chiffres comme de simple
 proportions.</p></li>
@@ -3127,20 +3156,23 @@ différents labels de la légende. Ces valeurs sont par défaut de 25
 caractères. <code>wrap_width_leg</code> n’est présent que pour les
 graphiques ayant une légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>,
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias et <code><a href="../reference/prop_group.html">prop_group()</a></code>
-lorsqu’on définit des sous-groupes. Précisons aussi que le
-<code>_y</code> renvoie à l’axe des y tel qu’il est situé sur le
-graphique, après la transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu
-dans les fonctions. Ainsi, il s’agit souvent des groupes, de la variable
-qualitative pour <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des
-variables pour <code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>)
-et leurs alias.</p></li>
+et <code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un argument
+<code>group.fill</code>). Précisons aussi que le <code>_y</code> renvoie
+à l’axe des y tel qu’il est situé sur le graphique, après la
+transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
+Ainsi, il s’agit souvent des groupes, de la variable qualitative pour
+<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des variables pour
+<code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>) et leurs
+alias.</p></li>
 <li><p><code>legend_ncol</code> indique le nombre maximum de colonnes
 dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre
-de lignes dans la légende s’ajuste au nombre maximum de colonnes.
-<code>legend_ncol</code> n’est aussi présent que pour les graphiques
-ayant une légende : <code>distrib_group_discrete(</code>) et
-<code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias et <code><a href="../reference/prop_group.html">prop_group()</a></code>
-lorsqu’on définit des sous-groupes.</p></li>
+de lignes dans la légende s’ajuste au nombre maximum de colonnes. Comme
+<code>wrap_width_leg</code> , <code>legend_ncol</code> n’est présent que
+pour les graphiques ayant une légende :
+<code>distrib_group_discrete(</code>) et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>
+et ses alias et <code><a href="../reference/prop_group.html">prop_group()</a></code> et
+<code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un argument
+<code>group.fill</code>.</p></li>
 </ul>
 </div>
 <div class="section level4">
@@ -3163,11 +3195,11 @@ graphique, c’est-à-dire après la transformation
 <code>legend_lab</code> n’est présent que pour les graphiques ayant une
 légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que ses alias et
-<code><a href="../reference/prop_group.html">prop_group()</a></code> lorsqu’on définit des sous-groupes. Le
-<em>caption</em> étant souvent déjà utilisé pour indiquer la p valeur du
-test statistique, l’utilisation de l’argument <code>caption</code>
-ajoute un texte en dessous de la mention de la p valeur du test
-statistique.</p></li>
+<code><a href="../reference/prop_group.html">prop_group()</a></code> et <code><a href="../reference/central_group.html">central_group()</a></code> quand il y a
+un argument <code>group.fill</code>. Le <em>caption</em> étant souvent
+déjà utilisé pour indiquer la p valeur du test statistique, l’argument
+<code>caption</code> ajoute un texte en dessous de la mention de la p
+valeur du test statistique.</p></li>
 <li><p>Dans le cas où les arguments de label ne sont pas renseignés par
 l’utilisateur, il n’y a pas de titre, pas de sous-titre et pas de
 <em>caption</em> (autre que la p valeur du test statistique). Par
@@ -3187,9 +3219,20 @@ label vide, il faut indiquer, respectivement, <code>xlab = ""</code>,
 <code>xlab = NULL</code>, <code>ylab = NULL</code> ou
 <code>legend_lab = NULL</code> conduira à l’écriture du label par
 défaut.</p></li>
-<li><p>Comme argument de label, on peut aussi mentionner l’argument
-<code>lists_vars_lab</code> que l’on a déjà expliqué plus haut et qui
-peut être aussi considéré comme un label.</p></li>
+<li><p>On peut aussi mentionner l’argument <code>lists_vars_lab</code>
+que l’on a déjà expliqué plus haut et qui peut être aussi considéré
+comme un label.</p></li>
+<li><p>L’argument <code>lang</code> permet de déterminer la langue des
+textes automatiques. Trois valeurs sont possibles :
+<code>lang = "fr"</code> pour le français, <code>lang = "nl"</code> pour
+le néerlandais et <code>lang = "en"</code> pour l’anglais. Par défaut,
+c’est le français qui est utilisé.</p></li>
+<li><p>L’argument <code>theme</code>, qui est un argument d’esthétique
+graphique plutôt que de label, permet de modifier le thème du graphique.
+Le thème de base (<code>theme = NULL</code>) est celui qu’on retrouve
+dans tous les graphiques dans ce document, mais le thème IWEPS
+(<code>theme = "IWEPS"</code>) permet d’ajouter un axe gradué pour les
+ordonnées.</p></li>
 </ul>
 <p>Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a
 mis à la ligne les labels de l’ordonnée à partir de 10 caractères et
@@ -3197,7 +3240,9 @@ ceux de la légende à partir de 15 caractères et on a limité à trois
 colonnes pour la légende. On a également introduit manuellement les
 titres, sous-titres, <em>caption</em> et titre de légende, en conservant
 le label par défaut pour le titre de l’axe des abscisses et en n’ayant
-pas de titre pour l’axe des ordonnées.</p>
+pas de titre pour l’axe des ordonnées. La langue des textes automatiques
+est le néerlandais et l’on a tracé l’axe des ordonnées
+(<code>theme = "IWEPS"</code>).</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -3212,7 +3257,9 @@ pas de titre pour l’axe des ordonnées.</p>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  legend_lab <span class="op">=</span> <span class="st">"Status"</span>,</span>
-<span>  caption <span class="op">=</span> <span class="st">"Source : EU-SILC"</span></span>
+<span>  caption <span class="op">=</span> <span class="st">"Bron : EU-SILC"</span>,</span>
+<span>  lang <span class="op">=</span> <span class="st">"nl"</span>,</span>
+<span>  theme <span class="op">=</span> <span class="st">"IWEPS"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>

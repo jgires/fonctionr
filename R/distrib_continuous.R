@@ -456,7 +456,7 @@ distrib_continuous <- function(data,
   graph <- graph +
     labs(
       caption = paste0(
-        "Test stat a implementer !",
+        "",
         caption
       )
     )

@@ -14,12 +14,12 @@
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
+#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
-#' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
@@ -81,13 +81,18 @@ central_group <- function(data,
                           ...,
                           na.rm.group = T,
                           na.rm.facet = T,
+                          total = TRUE,
                           reorder = F,
                           show_ci = T,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_labs = TRUE,
+<<<<<<< HEAD
                           total = TRUE,
                           total_name = NULL,
+=======
+                          total_name = "Total",
+>>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
                           digits = 0,
                           unit = "",
                           dec = ",",
@@ -208,28 +213,40 @@ central_group <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
+<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Total"
       }
     lang_anova <- "ANOVA : "
+=======
+    lang_anova <- "Test de Wald : "
+>>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis : "
     lang_mean <- "Moyenne : "
     lang_median <- paste0("M","\u00e9","diane : ")
   }
   if(lang == "nl"){
+<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Totaal"
     }
     lang_anova <- "ANOVA: "
+=======
+    lang_anova <- "Wald-test: "
+>>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
   }
   if(lang == "en"){
+<<<<<<< HEAD
     if(is.null(total_name)){
       total_name <- "Total"
     }
     lang_anova <- "ANOVA: "
+=======
+    lang_anova <- "Wald test: "
+>>>>>>> b1b659b5f7a0a730365959c55f010a0e2b46be94
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Mean: "
     lang_median <- "Median: "
