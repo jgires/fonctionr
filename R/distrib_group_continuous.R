@@ -228,17 +228,17 @@ distrib_group_continuous <- function(data,
   # Dictionnaire
   if(lang == "fr"){
     lang_prop_obs <- "Proportion d'observations"
-    lang_anova <- "ANOVA : "
+    lang_anova <- "Test de Wald : "
     lang_kruskal <- "Kruskal Wallis : "
   }
   if(lang == "nl"){
     lang_prop_obs <- "Aandeel van de waarnemingen"
-    lang_anova <- "ANOVA: "
+    lang_anova <- "Wald-test: "
     lang_kruskal <- "Kruskal Wallis: "
   }
   if(lang == "en"){
     lang_prop_obs <- "Proportion of observations"
-    lang_anova <- "ANOVA: "
+    lang_anova <- "Wald Test: "
     lang_kruskal <- "Kruskal Wallis: "
   }
 
