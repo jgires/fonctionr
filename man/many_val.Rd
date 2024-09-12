@@ -36,6 +36,7 @@ many_val(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
+  lang = "fr",
   caption = NULL,
   theme = NULL,
   export_path = NULL
@@ -103,6 +104,8 @@ many_mean(..., type = "mean")
 \item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+
+\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
 \item{caption}{Caption of the graphic.}
 

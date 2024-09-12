@@ -26,7 +26,7 @@ many_val_group(
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
-  total_name = "Total",
+  total_name = NULL,
   scale = NULL,
   digits = 0,
   unit = NULL,
@@ -43,6 +43,7 @@ many_val_group(
   xlab = NULL,
   ylab = NULL,
   legend_lab = NULL,
+  lang = "fr",
   caption = NULL,
   theme = NULL,
   export_path = NULL
@@ -124,6 +125,8 @@ many_mean_group(..., type = "mean")
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
 
 \item{legend_lab}{Legend (fill) label on the graphic.}
+
+\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
 \item{caption}{Caption of the graphic.}
 

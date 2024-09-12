@@ -30,6 +30,7 @@
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
+#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param caption Caption of the graphic.
 #' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
@@ -96,6 +97,7 @@ many_val = function(data,
                     subtitle = NULL,
                     xlab = NULL,
                     ylab = NULL,
+                    lang = "fr",
                     caption = NULL,
                     theme = NULL,
                     export_path = NULL){
@@ -125,6 +127,7 @@ many_val = function(data,
       subtitle = subtitle,
       xlab = xlab,
       ylab = ylab,
+      lang = lang,
       caption = caption,
       theme = theme
     ),
@@ -200,6 +203,23 @@ many_val = function(data,
   # Ici le check a proprement parler
   check_input(data,
               vars_input_char)
+
+  # Dictionnaire
+  if(lang == "fr"){
+    lang_prop <- "Proportion : "
+    lang_mean <- "Moyenne : "
+    lang_median <- paste0("M","\u00e9","diane : ")
+  }
+  if(lang == "nl"){
+    lang_prop <- "Aandeel: "
+    lang_mean <- "Gemiddelde: "
+    lang_median <- "Mediaan: "
+  }
+  if(lang == "en"){
+    lang_prop <- "Proportion: "
+    lang_mean <- "Mean: "
+    lang_median <- "Median: "
+  }
 
 
   # 2. PROCESSING DES DONNEES --------------------
@@ -375,20 +395,20 @@ many_val = function(data,
     if(is.null(unit)){
       unit <- "%"
     }
-    type_ggplot <- "Proportion"
+    type_ggplot <- lang_prop
   }
   # Par contre, pour la mediane et la moyenne => echelle = 1 (equivalence avec la variable entree)
   if(type == "median"){
     if(is.null(scale)){
       scale <- 1
     }
-    type_ggplot <- "Mediane"
+    type_ggplot <- lang_median
   }
   if(type == "mean"){
     if(is.null(scale)){
       scale <- 1
     }
-    type_ggplot <- "Moyenne"
+    type_ggplot <- lang_mean
   }
 
   # On cree le graphique
@@ -426,7 +446,7 @@ many_val = function(data,
       if(any(is.null(xlab), xlab != "")){
         graph <- graph +
           labs(y = ifelse(is.null(xlab),
-                          paste0(type_ggplot, " : ", paste(vec_list_vars, collapse = ", ")),
+                          paste0(type_ggplot, paste(vec_list_vars, collapse = ", ")),
                           xlab))
       }
       if(all(!is.null(xlab), xlab == "")){
@@ -442,7 +462,7 @@ many_val = function(data,
         }
         if(is.null(ylab)){
           graph <- graph +
-            labs(x = "Indicateurs")
+            labs(x = NULL) # Il y avait "Indicateurs", mais c'est moche et inutile => possibilite de mettre ce qu'on veut
         }
       }
       if(all(!is.null(ylab), ylab == "")){
