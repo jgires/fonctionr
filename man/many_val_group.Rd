@@ -163,7 +163,11 @@ weight = rb050,
 title = "Average incomes according to gender",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
+
+# Results in graph form
 eusilc_many_mean_group$graph
+
+# Results in table format
 eusilc_many_mean_group$tab
 
 }

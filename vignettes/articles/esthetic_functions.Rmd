@@ -102,7 +102,7 @@ eusilc_mean <- mean_group(
 ```
 
 ```{r}
-eusilc_mean$tab %>%
+eusilc_mean$tab |> 
   make_surface(
     var = pl030_rec,
     value = mean,
@@ -130,7 +130,7 @@ eusilc_mean_region <- mean_group(
 ```
 
 ```{r}
-eusilc_mean_region$tab %>%
+eusilc_mean_region$tab |> 
   make_surface(
     var = pl030_rec,
     facet = db040,

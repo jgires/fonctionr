@@ -66,7 +66,11 @@
 #' title = "Proportion of workers and Autrian according to gender",
 #' subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
+#'
+#' # Results in graph form
 #' eusilc_many_prop$graph
+#'
+#' # Results in table format
 #' eusilc_many_prop$tab
 #'
 many_val = function(data,

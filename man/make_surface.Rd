@@ -89,3 +89,41 @@ A ggplot graphic.
 \description{
 make_surface
 }
+\examples{
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Recoding eusilc$pl030 into eusilc$pl030_rec
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+
+# Calculation of income means by age category with fonctionr, taking sample design into account
+eusilc_mean <- mean_group(
+  eusilc,
+  group = pl030_rec,
+  quanti_exp = py010n + py050n + py090n + py100n + py110n + py120n + py130n + py140n,
+  filter_exp = !pl030_rec \%in\% c("Student", "Fulfilling domestic tasks") & db040 == "Tyrol",
+  weights = rb050
+)
+
+# Displaying results with make_surface()
+eusilc_mean$tab |>
+  make_surface(
+    var = pl030_rec,
+    value = mean,
+    error_low = mean_low,
+    error_upp = mean_upp,
+    reorder = TRUE,
+    wrap_width_lab = 15,
+    unit = "€",
+    title = "Equivalised income in household by socio-economic status",
+    subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+
+}

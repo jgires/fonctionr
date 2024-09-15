@@ -69,7 +69,12 @@
 #'   title = "Mean of equivalised income in household by age of individuals",
 #'   subtitle = "Example with austrian SILC data from 'laeken' package"
 #'   )
+#'
+#' # Results in graph form
 #' eusilc_mean$graph
+#'
+#' # Results in table format
+#' eusilc_mean$tab
 #'
 central_group <- function(data,
                           group,

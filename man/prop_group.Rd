@@ -153,6 +153,11 @@ weight = rb050,
 title = "\% of ind. receiving unemployment benefits in their hh",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
+
+# Results in graph form
 eusilc_prop$graph
+
+# Results in table format
+eusilc_prop$tab
 
 }

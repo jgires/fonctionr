@@ -65,7 +65,11 @@
 #' title = "Distribution of socio-economic status",
 #' subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
+#'
+#' # Results in graph form
 #' eusilc_dist_group_d$graph
+#'
+#' # Results in table format
 #' eusilc_dist_group_d$tab
 #'
 distrib_discrete <- function(data,

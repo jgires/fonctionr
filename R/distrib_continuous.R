@@ -46,6 +46,26 @@
 #' @export
 #'
 #' @examples
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Computation, taking sample design into account
+#' eusilc_dist_c <- distrib_c(
+#'   eusilc,
+#'   quanti_exp = eqIncome,
+#'   strata = db040,
+#'   ids = db030,
+#'   weight = rb050,
+#'   limits = c(0, 50000),
+#'   title = "Distribution of eq. income",
+#'   subtitle = "Example with austrian SILC data from 'laeken' package"
+#' )
+#'
+#' # Results in graph form
+#' eusilc_dist_c$graph
+#'
+#' # Results in table format
+#' eusilc_dist_c$tab
 #'
 distrib_continuous <- function(data,
                           quanti_exp,

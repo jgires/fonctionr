@@ -18,15 +18,23 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.9
+
+Date : 2024-09_15
+
+-   Ajout de l'argument `lang` qui permet l'affichage des indications sur les graphiques en trois langues : français, néérlandais, anglais.
+
+-   Ajout d'exemples dans la documentation des fonctions.
+
 ## fonctionr 0.3.8
 
 Date : 2024-09-04
 
 -   Ajout du calcul de totaux pour `central_group()` et `prop_group()` avec les `group.fill` activés.
 
--   Ajout du calcul de totaux pour `distrib_group_d` et `many_val_group()`.
+-   Ajout du calcul de totaux pour `distrib_group_d()` et `many_val_group()`.
 
--   Ajout d'un theme "IWEPS" pour les graphiques.
+-   Ajout d'un `theme` "IWEPS" pour les graphiques.
 
 -   L'argument `show_lab` devient `show_labs` (avec un s) pour toutes les fonctions.
 
@@ -210,7 +218,7 @@ Date : 2024-02-14
 
 #### En général
 
--   **BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?**
+-   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
@@ -227,15 +235,16 @@ Date : 2024-02-14
 
 -   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
 
--   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).
+-   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
+    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?*
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
--   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne.
+-   Changer la fonction `scales::pvalue`, qui n'est plus valide (superseded) =\> Faire une fonction maison en interne ?
 
 -   Ajouter des checks pour les inputs :
 
-    1.  Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
+    -   Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
 
 -   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 

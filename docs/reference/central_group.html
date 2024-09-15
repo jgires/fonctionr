@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -265,8 +265,24 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Variable(s) detectee(s) dans quanti_exp : eqIncome</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Results in graph form</span></span></span>
 <span class="r-in"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></span>
 <span class="r-plt img"><img src="central_group-1.png" alt="" width="384" height="240"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Results in table format</span></span></span>
+<span class="r-in"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   age_cat      mean mean_low mean_upp n_sample n_weighted n_weighted_low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> [-1.1,15.3] <span style="text-decoration: underline;">1</span>444.    <span style="text-decoration: underline;">1</span>409.    <span style="text-decoration: underline;">1</span>479.     <span style="text-decoration: underline;">2</span>720   1<span style="text-decoration: underline;">424</span>958.       1<span style="text-decoration: underline;">358</span>818.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> (15.3,31.7] <span style="text-decoration: underline;">1</span>607.    <span style="text-decoration: underline;">1</span>571.    <span style="text-decoration: underline;">1</span>643.     <span style="text-decoration: underline;">2</span>944   1<span style="text-decoration: underline;">612</span>502.       1<span style="text-decoration: underline;">549</span>489.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> (31.7,48]   <span style="text-decoration: underline;">1</span>703.    <span style="text-decoration: underline;">1</span>669.    <span style="text-decoration: underline;">1</span>737.     <span style="text-decoration: underline;">4</span>025   2<span style="text-decoration: underline;">230</span>581.       2<span style="text-decoration: underline;">163</span>723.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> (48,64.3]   <span style="text-decoration: underline;">1</span>889.    <span style="text-decoration: underline;">1</span>843.    <span style="text-decoration: underline;">1</span>935.     <span style="text-decoration: underline;">2</span>817   1<span style="text-decoration: underline;">578</span>046.       1<span style="text-decoration: underline;">517</span>273.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> (64.3,80.7] <span style="text-decoration: underline;">1</span>611.    <span style="text-decoration: underline;">1</span>561.    <span style="text-decoration: underline;">1</span>662.     <span style="text-decoration: underline;">1</span>847   1<span style="text-decoration: underline;">053</span>098.       1<span style="text-decoration: underline;">001</span>605.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> (80.7,97.1] <span style="text-decoration: underline;">1</span>545.    <span style="text-decoration: underline;">1</span>467.    <span style="text-decoration: underline;">1</span>622.      474    <span style="text-decoration: underline;">283</span>037.        <span style="text-decoration: underline;">256</span>754.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> Total       <span style="text-decoration: underline;">1</span>658.    <span style="text-decoration: underline;">1</span>635.    <span style="text-decoration: underline;">1</span>681.    <span style="text-decoration: underline;">14</span>827   8<span style="text-decoration: underline;">182</span>222        8<span style="text-decoration: underline;">079</span>226.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: n_weighted_upp &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
