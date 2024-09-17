@@ -274,10 +274,12 @@ Date : 2024-02-14
 #### distrib_group_d
 
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
+-   Redondance du code avec total pour le `geom_text()` ?
 
 #### many_val_group
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
+-   Redondance du code avec total pour le `geom_text()` ?
 -   **Fusionner `many_val_group()` et `many_val()` !\
     =\> + Ajouter la possibilité de group.fill pour les deux**
 

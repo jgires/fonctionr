@@ -504,28 +504,30 @@ distrib_group_discrete <- function(data,
         stat = "identity",
         position = position_stack(reverse = TRUE)
       ) +
-
       scale_colour_manual(
         values = palette,
         guide = "none"
-      ) +
-      geom_text(
-        aes(
-          y = ifelse({{ group }} == total_name, prop, NA),
-          label = ifelse(prop > 0.02,
-                         paste0(stringr::str_replace(round(prop * scale,
-                                                           digits = digits),
-                                                     "[.]",
-                                                     dec),
-                                unit),
-                         NA),
-          family = font),
-        size = 3.5,
-        alpha = .9,
-        color = "black",
-        position = position_stack(vjust = .5,
-                                  reverse = TRUE)
       )
+      if (show_value == TRUE) { # Peut-etre ici une redondance => voir si simplification possible ?
+        graph <- graph +
+          geom_text(
+            aes(
+              y = ifelse({{ group }} == total_name, prop, NA),
+              label = ifelse(prop > 0.02,
+                             paste0(stringr::str_replace(round(prop * scale,
+                                                               digits = digits),
+                                                         "[.]",
+                                                         dec),
+                                    unit),
+                             NA),
+              family = font),
+            size = 3.5,
+            alpha = .9,
+            color = "black",
+            position = position_stack(vjust = .5,
+                                      reverse = TRUE)
+          )
+      }
   }
 
   # Pour caption
