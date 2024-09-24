@@ -515,7 +515,7 @@ distrib_discrete <- function(data,
     print(graph)
 
     # On transforme le test stat en dataframe
-    if (quo_is_null(quo_facet)) {
+    if (!is.null(probs) & quo_is_null(quo_facet)) {
       test_stat_excel <- test.stat |>
         broom::tidy() |>
         t() |>
@@ -526,9 +526,15 @@ distrib_discrete <- function(data,
       names(test_stat_excel)[2] <- "Value"
     }
     # Pour faceting, test pas encore implemente => on cree un data.frame a la main
-    if (!quo_is_null(quo_facet)) {
+    if (!is.null(probs) & !quo_is_null(quo_facet)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
                                     Value = "Test pas encore implemente avec le faceting",
+                                    row.names = NULL)
+    }
+    # Pour faceting, test pas encore implemente => on cree un data.frame a la main
+    if (is.null(probs)) {
+      test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                    Value = "Test non réalisé",
                                     row.names = NULL)
     }
 
