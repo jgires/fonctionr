@@ -531,7 +531,7 @@ distrib_discrete <- function(data,
                                     Value = "Test pas encore implemente avec le faceting",
                                     row.names = NULL)
     }
-    # Pour faceting, test pas encore implemente => on cree un data.frame a la main
+    # si test pas demande
     if (is.null(probs)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
                                     Value = "Test non réalisé",
