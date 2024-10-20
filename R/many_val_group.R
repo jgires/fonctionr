@@ -421,7 +421,7 @@ many_val_group = function(data,
       mutate(longest = sum(indice, na.rm = TRUE)) |>
       ungroup() |>
       mutate(longest = max(longest),
-             show_value_stack = ifelse(indice/longest > .33, TRUE, FALSE))
+             show_value_stack = ifelse(indice/longest > .1, TRUE, FALSE))
   }
 
   tab <- tab |>
