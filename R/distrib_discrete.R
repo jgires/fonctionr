@@ -534,7 +534,7 @@ distrib_discrete <- function(data,
     # si test pas demande
     if (is.null(probs)) {
       test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test non réalisé",
+                                    Value = "Test non realise",
                                     row.names = NULL)
     }
 

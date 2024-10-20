@@ -18,6 +18,7 @@
 #' @param unit The unit showd on the plot. Default is percent.
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param size_text Text size displayed in surfaces. Default is 3.88 (as in ggplot2).
 #' @param bg Color of the background.
 #' @param ratio Aspect ratio of the surfaces.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
@@ -87,6 +88,7 @@ make_surface <- function(tab,
                          unit = NULL,
                          pal = "Kandinsky",
                          direction = 1,
+                         size_text = 3.88,
                          bg = "snow2",
                          ratio = 3/2,
                          font = "Roboto",
@@ -132,6 +134,7 @@ make_surface <- function(tab,
       space = space,
       digits = digits,
       direction = direction,
+      size_text = size_text,
       ratio = ratio,
       wrap_width_lab = wrap_width_lab,
       hjust.title = hjust.title
@@ -428,10 +431,34 @@ make_surface <- function(tab,
         } else if (position == "bottom") indice_sqrt / 2,
         label = if (show_ci == TRUE) {
           paste0(
-            stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit, " (", round({{ error_low }}, digits), ";", round({{ error_upp }}, digits), ")"), wrap_width_lab)
+            stringr::str_wrap({{ var }}, wrap_width_lab),
+            "\n",
+            stringr::str_wrap(
+              paste0(
+                round({{ value }}, digits), unit,
+                " (",
+                round({{ error_low }}, digits),
+                ";",
+                round({{ error_upp }}, digits),
+                ")"
+              ),
+              wrap_width_lab
+              )
+            )
+        } else if (show_ci == FALSE) {
+          paste0(
+            stringr::str_wrap({{ var }}, wrap_width_lab),
+            "\n",
+            stringr::str_wrap(
+              paste0(
+                round({{ value }},digits),
+                unit
+              ),
+              wrap_width_lab)
           )
-        } else if (show_ci == FALSE) paste0(stringr::str_wrap({{ var }}, wrap_width_lab), "\n", stringr::str_wrap(paste0(round({{ value }}, digits), unit), wrap_width_lab))
+        }
       ),
+      size = size_text,
       family = font
     )
 

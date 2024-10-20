@@ -407,6 +407,23 @@ many_val_group = function(data,
     }
   }
 
+  if(position == "stack") {
+    # Si facet
+    if (!quo_is_null(quo_facet)) {
+      tab <- tab |>
+        group_by({{ facet }})
+    }
+    # Group (dans tous les cas)
+    tab <- tab |>
+      group_by({{ group }}, .add = TRUE)
+
+    tab <- tab |>
+      mutate(longest = sum(indice, na.rm = TRUE)) |>
+      ungroup() |>
+      mutate(longest = max(longest),
+             show_value_stack = ifelse(indice/longest > .33, TRUE, FALSE))
+  }
+
   tab <- tab |>
     ungroup()
 
@@ -574,12 +591,18 @@ many_val_group = function(data,
           geom_text(
             aes(
               y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
-              label = paste0(stringr::str_replace(round(indice * scale,
-                                                        digits = digits),
-                                                  "[.]",
-                                                  dec),
-                             unit),
-              family = font),
+              label = ifelse(position == "stack" & show_value_stack == TRUE, paste0(
+                stringr::str_replace(
+                  round(indice * scale,
+                    digits = digits
+                  ),
+                  "[.]",
+                  dec
+                ),
+                unit
+              ), NA),
+              family = font
+            ),
             size = 3,
             vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
             hjust = if (position == "dodge") "left" else "center",
@@ -679,11 +702,16 @@ many_val_group = function(data,
       geom_text(
         aes(
           y = if (position == "dodge") (ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA),
-          label = paste0(stringr::str_replace(round(indice * scale,
-                                                    digits = digits),
-                                              "[.]",
-                                              dec),
-                         unit),
+          label = ifelse(position == "stack" & show_value_stack == TRUE, paste0(
+            stringr::str_replace(
+              round(indice * scale,
+                    digits = digits
+              ),
+              "[.]",
+              dec
+            ),
+            unit
+          ), NA),
           family = font),
         size = 3,
         vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
@@ -713,6 +741,11 @@ many_val_group = function(data,
 
 
   # 5. RESULTATS --------------------
+
+  if(position == "stack") {
+    tab <- tab |>
+      select(-longest, -show_value_stack)
+  }
 
   # Dans un but de lisibilite, on renomme les indices "mean" ou "median" selon la fonction appelee
   if (type == "prop") {

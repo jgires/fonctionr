@@ -22,6 +22,7 @@ make_surface(
   unit = NULL,
   pal = "Kandinsky",
   direction = 1,
+  size_text = 3.88,
   bg = "snow2",
   ratio = 3/2,
   font = "Roboto",
@@ -66,6 +67,8 @@ make_surface(
 \item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{size_text}{Text size displayed in surfaces. Default is 3.88 (as in ggplot2).}
 
 \item{bg}{Color of the background.}
 
