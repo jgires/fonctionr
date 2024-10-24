@@ -564,55 +564,68 @@ many_val_group = function(data,
     coord_flip()
 
   # Autre design pour la barre du total (si total = T)
-  if(total == TRUE) {
+  if (total == TRUE) {
+  graph <- graph +
+    # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +
+    # geom_vline(xintercept = 1.5, linetype = "dotted", color = "grey50", linewidth = .1) +
+    geom_bar(
+      aes(
+        x = {{ group }},
+        y = ifelse({{ group }} == total_name, indice, NA),
+        group = list_col,
+        color = list_col
+      ),
+      fill = "white",
+      linewidth = .8,
+      alpha = .8,
+      width = dodge,
+      stat = "identity",
+      position = position
+    ) +
+    scale_colour_manual(
+      values = palette,
+      guide = "none"
+    )
+  if (show_value == TRUE) { # Peut-etre ici une redondance => voir si simplification possible ?
     graph <- graph +
-      # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +
-      # geom_vline(xintercept = 1.5, linetype = "dotted", color = "grey50", linewidth = .1) +
-      geom_bar(
+      geom_text(
         aes(
-          x = {{ group }},
-          y = ifelse({{ group }} == total_name, indice, NA),
-          group = list_col,
-          color = list_col
-        ),
-        fill = "white",
-        linewidth = .8,
-        alpha = .8,
-        width = dodge,
-        stat = "identity",
-        position = position
-      ) +
-      scale_colour_manual(
-        values = palette,
-        guide = "none"
-      )
-      if (show_value == TRUE) { # Peut-etre ici une redondance => voir si simplification possible ?
-        graph <- graph +
-          geom_text(
-            aes(
-              y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
-              label = ifelse(position == "stack" & show_value_stack == TRUE, paste0(
-                stringr::str_replace(
-                  round(indice * scale,
-                    digits = digits
-                  ),
-                  "[.]",
-                  dec
+          y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
+          label = if (position == "stack") {
+            ifelse(show_value_stack == TRUE, paste0(
+              stringr::str_replace(
+                round(indice * scale,
+                  digits = digits
                 ),
-                unit
-              ), NA),
-              family = font
-            ),
-            size = 3,
-            vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
-            hjust = if (position == "dodge") "left" else "center",
-            color = "black",
-            alpha = 0.9,
-            # position = position_stack(vjust = .5))
-            position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
-          )
-      }
+                "[.]",
+                dec
+              ),
+              unit
+            ), NA)
+          } else {
+            paste0(
+              stringr::str_replace(
+                round(indice * scale,
+                  digits = digits
+                ),
+                "[.]",
+                dec
+              ),
+              unit
+            )
+          },
+          family = font
+        ),
+        size = 3,
+        vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+        hjust = if (position == "dodge") "left" else "center",
+        color = "black",
+        alpha = 0.9,
+        # position = position_stack(vjust = .5))
+        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
+      )
   }
+}
 
   # Ajouter les axes
   if(show_labs == TRUE){
@@ -702,16 +715,29 @@ many_val_group = function(data,
       geom_text(
         aes(
           y = if (position == "dodge") (ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA),
-          label = ifelse(position == "stack" & show_value_stack == TRUE, paste0(
-            stringr::str_replace(
-              round(indice * scale,
-                    digits = digits
+          label = if (position == "stack") {
+            ifelse(show_value_stack == TRUE, paste0(
+              stringr::str_replace(
+                round(indice * scale,
+                      digits = digits
+                ),
+                "[.]",
+                dec
               ),
-              "[.]",
-              dec
-            ),
-            unit
-          ), NA),
+              unit
+            ), NA)
+          } else {
+            paste0(
+              stringr::str_replace(
+                round(indice * scale,
+                      digits = digits
+                ),
+                "[.]",
+                dec
+              ),
+              unit
+            )
+          },
           family = font),
         size = 3,
         vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
