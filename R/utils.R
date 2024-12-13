@@ -402,6 +402,12 @@ official_pal <- function(inst,
     if(inst == "pretty_OBSS"){
       pal_fct <- grDevices::colorRampPalette(c("#E65362", "#FCAC00", "#26ADA8", "#434E73"))
     }
+    if(inst == "pretty_OBSS2"){
+      pal_fct <- grDevices::colorRampPalette(c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9"))
+    }
+    if(inst == "divergent_OBSS"){
+      pal_fct <- grDevices::colorRampPalette(c("#F08E3E", "#E3D2C7", "#26ADA8"))
+    }
     if(inst == "IBSA"){
       pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
     }
@@ -419,7 +425,7 @@ official_pal <- function(inst,
   }
 
   if(list_pal_names == T){
-    pal_names <- c("pretty_OBSS", "OBSS", "IBSA", "ULB")
+    pal_names <- c("OBSS", "pretty_OBSS", "pretty_OBSS2", "divergent_OBSS", "IBSA", "ULB")
 
     return(pal_names)
   }
