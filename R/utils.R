@@ -79,7 +79,11 @@ load_and_active_fonts <- function(){
   # On ajoute les polices contenues dans le package et on les active
   sysfonts::font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
   sysfonts::font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
-  sysfonts::font_add(family = "Gotham Narrow", regular = paste0(system.file("font", package = "fonctionr"), "/GothamNarrow-Book.otf"))
+  sysfonts::font_add(family = "Gotham Narrow",
+                     regular = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Book.otf"),
+                     italic = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Book_Italic.otf"),
+                     bold = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Bold.otf"),
+                     bolditalic = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Bold_Italic.otf"))
   sysfonts::font_add(family = "Helvetica Neue", regular = paste0(system.file("font", package = "fonctionr"), "/HelveticaNeueRoman.otf"))
   sysfonts::font_add(family = "League Gothic", regular = paste0(system.file("font", package = "fonctionr"), "/LeagueGothic-Regular.otf"))
   sysfonts::font_add(family = "Amatic", regular = paste0(system.file("font", package = "fonctionr"), "/AmaticSC-Regular.ttf"))
@@ -395,6 +399,9 @@ official_pal <- function(inst,
     if(inst == "OBSS"){
       pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
     }
+    if(inst == "pretty_OBSS"){
+      pal_fct <- grDevices::colorRampPalette(c("#E65362", "#FCAC00", "#26ADA8", "#434E73"))
+    }
     if(inst == "IBSA"){
       pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
     }
@@ -412,7 +419,7 @@ official_pal <- function(inst,
   }
 
   if(list_pal_names == T){
-    pal_names <- c("OBSS", "IBSA", "ULB")
+    pal_names <- c("pretty_OBSS", "OBSS", "IBSA", "ULB")
 
     return(pal_names)
   }

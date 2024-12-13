@@ -7,10 +7,10 @@ globalVariables(unique(c(
   "median", "n_sample", "n_weighted_low", "n_weighted_upp", "prop", "prop_low", "prop_upp", "group",
   # distrib_group_discrete:
   "prop",
-  # many_prop:
+  # many_val:
   "list_col", "median", "n_sample", "prop", "prop_low", "prop_upp",
-  # many_prop_group:
-  "list_col", "n_sample", "prop", "prop_low", "prop_upp",
+  # many_val_group:
+  "list_col", "n_sample", "prop", "prop_low", "prop_upp", "longest", "show_value_stack",
   # pivot_longer_survey:
   "type",
   # prop_group:
