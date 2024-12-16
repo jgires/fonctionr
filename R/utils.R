@@ -383,7 +383,10 @@ isColor <- function(x) {
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param list_pal_names TRUE to generate a vector with palette names.
 #'
-#' @noRd
+#' @return
+#' @export
+#'
+#' @examples
 #'
 
 official_pal <- function(inst,
@@ -396,17 +399,29 @@ official_pal <- function(inst,
       stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
     }
 
-    if(inst == "OBSS"){
+    if(inst == "Vivalis"){
       pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
     }
-    if(inst == "pretty_OBSS"){
+    if(inst == "OBSS"){
       pal_fct <- grDevices::colorRampPalette(c("#E65362", "#FCAC00", "#26ADA8", "#434E73"))
     }
-    if(inst == "pretty_OBSS2"){
+    if(inst == "OBSS_alt1"){
       pal_fct <- grDevices::colorRampPalette(c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9"))
     }
-    if(inst == "divergent_OBSS"){
+    if(inst == "OBSS_alt2"){
+      pal_fct <- grDevices::colorRampPalette(c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362"))
+    }
+    if(inst == "OBSS_alt3"){
+      pal_fct <- grDevices::colorRampPalette(c("#FCAC00", "#E65362", "#26ADA8", "#434E73"))
+    }
+    if(inst == "OBSS_GrPu"){
+      pal_fct <- grDevices::colorRampPalette(c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5"))
+    }
+    if(inst == "OBSS_div_mid1"){
       pal_fct <- grDevices::colorRampPalette(c("#F08E3E", "#E3D2C7", "#26ADA8"))
+    }
+    if(inst == "OBSS_div_mid2"){
+      pal_fct <- grDevices::colorRampPalette(c("#E65362", "#E3D2C7", "#434E73"))
     }
     if(inst == "IBSA"){
       pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
@@ -415,7 +430,28 @@ official_pal <- function(inst,
       pal_fct <- grDevices::colorRampPalette(c("#0a5296", "#a7b9dd"))
     }
 
-    palette <- pal_fct(n)
+    if(exists("pal_fct")){
+      palette <- pal_fct(n)
+    }
+
+    if(inst == "OBSS_highlight1"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#E65362"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#6dac70", "#434E73"))
+
+      palette <- c(pal_fct1(1), pal_fct2(n-1))
+    }
+    if(inst == "OBSS_highlight2"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#434E73"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
+
+      palette <- c(pal_fct1(1), pal_fct2(n-1))
+    }
+    if(inst == "OBSS_highlight3"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#434E73", "#6dac70"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
+
+      palette <- c(pal_fct1(2), pal_fct2(n-2))
+    }
 
     if(direction == -1){
       palette <- rev(palette)
@@ -425,7 +461,19 @@ official_pal <- function(inst,
   }
 
   if(list_pal_names == T){
-    pal_names <- c("OBSS", "pretty_OBSS", "pretty_OBSS2", "divergent_OBSS", "IBSA", "ULB")
+    pal_names <- c("Vivalis",
+                   "OBSS",
+                   "OBSS_alt1",
+                   "OBSS_alt2",
+                   "OBSS_alt3",
+                   "OBSS_GrPu",
+                   "OBSS_div_mid1",
+                   "OBSS_div_mid2",
+                   "OBSS_highlight1",
+                   "OBSS_highlight2",
+                   "OBSS_highlight3",
+                   "IBSA",
+                   "ULB")
 
     return(pal_names)
   }
