@@ -15,6 +15,8 @@ navbar:
       href: articles/esthetic_functions.html
     - text: Sondages avec design complexe
       href: articles/complex_design.html
+    - text: Couleurs pour l'Observatoire de la Santé et du Social
+      href: articles/Obss_colors.html
   - text: Changelog
     href: articles/changelog.html
   right:
@@ -46,6 +48,7 @@ reference:
   - make_surface
   - load_and_active_fonts
   - theme_fonctionr
+  - official_pal
 
 - subtitle: Utils
   desc: >

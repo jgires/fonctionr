@@ -94,6 +94,9 @@ many_val = function(data,
                     dec = ",",
                     pal = "Egypt",
                     direction = 1,
+                    desaturate = 0,
+                    lighten = 0,
+                    darken = 0,
                     dodge = 0.9,
                     font ="Roboto",
                     wrap_width_y = 25,
@@ -158,6 +161,9 @@ many_val = function(data,
       scale = scale,
       digits = digits,
       direction = direction,
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken,
       dodge = dodge,
       wrap_width_y = wrap_width_y
     ),
@@ -384,6 +390,17 @@ many_val = function(data,
   } else { # Si la couleur/palette n'est pas valide => on met la palette par defaut
     palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
     warning("La couleur ou palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+  }
+
+  # Pour modifier la palette (desaturer, eclaircir, foncer)
+  if(desaturate != 0){
+    palette <- colorspace::desaturate(palette, desaturate)
+  }
+  if(lighten != 0){
+    palette <- colorspace::lighten(palette, lighten, space = "HLS")
+  }
+  if(darken != 0){
+    palette <- colorspace::darken(palette, darken, space = "HLS")
   }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot

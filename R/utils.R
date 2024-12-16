@@ -392,6 +392,9 @@ isColor <- function(x) {
 official_pal <- function(inst,
                          n,
                          direction = 1,
+                         desaturate = 0,
+                         lighten = 0,
+                         darken = 0,
                          list_pal_names = F){
 
   if(list_pal_names == F){
@@ -399,58 +402,77 @@ official_pal <- function(inst,
       stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
     }
 
-    if(inst == "Vivalis"){
-      pal_fct <- grDevices::colorRampPalette(c("#ff87a5", "#ffb900", "#00e1af", "#375078"))
-    }
-    if(inst == "OBSS"){
-      pal_fct <- grDevices::colorRampPalette(c("#E65362", "#FCAC00", "#26ADA8", "#434E73"))
-    }
-    if(inst == "OBSS_alt1"){
-      pal_fct <- grDevices::colorRampPalette(c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9"))
-    }
-    if(inst == "OBSS_alt2"){
-      pal_fct <- grDevices::colorRampPalette(c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362"))
-    }
-    if(inst == "OBSS_alt3"){
-      pal_fct <- grDevices::colorRampPalette(c("#FCAC00", "#E65362", "#26ADA8", "#434E73"))
-    }
-    if(inst == "OBSS_GrPu"){
-      pal_fct <- grDevices::colorRampPalette(c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5"))
-    }
-    if(inst == "OBSS_div_mid1"){
-      pal_fct <- grDevices::colorRampPalette(c("#F08E3E", "#E3D2C7", "#26ADA8"))
-    }
-    if(inst == "OBSS_div_mid2"){
-      pal_fct <- grDevices::colorRampPalette(c("#E65362", "#E3D2C7", "#434E73"))
-    }
-    if(inst == "IBSA"){
-      pal_fct <- grDevices::colorRampPalette(c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A"))
-    }
-    if(inst == "ULB"){
-      pal_fct <- grDevices::colorRampPalette(c("#0a5296", "#a7b9dd"))
-    }
+    if(inst == "Vivalis"){pal_cols <- c("#ff87a5", "#ffb900", "#00e1af", "#375078")}
+    if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCAC00", "#26ADA8", "#434E73")}
+    if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9")}
+    if(inst == "OBSS_alt2"){pal_cols <- c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362")}
+    if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCAC00", "#c7b0d5", "#585fa8")}
+    if(inst == "OBSS_Calm"){pal_cols <- c("#663105", "#F08E3E", "#E3D2C7", "#434E73")}
+    if(inst == "OBSS_GrBlPu"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
+    if(inst == "OBSS_ReYeGr"){pal_cols <- c("#BF2433", "#FCAC00", "#0B7373")}
+    if(inst == "OBSS_SaOr"){pal_cols <- c("#E3D2C7", "#F08E3E", "#BF2433")}
+    if(inst == "OBSS_SaGr"){pal_cols <- c("#E3D2C7", "#8DB348", "#0F7D7D")}
+    if(inst == "OBSS_YeGr"){pal_cols <- c("#FCAC00", "#0F7D7D")}
+    if(inst == "OBSS_BlPu"){pal_cols <- c("#9CC1E6", "#4236A3")}
+    if(inst == "OBSS_div_mid1"){pal_cols <- c("#F08E3E", "#E3D2C7", "#26ADA8")}
+    if(inst == "OBSS_div_mid2"){pal_cols <- c("#E65362", "#E3D2C7", "#434E73")}
+    if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#E3D2C7", "#F08E3E", "#D1455F")}
+    if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
+    if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
 
-    if(exists("pal_fct")){
+    if(exists("pal_cols")){
+      pal_fct <- grDevices::colorRampPalette(pal_cols)
       palette <- pal_fct(n)
     }
 
+    if(inst == "OBSS_div_bi1"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#D1455F", "#ED8080", "#F08E3E"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#26ADA8", "#3F7FBF", "#434E73"))
+    }
+    if(inst == "OBSS_div_bi2"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#585fa8", "#c7b0d5"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#F08E3E", "#B85C11"))
+    }
+    if(inst == "OBSS_div_bi3"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#0B7373", "#26ADA8"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#EB7FAE", "#AD264E"))
+    }
     if(inst == "OBSS_highlight1"){
       pal_fct1 <- grDevices::colorRampPalette(c("#E65362"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#6dac70", "#434E73"))
-
-      palette <- c(pal_fct1(1), pal_fct2(n-1))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#26ADA8", "#434E73"))
+      n1 <- 1
     }
     if(inst == "OBSS_highlight2"){
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73"))
       pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
-
-      palette <- c(pal_fct1(1), pal_fct2(n-1))
+      n1 <- 1
     }
     if(inst == "OBSS_highlight3"){
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73", "#6dac70"))
       pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
+      n1 <- 2
+    }
+    if(exists("pal_fct1")){
+      if(stringr::str_detect(inst, "OBSS_div_bi")){
+        # pb si n est impair => solution d'asymetrie
+        if (n %% 2 == 0) {
+          n1 <- n/2
+        } else {
+          n1 <- (n/2)-.5
+        }
+      }
+      palette <- c(pal_fct1(n1), pal_fct2(n-n1))
+    }
 
-      palette <- c(pal_fct1(2), pal_fct2(n-2))
+    # Pour modifier la palette (desaturer, eclaircir, foncer)
+    if(desaturate != 0){
+      palette <- colorspace::desaturate(palette, desaturate)
+    }
+    if(lighten != 0){
+      palette <- colorspace::lighten(palette, lighten, space = "HLS")
+    }
+    if(darken != 0){
+      palette <- colorspace::darken(palette, darken, space = "HLS")
     }
 
     if(direction == -1){
@@ -465,10 +487,21 @@ official_pal <- function(inst,
                    "OBSS",
                    "OBSS_alt1",
                    "OBSS_alt2",
-                   "OBSS_alt3",
-                   "OBSS_GrPu",
+                   # "OBSS_alt3",
+                   "OBSS_Relax",
+                   "OBSS_Calm",
+                   "OBSS_GrBlPu",
+                   "OBSS_ReYeGr",
+                   "OBSS_SaOr",
+                   "OBSS_SaGr",
+                   "OBSS_YeGr",
+                   "OBSS_BlPu",
                    "OBSS_div_mid1",
                    "OBSS_div_mid2",
+                   "OBSS_div_mid3",
+                   "OBSS_div_bi1",
+                   "OBSS_div_bi2",
+                   "OBSS_div_bi3",
                    "OBSS_highlight1",
                    "OBSS_highlight2",
                    "OBSS_highlight3",

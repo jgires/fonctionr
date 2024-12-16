@@ -88,6 +88,9 @@ make_surface <- function(tab,
                          unit = NULL,
                          pal = "Kandinsky",
                          direction = 1,
+                         desaturate = 0,
+                         lighten = 0,
+                         darken = 0,
                          size_text = 3.88,
                          bg = "snow2",
                          ratio = 3/2,
@@ -134,6 +137,9 @@ make_surface <- function(tab,
       space = space,
       digits = digits,
       direction = direction,
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken,
       size_text = size_text,
       ratio = ratio,
       wrap_width_lab = wrap_width_lab,
@@ -312,6 +318,17 @@ make_surface <- function(tab,
   } else {
     palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = length(unique(tab[[deparse(substitute(var))]])), type = "continuous", direction = direction))
     warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+  }
+
+  # Pour modifier la palette (desaturer, eclaircir, foncer)
+  if(desaturate != 0){
+    palette <- colorspace::desaturate(palette, desaturate)
+  }
+  if(lighten != 0){
+    palette <- colorspace::lighten(palette, lighten, space = "HLS")
+  }
+  if(darken != 0){
+    palette <- colorspace::darken(palette, darken, space = "HLS")
   }
 
   # On cree le graphique

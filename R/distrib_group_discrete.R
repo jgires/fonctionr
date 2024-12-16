@@ -97,6 +97,9 @@ distrib_group_discrete <- function(data,
                                    dec = ",",
                                    pal = "Hokusai1",
                                    direction = 1,
+                                   desaturate = 0,
+                                   lighten = 0,
+                                   darken = 0,
                                    dodge = 0.9,
                                    font ="Roboto",
                                    wrap_width_y = 25,
@@ -160,6 +163,9 @@ distrib_group_discrete <- function(data,
       scale = scale,
       digits = digits,
       direction = direction,
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken,
       dodge = dodge,
       wrap_width_y = wrap_width_y,
       wrap_width_leg = wrap_width_leg,
@@ -424,6 +430,17 @@ distrib_group_discrete <- function(data,
   } else {
     palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = nlevels(as.factor(tab[[deparse(substitute(quali_var))]])), type = "continuous", direction = direction))
     warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+  }
+
+  # Pour modifier la palette (desaturer, eclaircir, foncer)
+  if(desaturate != 0){
+    palette <- colorspace::desaturate(palette, desaturate)
+  }
+  if(lighten != 0){
+    palette <- colorspace::lighten(palette, lighten, space = "HLS")
+  }
+  if(darken != 0){
+    palette <- colorspace::darken(palette, darken, space = "HLS")
   }
 
   # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)

@@ -32,7 +32,8 @@ Imports:
     showtext,
     sysfonts,
     grDevices,
-    ggnewscale
+    ggnewscale,
+    colorspace
 Suggests:
     knitr,
     laeken,

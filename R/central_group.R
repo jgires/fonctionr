@@ -98,6 +98,9 @@ central_group <- function(data,
                           dec = ",",
                           pal = NULL,
                           direction = 1,
+                          desaturate = 0,
+                          lighten = 0,
+                          darken = 0,
                           dodge = 0.9,
                           font ="Roboto",
                           wrap_width_y = 25,
@@ -161,6 +164,9 @@ central_group <- function(data,
     arg = list(
       digits = digits,
       direction = direction,
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken,
       dodge = dodge,
       wrap_width_y = wrap_width_y,
       wrap_width_leg = wrap_width_leg,
@@ -511,6 +517,18 @@ central_group <- function(data,
       palette <- as.character(PrettyCols::prettycols(palette = "Peppers", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
       warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
     }
+
+    # Pour modifier la palette (desaturer, eclaircir, foncer)
+    if(desaturate != 0){
+      palette <- colorspace::desaturate(palette, desaturate)
+    }
+    if(lighten != 0){
+      palette <- colorspace::lighten(palette, lighten, space = "HLS")
+    }
+    if(darken != 0){
+      palette <- colorspace::darken(palette, darken, space = "HLS")
+    }
+
   }
 
   # On calcule la valeur max de l'indice, pour l'ecart des geom_text dans le ggplot

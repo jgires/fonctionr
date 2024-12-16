@@ -1,0 +1,179 @@
+---
+title: "Couleurs pour l'Observatoire de la Santé et du Social"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
+)
+```
+
+```{r setup, echo=FALSE}
+library(fonctionr)
+
+load_and_active_fonts()
+
+print.palette <- function(x, lab, font = "Gotham Narrow") {
+  n <- length(x)
+  old <- par(mar = c(0.5, 0.5, 0.5, 0.5))
+  on.exit(par(old))
+  
+  image(1:n, 1, as.matrix(1:n), col = x,
+        ylab = "", xaxt = "n", yaxt = "n", bty = "n")
+  
+  rect(0, 0.92, n + 1, 1.08, col = rgb(1, 1, 1, 0.8), border = NA)
+  text((n + 1) / 2, 1, labels = lab, cex = 2.5, family = font)
+}
+
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Recoding eusilc$pl030 into eusilc$pl030_rec
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+```
+
+Nous avons créé des palettes spécifiques pour les chercheurs de l'Observatoire de la Santé et du Social. Celles-ci suivent le code couleur de [Vivalis](https://www.vivalis.brussels), et ont été pensées pour différentes utilisations.
+
+# Utilisation
+
+Pour utiliser ces palettes dans les différentes fonctions de `fonctionr`, il suffit d'indiquer leur nom (listés plus loin sur cette page) dans l'argument `pal` :
+
+```{r}
+test_palette_OBSS <- distrib_group_d(
+  eusilc,
+  group = db040,
+  quali_var = pl030_rec,
+  weights = rb050,
+  font = "Gotham Narrow",
+  pal = "OBSS",
+  title = "Distribution of socio-economic status according to region",
+  ylab = "",
+  legend_lab = "Status",
+  caption = "Bron : EU-SILC",
+)
+```
+
+```{r}
+test_palette_OBSS$graph
+```
+
+Les codes hexadécimaux des différentes palettes peuvent aussi être appelés avec la fonction `official_pal()`, pour les utiliser à l'extérieur de `fonctionr`. L'argument `n` permet d'indiquer combien de couleurs sont nécessaires, et la fonction s'occupe de créer un dégradé comprenant ce nombre de couleurs :
+
+```{r}
+official_pal(inst = "OBSS", n = 8)
+```
+
+Il est possible de connaître toutes les palettes disponibles en exécutant la fonction `official_pal()` avec comme argument `list_pal_names = T` :
+
+```{r}
+official_pal(list_pal_names = T)
+```
+
+# Les palettes
+
+## Palettes qualitatives
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS", 8), lab = "OBSS")
+print.palette(official_pal("OBSS_alt1", 8), lab = "OBSS_alt1")
+print.palette(official_pal("OBSS_alt2", 7), lab = "OBSS_alt2")
+print.palette(official_pal("OBSS_Relax", 7), lab = "OBSS_Relax")
+print.palette(official_pal("OBSS_Calm", 8), lab = "OBSS_Calm")
+print.palette(official_pal("OBSS_ReYeGr", 7), lab = "OBSS_ReYeGr")
+print.palette(official_pal("OBSS_GrBlPu", 7), lab = "OBSS_GrBlPu")
+```
+
+## Palettes continues
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS_SaOr", 8), lab = "OBSS_SaOr")
+print.palette(official_pal("OBSS_SaGr", 8), lab = "OBSS_SaGr")
+print.palette(official_pal("OBSS_YeGr", 8), lab = "OBSS_YeGr")
+print.palette(official_pal("OBSS_BlPu", 8), lab = "OBSS_BlPu")
+```
+
+## Palettes divergentes
+
+### Avec un point central
+
+*Attention, ces palettes n'affichent le point central que si le nombre de couleur est impair !*
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS_div_mid1", 7), lab = "OBSS_div_mid1")
+print.palette(official_pal("OBSS_div_mid2", 7), lab = "OBSS_div_mid2")
+print.palette(official_pal("OBSS_div_mid3", 7), lab = "OBSS_div_mid3")
+```
+
+### Sans point central
+
+*Attention, ces palettes ne sont symétriques que si le nombre de couleur est pair !*
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS_div_bi1", 6), lab = "OBSS_div_bi1")
+print.palette(official_pal("OBSS_div_bi2", 6), lab = "OBSS_div_bi2")
+print.palette(official_pal("OBSS_div_bi3", 6), lab = "OBSS_div_bi3")
+```
+
+## Palettes avec emphase
+
+Il s'agit de palettes de couleur mettant en opposition la première, ou les deux premières catégories, avec toutes les autres :
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS_highlight1", 6), lab = "OBSS_highlight1")
+print.palette(official_pal("OBSS_highlight2", 6), lab = "OBSS_highlight2")
+print.palette(official_pal("OBSS_highlight3", 6), lab = "OBSS_highlight3")
+```
+
+## Palettes d'autres institutions
+
+```{r, echo=FALSE}
+print.palette(official_pal("IBSA", 4), lab = "IBSA")
+print.palette(official_pal("ULB", 6), lab = "ULB")
+```
+
+# Altération des palettes
+
+Il est possible de désaturer, éclaircir ou foncer les palettes, avec les arguments `desaturate`, `lighten` et `darken`.
+
+```{r}
+official_pal("OBSS", 8)
+```
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS", 8), lab = "OBSS")
+```
+
+```{r}
+official_pal("OBSS", 8, desaturate = .5)
+```
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS", 8, desaturate = .5), lab = "OBSS (avec désaturation)")
+```
+
+```{r}
+official_pal("OBSS", 8, lighten = .5)
+```
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS", 8, lighten = .5), lab = "OBSS (avec éclaircissement)")
+```
+
+```{r}
+official_pal("OBSS", 8, darken = .5)
+```
+
+```{r, echo=FALSE}
+print.palette(official_pal("OBSS", 8, darken = .5), lab = "OBSS (plus foncé)")
+```
