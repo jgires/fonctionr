@@ -409,7 +409,7 @@ official_pal <- function(inst,
     if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCAC00", "#c7b0d5", "#585fa8")}
     if(inst == "OBSS_Calm"){pal_cols <- c("#663105", "#F08E3E", "#E3D2C7", "#434E73")}
     if(inst == "OBSS_GrBlPu"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
-    if(inst == "OBSS_ReYeGr"){pal_cols <- c("#BF2433", "#FCAC00", "#0B7373")}
+    if(inst == "OBSS_ReYeGr"){pal_cols <- c("#E65362", "#FCAC00", "#0F7D7D")}
     if(inst == "OBSS_SaOr"){pal_cols <- c("#E3D2C7", "#F08E3E", "#BF2433")}
     if(inst == "OBSS_SaGr"){pal_cols <- c("#E3D2C7", "#8DB348", "#0F7D7D")}
     if(inst == "OBSS_YeGr"){pal_cols <- c("#FCAC00", "#0F7D7D")}
@@ -426,7 +426,7 @@ official_pal <- function(inst,
     }
 
     if(inst == "OBSS_div_bi1"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#D1455F", "#ED8080", "#F08E3E"))
+      pal_fct1 <- grDevices::colorRampPalette(c("#D1455F", "#E0756B", "#F29243"))
       pal_fct2 <- grDevices::colorRampPalette(c("#26ADA8", "#3F7FBF", "#434E73"))
     }
     if(inst == "OBSS_div_bi2"){
