@@ -48,9 +48,6 @@ test_palette_OBSS <- distrib_group_d(
   legend_lab = "Status",
   caption = "Bron : EU-SILC",
 )
-```
-
-```{r}
 test_palette_OBSS$graph
 ```
 
@@ -164,6 +161,7 @@ distrib_income_2 <- distrib_group_c(
   show_moustache = F,
   pal = official_pal(inst = "OBSS_Blues", n = 2, direction = -1),
   alpha = .8,
+  font = "Gotham Narrow",
   title = "Income from wage, part time workers by region"
 )
 
@@ -176,9 +174,9 @@ eusilc_many_mean_group <- many_mean_group(
   group = rb090,
   list_vars = c(py010n, py050n, py090n),
   list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
-  weights = rb050,
   pal = "OBSS_GrBlPu",
   unit = "€",
+  font = "Gotham Narrow",
   title = "Income from wage, independant worker and unemployement benefits by sex"
   )
 
@@ -190,14 +188,12 @@ eusilc_dist_group_d <- distrib_group_d(
   eusilc,
   group = db040,
   quali_var = pl030_rec,
-  na.rm.var = F,
-  facet = rb090,
   filter_exp = age > 12,
-  weights = rb050,
-  pal = "OBSS_alt2",
-  title = "Distribution of socio-economic status according to region and gender",
+  pal = "OBSS_alt1",
   desaturate = .05,
-  lighten = .05
+  lighten = .05,
+  font = "Gotham Narrow",
+  title = "Distribution of socio-economic status according to region"
   )
 
 eusilc_dist_group_d$graph
@@ -209,10 +205,11 @@ eusilc_prop_sub_group <- prop_group(
   group = rb090,
   prop_exp = pl030_rec == "Working part time",
   group.fill = db040,
-  weights = rb050,
+  show_value = F,
   pal = "OBSS_ReYeGr",
   lighten = .1,
-  title = "Proportion of individuals working part time by nationality and sex"
+  font = "Gotham Narrow",
+  title = "Proportion of individuals working part time by region and sex"
 )
 
 eusilc_prop_sub_group$graph
@@ -226,19 +223,16 @@ eusilc$eqIncome_quant <- cut(eusilc$eqIncome,
   right = FALSE,
   dig.lab = 6,
   breaks = c(0, .5*medeq, .75*medeq, .9*medeq, 1.1*medeq, 1.25*medeq, 1.5*medeq, max(eusilc$eqIncome))
-)
+  )
 
 eusilc_med_group_d <- distrib_group_d(
   eusilc,
   group = pl030_rec,
   quali_var = eqIncome_quant,
   na.rm.var = F,
-  facet = rb090,
-  pal = "OBSS_div_mid3",
-  direction = -1,
-  title = "Distribution of equivalent income by status and sex",
-  desaturate = .05,
-  lighten = .05
+  pal = "OBSS_div_mid1",
+  font = "Gotham Narrow",
+  title = "Distribution of equivalent income by status"
   )
 
 eusilc_med_group_d$graph
