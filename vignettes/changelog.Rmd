@@ -18,9 +18,19 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.10
+
+Date : 2024-12-17
+
+-   Ajout de palettes spécifiques pour l'Observatoire de la Santé et du Social.
+
+-   Export de la fonction `official_pal()`.
+
+-   Ajout de la possibilité de désaturer, éclaircir ou foncer les palettes de couleur.
+
 ## fonctionr 0.3.9
 
-Date : 2024-09_15
+Date : 2024-09-15
 
 -   Ajout de l'argument `lang` qui permet l'affichage des indications sur les graphiques en trois langues : français, néérlandais, anglais.
 

@@ -410,10 +410,10 @@ official_pal <- function(inst,
     if(inst == "OBSS_Calm"){pal_cols <- c("#663105", "#F08E3E", "#E3D2C7", "#434E73")}
     if(inst == "OBSS_GrBlPu"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
     if(inst == "OBSS_ReYeGr"){pal_cols <- c("#E65362", "#FCAC00", "#0F7D7D")}
-    if(inst == "OBSS_SaOr"){pal_cols <- c("#E3D2C7", "#F08E3E", "#BF2433")}
-    if(inst == "OBSS_SaGr"){pal_cols <- c("#E3D2C7", "#8DB348", "#0F7D7D")}
-    if(inst == "OBSS_YeGr"){pal_cols <- c("#FCAC00", "#0F7D7D")}
-    if(inst == "OBSS_BlPu"){pal_cols <- c("#9CC1E6", "#4236A3")}
+    if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
+    if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
+    if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
+    if(inst == "OBSS_Blues"){pal_cols <- c("#8AC1E6", "#4236A3")}
     if(inst == "OBSS_div_mid1"){pal_cols <- c("#F08E3E", "#E3D2C7", "#26ADA8")}
     if(inst == "OBSS_div_mid2"){pal_cols <- c("#E65362", "#E3D2C7", "#434E73")}
     if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#E3D2C7", "#F08E3E", "#D1455F")}
@@ -492,10 +492,10 @@ official_pal <- function(inst,
                    "OBSS_Calm",
                    "OBSS_GrBlPu",
                    "OBSS_ReYeGr",
-                   "OBSS_SaOr",
-                   "OBSS_SaGr",
-                   "OBSS_YeGr",
-                   "OBSS_BlPu",
+                   "OBSS_Candy",
+                   "OBSS_Greens",
+                   "OBSS_Sunset",
+                   "OBSS_Blues",
                    "OBSS_div_mid1",
                    "OBSS_div_mid2",
                    "OBSS_div_mid3",

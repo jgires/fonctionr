@@ -47,7 +47,7 @@ Nous avons créé des palettes spécifiques pour les chercheurs de l'Observatoir
 
 # Utilisation
 
-Pour utiliser ces palettes dans les différentes fonctions de `fonctionr`, il suffit d'indiquer leur nom (listés plus loin sur cette page) dans l'argument `pal` :
+Pour utiliser ces palettes dans les différentes fonctions de `fonctionr`, il suffit d'indiquer celle de votre préférence (les noms des palettes de couleur sont listés plus loin sur cette page) dans l'argument `pal` :
 
 ```{r}
 test_palette_OBSS <- distrib_group_d(
@@ -68,7 +68,7 @@ test_palette_OBSS <- distrib_group_d(
 test_palette_OBSS$graph
 ```
 
-Les codes hexadécimaux des différentes palettes peuvent aussi être appelés avec la fonction `official_pal()`, pour les utiliser à l'extérieur de `fonctionr`. L'argument `n` permet d'indiquer combien de couleurs sont nécessaires, et la fonction s'occupe de créer un dégradé comprenant ce nombre de couleurs :
+Les codes hexadécimaux des différentes palettes peuvent aussi être appelés avec la fonction `official_pal()`, pour les utiliser à l'extérieur de `fonctionr`. L'argument `n` permet d'indiquer combien de couleurs sont nécessaires, et la fonction s'occupe de créer automatiquement un dégradé comprenant ce nombre de couleurs :
 
 ```{r}
 official_pal(inst = "OBSS", n = 8)
@@ -97,10 +97,10 @@ print.palette(official_pal("OBSS_GrBlPu", 7), lab = "OBSS_GrBlPu")
 ## Palettes continues
 
 ```{r, echo=FALSE}
-print.palette(official_pal("OBSS_SaOr", 8), lab = "OBSS_SaOr")
-print.palette(official_pal("OBSS_SaGr", 8), lab = "OBSS_SaGr")
-print.palette(official_pal("OBSS_YeGr", 8), lab = "OBSS_YeGr")
-print.palette(official_pal("OBSS_BlPu", 8), lab = "OBSS_BlPu")
+print.palette(official_pal("OBSS_Candy", 8), lab = "OBSS_Candy")
+print.palette(official_pal("OBSS_Greens", 8), lab = "OBSS_Greens")
+print.palette(official_pal("OBSS_Sunset", 8), lab = "OBSS_Sunset")
+print.palette(official_pal("OBSS_Blues", 8), lab = "OBSS_Blues")
 ```
 
 ## Palettes divergentes
@@ -144,7 +144,7 @@ print.palette(official_pal("ULB", 6), lab = "ULB")
 
 # Altération des palettes
 
-Il est possible de désaturer, éclaircir ou foncer les palettes, avec les arguments `desaturate`, `lighten` et `darken`.
+Il est possible de désaturer, éclaircir ou foncer les palettes, avec les arguments `desaturate`, `lighten` et `darken`, à la fois dans les fonctions de description de données de `fonctionr` et dans la fonction `official_pal()`.
 
 ```{r}
 official_pal("OBSS", 8)
@@ -177,4 +177,3 @@ official_pal("OBSS", 8, darken = .5)
 ```{r, echo=FALSE}
 print.palette(official_pal("OBSS", 8, darken = .5), lab = "OBSS (plus foncé)")
 ```
-

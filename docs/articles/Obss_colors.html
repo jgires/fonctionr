@@ -73,8 +73,9 @@ couleur de <a href="https://www.vivalis.brussels" class="external-link">Vivalis<
 <h2 id="utilisation">Utilisation<a class="anchor" aria-label="anchor" href="#utilisation"></a>
 </h2>
 <p>Pour utiliser ces palettes dans les différentes fonctions de
-<code>fonctionr</code>, il suffit d’indiquer leur nom (listés plus loin
-sur cette page) dans l’argument <code>pal</code> :</p>
+<code>fonctionr</code>, il suffit d’indiquer celle de votre préférence
+(les noms des palettes de couleur sont listés plus loin sur cette page)
+dans l’argument <code>pal</code> :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_palette_OBSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -95,7 +96,8 @@ sur cette page) dans l’argument <code>pal</code> :</p>
 appelés avec la fonction <code><a href="../reference/official_pal.html">official_pal()</a></code>, pour les utiliser
 à l’extérieur de <code>fonctionr</code>. L’argument <code>n</code>
 permet d’indiquer combien de couleurs sont nécessaires, et la fonction
-s’occupe de créer un dégradé comprenant ce nombre de couleurs :</p>
+s’occupe de créer automatiquement un dégradé comprenant ce nombre de
+couleurs :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/official_pal.html">official_pal</a></span><span class="op">(</span>inst <span class="op">=</span> <span class="st">"OBSS"</span>, n <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "#E65362" "#EF7938" "#F89F0E" "#BEAC30" "#63AC78" "#2A9FA0" "#367689"</span></span>
@@ -107,7 +109,7 @@ exécutant la fonction <code><a href="../reference/official_pal.html">official_p
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/official_pal.html">official_pal</a></span><span class="op">(</span>list_pal_names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "Vivalis"         "OBSS"            "OBSS_alt1"       "OBSS_alt2"      </span></span>
 <span><span class="co">#&gt;  [5] "OBSS_Relax"      "OBSS_Calm"       "OBSS_GrBlPu"     "OBSS_ReYeGr"    </span></span>
-<span><span class="co">#&gt;  [9] "OBSS_SaOr"       "OBSS_SaGr"       "OBSS_YeGr"       "OBSS_BlPu"      </span></span>
+<span><span class="co">#&gt;  [9] "OBSS_Candy"      "OBSS_Greens"     "OBSS_Sunset"     "OBSS_Blues"     </span></span>
 <span><span class="co">#&gt; [13] "OBSS_div_mid1"   "OBSS_div_mid2"   "OBSS_div_mid3"   "OBSS_div_bi1"   </span></span>
 <span><span class="co">#&gt; [17] "OBSS_div_bi2"    "OBSS_div_bi3"    "OBSS_highlight1" "OBSS_highlight2"</span></span>
 <span><span class="co">#&gt; [21] "OBSS_highlight3" "IBSA"            "ULB"</span></span></code></pre></div>
@@ -161,7 +163,9 @@ ou les deux premières catégories, avec toutes les autres :</p>
 </h2>
 <p>Il est possible de désaturer, éclaircir ou foncer les palettes, avec
 les arguments <code>desaturate</code>, <code>lighten</code> et
-<code>darken</code>.</p>
+<code>darken</code>, à la fois dans les fonctions de description de
+données de <code>fonctionr</code> et dans la fonction
+<code><a href="../reference/official_pal.html">official_pal()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/official_pal.html">official_pal</a></span><span class="op">(</span><span class="st">"OBSS"</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "#E65362" "#EF7938" "#F89F0E" "#BEAC30" "#63AC78" "#2A9FA0" "#367689"</span></span>

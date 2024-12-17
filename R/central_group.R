@@ -523,10 +523,10 @@ central_group <- function(data,
       palette <- colorspace::desaturate(palette, desaturate)
     }
     if(lighten != 0){
-      palette <- colorspace::lighten(palette, lighten, space = "HLS")
+      palette <- colorspace::lighten(palette, lighten)
     }
     if(darken != 0){
-      palette <- colorspace::darken(palette, darken, space = "HLS")
+      palette <- colorspace::darken(palette, darken)
     }
 
   }
