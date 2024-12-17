@@ -126,13 +126,14 @@ distrib_continuous <- function(data,
     ),
     type = "character"
   )
-  check_arg(
-    arg = list(
-      pal = pal
-    ),
-    type = "character",
-    short = F
-  )
+  # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
+  # check_arg(
+  #   arg = list(
+  #     pal = pal
+  #   ),
+  #   type = "character",
+  #   short = F
+  # )
   check_arg(
     arg = list(
       show_mid_line = show_mid_line,

@@ -15,20 +15,6 @@ knitr::opts_chunk$set(
 ```{r setup, echo=FALSE}
 library(fonctionr)
 
-load_and_active_fonts()
-
-print.palette <- function(x, lab, font = "Gotham Narrow") {
-  n <- length(x)
-  old <- par(mar = c(0.5, 0.5, 0.5, 0.5))
-  on.exit(par(old))
-  
-  image(1:n, 1, as.matrix(1:n), col = x,
-        ylab = "", xaxt = "n", yaxt = "n", bty = "n")
-  
-  rect(0, 0.92, n + 1, 1.08, col = rgb(1, 1, 1, 0.8), border = NA)
-  text((n + 1) / 2, 1, labels = lab, cex = 2.5, family = font)
-}
-
 # Loading of data
 data(eusilc, package = "laeken")
 
@@ -68,13 +54,14 @@ test_palette_OBSS <- distrib_group_d(
 test_palette_OBSS$graph
 ```
 
-Les codes hexadécimaux des différentes palettes peuvent aussi être appelés avec la fonction `official_pal()`, pour les utiliser à l'extérieur de `fonctionr`. L'argument `n` permet d'indiquer combien de couleurs sont nécessaires, et la fonction s'occupe de créer automatiquement un dégradé comprenant ce nombre de couleurs :
+Les codes hexadécimaux des différentes palettes peuvent aussi être appelés avec la fonction `official_pal()`, pour les utiliser à l'extérieur de `fonctionr`. L'argument `n` permet d'indiquer combien de couleurs sont nécessaires, et la fonction s'occupe de créer automatiquement un dégradé comprenant ce nombre de couleurs. L'argument `show_pal = T` permet quant à lui d'afficher graphiquement les palettes.
 
 ```{r}
 official_pal(inst = "OBSS", n = 8)
+official_pal(inst = "OBSS", n = 8, show_pal = T)
 ```
 
-Il est possible de connaître toutes les palettes disponibles en exécutant la fonction `official_pal()` avec comme argument `list_pal_names = T` :
+Il est également possible de connaître toutes les palettes disponibles en exécutant la fonction `official_pal()` avec comme argument `list_pal_names = T` :
 
 ```{r}
 official_pal(list_pal_names = T)
@@ -84,23 +71,23 @@ official_pal(list_pal_names = T)
 
 ## Palettes qualitatives
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS", 8), lab = "OBSS")
-print.palette(official_pal("OBSS_alt1", 8), lab = "OBSS_alt1")
-print.palette(official_pal("OBSS_alt2", 7), lab = "OBSS_alt2")
-print.palette(official_pal("OBSS_Calm", 8), lab = "OBSS_Calm")
-print.palette(official_pal("OBSS_Relax", 7), lab = "OBSS_Relax")
-print.palette(official_pal("OBSS_ReYeGr", 7), lab = "OBSS_ReYeGr")
-print.palette(official_pal("OBSS_GrBlPu", 7), lab = "OBSS_GrBlPu")
+```{r}
+official_pal("OBSS", 8, show_pal = T)
+official_pal("OBSS_alt1", 8, show_pal = T)
+official_pal("OBSS_alt2", 7, show_pal = T)
+official_pal("OBSS_Calm", 8, show_pal = T)
+official_pal("OBSS_Relax", 7, show_pal = T)
+official_pal("OBSS_ReYeGr", 7, show_pal = T)
+official_pal("OBSS_GrBlPu", 7, show_pal = T)
 ```
 
 ## Palettes continues
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS_Candy", 8), lab = "OBSS_Candy")
-print.palette(official_pal("OBSS_Greens", 8), lab = "OBSS_Greens")
-print.palette(official_pal("OBSS_Sunset", 8), lab = "OBSS_Sunset")
-print.palette(official_pal("OBSS_Blues", 8), lab = "OBSS_Blues")
+```{r}
+official_pal("OBSS_Candy", 8, show_pal = T)
+official_pal("OBSS_Greens", 8, show_pal = T)
+official_pal("OBSS_Sunset", 8, show_pal = T)
+official_pal("OBSS_Blues", 8, show_pal = T)
 ```
 
 ## Palettes divergentes
@@ -109,37 +96,37 @@ print.palette(official_pal("OBSS_Blues", 8), lab = "OBSS_Blues")
 
 *Attention, ces palettes n'affichent le point central que si le nombre de couleur est impair !*
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS_div_mid1", 7), lab = "OBSS_div_mid1")
-print.palette(official_pal("OBSS_div_mid2", 7), lab = "OBSS_div_mid2")
-print.palette(official_pal("OBSS_div_mid3", 7), lab = "OBSS_div_mid3")
+```{r}
+official_pal("OBSS_div_mid1", 7, show_pal = T)
+official_pal("OBSS_div_mid2", 7, show_pal = T)
+official_pal("OBSS_div_mid3", 7, show_pal = T)
 ```
 
 ### Sans point central
 
 *Attention, ces palettes ne sont symétriques que si le nombre de couleur est pair !*
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS_div_bi1", 8), lab = "OBSS_div_bi1")
-print.palette(official_pal("OBSS_div_bi2", 8), lab = "OBSS_div_bi2")
-print.palette(official_pal("OBSS_div_bi3", 8), lab = "OBSS_div_bi3")
+```{r}
+official_pal("OBSS_div_bi1", 8, show_pal = T)
+official_pal("OBSS_div_bi2", 8, show_pal = T)
+official_pal("OBSS_div_bi3", 8, show_pal = T)
 ```
 
 ## Palettes avec emphase
 
 Il s'agit de palettes de couleur mettant en opposition la première, ou les deux premières catégories, avec toutes les autres :
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS_highlight1", 8), lab = "OBSS_highlight1")
-print.palette(official_pal("OBSS_highlight2", 6), lab = "OBSS_highlight2")
-print.palette(official_pal("OBSS_highlight3", 6), lab = "OBSS_highlight3")
+```{r}
+official_pal("OBSS_highlight1", 8, show_pal = T)
+official_pal("OBSS_highlight2", 6, show_pal = T)
+official_pal("OBSS_highlight3", 6, show_pal = T)
 ```
 
 ## Palettes d'autres institutions
 
-```{r, echo=FALSE}
-print.palette(official_pal("IBSA", 4), lab = "IBSA")
-print.palette(official_pal("ULB", 6), lab = "ULB")
+```{r}
+official_pal("IBSA", 4, show_pal = T)
+official_pal("ULB", 6, show_pal = T)
 ```
 
 # Altération des palettes
@@ -147,33 +134,112 @@ print.palette(official_pal("ULB", 6), lab = "ULB")
 Il est possible de désaturer, éclaircir ou foncer les palettes, avec les arguments `desaturate`, `lighten` et `darken`, à la fois dans les fonctions de description de données de `fonctionr` et dans la fonction `official_pal()`.
 
 ```{r}
-official_pal("OBSS", 8)
-```
-
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS", 8), lab = "OBSS")
+official_pal("OBSS", 8, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, desaturate = .5)
-```
-
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS", 8, desaturate = .5), lab = "OBSS (avec désaturation)")
+official_pal("OBSS", 8, desaturate = .5, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, lighten = .5)
-```
-
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS", 8, lighten = .5), lab = "OBSS (avec éclaircissement)")
+official_pal("OBSS", 8, lighten = .5, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, darken = .5)
+official_pal("OBSS", 8, darken = .5, show_pal = T)
 ```
 
-```{r, echo=FALSE}
-print.palette(official_pal("OBSS", 8, darken = .5), lab = "OBSS (plus foncé)")
+# Exemples de graphiques
+
+```{r}
+distrib_income_2 <- distrib_group_c(
+  eusilc,
+  db040,
+  (py010n + py050n) / 12,
+  filter_exp = pl030 == 2,
+  limits = c(-500, 3000),
+  show_mid_point = F,
+  show_value = F,
+  show_ci_errorbar = F,
+  show_moustache = F,
+  pal = official_pal(inst = "OBSS_Blues", n = 2, direction = -1),
+  alpha = .8,
+  title = "Income from wage, part time workers by region"
+)
+
+distrib_income_2$graph
+```
+
+```{r}
+eusilc_many_mean_group <- many_mean_group(
+  eusilc,
+  group = rb090,
+  list_vars = c(py010n, py050n, py090n),
+  list_vars_lab = c("salaires", "revenus d'une activité indépendant", "allocation de chômage"),
+  weights = rb050,
+  pal = "OBSS_GrBlPu",
+  unit = "€",
+  title = "Income from wage, independant worker and unemployement benefits by sex"
+  )
+
+eusilc_many_mean_group$graph
+```
+
+```{r}
+eusilc_dist_group_d <- distrib_group_d(
+  eusilc,
+  group = db040,
+  quali_var = pl030_rec,
+  na.rm.var = F,
+  facet = rb090,
+  filter_exp = age > 12,
+  weights = rb050,
+  pal = "OBSS_alt2",
+  title = "Distribution of socio-economic status according to region and gender",
+  desaturate = .05,
+  lighten = .05
+  )
+
+eusilc_dist_group_d$graph
+```
+
+```{r}
+eusilc_prop_sub_group <- prop_group(
+  eusilc,
+  group = rb090,
+  prop_exp = pl030_rec == "Working part time",
+  group.fill = db040,
+  weights = rb050,
+  pal = "OBSS_ReYeGr",
+  lighten = .1,
+  title = "Proportion of individuals working part time by nationality and sex"
+)
+
+eusilc_prop_sub_group$graph
+```
+
+```{r}
+medeq <- median(eusilc$eqIncome)
+
+eusilc$eqIncome_quant <- cut(eusilc$eqIncome,
+  include.lowest = TRUE,
+  right = FALSE,
+  dig.lab = 6,
+  breaks = c(0, .5*medeq, .75*medeq, .9*medeq, 1.1*medeq, 1.25*medeq, 1.5*medeq, max(eusilc$eqIncome))
+)
+
+eusilc_med_group_d <- distrib_group_d(
+  eusilc,
+  group = pl030_rec,
+  quali_var = eqIncome_quant,
+  na.rm.var = F,
+  facet = rb090,
+  pal = "OBSS_div_mid3",
+  direction = -1,
+  title = "Distribution of equivalent income by status and sex",
+  desaturate = .05,
+  lighten = .05
+  )
+
+eusilc_med_group_d$graph
 ```

@@ -395,13 +395,18 @@ official_pal <- function(inst,
                          desaturate = 0,
                          lighten = 0,
                          darken = 0,
-                         list_pal_names = F){
+                         show_pal = F,
+                         font = "Gotham Narrow",
+                         list_pal_names = F
+                         ){
 
+  # Check de verification
   if(list_pal_names == F){
     if(all(direction != -1, direction != 1)){
       stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
     }
 
+    # Palettes avec degrade simple
     if(inst == "Vivalis"){pal_cols <- c("#ff87a5", "#ffb900", "#00e1af", "#375078")}
     if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCAC00", "#26ADA8", "#434E73")}
     if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9")}
@@ -420,11 +425,14 @@ official_pal <- function(inst,
     if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
     if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
 
+    # On cree la palette si "pal_cols" existe (= palette simple)
     if(exists("pal_cols")){
       pal_fct <- grDevices::colorRampPalette(pal_cols)
       palette <- pal_fct(n)
     }
 
+    # Palettes composees de 2 palettes
+    # Palettes divergentes sans point central
     if(inst == "OBSS_div_bi1"){
       pal_fct1 <- grDevices::colorRampPalette(c("#D1455F", "#E0756B", "#F29243"))
       pal_fct2 <- grDevices::colorRampPalette(c("#26ADA8", "#3F7FBF", "#434E73"))
@@ -437,10 +445,11 @@ official_pal <- function(inst,
       pal_fct1 <- grDevices::colorRampPalette(c("#0B7373", "#26ADA8"))
       pal_fct2 <- grDevices::colorRampPalette(c("#EB7FAE", "#AD264E"))
     }
+    # Palettes avec emphase
     if(inst == "OBSS_highlight1"){
       pal_fct1 <- grDevices::colorRampPalette(c("#E65362"))
       pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#26ADA8", "#434E73"))
-      n1 <- 1
+      n1 <- 1 # On determine le nombre de modalites avec emphase dans n1
     }
     if(inst == "OBSS_highlight2"){
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73"))
@@ -452,19 +461,22 @@ official_pal <- function(inst,
       pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
       n1 <- 2
     }
+
+    # On cree la palette si "pal_fct1" existe (= palette composee de 2 palettes)
     if(exists("pal_fct1")){
+      # pb si n est impair dans les palettes divergentes => asymetrie comme solution
       if(stringr::str_detect(inst, "OBSS_div_bi")){
-        # pb si n est impair => solution d'asymetrie
         if (n %% 2 == 0) {
           n1 <- n/2
         } else {
           n1 <- (n/2)-.5
         }
       }
+      # On compose la palette : une avec n1, l'autre avec n-n1 (symetrique ou non selon le cas)
       palette <- c(pal_fct1(n1), pal_fct2(n-n1))
     }
 
-    # Pour modifier la palette (desaturer, eclaircir, foncer)
+    # Pour alterer la palette (desaturer, eclaircir, foncer)
     if(desaturate != 0){
       palette <- colorspace::desaturate(palette, desaturate)
     }
@@ -475,19 +487,46 @@ official_pal <- function(inst,
       palette <- colorspace::darken(palette, darken, space = "HLS")
     }
 
+    # Inversion de la palette si demande
     if(direction == -1){
       palette <- rev(palette)
     }
 
-    return(palette)
+    # On retourne les codes hex
+    if(show_pal == F){
+      return(palette)
+    }
+
+    # On affiche graphiquement la palette
+    if(show_pal == T){
+
+      # On rend dispo les fonts
+      load_and_active_fonts()
+
+      # On affiche avec une fonction piquee de Met Brewer (je crois)
+      print.palette <- function(palette, lab = inst, family = font) {
+        n_show <- length(palette)
+        old <- graphics::par(mar = c(0.5, 0.5, 0.5, 0.5))
+        on.exit(graphics::par(old))
+
+        graphics::image(1:n_show, 1, as.matrix(1:n_show), col = palette,
+              ylab = "", xaxt = "n_show", yaxt = "n_show", bty = "n_show")
+
+        graphics::rect(0, 0.92, n_show + 1, 1.08, col = grDevices::rgb(1, 1, 1, 0.8), border = NA)
+        graphics::text((n_show + 1) / 2, 1, labels = lab, cex = 2.5, family = family)
+      }
+
+      return(print.palette(palette))
+
+    }
   }
 
+  # Si les noms des palettes sont demandes
   if(list_pal_names == T){
     pal_names <- c("Vivalis",
                    "OBSS",
                    "OBSS_alt1",
                    "OBSS_alt2",
-                   # "OBSS_alt3",
                    "OBSS_Relax",
                    "OBSS_Calm",
                    "OBSS_GrBlPu",
@@ -509,6 +548,7 @@ official_pal <- function(inst,
                    "ULB")
 
     return(pal_names)
+
   }
 }
 

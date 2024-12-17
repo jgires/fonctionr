@@ -134,7 +134,7 @@ distrib_group_discrete <- function(data,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
-      pal = pal,
+      # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       font = font,
       title = title,
       subtitle = subtitle,

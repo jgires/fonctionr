@@ -158,14 +158,15 @@ distrib_group_continuous <- function(data,
     ),
     type = "character"
   )
-  check_arg(
-    arg = list(
-      pal = pal,
-      pal_moustache = pal_moustache
-    ),
-    type = "character",
-    short = F
-  )
+  # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
+  # check_arg(
+  #   arg = list(
+  #     pal = pal,
+  #     pal_moustache = pal_moustache
+  #   ),
+  #   type = "character",
+  #   short = F
+  # )
   check_arg(
     arg = list(
       na.rm.group = na.rm.group,

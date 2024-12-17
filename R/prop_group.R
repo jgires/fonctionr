@@ -141,7 +141,7 @@ prop_group <- function(data,
       total_name = total_name,
       unit = unit,
       dec = dec,
-      pal = pal,
+      # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       font = font,
       title = title,
       subtitle = subtitle,

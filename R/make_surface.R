@@ -114,7 +114,7 @@ make_surface <- function(tab,
       position = position,
       name_total = name_total,
       unit = unit,
-      pal = pal,
+      # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       bg = bg,
       font = font,
       title = title,
