@@ -411,17 +411,19 @@ official_pal <- function(inst,
     if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCAC00", "#26ADA8", "#434E73")}
     if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9")}
     if(inst == "OBSS_alt2"){pal_cols <- c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362")}
+    if(inst == "OBSS_alt3"){pal_cols <- c("#C73A43", "#3F7FBF", "#33B8B4", "#FCAC00")}
     if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCAC00", "#c7b0d5", "#585fa8")}
-    if(inst == "OBSS_Calm"){pal_cols <- c("#663105", "#F08E3E", "#E3D2C7", "#434E73")}
-    if(inst == "OBSS_GrBlPu"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
-    if(inst == "OBSS_ReYeGr"){pal_cols <- c("#E65362", "#FCAC00", "#0F7D7D")}
+    if(inst == "OBSS_Autumn"){pal_cols <- c("#6E3D10", "#F08E3E", "#DBC5B6", "#434E73")}
+    if(inst == "OBSS_Sweet"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
+    if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FFC012", "#0F7D7D")}
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
     if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
-    if(inst == "OBSS_Blues"){pal_cols <- c("#8AC1E6", "#4236A3")}
-    if(inst == "OBSS_div_mid1"){pal_cols <- c("#F08E3E", "#E3D2C7", "#26ADA8")}
-    if(inst == "OBSS_div_mid2"){pal_cols <- c("#E65362", "#E3D2C7", "#434E73")}
+    if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
+    if(inst == "OBSS_div_mid1"){pal_cols <- c("#BF2433", "#F5E09D", "#0B7373")}
+    if(inst == "OBSS_div_mid2"){pal_cols <- c("#C73A54", "#E3D2C7", "#3A456B")}
     if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#E3D2C7", "#F08E3E", "#D1455F")}
+    if(inst == "OBSS_div_mid4"){pal_cols <- c("#585fa8", "#F5E09D", "#0B7373")}
     if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
     if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
 
@@ -434,16 +436,20 @@ official_pal <- function(inst,
     # Palettes composees de 2 palettes
     # Palettes divergentes sans point central
     if(inst == "OBSS_div_bi1"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#D1455F", "#E0756B", "#F29243"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#26ADA8", "#3F7FBF", "#434E73"))
+      pal_fct1 <- grDevices::colorRampPalette(c("#A457B5", "#E06B7D", "#F59C4F"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#33B8B4", "#3F7FBF", "#434E73"))
     }
     if(inst == "OBSS_div_bi2"){
       pal_fct1 <- grDevices::colorRampPalette(c("#585fa8", "#c7b0d5"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#F08E3E", "#B85C11"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#F09648", "#B85C11"))
     }
     if(inst == "OBSS_div_bi3"){
       pal_fct1 <- grDevices::colorRampPalette(c("#0B7373", "#26ADA8"))
       pal_fct2 <- grDevices::colorRampPalette(c("#EB7FAE", "#AD264E"))
+    }
+    if(inst == "OBSS_div_bi4"){
+      pal_fct1 <- grDevices::colorRampPalette(c("#564A9E", "#637FDB", "#92C6EB"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#F7D89E", "#F08960", "#C73A54"))
     }
     # Palettes avec emphase
     if(inst == "OBSS_highlight1"){
@@ -453,12 +459,12 @@ official_pal <- function(inst,
     }
     if(inst == "OBSS_highlight2"){
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FFC012", "#BF2433"))
       n1 <- 1
     }
     if(inst == "OBSS_highlight3"){
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73", "#6dac70"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#BF2433"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FFC012", "#BF2433"))
       n1 <- 2
     }
 
@@ -481,10 +487,10 @@ official_pal <- function(inst,
       palette <- colorspace::desaturate(palette, desaturate)
     }
     if(lighten != 0){
-      palette <- colorspace::lighten(palette, lighten, space = "HLS")
+      palette <- colorspace::lighten(palette, lighten)
     }
     if(darken != 0){
-      palette <- colorspace::darken(palette, darken, space = "HLS")
+      palette <- colorspace::darken(palette, darken)
     }
 
     # Inversion de la palette si demande
@@ -527,10 +533,11 @@ official_pal <- function(inst,
                    "OBSS",
                    "OBSS_alt1",
                    "OBSS_alt2",
+                   "OBSS_alt3",
                    "OBSS_Relax",
-                   "OBSS_Calm",
-                   "OBSS_GrBlPu",
-                   "OBSS_ReYeGr",
+                   "OBSS_Autumn",
+                   "OBSS_Sweet",
+                   "OBSS_Spring",
                    "OBSS_Candy",
                    "OBSS_Greens",
                    "OBSS_Sunset",
@@ -538,9 +545,11 @@ official_pal <- function(inst,
                    "OBSS_div_mid1",
                    "OBSS_div_mid2",
                    "OBSS_div_mid3",
+                   "OBSS_div_mid4",
                    "OBSS_div_bi1",
                    "OBSS_div_bi2",
                    "OBSS_div_bi3",
+                   "OBSS_div_bi4",
                    "OBSS_highlight1",
                    "OBSS_highlight2",
                    "OBSS_highlight3",
