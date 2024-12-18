@@ -138,15 +138,15 @@ official_pal("OBSS", 8, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, desaturate = .5, show_pal = T)
+official_pal("OBSS", 8, desaturate = .4, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, lighten = .5, show_pal = T)
+official_pal("OBSS", 8, lighten = .4, show_pal = T)
 ```
 
 ```{r}
-official_pal("OBSS", 8, darken = .5, show_pal = T)
+official_pal("OBSS", 8, darken = .4, show_pal = T)
 ```
 
 # Exemples de graphiques
@@ -162,7 +162,7 @@ distrib_income_2 <- distrib_group_c(
   show_value = F,
   show_ci_errorbar = F,
   show_moustache = F,
-  pal = official_pal(inst = "OBSS_Blues", n = 2, direction = -1),
+  pal = official_pal(inst = "OBSS_Purples", n = 2, direction = -1),
   alpha = .8,
   font = "Gotham Narrow",
   title = "Income from wage, part time workers by region"
@@ -222,6 +222,7 @@ eusilc_dist_group_d2 <- distrib_group_d(
   group = pb220a,
   quali_var = pl030_rec,
   pal = "OBSS_Autumn",
+  font = "Gotham Narrow",
   title = "Distribution of socio-economic status according to nationality"
   )
 

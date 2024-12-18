@@ -400,8 +400,45 @@ official_pal <- function(inst,
                          list_pal_names = F
                          ){
 
-  # Check de verification
+  # Liste des palettes
+  pal_names <- c("Vivalis",
+                 "OBSS",
+                 "OBSS_alt1",
+                 "OBSS_alt2",
+                 "OBSS_alt3",
+                 "OBSS_Relax",
+                 "OBSS_Autumn",
+                 "OBSS_Sweet",
+                 "OBSS_Spring",
+                 "OBSS_Candy",
+                 "OBSS_Greens",
+                 "OBSS_Sunset",
+                 "OBSS_Purples",
+                 "OBSS_div_mid1",
+                 "OBSS_div_mid2",
+                 "OBSS_div_mid3",
+                 "OBSS_div_mid4",
+                 "OBSS_div_bi1",
+                 "OBSS_div_bi2",
+                 "OBSS_div_bi3",
+                 "OBSS_div_bi4",
+                 "OBSS_highlight1",
+                 "OBSS_highlight2",
+                 "OBSS_highlight3",
+                 "IBSA",
+                 "ULB")
+
   if(list_pal_names == F){
+
+    # Checks de verification
+    if(!inst %in% pal_names){
+      stop("This palette doesn't exist")
+    }
+
+    if(n < 1){
+      stop("n must be greater than 0")
+    }
+
     if(all(direction != -1, direction != 1)){
       stop("Direction not valid. Please use 1 for standard palette or -1 for reversed palette.")
     }
@@ -411,7 +448,7 @@ official_pal <- function(inst,
     if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCAC00", "#26ADA8", "#434E73")}
     if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9")}
     if(inst == "OBSS_alt2"){pal_cols <- c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362")}
-    if(inst == "OBSS_alt3"){pal_cols <- c("#C73A43", "#3F7FBF", "#33B8B4", "#FCAC00")}
+    if(inst == "OBSS_alt3"){pal_cols <- c("#DE4756", "#3F7FBF", "#33B8B4", "#FCAC00")}
     if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCAC00", "#c7b0d5", "#585fa8")}
     if(inst == "OBSS_Autumn"){pal_cols <- c("#6E3D10", "#F08E3E", "#DBC5B6", "#434E73")}
     if(inst == "OBSS_Sweet"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
@@ -466,6 +503,10 @@ official_pal <- function(inst,
       pal_fct1 <- grDevices::colorRampPalette(c("#434E73", "#6dac70"))
       pal_fct2 <- grDevices::colorRampPalette(c("#FFC012", "#BF2433"))
       n1 <- 2
+      # pb si n plus petit que 3
+      if (n <= 2) {
+        n1 <- -1 + n
+      }
     }
 
     # On cree la palette si "pal_fct1" existe (= palette composee de 2 palettes)
@@ -529,32 +570,6 @@ official_pal <- function(inst,
 
   # Si les noms des palettes sont demandes
   if(list_pal_names == T){
-    pal_names <- c("Vivalis",
-                   "OBSS",
-                   "OBSS_alt1",
-                   "OBSS_alt2",
-                   "OBSS_alt3",
-                   "OBSS_Relax",
-                   "OBSS_Autumn",
-                   "OBSS_Sweet",
-                   "OBSS_Spring",
-                   "OBSS_Candy",
-                   "OBSS_Greens",
-                   "OBSS_Sunset",
-                   "OBSS_Blues",
-                   "OBSS_div_mid1",
-                   "OBSS_div_mid2",
-                   "OBSS_div_mid3",
-                   "OBSS_div_mid4",
-                   "OBSS_div_bi1",
-                   "OBSS_div_bi2",
-                   "OBSS_div_bi3",
-                   "OBSS_div_bi4",
-                   "OBSS_highlight1",
-                   "OBSS_highlight2",
-                   "OBSS_highlight3",
-                   "IBSA",
-                   "ULB")
 
     return(pal_names)
 
