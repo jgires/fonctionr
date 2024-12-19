@@ -445,22 +445,22 @@ official_pal <- function(inst,
 
     # Palettes avec degrade simple
     if(inst == "Vivalis"){pal_cols <- c("#ff87a5", "#ffb900", "#00e1af", "#375078")}
-    if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCAC00", "#26ADA8", "#434E73")}
-    if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCAC00", "#E65362", "#6F66C9")}
-    if(inst == "OBSS_alt2"){pal_cols <- c("#EB7FAE", "#434E73", "#26ADA8", "#FCAC00", "#E65362")}
-    if(inst == "OBSS_alt3"){pal_cols <- c("#DE4756", "#3F7FBF", "#33B8B4", "#FCAC00")}
-    if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCAC00", "#c7b0d5", "#585fa8")}
+    if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCB308", "#26ADA8", "#434E73")}
+    if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCB308", "#E65362", "#6F66C9")}
+    if(inst == "OBSS_alt2"){pal_cols <- c("#EB7FAE", "#434E73", "#26ADA8", "#FCB308", "#E65362")}
+    if(inst == "OBSS_alt3"){pal_cols <- c("#E65362", "#3F7FBF", "#33B8B4", "#FCB308")}
+    if(inst == "OBSS_Relax"){pal_cols <- c("#0B7373", "#6bbfa3", "#FCB308", "#c7b0d5", "#585fa8")}
     if(inst == "OBSS_Autumn"){pal_cols <- c("#6E3D10", "#F08E3E", "#DBC5B6", "#434E73")}
     if(inst == "OBSS_Sweet"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
-    if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FFC012", "#0F7D7D")}
+    if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FCB308", "#238C8C")}
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
     if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
-    if(inst == "OBSS_div_mid1"){pal_cols <- c("#BF2433", "#F5E09D", "#0B7373")}
-    if(inst == "OBSS_div_mid2"){pal_cols <- c("#C73A54", "#E3D2C7", "#3A456B")}
-    if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#E3D2C7", "#F08E3E", "#D1455F")}
-    if(inst == "OBSS_div_mid4"){pal_cols <- c("#585fa8", "#F5E09D", "#0B7373")}
+    if(inst == "OBSS_div_mid1"){pal_cols <- c("#C2324D", "#EDA1C2", "#EBE0BC", "#adce6d", "#0F7D7D")}
+    if(inst == "OBSS_div_mid2"){pal_cols <- c("#C2324D", "#EB7FAE", "#E3D2C7", "#5e9ad3", "#3A456B")}
+    if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#EBE0BC", "#F08E3E", "#D1455F")}
+    if(inst == "OBSS_div_mid4"){pal_cols <- c("#585fa8", "#c7b0d5", "#EBE0BC", "#adce6d", "#0F7D7D")}
     if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
     if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
 
@@ -478,7 +478,7 @@ official_pal <- function(inst,
     }
     if(inst == "OBSS_div_bi2"){
       pal_fct1 <- grDevices::colorRampPalette(c("#585fa8", "#c7b0d5"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#F09648", "#B85C11"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#EDA868", "#B85C11"))
     }
     if(inst == "OBSS_div_bi3"){
       pal_fct1 <- grDevices::colorRampPalette(c("#0B7373", "#26ADA8"))
@@ -491,7 +491,7 @@ official_pal <- function(inst,
     # Palettes avec emphase
     if(inst == "OBSS_highlight1"){
       pal_fct1 <- grDevices::colorRampPalette(c("#E65362"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FCAC00", "#26ADA8", "#434E73"))
+      pal_fct2 <- grDevices::colorRampPalette(c("#FCB308", "#26ADA8", "#434E73"))
       n1 <- 1 # On determine le nombre de modalites avec emphase dans n1
     }
     if(inst == "OBSS_highlight2"){
