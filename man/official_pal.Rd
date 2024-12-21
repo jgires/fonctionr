@@ -17,14 +17,33 @@ official_pal(
 )
 }
 \arguments{
-\item{inst}{name of the institution}
+\item{inst}{Name of the palette.}
 
-\item{n}{number of colors}
+\item{n}{Number of colors.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+
+\item{show_pal}{TRUE to display a graph representing the specified color palette.}
+
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{list_pal_names}{TRUE to generate a vector with palette names.}
 }
 \description{
-Internal function to produce color palettes from different institutions
+Function to produce color palettes from different institutions
+}
+\examples{
+official_pal("OBSS", 8, show_pal = TRUE)
+official_pal("OBSS_Greens", 8, show_pal = TRUE)
+official_pal("OBSS_div_mid4", 7, show_pal = TRUE)
+official_pal("OBSS_div_bi3", 8, show_pal = TRUE)
+official_pal("IBSA", 4, show_pal = TRUE)
+official_pal("ULB", 6, show_pal = TRUE)
+
 }

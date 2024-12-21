@@ -71,6 +71,12 @@ make_surface(
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+
 \item{size_text}{Text size displayed in surfaces. Default is 3.88 (as in ggplot2).}
 
 \item{bg}{Color of the background.}

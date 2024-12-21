@@ -376,17 +376,28 @@ isColor <- function(x) {
 
 #' official_pal
 #'
-#' Internal function to produce color palettes from different institutions
+#' Function to produce color palettes from different institutions
 #'
-#' @param inst name of the institution
-#' @param n number of colors
+#' @param inst Name of the palette.
+#' @param n Number of colors.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
+#' @param show_pal TRUE to display a graph representing the specified color palette.
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param list_pal_names TRUE to generate a vector with palette names.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' official_pal("OBSS", 8, show_pal = TRUE)
+#' official_pal("OBSS_Greens", 8, show_pal = TRUE)
+#' official_pal("OBSS_div_mid4", 7, show_pal = TRUE)
+#' official_pal("OBSS_div_bi3", 8, show_pal = TRUE)
+#' official_pal("IBSA", 4, show_pal = TRUE)
+#' official_pal("ULB", 6, show_pal = TRUE)
 #'
 
 official_pal <- function(inst,
@@ -414,6 +425,8 @@ official_pal <- function(inst,
                  "OBSS_Greens",
                  "OBSS_Sunset",
                  "OBSS_Purples",
+                 "OBSS_Blues",
+                 "OBSS_Brown",
                  "OBSS_div_mid1",
                  "OBSS_div_mid2",
                  "OBSS_div_mid3",
@@ -444,6 +457,7 @@ official_pal <- function(inst,
     }
 
     # Palettes avec degrade simple
+    # Palettes qualitatives
     if(inst == "Vivalis"){pal_cols <- c("#ff87a5", "#ffb900", "#00e1af", "#375078")}
     if(inst == "OBSS"){pal_cols <- c("#E65362", "#FCB308", "#26ADA8", "#434E73")}
     if(inst == "OBSS_alt1"){pal_cols <- c("#26ADA8", "#FCB308", "#E65362", "#6F66C9")}
@@ -453,14 +467,19 @@ official_pal <- function(inst,
     if(inst == "OBSS_Autumn"){pal_cols <- c("#6E3D10", "#F08E3E", "#DBC5B6", "#434E73")}
     if(inst == "OBSS_Sweet"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
     if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FCB308", "#238C8C")}
+    # Palettes continues
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
     if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
-    if(inst == "OBSS_div_mid1"){pal_cols <- c("#C2324D", "#EDA1C2", "#E3D2C7", "#adce6d", "#0F7D7D")}
-    if(inst == "OBSS_div_mid2"){pal_cols <- c("#C2324D", "#EB7FAE", "#E3D2C7", "#5e9ad3", "#3A456B")}
+    if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#134B8A")}
+    if(inst == "OBSS_Brown"){pal_cols <- c("#DBC5B6", "#6E3D10")}
+    # Palettes divergentes avec point central
+    if(inst == "OBSS_div_mid1"){pal_cols <- c("#C2324D", "#EDA1C2", "#DBD2CC", "#adce6d", "#0F7D7D")}
+    if(inst == "OBSS_div_mid2"){pal_cols <- c("#C2324D", "#EB7FAE", "#DBD2CC", "#5e9ad3", "#3A456B")}
     if(inst == "OBSS_div_mid3"){pal_cols <- c("#0B7373", "#6bbfa3", "#EBE0BC", "#F08E3E", "#D1455F")}
-    if(inst == "OBSS_div_mid4"){pal_cols <- c("#585fa8", "#c7b0d5", "#E3D2C7", "#adce6d", "#0F7D7D")}
+    if(inst == "OBSS_div_mid4"){pal_cols <- c("#585fa8", "#c7b0d5", "#EBE0BC", "#adce6d", "#0F7D7D")}
+    # Palettes d'autres institutions
     if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
     if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
 
@@ -473,54 +492,71 @@ official_pal <- function(inst,
     # Palettes composees de 2 palettes
     # Palettes divergentes sans point central
     if(inst == "OBSS_div_bi1"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#A457B5", "#E06B7D", "#F59C4F"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#33B8B4", "#3F7FBF", "#434E73"))
+      pal_cols1 <- c("#A457B5", "#E06B7D", "#F59C4F")
+      pal_cols2 <- c("#33B8B4", "#3F7FBF", "#434E73")
     }
     if(inst == "OBSS_div_bi2"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#585fa8", "#c7b0d5"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#EDA868", "#B85C11"))
+      pal_cols1 <- c("#585fa8", "#c7b0d5")
+      pal_cols2 <- c("#EDA868", "#B85C11")
     }
     if(inst == "OBSS_div_bi3"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#0B7373", "#26ADA8"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#EB7FAE", "#AD264E"))
+      pal_cols1 <- c("#0B7373", "#26ADA8")
+      pal_cols2 <- c("#EB7FAE", "#AD264E")
     }
     if(inst == "OBSS_div_bi4"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#564A9E", "#637FDB", "#92C6EB"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#F7D89E", "#F08960", "#C73A54"))
+      pal_cols1 <- c("#564A9E", "#637FDB", "#92C6EB")
+      pal_cols2 <- c("#F7D89E", "#F08960", "#C73A54")
     }
     # Palettes avec emphase
     if(inst == "OBSS_highlight1"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#E65362"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FCB308", "#26ADA8", "#434E73"))
-      n1 <- 1 # On determine le nombre de modalites avec emphase dans n1
+      pal_cols1 <- c("#E65362")
+      pal_cols2 <- c("#FCB308", "#26ADA8", "#434E73")
+      np1 <- 1 # On determine le nombre de modalites avec emphase dans np1
     }
     if(inst == "OBSS_highlight2"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#434E73"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FFC012", "#BF2433"))
-      n1 <- 1
+      pal_cols1 <- c("#434E73")
+      pal_cols2 <- c("#FFC012", "#BF2433")
+      np1 <- 1
     }
     if(inst == "OBSS_highlight3"){
-      pal_fct1 <- grDevices::colorRampPalette(c("#434E73", "#6dac70"))
-      pal_fct2 <- grDevices::colorRampPalette(c("#FFC012", "#BF2433"))
-      n1 <- 2
-      # pb si n plus petit que 3
+      pal_cols1 <- c("#434E73", "#6dac70")
+      pal_cols2 <- c("#FFC012", "#BF2433")
+      np1 <- 2
+      # pb si n plus petit que 3 car np1 devient negatif => np1 est defini a 1 par default
       if (n <= 2) {
-        n1 <- -1 + n
+        np1 <- 1
       }
     }
 
-    # On cree la palette si "pal_fct1" existe (= palette composee de 2 palettes)
-    if(exists("pal_fct1")){
-      # pb si n est impair dans les palettes divergentes => asymetrie comme solution
+    # On cree la palette si palette composee de 2 palettes ("pal_cols1" existe alors)
+    if(exists("pal_cols1")){
+
+      # Pour divergent, si n == 2 ou 3, alors on selectionne en partant de la fin pour la 2e palette (coherent car divergent)
+      if(stringr::str_detect(inst, "OBSS_div_bi")){
+        if(n %in% 2:3){pal_cols2 <- rev(pal_cols2)}
+      }
+      # Pour highlight, on selectionne en partant de la fin pour la 2e palette dans certaines situation (coherent car opposition)
+      if(stringr::str_detect(inst, "OBSS_highlight")){
+        if(all(np1 == 1 & n == 2)){pal_cols2 <- rev(pal_cols2)}
+        if(all(np1 == 2 & n %in% 2:3)){pal_cols2 <- rev(pal_cols2)}
+      }
+
+      # On cree les palettes
+      pal_fct1 <- grDevices::colorRampPalette(pal_cols1)
+      pal_fct2 <- grDevices::colorRampPalette(pal_cols2)
+
+      # pb si n est impair dans les palettes divergentes => asymetrie comme solution (la 1ere couleur prend le dessus)
       if(stringr::str_detect(inst, "OBSS_div_bi")){
         if (n %% 2 == 0) {
-          n1 <- n/2
+          np1 <- n/2
         } else {
-          n1 <- (n/2)-.5
+          np1 <- (n/2)+.5
         }
       }
-      # On compose la palette : une avec n1, l'autre avec n-n1 (symetrique ou non selon le cas)
-      palette <- c(pal_fct1(n1), pal_fct2(n-n1))
+
+      # On compose la palette : une avec np1, l'autre avec n-np1 (symetrique ou non selon le cas)
+      palette <- c(pal_fct1(np1), pal_fct2(n-np1))
+
     }
 
     # Pour alterer la palette (desaturer, eclaircir, foncer)
@@ -550,7 +586,7 @@ official_pal <- function(inst,
       # On rend dispo les fonts
       load_and_active_fonts()
 
-      # On affiche avec une fonction piquee de Met Brewer (je crois)
+      # On affiche avec une fonction piquee de Met Brewer
       print.palette <- function(palette, lab = inst, family = font) {
         n_show <- length(palette)
         old <- graphics::par(mar = c(0.5, 0.5, 0.5, 0.5))

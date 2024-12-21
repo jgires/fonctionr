@@ -109,6 +109,12 @@ many_mean_group(..., type = "mean")
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+
 \item{dodge}{Width of the bar, between 0 and 1.}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}

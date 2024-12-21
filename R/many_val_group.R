@@ -27,6 +27,9 @@
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.

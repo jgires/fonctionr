@@ -18,6 +18,9 @@
 #' @param unit The unit showd on the plot. Default is percent.
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
 #' @param size_text Text size displayed in surfaces. Default is 3.88 (as in ggplot2).
 #' @param bg Color of the background.
 #' @param ratio Aspect ratio of the surfaces.

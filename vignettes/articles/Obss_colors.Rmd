@@ -86,6 +86,8 @@ official_pal("OBSS_Candy", 8, show_pal = T)
 official_pal("OBSS_Greens", 8, show_pal = T)
 official_pal("OBSS_Sunset", 8, show_pal = T)
 official_pal("OBSS_Purples", 8, show_pal = T)
+official_pal("OBSS_Blues", 8, show_pal = T)
+official_pal("OBSS_Brown", 8, show_pal = T)
 ```
 
 ## Palettes divergentes
@@ -118,8 +120,8 @@ Il s'agit de palettes de couleur mettant en opposition la première, ou les deux
 
 ```{r}
 official_pal("OBSS_highlight1", 8, show_pal = T)
-official_pal("OBSS_highlight2", 6, show_pal = T)
-official_pal("OBSS_highlight3", 6, show_pal = T)
+official_pal("OBSS_highlight2", 8, show_pal = T)
+official_pal("OBSS_highlight3", 8, show_pal = T)
 ```
 
 ## Palettes d'autres institutions
@@ -201,6 +203,20 @@ eusilc_many_mean_group$graph
 ```
 
 ```{r}
+eusilc_dist_group_d2 <- distrib_group_d(
+  eusilc,
+  weights = rb050,
+  group = pb220a,
+  quali_var = pl030_rec,
+  pal = "OBSS_Autumn",
+  font = "Gotham Narrow",
+  title = "Distribution of socio-economic status according to nationality"
+  )
+
+eusilc_dist_group_d2$graph
+```
+
+```{r}
 eusilc_prop_group <- prop_group(
   eusilc,
   group = rb090,
@@ -213,18 +229,4 @@ eusilc_prop_group <- prop_group(
 )
 
 eusilc_prop_group$graph
-```
-
-```{r}
-eusilc_dist_group_d2 <- distrib_group_d(
-  eusilc,
-  weights = rb050,
-  group = pb220a,
-  quali_var = pl030_rec,
-  pal = "OBSS_Autumn",
-  font = "Gotham Narrow",
-  title = "Distribution of socio-economic status according to nationality"
-  )
-
-eusilc_dist_group_d2$graph
 ```

@@ -26,6 +26,9 @@
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.
