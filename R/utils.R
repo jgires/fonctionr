@@ -472,7 +472,7 @@ official_pal <- function(inst,
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
     if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
-    if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#134B8A")}
+    if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#2B4570")}
     if(inst == "OBSS_Brown"){pal_cols <- c("#DBC5B6", "#6E3D10")}
     # Palettes divergentes avec point central
     if(inst == "OBSS_div_mid1"){pal_cols <- c("#C2324D", "#EDA1C2", "#DBD2CC", "#adce6d", "#0F7D7D")}
