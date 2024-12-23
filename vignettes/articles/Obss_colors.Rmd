@@ -84,6 +84,7 @@ official_pal("OBSS_Sweet", 7, show_pal = T)
 ```{r}
 official_pal("OBSS_Greens", 8, show_pal = T)
 official_pal("OBSS_Sunset", 8, show_pal = T)
+official_pal("OBSS_Sea", 8, show_pal = T)
 official_pal("OBSS_Candy", 8, show_pal = T)
 official_pal("OBSS_Purples", 8, show_pal = T)
 official_pal("OBSS_Blues", 8, show_pal = T)

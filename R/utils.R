@@ -423,6 +423,7 @@ official_pal <- function(inst,
                  "OBSS_Spring",
                  "OBSS_Candy",
                  "OBSS_Greens",
+                 "OBSS_Sea",
                  "OBSS_Sunset",
                  "OBSS_Purples",
                  "OBSS_Blues",
@@ -469,8 +470,9 @@ official_pal <- function(inst,
     if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FCB308", "#238C8C")}
     # Palettes continues
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
-    if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#0F7D7D")}
-    if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#C73A54")}
+    if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#066969")}
+    if(inst == "OBSS_Sea"){pal_cols <- c("#99D4AD", "#0F7D7D", "#303C66")}
+    if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#cf4d4a")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
     if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#2B4570")}
     if(inst == "OBSS_Brown"){pal_cols <- c("#DBC5B6", "#6E3D10")}
