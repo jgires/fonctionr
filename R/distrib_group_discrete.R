@@ -493,7 +493,7 @@ distrib_group_discrete <- function(data,
     ) +
     scale_y_continuous(
       labels = function(x) {
-        paste0(x * scale, unit)
+        if (unit == "" & scale == 100) paste0(x * scale, "%") else paste0(x * scale, unit)
       },
       expand = expansion(mult = c(.01, .01))
     ) +
