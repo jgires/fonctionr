@@ -136,15 +136,18 @@ esth_graph <- function(tab,
   # 3. CREATION DU GRAPHIQUE --------------------
 
   # On cree la palette
-  # Petit truc dans le cas ou il y a un total
-  if (!is.null(name_total)) { total_add <- 1 } else { total_add <- 0 }
 
   if(all(isColor(pal)) == TRUE){
-    # Avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - total_add (1 s'il y a un total, le total etant deja un niveau, sinon 0)
-    palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
+    # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
+    palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
   } else {
-    palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - total_add), "grey40")
+    pal <- "indianred4"
+    palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
     warning("La couleur indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+  }
+  # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
+  if(is.null(name_total)) {
+    palette[palette == "grey40"] <- pal
   }
 
   # Creer max_ggplot
@@ -236,9 +239,61 @@ esth_graph <- function(tab,
     ylab <- NULL
   }
 
+  # GGTEXT start ---------------
+
+  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
+  levels[is.na(levels)] <- "NA"
+
+  if(!is.null(name_total)) {
+    levels[levels == name_total] <- paste0("**", name_total, "**")
+
+    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
+    graph <- tab |>
+      mutate(
+        "{{ var }}" := case_when(
+          {{ var }} == name_total ~ paste0("**", name_total, "**"),
+          is.na({{ var }}) ~ "NA",
+          .default = {{ var }}
+        )
+      )
+
+    # On renomme le total (n'est plus utilise que pour le graphique)
+    name_total <- paste0("**", name_total, "**")
+
+  }
+
+  if(is.null(name_total)) {
+    # Il faut changer les modalites de la variable de groupe ("NA" en string)
+    graph <- tab |>
+      mutate(
+        "{{ var }}" := case_when(
+          is.na({{ var }}) ~ "NA",
+          .default = {{ var }}
+        )
+      )
+  }
+
+  # Si une modalite "NA" a ete ajoutee (en transformant le vrai NA en "NA" string)
+  # alors il faut ajouter une couleur "NA" a la palette (car ggplot n'appliquera pas la couleur defaut au NA qui n'en est plus un)
+  # @@@ Il s'agit d'un bricolage du a l'utilisation tardive de ggtext(). Ce pourrait etre largement optimise => on laisse comme ca pour le test @@@
+  if ("NA" %in% levels) {
+    if(!is.null(name_total)) {
+      # Si un total, juste avant le total (car NA toujours avant le total)
+      palette <- c(utils::head(palette, -1),
+                   "grey",
+                   utils::head(rev(palette), 1))
+    }
+    else {
+      # Si pas de total, juste a la fin (car NA toujours a la fin)
+      palette <- c(palette,
+                   "grey")
+    }
+  }
+  # GGTEXT end ---------------
+
   # On cree le graphique
 
-  graph <- tab |>
+  graph <- graph |>
     ggplot(aes(
       x = {{ var }},
       y = {{ value }},
@@ -250,21 +305,73 @@ esth_graph <- function(tab,
       position = "dodge"
     ) +
     theme_fonctionr(font = font,
-                    theme = theme) +
+                    theme = theme,
+                    display = "ggtext") +
     theme(
       legend.position = "none"
     ) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
-                     limits = levels) +
+    scale_x_discrete(
+      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      limits = levels) +
     scale_fill_manual(
-      values = palette,
+      values = stats::setNames(rev(palette), levels),
       na.value = "grey"
     ) +
-    labs(title = title,
-         subtitle = subtitle,
-         y = xlab,
-         x = ylab) +
+    labs(
+      title = title,
+      subtitle = subtitle,
+      y = xlab,
+      x = ylab
+    ) +
     coord_flip()
+
+  # Ajouter les valeurs calculees
+  if (show_value == TRUE) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = if(!is.null(name_total)) ifelse({{ var }} != name_total|is.na({{ var }}), {{ value }} + (0.01 * max_ggplot), NA) else {{ value }} + (0.01 * max_ggplot),
+          label = paste0(stringr::str_replace(round({{ value }} * scale,
+                                                    digits = digits),
+                                              "[.]",
+                                              dec),
+                         unit),
+          family = font),
+        size = 3.5,
+        vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
+                       -0.5,
+                       0.5),
+        hjust = 0,
+        color = "black",
+        alpha = 0.9,
+        # position = position_stack(vjust = .5))
+        position = position_dodge(width = dodge)
+      )
+    if(!is.null(name_total)) {
+      graph <- graph +
+        geom_text(
+          aes(
+            y = ifelse({{ var }} == name_total, ({{ value }}) + (0.01 * max_ggplot), NA),
+            label = paste0(stringr::str_replace(round({{ value }} * scale,
+                                                      digits = digits),
+                                                "[.]",
+                                                dec),
+                           unit),
+            family = font),
+          size = 3.5,
+          vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
+                         -0.5,
+                         0.5),
+          hjust = 0,
+          color = "black",
+          fontface = "bold",
+          alpha = 0.9,
+          # position = position_stack(vjust = .5))
+          position = position_dodge(width = dodge)
+        )
+    }
+
+  }
 
   # Pour caption
 
@@ -318,30 +425,6 @@ esth_graph <- function(tab,
                     alpha = 0.5,
                     linewidth = 0.5,
                     position = position_dodge(width = dodge)
-      )
-  }
-
-  # Ajouter les valeurs calculees
-  if (show_value == TRUE) {
-    graph <- graph +
-      geom_text(
-        aes(
-          y = ({{ value }}) + (0.01 * max_ggplot),
-          label = paste0(stringr::str_replace(round({{ value }} * scale,
-                                                    digits = digits),
-                                              "[.]",
-                                              dec),
-                         unit),
-          family = font),
-        size = 3.5,
-        vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
-                       -0.5,
-                       0.5),
-        hjust = 0,
-        color = "black",
-        alpha = 0.9,
-        # position = position_stack(vjust = .5))
-        position = position_dodge(width = dodge)
       )
   }
 

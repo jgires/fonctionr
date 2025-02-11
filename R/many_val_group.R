@@ -417,6 +417,8 @@ many_val_group = function(data,
   }
 
   if(position == "stack") {
+    # Procedure pour indiquer quelles valeurs afficher dans les cellules
+
     # Si facet
     if (!quo_is_null(quo_facet)) {
       tab <- tab |>
@@ -549,9 +551,46 @@ many_val_group = function(data,
     type_ggplot <- lang_mean
   }
 
+  # GGTEXT start ---------------
+
+  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
+  levels[is.na(levels)] <- "NA"
+
+  if(total == TRUE) {
+    levels[levels == total_name] <- paste0("**", total_name, "**")
+
+    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
+    graph <- tab |>
+      mutate(
+        "{{ group }}" := case_when(
+          {{ group }} == total_name ~ paste0("**", total_name, "**"),
+          is.na({{ group }}) ~ "NA",
+          .default = {{ group }}
+        )
+      )
+
+    # On renomme le total (n'est plus utilise que pour le graphique)
+    total_name <- paste0("**", total_name, "**")
+
+  }
+
+  if(total == FALSE) {
+
+    # Il faut changer les modalites de la variable de groupe ("NA" en string)
+    graph <- tab |>
+      mutate(
+        "{{ group }}" := case_when(
+          is.na({{ group }}) ~ "NA",
+          .default = {{ group }}
+        )
+      )
+  }
+
+  # GGTEXT end ---------------
+
   # On cree le graphique
 
-  graph <- tab |>
+  graph <- graph |>
     mutate("{{ group }}" := forcats::fct_rev({{ group }})) |>
     ggplot(aes(
       x = {{ group }},
@@ -564,7 +603,8 @@ many_val_group = function(data,
       position = position
     ) +
     theme_fonctionr(font = font,
-                    theme = theme) +
+                    theme = theme,
+                    display = "ggtext") +
     theme(
       legend.position = "bottom"
     ) +
@@ -573,14 +613,18 @@ many_val_group = function(data,
       labels = function(x) stringr::str_wrap(x, width = wrap_width_leg),
       na.value = "grey"
     ) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
-                     limits = levels)+
-    labs(title = title,
-         subtitle = subtitle,
-         caption = stringr::str_wrap(caption, width = 100)
+    scale_x_discrete(
+      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      limits = levels
     ) +
-    guides(fill = guide_legend(ncol = legend_ncol,
-                               reverse = TRUE)) +
+    labs(
+      title = title,
+      subtitle = subtitle,
+      caption = stringr::str_wrap(caption, width = 100)
+    ) +
+    guides(
+      fill = guide_legend(ncol = legend_ncol, reverse = TRUE)
+    ) +
     coord_flip()
 
   # Autre design pour la barre du total (si total = T)
@@ -606,45 +650,46 @@ many_val_group = function(data,
       values = palette,
       guide = "none"
     )
-  if (show_value == TRUE) { # Peut-etre ici une redondance => voir si simplification possible ?
-    graph <- graph +
-      geom_text(
-        aes(
-          y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
-          label = if (position == "stack") {
-            ifelse(show_value_stack == TRUE, paste0(
-              stringr::str_replace(
-                round(indice * scale,
-                  digits = digits
+    if (show_value == TRUE) { # Peut-etre ici une redondance => voir si simplification possible ?
+      graph <- graph +
+        geom_text(
+          aes(
+            y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
+            label = if (position == "stack") {
+              ifelse(show_value_stack == TRUE, paste0(
+                stringr::str_replace(
+                  round(indice * scale,
+                    digits = digits
+                  ),
+                  "[.]",
+                  dec
                 ),
-                "[.]",
-                dec
-              ),
-              unit
-            ), NA)
-          } else {
-            paste0(
-              stringr::str_replace(
-                round(indice * scale,
-                  digits = digits
+                unit
+              ), NA)
+            } else {
+              paste0(
+                stringr::str_replace(
+                  round(indice * scale,
+                    digits = digits
+                  ),
+                  "[.]",
+                  dec
                 ),
-                "[.]",
-                dec
-              ),
-              unit
-            )
-          },
-          family = font
-        ),
-        size = 3,
-        vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
-        hjust = if (position == "dodge") "left" else "center",
-        color = "black",
-        alpha = 0.9,
-        # position = position_stack(vjust = .5))
-        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
-      )
-  }
+                unit
+              )
+            },
+            family = font
+          ),
+          size = 3,
+          vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+          hjust = if (position == "dodge") "left" else "center",
+          color = "grey10",
+          fontface = "bold",
+          alpha = 0.9,
+          # position = position_stack(vjust = .5))
+          position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
+        )
+    }
 }
 
   # Ajouter les axes

@@ -78,7 +78,11 @@ load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
   sysfonts::font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
-  sysfonts::font_add(family = "Roboto", regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"))
+  sysfonts::font_add(family = "Roboto",
+                     regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"),
+                     italic = paste0(system.file("font", package = "fonctionr"), "/Roboto-Italic.ttf"),
+                     bold = paste0(system.file("font", package = "fonctionr"), "/Roboto-Bold.ttf"),
+                     bolditalic = paste0(system.file("font", package = "fonctionr"), "/Roboto-BoldItalic.ttf"))
   sysfonts::font_add(family = "Gotham Narrow",
                      regular = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Book.otf"),
                      italic = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Book_Italic.otf"),
@@ -619,6 +623,7 @@ official_pal <- function(inst,
 #'
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param theme The theme you want for the graphic. Available themes: the default theme and “IWEPS”.
+#' @param display The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.
 #'
 #' @return
 #' @import ggplot2
@@ -627,7 +632,8 @@ official_pal <- function(inst,
 #' @examples
 #'
 theme_fonctionr <- function(font = "Roboto",
-                            theme = NULL) {
+                            theme = NULL,
+                            display = "ggplot") {
   load_and_active_fonts()
 
   theme_fonctionr_def <- theme_minimal() +
@@ -641,7 +647,6 @@ theme_fonctionr <- function(font = "Roboto",
       axis.line.y = element_blank(),
       axis.ticks.y = element_blank(),
       axis.ticks.x = element_line(color = "black"),
-      axis.text = element_text(color = "black"),
       plot.margin = margin(10, 15, 10, 10),
       plot.caption = element_text(
         color = "grey30"
@@ -655,6 +660,18 @@ theme_fonctionr <- function(font = "Roboto",
         axis.ticks.y = element_line(color = "black")
         )
     }
+  }
+
+  if (display == "ggplot") {
+    theme_fonctionr_def <- theme_fonctionr_def + theme(
+      axis.text = element_text(color = "black")
+    )
+  }
+
+  if (display == "ggtext") {
+    theme_fonctionr_def <- theme_fonctionr_def + theme(
+      axis.text = ggtext::element_markdown(color = "black")
+    )
   }
 
   return(theme_fonctionr_def)

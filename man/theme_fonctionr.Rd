@@ -4,12 +4,14 @@
 \alias{theme_fonctionr}
 \title{theme_fonctionr}
 \usage{
-theme_fonctionr(font = "Roboto", theme = NULL)
+theme_fonctionr(font = "Roboto", theme = NULL, display = "ggplot")
 }
 \arguments{
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{theme}{The theme you want for the graphic. Available themes: the default theme and “IWEPS”.}
+
+\item{display}{The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.}
 }
 \description{
 theme_fonctionr
