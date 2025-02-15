@@ -134,7 +134,11 @@
 <span><span class="co">#&gt; F =  141.5453  on  6  and  5985  df: p= &lt; 2.22e-16</span></span></code></pre></div>
 <p>L’objet <code>graph</code> comprend un graphique ggplot présentant les résultats et prêt à être inséré dans une publication :</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span>
+<span><span class="co">#&gt; Warning: Removed 7 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 <p><code>fonctionr</code> comprend plusieurs autres fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction <code><a href="reference/prop_group.html">prop_group()</a></code>. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l’argument <code>prop_exp</code> : dans ce cas la proportion à recevoir des revenus du chômage (<code>py090n</code> supérieurs à 0).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -173,7 +177,11 @@
 <span><span class="co">#&gt; data:  NextMethod()</span></span>
 <span><span class="co">#&gt; F = 475.2, ndf = 5.9608, ddf = 35711.0201, p-value &lt; 2.2e-16</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span>
+<span><span class="co">#&gt; Warning: Removed 7 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
 </div>
 <div class="section level2">

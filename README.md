@@ -161,6 +161,10 @@ prêt à être inséré dans une publication :
 
 ``` r
 eusilc_mean$graph
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_text()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_text()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
@@ -219,6 +223,10 @@ eusilc_prop$test.stat
 
 ``` r
 eusilc_prop$graph
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_text()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_text()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />

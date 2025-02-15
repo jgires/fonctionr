@@ -71,9 +71,13 @@
 <p>Date : 2025-02-11</p>
 <ul>
 <li>Modification des fonctions qui calculent des totaux, pour afficher
-le total et les indicateurs en gras. Pour ce faire, le package
-<code>ggtext</code> a été utilisé. Il y a donc une dépendance en
-plus.</li>
+<strong>en gras</strong> le label ainsi que les indicateurs du total.
+Pour ce faire, le package <code>ggtext</code> est désormais utilisé ; il
+y a donc une dépendance en plus.</li>
+<li>La fonction <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> affiche désormais
+l’unité <code>%</code> sur l’axe des x par défaut, c’est-à-dire lorsque
+l’unité est définie comme un espace vide (<code>""</code>) et que
+l’argument <code>scale</code> vaut <code>100</code>.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -404,10 +408,10 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p>L’utilisation de ggtext a été implémentée de manière un peu
-bricolée (comme un code en “surcouche”). Ca fonctionne, mais code
-largement simplifiable (idéal pour la lisibilité). Si on l’implémente de
-manière durable, à revoir.</p></li>
+<li><p>L’utilisation de <code>ggtext</code> a été implémentée de manière
+un peu bricolée (comme un code en “surcouche”). Ça fonctionne, mais le
+code est largement simplifiable (mieux pour la lisibilité). Si on
+l’implémente de manière durable, à revoir.</p></li>
 <li><p>BUG : si une variable de design == le nom d’un objet externe, ça
 fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
 <li><p>Rendre l’usage non interactif (= la programmation via d’autres
@@ -433,8 +437,8 @@ d’opérations dont je ne me rappelle plus le but).</p></li>
 <li><p>Passer le code de chaque fonction en revue pour cleaner /
 harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code du graphique
 ggplot.<br>
-=&gt; L’ajout de ggtext pour mettre le total en gras a compliqué le
-code</em></p></li>
+=&gt; L’ajout de <code>ggtext</code> pour mettre le total en gras a
+compliqué le code</em></p></li>
 <li><p>Ajouter des exemples pour chaque fonction (pour le site) : manque
 <code><a href="../reference/pivot_longer_survey.html">pivot_longer_survey()</a></code>, <code><a href="../reference/esth_graph.html">esth_graph()</a></code>.</p></li>
 <li><p>Vérifier les messages à l’utilisateur : voir quoi garder,

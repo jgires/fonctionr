@@ -70,11 +70,6 @@ esth_graph <- function(tab,
     stop("Les arguments tab, value et var doivent etre remplis")
   }
 
-  # Check s'il n'y a pas 2 lignes avec des NA
-  if(sum(is.na(tab[[deparse(substitute(var))]])) > 1){
-    stop("Il y a 2 lignes avec des NA dans la variable de groupe")
-  }
-
   # Check si le total existe dans var
   if (!is.null(name_total)) {
     if(!name_total %in% tab[[deparse(substitute(var))]]){
@@ -123,6 +118,21 @@ esth_graph <- function(tab,
   quo_facet <- enquo(facet)
   quo_n <- enquo(n_var)
 
+  # Check s'il n'y a pas 2 lignes avec des NA
+  if (!quo_is_null(quo_facet)) {
+    # Avec facet, il ne peut pas y avoir plus de 1 NA par facet
+    check_NA <- tab |>
+      group_by({{ facet}}) |>
+      summarise(n_NA = sum(is.na({{ var }})))
+    if(any(check_NA$n_NA > 1)){
+      stop("Il y a plusieurs lignes avec des NA dans la variable var")
+    }
+  }
+  if (quo_is_null(quo_facet)) {
+    if(sum(is.na(tab[[deparse(substitute(var))]])) > 1){
+      stop("Il y a plusieurs lignes avec des NA dans la variable var")
+    }
+  }
 
   # 2. PROCESSING DES DONNEES --------------------
 
@@ -137,13 +147,15 @@ esth_graph <- function(tab,
 
   # On cree la palette
 
-  if(all(isColor(pal)) == TRUE){
+  if(!is.null(pal) & all(isColor(pal)) == TRUE){
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
     palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
-  } else {
-    pal <- "indianred4"
+  } else { # Si pal est NULL ou la couleur n'est pas valide => on met la couleur par defaut
+    if(!is.null(pal) & all(isColor(pal)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
+      warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+    }
+    pal <- "indianred4" # Alors pal == "indianred4"
     palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
-    warning("La couleur indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
   # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
   if(is.null(name_total)) {
