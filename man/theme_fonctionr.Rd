@@ -4,7 +4,12 @@
 \alias{theme_fonctionr}
 \title{theme_fonctionr}
 \usage{
-theme_fonctionr(font = "Roboto", theme = NULL, display = "ggplot")
+theme_fonctionr(
+  font = "Roboto",
+  theme = NULL,
+  display = "ggplot",
+  grid.lines = "x"
+)
 }
 \arguments{
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
@@ -12,6 +17,8 @@ theme_fonctionr(font = "Roboto", theme = NULL, display = "ggplot")
 \item{theme}{The theme you want for the graphic. Available themes: the default theme and “IWEPS”.}
 
 \item{display}{The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.}
+
+\item{grid.lines}{Specify major grid lines : "x", "y" or "both". Default is "x".}
 }
 \description{
 theme_fonctionr

@@ -624,6 +624,7 @@ official_pal <- function(inst,
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param theme The theme you want for the graphic. Available themes: the default theme and “IWEPS”.
 #' @param display The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.
+#' @param grid.lines Specify major grid lines : "x", "y" or "both". Default is "x".
 #'
 #' @return
 #' @import ggplot2
@@ -633,16 +634,15 @@ official_pal <- function(inst,
 #'
 theme_fonctionr <- function(font = "Roboto",
                             theme = NULL,
-                            display = "ggplot") {
+                            display = "ggplot",
+                            grid.lines = "x") {
   load_and_active_fonts()
 
   theme_fonctionr_def <- theme_minimal() +
     theme(
+      text = element_text(family = font),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      panel.grid.major.y = element_blank(),
-      panel.grid.major.x = element_line(color = "#dddddd"),
-      text = element_text(family = font),
       axis.line.x = element_line(color = "black"),
       axis.line.y = element_blank(),
       axis.ticks.y = element_blank(),
@@ -653,25 +653,52 @@ theme_fonctionr <- function(font = "Roboto",
       )
     )
 
+  if (grid.lines == "x") {
+    theme_fonctionr_def <- theme_fonctionr_def +
+      theme(
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line(color = "#dddddd")
+        )
+  }
+
+  if (grid.lines == "y") {
+    theme_fonctionr_def <- theme_fonctionr_def +
+      theme(
+        panel.grid.major.y = element_line(color = "#dddddd"),
+        panel.grid.major.x = element_blank()
+        )
+  }
+
+  if (grid.lines == "both") {
+    theme_fonctionr_def <- theme_fonctionr_def +
+      theme(
+        panel.grid.major.y = element_line(color = "#dddddd"),
+        panel.grid.major.x = element_line(color = "#dddddd")
+      )
+  }
+
   if (!is.null(theme)) {
     if (theme == "IWEPS") {
-      theme_fonctionr_def <- theme_fonctionr_def + theme(
-        axis.line.y = element_line(color = "black"),
-        axis.ticks.y = element_line(color = "black")
-        )
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          axis.line.y = element_line(color = "black"),
+          axis.ticks.y = element_line(color = "black")
+          )
     }
   }
 
   if (display == "ggplot") {
-    theme_fonctionr_def <- theme_fonctionr_def + theme(
-      axis.text = element_text(color = "black")
-    )
+    theme_fonctionr_def <- theme_fonctionr_def +
+      theme(
+        axis.text = element_text(color = "black")
+        )
   }
 
   if (display == "ggtext") {
-    theme_fonctionr_def <- theme_fonctionr_def + theme(
-      axis.text = ggtext::element_markdown(color = "black")
-    )
+    theme_fonctionr_def <- theme_fonctionr_def +
+      theme(
+        axis.text = ggtext::element_markdown(color = "black")
+        )
   }
 
   return(theme_fonctionr_def)

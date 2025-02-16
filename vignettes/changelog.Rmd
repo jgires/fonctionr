@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.12
+
+Date : 2025-02-16
+
+-   La fonction graphique `theme_fonctionr()` dispose maintenant de l'argument `grid.lines`, pour spécifier les lignes de la grilles à afficher (`"x"`, `"y"` ou `"both"`).
+
 ## fonctionr 0.3.11
 
 Date : 2025-02-11
