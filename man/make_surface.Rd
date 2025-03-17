@@ -26,7 +26,8 @@ make_surface(
   lighten = 0,
   darken = 0,
   size_text = 3.88,
-  bg = "snow2",
+  bg = "#f7f2f2",
+  linewidth_ci = 0.5,
   ratio = 3/2,
   font = "Roboto",
   wrap_width_lab = 20,
@@ -80,6 +81,8 @@ make_surface(
 \item{size_text}{Text size displayed in surfaces. Default is 3.88 (as in ggplot2).}
 
 \item{bg}{Color of the background.}
+
+\item{linewidth_ci}{linewidth of ci borders.}
 
 \item{ratio}{Aspect ratio of the surfaces.}
 

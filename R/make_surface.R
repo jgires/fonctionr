@@ -23,6 +23,7 @@
 #' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
 #' @param size_text Text size displayed in surfaces. Default is 3.88 (as in ggplot2).
 #' @param bg Color of the background.
+#' @param linewidth_ci linewidth of ci borders.
 #' @param ratio Aspect ratio of the surfaces.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_lab Number of characters before going to the line for the labels of the categories of var. Default is 20.
@@ -95,7 +96,8 @@ make_surface <- function(tab,
                          lighten = 0,
                          darken = 0,
                          size_text = 3.88,
-                         bg = "snow2",
+                         bg = "#f7f2f2",
+                         linewidth_ci = .5,
                          ratio = 3/2,
                          font = "Roboto",
                          wrap_width_lab = 20,
@@ -496,7 +498,7 @@ make_surface <- function(tab,
         ),
         alpha = .1,
         fill = NA,
-        linewidth = .5,
+        linewidth = linewidth_ci,
         linetype = "dashed"
       ) +
       geom_tile(
@@ -510,7 +512,7 @@ make_surface <- function(tab,
         ),
         alpha = .1,
         fill = NA,
-        linewidth = .5,
+        linewidth = linewidth_ci,
         linetype = "dashed"
       )
   }
