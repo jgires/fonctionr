@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
-## fonctionr 0.3.12
+## fonctionr 0.3.13
 
 Date : 2025-03-17
 
