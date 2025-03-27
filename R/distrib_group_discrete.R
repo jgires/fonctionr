@@ -604,15 +604,24 @@ distrib_group_discrete <- function(data,
           geom_text(
             aes(
               y = ifelse({{ group }} == total_name, prop, NA),
-              label = ifelse(prop > 0.02,
+              # Un if statement selon qu'on demande n ou pas
+              label = if (show_n == FALSE) ifelse(prop > 0.02,
                              paste0(stringr::str_replace(round(prop * scale,
                                                                digits = digits),
                                                          "[.]",
                                                          dec),
                                     unit),
-                             NA),
+                             NA) else ifelse(prop > 0.02,
+                                             paste0(stringr::str_replace(round(prop * scale,
+                                                                               digits = digits),
+                                                                         "[.]",
+                                                                         dec),
+                                                    unit,
+                                                    "\n",
+                                                    "n=", n_sample),
+                                             NA),
               family = font),
-            size = 3.5,
+            size = if (show_n == FALSE) 3.5 else 3,
             alpha = .9,
             color = "grey10",
             fontface = "bold",
@@ -710,41 +719,29 @@ distrib_group_discrete <- function(data,
   }
 
   # Ajouter les valeurs calculees
-  if (show_value == TRUE & show_n == FALSE) {
+  if (show_value == TRUE) {
     graph <- graph +
       geom_text(
         aes(
           y = ifelse({{ group }} != total_name|is.na({{ group }}), prop, NA),
-          label = ifelse(prop > 0.02,
+          # Un if statement selon qu'on demande n ou pas
+          label = if(show_n == FALSE) ifelse(prop > 0.02,
                          paste0(stringr::str_replace(round(prop * scale,
                                                            digits = digits),
                                                      "[.]",
                                                      dec),
                                 unit),
-                         NA),
+                         NA) else ifelse(prop > 0.02,
+                                         paste0(stringr::str_replace(round(prop * scale,
+                                                                           digits = digits),
+                                                                     "[.]",
+                                                                     dec),
+                                                unit,
+                                                "\n",
+                                                "n=", n_sample),
+                                         NA),
           family = font),
-        size = 3.5,
-        color = "white",
-        position = position_stack(vjust = .5,
-                                  reverse = TRUE)
-      )
-  }
-  if (show_value == TRUE & show_n == TRUE) {
-    graph <- graph +
-      geom_text(
-        aes(
-          y = ifelse({{ group }} != total_name|is.na({{ group }}), prop, NA),
-          label = ifelse(prop > 0.02,
-                         paste0(stringr::str_replace(round(prop * scale,
-                                                           digits = digits),
-                                                     "[.]",
-                                                     dec),
-                                unit,
-                                "\n",
-                                "n=", n_sample),
-                         NA),
-          family = font),
-        size = 3,
+        size = if(show_n == FALSE) 3.5 else 3,
         color = "white",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)
