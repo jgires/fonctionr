@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +56,8 @@
 <span>  na.rm.var <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  total <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  prop_method <span class="op">=</span> <span class="st">"beta"</span>,</span>
+<span>  reorder <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  show_n <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_labs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  total_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -133,6 +135,14 @@
 
 <dt id="arg-prop-method">prop_method<a class="anchor" aria-label="anchor" href="#arg-prop-method"></a></dt>
 <dd><p>Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.</p></dd>
+
+
+<dt id="arg-reorder">reorder<a class="anchor" aria-label="anchor" href="#arg-reorder"></a></dt>
+<dd><p>TRUE if you want to reorder the groups according to the proportion of the first level of quali_var.</p></dd>
+
+
+<dt id="arg-show-n">show_n<a class="anchor" aria-label="anchor" href="#arg-show-n"></a></dt>
+<dd><p>TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.</p></dd>
 
 
 <dt id="arg-show-value">show_value<a class="anchor" aria-label="anchor" href="#arg-show-value"></a></dt>

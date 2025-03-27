@@ -29,7 +29,6 @@ distrib_group_continuous(
   show_ci_area = FALSE,
   show_quant_lines = FALSE,
   show_moustache = TRUE,
-  show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
   digits = 0,
@@ -99,8 +98,6 @@ distrib_group_c(...)
 \item{show_quant_lines}{TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.}
 
 \item{show_moustache}{TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.}
-
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
 \item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 

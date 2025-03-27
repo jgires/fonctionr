@@ -27,7 +27,6 @@
 #' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
 #' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
 #' @param show_moustache TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
@@ -112,7 +111,6 @@ distrib_group_continuous <- function(data,
                                show_ci_area = FALSE,
                                show_quant_lines = FALSE,
                                show_moustache = TRUE,
-                               show_n = FALSE,
                                show_value = TRUE,
                                show_labs = TRUE,
                                digits = 0,

@@ -163,11 +163,11 @@ prop_group <- function(data,
       na.rm.group = na.rm.group,
       na.rm.facet = na.rm.facet,
       reorder = reorder,
+      total = total,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_labs = show_labs,
-      total = total
+      show_labs = show_labs
     ),
     type = "logical"
   )

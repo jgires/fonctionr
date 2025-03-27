@@ -169,6 +169,7 @@ many_val_group = function(data,
     arg = list(
       na.rm.group = na.rm.group,
       na.rm.facet = na.rm.facet,
+      total = total,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,

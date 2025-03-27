@@ -154,12 +154,12 @@ central_group <- function(data,
     arg = list(
       na.rm.group = na.rm.group,
       na.rm.facet = na.rm.facet,
+      total = total,
       reorder = reorder,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_labs = show_labs,
-      total = total
+      show_labs = show_labs
     ),
     type = "logical"
   )

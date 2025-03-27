@@ -17,6 +17,8 @@ distrib_group_discrete(
   na.rm.var = T,
   total = TRUE,
   prop_method = "beta",
+  reorder = F,
+  show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
   total_name = NULL,
@@ -69,6 +71,10 @@ distrib_group_d(...)
 \item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
 
 \item{prop_method}{Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.}
+
+\item{reorder}{TRUE if you want to reorder the groups according to the proportion of the first level of quali_var.}
+
+\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
 
 \item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.}
 

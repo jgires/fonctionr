@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.14
+
+Date : 2025-03-27
+
+-   La fonction `distrib_group_discrete()` possède désormais un argument `reorder` (`TRUE` pour réordonner les groupes selon le premier level de la variable `quali_var`) et un argument `show_n` (`TRUE` pour afficher les effectifs de l'échantillon en dessous du pourcentage).
+
 ## fonctionr 0.3.13
 
 Date : 2025-03-17
@@ -351,8 +357,6 @@ Date : 2024-02-14
 -   Ajouter les n par "cellule" ?
 
 -   Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-
--   Réordonner les levels sur la variable `group` ? Mais selon quelle valeur (vu qu'il y en a plusieurs) ? Celle du premier level de la variable `var_distrib` ?
 
 -   Possibilité d'indiquer un vecteur avec une palette de couleur ?
 

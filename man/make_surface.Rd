@@ -26,7 +26,7 @@ make_surface(
   lighten = 0,
   darken = 0,
   size_text = 3.88,
-  bg = "#f7f2f2",
+  bg = "#f8f5f5",
   linewidth_ci = 0.5,
   ratio = 3/2,
   font = "Roboto",

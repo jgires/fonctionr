@@ -13,6 +13,8 @@
 #' @param na.rm.var TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with the NA value for the discrete variable. Default is TRUE.
 #' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param prop_method Type of proportion method used to compute confidence intervals. See svyciprop in survey package for details. Default is the beta method.
+#' @param reorder TRUE if you want to reorder the groups according to the proportion of the first level of quali_var.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes, titles, caption and legend labels. FALSE if you do not want to show any label on axes, titles, caption and legend. Default is TRUE.
 #' @param total_name Name of the total shown on the graphic. Default is "Total".
@@ -91,6 +93,8 @@ distrib_group_discrete <- function(data,
                                    na.rm.var = T,
                                    total = TRUE,
                                    prop_method = "beta",
+                                   reorder = F,
+                                   show_n = FALSE,
                                    show_value = TRUE,
                                    show_labs = TRUE,
                                    total_name = NULL,
@@ -156,6 +160,9 @@ distrib_group_discrete <- function(data,
       na.rm.group = na.rm.group,
       na.rm.facet = na.rm.facet,
       na.rm.var = na.rm.var,
+      total = total,
+      reorder = reorder,
+      show_n = show_n,
       show_value = show_value,
       show_labs = show_labs
     ),
@@ -281,6 +288,9 @@ distrib_group_discrete <- function(data,
 
   # On enregistre les labels originaux si total = T
   levels_origin_group <- levels(data_W$variables[[deparse(substitute(group))]])
+
+  # On enregistre les levels de quali_var (pour reorder plus bas)
+  levels_origin_quali_var <- levels(data_W$variables[[deparse(substitute(quali_var))]])
 
   # On convertit egalement la variable de facet en facteur si facet non-NULL
   if(!quo_is_null(quo_facet)){
@@ -447,17 +457,40 @@ distrib_group_discrete <- function(data,
   }
 
   # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
-  levels <- c(
-    total_name,
-    NA,
-    rev(
-      levels(
-        tab[[deparse(substitute(group))]]
-      )[levels(
-        tab[[deparse(substitute(group))]]
-      ) != total_name]
+  if (reorder == F) {
+    levels <- c(
+      total_name,
+      NA,
+      rev(
+        levels(
+          tab[[deparse(substitute(group))]]
+        )[levels(
+          tab[[deparse(substitute(group))]]
+        ) != total_name]
+      )
     )
-  )
+  }
+
+  if (reorder == T) {
+    tab_for_reorder <- tab |>
+      filter({{ quali_var }} == levels_origin_quali_var[1])
+
+    levels <- c(
+      total_name,
+      NA,
+      levels(reorder(
+        tab_for_reorder[[deparse(substitute(group))]],
+        tab_for_reorder[["prop"]],
+        FUN = "median",
+        decreasing = T
+      ))[levels(reorder(
+        tab_for_reorder[[deparse(substitute(group))]],
+        tab_for_reorder[["prop"]],
+        FUN = "median",
+        decreasing = T
+      )) != total_name]
+    )
+  }
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
@@ -677,7 +710,7 @@ distrib_group_discrete <- function(data,
   }
 
   # Ajouter les valeurs calculees
-  if (show_value == TRUE) {
+  if (show_value == TRUE & show_n == FALSE) {
     graph <- graph +
       geom_text(
         aes(
@@ -691,6 +724,27 @@ distrib_group_discrete <- function(data,
                          NA),
           family = font),
         size = 3.5,
+        color = "white",
+        position = position_stack(vjust = .5,
+                                  reverse = TRUE)
+      )
+  }
+  if (show_value == TRUE & show_n == TRUE) {
+    graph <- graph +
+      geom_text(
+        aes(
+          y = ifelse({{ group }} != total_name|is.na({{ group }}), prop, NA),
+          label = ifelse(prop > 0.02,
+                         paste0(stringr::str_replace(round(prop * scale,
+                                                           digits = digits),
+                                                     "[.]",
+                                                     dec),
+                                unit,
+                                "\n",
+                                "n=", n_sample),
+                         NA),
+          family = font),
+        size = 3,
         color = "white",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)
