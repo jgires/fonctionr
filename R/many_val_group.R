@@ -15,7 +15,7 @@
 #' @param na.vars The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
 #' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
-#' @param position Position adjustment for geom_bar.
+#' @param position Position adjustment for the ggplot.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
@@ -195,8 +195,13 @@ many_val_group = function(data,
 
   # Check que les arguments avec choix precis sont les bons
   match.arg(type, choices = c("mean", "median", "prop"))
-  match.arg(position, choices = c("dodge", "stack"))
+  match.arg(position, choices = c("dodge", "stack", "flip"))
   match.arg(na.vars, choices = c("rm", "rm.all"))
+
+  if(total == TRUE & position == "flip"){
+    total <- FALSE
+    warning("La position 'flip' n'accepte pas de total : celui-ci est donc desactive")
+  }
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -336,7 +341,7 @@ many_val_group = function(data,
 
   tab <- tibble()
 
-  # Si total
+  # Si total et position pas egale a flip (car pas de total dans ce cas => changer par la suite ?)
   if(total == TRUE) {
 
     # On calcule les proportions par groupe
@@ -381,7 +386,7 @@ many_val_group = function(data,
     }
   }
 
-  # Si pas total
+  # Si pas total et position egale a flip (car pas de total dans ce cas => changer par la suite ?)
   if(total != TRUE) {
 
     # On calcule les proportions par groupe
@@ -429,6 +434,7 @@ many_val_group = function(data,
     tab <- tab |>
       group_by({{ group }}, .add = TRUE)
 
+    # L'idee est de ne pas afficher les valeurs lorsque la barre est inferieure a 10% de la barre la plus longue de tout le graphique
     tab <- tab |>
       mutate(longest = sum(indice, na.rm = TRUE)) |>
       ungroup() |>
@@ -468,24 +474,31 @@ many_val_group = function(data,
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
+  # Le nombre de couleurs de la palette selon que la position est flip (couleurs = groupes) ou non (couleurs = indicateurs)
+  if(position == "flip"){
+    column_fill <- deparse(substitute(group))
+  } else {
+    column_fill <- "list_col"
+  }
+
   # On cree la palette avec le package met.brewer
   if(pal %in% names(MetBrewer::MetPalettes)){
-    palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[[column_fill]]), type = "continuous", direction = direction))
 
   #ou la cree avec le package MoMAColors
   } else if(pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[[column_fill]]), type = "continuous", direction = direction))
 
   # On cree la palette avec le package PrettyCols
   } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(tab[[column_fill]]), type = "continuous", direction = direction))
 
   # On cree la palette avec la fonction interne official_pal()
   } else if(pal %in% official_pal(list_pal_names = T)){
-    palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
+    palette <- as.character(official_pal(inst = pal, n = nlevels(tab[[column_fill]]), direction = direction))
 
   } else {
-    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[[column_fill]]), type = "continuous", direction = direction))
     warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
@@ -555,36 +568,43 @@ many_val_group = function(data,
   # GGTEXT start ---------------
 
   # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
-  levels[is.na(levels)] <- "NA"
+  # Mais pas necessaire avec position = flip, qui n'utilise pas levels, n'a pas de total et pour qui les NA sont en vrai NA pour le ggplot (manque de coherence ?)
+  if(position != "flip"){
 
-  if(total == TRUE) {
-    levels[levels == total_name] <- paste0("**", total_name, "**")
+    levels[is.na(levels)] <- "NA"
 
-    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          {{ group }} == total_name ~ paste0("**", total_name, "**"),
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
+    if(total == TRUE) {
+      levels[levels == total_name] <- paste0("**", total_name, "**")
+
+      # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
+      graph <- tab |>
+        mutate(
+          "{{ group }}" := case_when(
+            {{ group }} == total_name ~ paste0("**", total_name, "**"),
+            is.na({{ group }}) ~ "NA",
+            .default = {{ group }}
+          )
         )
-      )
 
-    # On renomme le total (n'est plus utilise que pour le graphique)
-    total_name <- paste0("**", total_name, "**")
+      # On renomme le total (n'est plus utilise que pour le graphique)
+      total_name <- paste0("**", total_name, "**")
 
-  }
+    }
 
-  if(total == FALSE) {
+    if(total == FALSE) {
 
-    # Il faut changer les modalites de la variable de groupe ("NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
+      # Il faut changer les modalites de la variable de groupe ("NA" en string)
+      graph <- tab |>
+        mutate(
+          "{{ group }}" := case_when(
+            is.na({{ group }}) ~ "NA",
+            .default = {{ group }}
+          )
         )
-      )
+    }
+  # Pour position = flip
+  } else {
+    graph <- tab
   }
 
   # GGTEXT end ---------------
@@ -594,14 +614,14 @@ many_val_group = function(data,
   graph <- graph |>
     mutate("{{ group }}" := forcats::fct_rev({{ group }})) |>
     ggplot(aes(
-      x = {{ group }},
+      x = if(position == "dodge"|position == "stack") {{ group }} else list_col,
       y = indice,
-      fill = list_col
+      fill = if(position == "dodge"|position == "stack") list_col else {{ group }}
     )) +
     geom_bar(
       width = dodge,
       stat = "identity",
-      position = position
+      position = if(position == "stack") "stack" else "dodge"
     ) +
     theme_fonctionr(font = font,
                     theme = theme,
@@ -616,7 +636,7 @@ many_val_group = function(data,
     ) +
     scale_x_discrete(
       labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
-      limits = levels
+      limits = if(position == "stack"|position == "dodge") levels else NULL
     ) +
     labs(
       title = title,
@@ -645,7 +665,7 @@ many_val_group = function(data,
       alpha = .8,
       width = dodge,
       stat = "identity",
-      position = position
+      position = if(position == "stack") "stack" else "dodge"
     ) +
     scale_colour_manual(
       values = palette,
@@ -655,6 +675,7 @@ many_val_group = function(data,
       graph <- graph +
         geom_text(
           aes(
+            # Pas flip dans les conditions sur position, car le total n'existe pas en position = flip
             y = if (position == "dodge") (ifelse({{ group }} == total_name, indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} == total_name, indice, NA),
             label = if (position == "stack") {
               ifelse(show_value_stack == TRUE, paste0(
@@ -713,6 +734,15 @@ many_val_group = function(data,
         graph <- graph +
           labs(x = ylab)
       }
+      # ici bricolage car ggplot affiche la condition ecrite pour l'axe x => on remet le nom de la variable
+      if(is.null(ylab) & position == "flip"){
+        graph <- graph +
+          labs(x = NULL)
+      }
+      if(is.null(ylab) & (position != "flip")){
+        graph <- graph +
+          labs(x = deparse(substitute(group)))
+      }
     }
     if(all(!is.null(ylab), ylab == "")){
       graph <- graph +
@@ -764,7 +794,7 @@ many_val_group = function(data,
   }
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T & position == "dodge") {
+  if (show_ci == T & position != "stack") {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low, ymax = indice_upp),
                     width = dodge * 0.05,
@@ -780,7 +810,7 @@ many_val_group = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = if (position == "dodge") (ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA),
+          y = if (position == "dodge"|position == "flip") (ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA)) + (0.01 * max_ggplot) else ifelse({{ group }} != total_name|is.na({{ group }}), indice, NA),
           label = if (position == "stack") {
             ifelse(show_value_stack == TRUE, paste0(
               stringr::str_replace(
@@ -806,12 +836,12 @@ many_val_group = function(data,
           },
           family = font),
         size = 3,
-        vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
-        hjust = if (position == "dodge") "left" else "center",
-        color = if (position == "dodge") "black" else "white",
+        vjust = if (position == "dodge"|position == "flip") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+        hjust = if (position == "dodge"|position == "flip") "left" else "center",
+        color = if (position == "dodge"|position == "flip") "black" else "white",
         alpha = 0.9,
         # position = position_stack(vjust = .5))
-        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = .5)
+        position = if (position == "dodge"|position == "flip") position_dodge(width = dodge) else position_stack(vjust = .5)
       )
   }
 
@@ -820,14 +850,14 @@ many_val_group = function(data,
     graph <- graph +
       geom_text(
         aes(
-          y = if (position == "dodge") 0 + (0.01 * max_ggplot) else indice, # Pour ajouter des labels avec les effectifs en dessous des barres
+          y = if (position == "dodge"|position == "flip") 0 + (0.01 * max_ggplot) else indice, # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", n_sample),
           family = font),
         size = 3,
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4,
-        position = if (position == "dodge") position_dodge(width = dodge) else position_stack(vjust = 0)
+        position = if (position == "dodge"|position == "flip") position_dodge(width = dodge) else position_stack(vjust = 0)
       )
   }
 

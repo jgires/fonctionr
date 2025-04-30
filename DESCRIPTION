@@ -1,7 +1,7 @@
 Package: fonctionr
 Type: Package
 Title: Package for easy manipulation of data with complex design
-Version: 0.3.14
+Version: 0.3.15
 Authors@R: 
     c(person("Joel", "Gires", email = "jgires@ccc.brussels", role = c("aut", "cre")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))

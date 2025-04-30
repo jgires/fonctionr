@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.15
+
+Date : 2025-04-29
+
+-   Ajout de la position `fill` dans `many_val_group()` pour intervertir les groupes et les indicateurs choisis sur le graphique.
+
 ## fonctionr 0.3.14
 
 Date : 2025-03-27
@@ -259,8 +265,6 @@ Date : 2024-02-14
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   Les couleurs des palettes sont attachées au groupe (`many_val_group()`) ou à l'indicateur (`many_val()`), mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
-
 -   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
@@ -314,12 +318,16 @@ Date : 2024-02-14
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
 -   Redondance du code avec total pour le `geom_text()` ?
 
+many_val
+
+-   Les couleurs des palettes sont attachées à l'indicateur, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
+
 #### many_val_group
 
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
--   **Fusionner `many_val_group()` et `many_val()` !\
-    =\> + Ajouter la possibilité de group.fill pour les deux**
+-   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
+-   **Fusionner `many_val_group()` et `many_val()` !**
 
 #### make_surface
 
@@ -353,8 +361,6 @@ Date : 2024-02-14
     ***=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).***
 
 #### distrib_group_d
-
--   Ajouter les n par "cellule" ?
 
 -   Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
 

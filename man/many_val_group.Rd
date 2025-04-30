@@ -85,7 +85,7 @@ many_mean_group(..., type = "mean")
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{position}{Position adjustment for geom_bar.}
+\item{position}{Position adjustment for the ggplot.}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
 

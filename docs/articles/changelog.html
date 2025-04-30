@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.15</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,16 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-3-15">fonctionr 0.3.15<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-15"></a>
+</h2>
+<p>Date : 2025-04-29</p>
+<ul>
+<li>Ajout de la position <code>fill</code> dans
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code> pour intervertir les groupes et les
+indicateurs choisis sur le graphique.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-14">fonctionr 0.3.14<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-14"></a>
 </h2>
@@ -449,11 +459,6 @@ fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
 <li><p>Rendre l’usage non interactif (= la programmation via d’autres
 fonctions) possible =&gt; gros travail, usage de <code>rlang</code> à la
 place de <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code>.</p></li>
-<li><p>Les couleurs des palettes sont attachées au groupe
-(<code><a href="../reference/many_val_group.html">many_val_group()</a></code>) ou à l’indicateur
-(<code><a href="../reference/many_val.html">many_val()</a></code>), mais pas à la position. De ce fait, lorsque
-<code>reorder = T</code>, l’ordre des couleurs de la palette n’est pas
-respecté <strong>=&gt; changer le comportement ?</strong></p></li>
 <li><p>Bug à l’import de <code>fonctionr</code> du fait de collision
 entre <code>MetBrewer</code>, <code>MoMAColors</code>,
 <code>PrettyCols</code> et les fonctions de base ? Je ne comprends pas
@@ -546,6 +551,14 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 <li>Redondance du code avec total pour le <code>geom_text()</code>
 ?</li>
 </ul>
+<p>many_val</p>
+<ul>
+<li>Les couleurs des palettes sont attachées à l’indicateur, mais pas à
+la position. De ce fait, lorsque <code>reorder = T</code>, l’ordre des
+couleurs de la palette n’est pas respecté <strong>=&gt; changer le
+comportement ?</strong>
+</li>
+</ul>
 </div>
 <div class="section level4">
 <h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
@@ -556,9 +569,13 @@ lorsque <code>position == "stack"</code>
 </li>
 <li>Redondance du code avec total pour le <code>geom_text()</code>
 ?</li>
+<li>Les couleurs des palettes sont attachées au groupe, mais pas à la
+position. De ce fait, lorsque <code>reorder = T</code>, l’ordre des
+couleurs de la palette n’est pas respecté <strong>=&gt; changer le
+comportement ?</strong>
+</li>
 <li><strong>Fusionner <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et
-<code><a href="../reference/many_val.html">many_val()</a></code> !<br>
-=&gt; + Ajouter la possibilité de group.fill pour les deux</strong></li>
+<code><a href="../reference/many_val.html">many_val()</a></code> !</strong></li>
 </ul>
 </div>
 <div class="section level4">
@@ -625,7 +642,6 @@ et pour plus de détails : <a href="#id_0" class="uri">https://r-pkgs.org/depend
 <h4 id="distrib_group_d-1">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d-1"></a>
 </h4>
 <ul>
-<li><p>Ajouter les n par “cellule” ?</p></li>
 <li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe
 ?)</p></li>
 <li><p>Possibilité d’indiquer un vecteur avec une palette de couleur
