@@ -23,7 +23,7 @@
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
-#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -41,7 +41,7 @@
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -105,7 +105,7 @@ prop_group <- function(data,
                        scale = 100,
                        digits = 0,
                        unit = "%",
-                       dec = ",", ### A FAIRE
+                       dec = NULL,
                        pal = NULL,
                        direction = 1,
                        desaturate = 0,
@@ -189,6 +189,8 @@ prop_group <- function(data,
 
   # Check que les arguments avec choix precis sont les bons
   match.arg(na.prop, choices = c("rm", "include"))
+  lang <- tolower(lang)
+  match.arg(lang, choices = c("fr", "nl", "en"))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -252,6 +254,9 @@ prop_group <- function(data,
     if(is.null(total_name)){
       total_name <- "Total"
     }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
     lang_khi2_error <- paste0("Khi2 d'ind","\u00e9","pendance : conditions non remplies")
     lang_prop <- "Proportion : "
@@ -260,6 +265,9 @@ prop_group <- function(data,
     if(is.null(total_name)){
       total_name <- "Totaal"
     }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
     lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
     lang_prop <- "Aandeel: "
@@ -267,6 +275,9 @@ prop_group <- function(data,
   if(lang == "en"){
     if(is.null(total_name)){
       total_name <- "Total"
+    }
+    if(is.null(dec)){
+      dec <- "."
     }
     lang_khi2 <- "Chi-square of independence: "
     lang_khi2_error <- "Chi-square of independence: conditions not met"

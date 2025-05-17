@@ -81,7 +81,7 @@ esth_graph(
 
 \item{caption}{Caption of the graphic.}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 }
 \value{
 A ggplot graphic.

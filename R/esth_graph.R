@@ -26,7 +26,7 @@
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to var in tab.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
 #' @param caption Caption of the graphic.
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #'
 #' @return A ggplot graphic.
 #' @import rlang

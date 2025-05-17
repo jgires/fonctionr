@@ -19,7 +19,7 @@
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
-#' @param dec Decimal mark shown on the graphic. Default is ",".
+#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
 #' @param dodge Width of the bar, between 0 and 1. Default is 0.9.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
@@ -30,7 +30,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. If ylab = NULL, Y label on the graphic will be quali_var. To show no Y label, use ylab = "".
 #' @param caption Caption in the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -89,7 +89,7 @@ distrib_discrete <- function(data,
                              scale = 100,
                              digits = 0,
                              unit = "%",
-                             dec = ",",
+                             dec = NULL,
                              pal = "sienna2",
                              dodge = 0.9,
                              font ="Roboto",
@@ -158,6 +158,10 @@ distrib_discrete <- function(data,
     short = F
   )
 
+  # Check que les arguments avec choix precis sont les bons
+  lang <- tolower(lang)
+  match.arg(lang, choices = c("fr", "nl", "en"))
+
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
 
@@ -193,14 +197,23 @@ distrib_discrete <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_khi2_ad <- paste0("Khi2 d'ad","\u00e9","quation : ")
     lang_distrib <- "Distribution (total : 100%)"
   }
   if(lang == "nl"){
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_khi2_ad <- "Chikwadraat goodness of fit: "
     lang_distrib <- "Distributie (totaal: 100%)"
   }
   if(lang == "en"){
+    if(is.null(dec)){
+      dec <- "."
+    }
     lang_khi2_ad <- "Chi-square goodness of fit: "
     lang_distrib <- "Distribution (total: 100%)"
   }

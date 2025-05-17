@@ -31,7 +31,7 @@
 #' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
-#' @param dec Decimal mark shown on the graphic. Default is ",".
+#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal Color of the density areas. Can be one or sereval colors to create a palette.
 #' @param pal_moustache Color of the moustache. Can be one or sereval colors to create a palette.
 #' @param color Color of the density curve. Has to be one color.
@@ -44,7 +44,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -115,7 +115,7 @@ distrib_group_continuous <- function(data,
                                show_labs = TRUE,
                                digits = 0,
                                unit = "",
-                               dec = ",",
+                               dec = NULL,
                                pal = "#e0dfe0",
                                pal_moustache = c("#EB9BA0", "#FAD7B1"),
                                color = NA,
@@ -212,6 +212,8 @@ distrib_group_continuous <- function(data,
 
   # Check que les arguments avec choix precis sont les bons
   match.arg(type, choices = c("mean", "median"))
+  lang <- tolower(lang)
+  match.arg(lang, choices = c("fr", "nl", "en"))
 
   # Check que limit ne contient que 2 valeurs
   if(!is.null(limits) & length(limits) != 2){
@@ -257,16 +259,25 @@ distrib_group_continuous <- function(data,
 
   # Dictionnaire
   if(lang == "fr"){
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_prop_obs <- "Proportion d'observations"
     lang_anova <- "Test de Wald : "
     lang_kruskal <- "Kruskal Wallis : "
   }
   if(lang == "nl"){
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_prop_obs <- "Aandeel van de waarnemingen"
     lang_anova <- "Wald-test: "
     lang_kruskal <- "Kruskal Wallis: "
   }
   if(lang == "en"){
+    if(is.null(dec)){
+      dec <- "."
+    }
     lang_prop_obs <- "Proportion of observations"
     lang_anova <- "Wald Test: "
     lang_kruskal <- "Kruskal Wallis: "

@@ -26,7 +26,7 @@ many_val(
   scale = NULL,
   digits = 0,
   unit = NULL,
-  dec = ",",
+  dec = NULL,
   pal = "Egypt",
   direction = 1,
   desaturate = 0,
@@ -88,7 +88,7 @@ many_mean(..., type = "mean")
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ","}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
@@ -118,7 +118,7 @@ many_mean(..., type = "mean")
 
 \item{caption}{Caption of the graphic.}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }

@@ -26,7 +26,7 @@ prop_group(
   scale = 100,
   digits = 0,
   unit = "\%",
-  dec = ",",
+  dec = NULL,
   pal = NULL,
   direction = 1,
   desaturate = 0,
@@ -91,7 +91,7 @@ prop_group(
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ","}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
 
@@ -127,7 +127,7 @@ prop_group(
 
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }

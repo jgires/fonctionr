@@ -23,7 +23,7 @@
 #' @param total_name Name of the total bar on the graphic. Default is Total.
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
-#' @param dec Decimal mark shown on the graphic. Default is ",".
+#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -41,7 +41,7 @@
 #' @param legend_lab Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -98,7 +98,7 @@ central_group <- function(data,
                           total_name = NULL,
                           digits = 0,
                           unit = "",
-                          dec = ",",
+                          dec = NULL,
                           pal = NULL,
                           direction = 1,
                           desaturate = 0,
@@ -180,6 +180,8 @@ central_group <- function(data,
 
   # Check que les arguments avec choix precis sont les bons
   match.arg(type, choices = c("mean", "median"))
+  lang <- tolower(lang)
+  match.arg(lang, choices = c("fr", "nl", "en"))
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -224,7 +226,10 @@ central_group <- function(data,
   if(lang == "fr"){
     if(is.null(total_name)){
       total_name <- "Total"
-      }
+    }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_anova <- "Test de Wald : "
     lang_kruskal <- "Kruskal Wallis : "
     lang_mean <- "Moyenne : "
@@ -234,6 +239,9 @@ central_group <- function(data,
     if(is.null(total_name)){
       total_name <- "Totaal"
     }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_anova <- "Wald-test: "
     lang_kruskal <- "Kruskal Wallis: "
     lang_mean <- "Gemiddelde: "
@@ -242,6 +250,9 @@ central_group <- function(data,
   if(lang == "en"){
     if(is.null(total_name)){
       total_name <- "Total"
+    }
+    if(is.null(dec)){
+      dec <- "."
     }
     lang_anova <- "Wald test: "
     lang_kruskal <- "Kruskal Wallis: "

@@ -26,7 +26,7 @@ distrib_continuous(
   show_labs = TRUE,
   digits = 0,
   unit = "",
-  dec = ",",
+  dec = NULL,
   pal = c("#00708C", "mediumturquoise"),
   color = NA,
   font = "Roboto",
@@ -83,7 +83,7 @@ distrib_c(...)
 
 \item{unit}{Unit showed on the graphic. Default is no unit.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ",".}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{color of the density area. maybe one color or a vector with several colors.}
 
@@ -103,7 +103,7 @@ distrib_c(...)
 
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

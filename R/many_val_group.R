@@ -24,7 +24,7 @@
 #' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
-#' @param dec Decimal mark shown on the graphic. Default is ","
+#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -42,7 +42,7 @@
 #' @param legend_lab Legend (fill) label on the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param caption Caption of the graphic.
-#' @param theme Theme od te graphic. IWEPS adds y axis lines and ticks.
+#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table and a graphic
@@ -105,7 +105,7 @@ many_val_group = function(data,
                           scale = NULL,
                           digits = 0,
                           unit = NULL,
-                          dec = ",",
+                          dec = NULL,
                           pal = "Egypt",
                           direction = 1,
                           desaturate = 0,
@@ -144,6 +144,7 @@ many_val_group = function(data,
       na.vars = na.vars,
       prop_method = prop_method,
       position = position,
+      total_name = total_name,
       unit = unit,
       dec = dec,
       # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
@@ -197,6 +198,8 @@ many_val_group = function(data,
   match.arg(type, choices = c("mean", "median", "prop"))
   match.arg(position, choices = c("dodge", "stack", "flip"))
   match.arg(na.vars, choices = c("rm", "rm.all"))
+  lang <- tolower(lang)
+  match.arg(lang, choices = c("fr", "nl", "en"))
 
   if(total == TRUE & position == "flip"){
     total <- FALSE
@@ -249,6 +252,9 @@ many_val_group = function(data,
     if(is.null(total_name)){
       total_name <- "Total"
     }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_prop <- "Proportion : "
     lang_mean <- "Moyenne : "
     lang_median <- paste0("M","\u00e9","diane : ")
@@ -257,6 +263,9 @@ many_val_group = function(data,
     if(is.null(total_name)){
       total_name <- "Totaal"
     }
+    if(is.null(dec)){
+      dec <- ","
+    }
     lang_prop <- "Aandeel: "
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
@@ -264,6 +273,9 @@ many_val_group = function(data,
   if(lang == "en"){
     if(is.null(total_name)){
       total_name <- "Total"
+    }
+    if(is.null(dec)){
+      dec <- "."
     }
     lang_prop <- "Proportion: "
     lang_mean <- "Mean: "

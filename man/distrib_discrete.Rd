@@ -23,7 +23,7 @@ distrib_discrete(
   scale = 100,
   digits = 0,
   unit = "\%",
-  dec = ",",
+  dec = NULL,
   pal = "sienna2",
   dodge = 0.9,
   font = "Roboto",
@@ -75,7 +75,7 @@ distrib_d(...)
 
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ",".}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
 
@@ -97,7 +97,7 @@ distrib_d(...)
 
 \item{caption}{Caption in the graphic.}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).}
 }

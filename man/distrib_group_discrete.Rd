@@ -25,7 +25,7 @@ distrib_group_discrete(
   scale = 100,
   digits = 0,
   unit = "",
-  dec = ",",
+  dec = NULL,
   pal = "Hokusai1",
   direction = 1,
   desaturate = 0,
@@ -88,7 +88,7 @@ distrib_group_d(...)
 
 \item{unit}{Unit showed in the graphic. Default is no unit.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ",".}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
 
@@ -124,7 +124,7 @@ distrib_group_d(...)
 
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

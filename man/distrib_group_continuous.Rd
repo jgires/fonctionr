@@ -33,7 +33,7 @@ distrib_group_continuous(
   show_labs = TRUE,
   digits = 0,
   unit = "",
-  dec = ",",
+  dec = NULL,
   pal = "#e0dfe0",
   pal_moustache = c("#EB9BA0", "#FAD7B1"),
   color = NA,
@@ -107,7 +107,7 @@ distrib_group_c(...)
 
 \item{unit}{Unit showed on the graphic. Default is no unit.}
 
-\item{dec}{Decimal mark shown on the graphic. Default is ",".}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
 \item{pal}{Color of the density areas. Can be one or sereval colors to create a palette.}
 
@@ -133,7 +133,7 @@ distrib_group_c(...)
 
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
-\item{theme}{Theme od te graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }
