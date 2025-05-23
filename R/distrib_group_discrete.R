@@ -777,9 +777,6 @@ distrib_group_discrete <- function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
-    print(graph)
-
     # On transforme le test stat en dataframe
     if (quo_is_null(quo_facet)) { # Pour l'instant, test uniquement si pas de facet
       if(all(test.stat != "Conditions non remplies")){

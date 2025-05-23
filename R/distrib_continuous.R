@@ -690,9 +690,6 @@ distrib_continuous <- function(data,
   if (!is.null(export_path)) {
     # L'export en excel
 
-    # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
-    print(graph)
-
     # Pour many_prop, test pas encore implemente => on cree un data.frame a la main
     test_stat_excel <- data.frame(Parameter = c("test.error"),
                                   Value = "Test pas encore implemente dans distrib_continuous",
