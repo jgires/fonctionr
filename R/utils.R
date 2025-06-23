@@ -448,6 +448,7 @@ official_pal <- function(inst,
                  "OBSS_highlight1",
                  "OBSS_highlight2",
                  "OBSS_highlight3",
+                 "OBSS_old",
                  "IBSA",
                  "ULB")
 
@@ -477,6 +478,7 @@ official_pal <- function(inst,
     if(inst == "OBSS_Autumn"){pal_cols <- c("#6E3D10", "#F08E3E", "#DBC5B6", "#434E73")}
     if(inst == "OBSS_Sweet"){pal_cols <- c("#adce6d", "#6bbfa3" ,"#5e9ad3", "#585fa8", "#c7b0d5")}
     if(inst == "OBSS_Spring"){pal_cols <- c("#E65362", "#FCB308", "#238C8C")}
+    if(inst == "OBSS_old"){pal_cols <- c("#5e9ad2", "#f18d6e", "#accd6c")}
     # Palettes continues
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#066969")}

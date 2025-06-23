@@ -318,10 +318,12 @@ Date : 2024-02-14
 #### prop_group
 
 -   **Lorsque group.fill activé, les modalités de la légende et des barres sont dans un sens inverse.**
+-   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 
 #### central_group
 
 -   **Lorsque group.fill activé, les modalités de la légende et des barres sont dans un sens inverse.**
+-   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
 
 #### distrib_group_d
