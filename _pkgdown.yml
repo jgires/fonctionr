@@ -55,6 +55,7 @@ reference:
     Some useful functions.
   contents:
   - pivot_longer_survey
+  - relab_cut
 
 figures:
   dev: ragg::agg_png

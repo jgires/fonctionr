@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,14 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-3-17">fonctionr 0.3.17<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-17"></a>
+</h2>
+<p>Date : 2025-06-28</p>
+<ul>
+<li>Ajout de la fonction <code><a href="../reference/relab_cut.html">relab_cut()</a></code>.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-16">fonctionr 0.3.16<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-16"></a>
 </h2>
@@ -464,6 +472,11 @@ inclues dans le package laeken.</p></li>
 un peu bricolée (comme un code en “surcouche”). Ça fonctionne, mais le
 code est largement simplifiable (mieux pour la lisibilité). Si on
 l’implémente de manière durable, à revoir.</p></li>
+<li><p><strong>L’utilisation de caractères spéciaux dans les noms des
+groupes (par exemple <code>&gt;</code> ou <code>&lt;</code>) pose
+problème du fait de l’utilisation de <code>ggtext</code>. Il faut
+convertir ces caractères spéciaux en html au sein de la fonction. Voir :
+<a href="https://github.com/wilkelab/ggtext/issues/48" class="external-link uri">https://github.com/wilkelab/ggtext/issues/48</a>.</strong></p></li>
 <li><p>BUG : si une variable de design == le nom d’un objet externe, ça
 fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
 <li><p>Rendre l’usage non interactif (= la programmation via d’autres
@@ -545,9 +558,25 @@ centrales.</p></li>
 </ul>
 </div>
 <div class="section level4">
+<h4 id="prop_group">prop_group<a class="anchor" aria-label="anchor" href="#prop_group"></a>
+</h4>
+<ul>
+<li><strong>Lorsque group.fill activé, les modalités de la légende et
+des barres sont dans un sens inverse.</strong></li>
+<li><strong>L’ordre des couleurs est inversé par défaut ? Se corrige
+avec l’argument <code>direction</code>, mais pas cohérent avec autres
+fonctions =&gt; voir d’où ça vient.</strong></li>
+</ul>
+</div>
+<div class="section level4">
 <h4 id="central_group">central_group<a class="anchor" aria-label="anchor" href="#central_group"></a>
 </h4>
 <ul>
+<li><strong>Lorsque group.fill activé, les modalités de la légende et
+des barres sont dans un sens inverse.</strong></li>
+<li><strong>L’ordre des couleurs est inversé par défaut ? Se corrige
+avec l’argument <code>direction</code>, mais pas cohérent avec autres
+fonctions =&gt; voir d’où ça vient.</strong></li>
 <li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
 </ul>
 </div>
@@ -561,7 +590,10 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 <li>Redondance du code avec total pour le <code>geom_text()</code>
 ?</li>
 </ul>
-<p>many_val</p>
+</div>
+<div class="section level4">
+<h4 id="many_val">many_val<a class="anchor" aria-label="anchor" href="#many_val"></a>
+</h4>
 <ul>
 <li>Les couleurs des palettes sont attachées à l’indicateur, mais pas à
 la position. De ce fait, lorsque <code>reorder = T</code>, l’ordre des
