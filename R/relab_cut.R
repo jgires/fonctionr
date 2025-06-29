@@ -39,28 +39,32 @@ relab_cut <- function(vec, # Vecteur factor à recoder
   # On transforme la virgule entre les valeurs en tiret
   levels(vec) <- stringr::str_replace_all(levels(vec), ",", "-")
 
-  # On détecte le nombre de décimales
-  digits_detect <- stringr::str_extract(utils::head(levels(vec), 1), "-([:digit:]+[.]|)[:digit:]+$")
-  digits_detect <- stringr::str_extract(digits_detect, "[.][:digit:]+")
-
-  # Si pas de décimales détectées
-  if (is.na(digits_detect)) {
-    dec <- 0
-  }
-  # Si décimales détectées
-  else {
-    dec <- nchar(digits_detect) - 1
-  }
   # Pour la 1ère cat, on écrit "Moins de" + "DEUXIEME CHIFFRE" (identifié au tiret devant, qu'on enlève après)
   levels(vec)[1] <- paste(less, stringr::str_extract(utils::head(levels(vec), 1), "-([:digit:]+[.]|)[:digit:]+$")) |>
     stringr::str_replace("-", "")
   # Pour la dernière cat, on écrit "Plus de" + PREMIER CHIFFRE
   levels(vec)[length(levels(vec))] <- paste(more, stringr::str_extract(utils::tail(levels(vec), 1), "^([:digit:]+[.]|)[:digit:]+"))
 
+  # On détecte le nombre de décimales
+  # On extrait la partie décimales de tous les nombres, et on les place à la suite dans un vecteur vec_digits
+  vec_digits <- stringr::str_extract_all(levels(vec), "[.][:digit:]+") |>
+  unlist()
+
+  # Si pas de décimales détectées
+  if (identical(vec_digits, character(0))) {
+    dec <- 0
+  }
+  # Si décimales détectées
+  else {
+    # On détecte le max de décimales dans vec_digits => cela définit les unités à ajouter /supprimer
+    dec <- max(nchar(vec_digits)) - 1
+    print(1 / (10^dec))
+  }
+
   if (right == FALSE) {
-    # On enlève 1 à la dernière cat
+    # On enlève 1 unité à la dernière cat
     levels(vec)[length(levels(vec))] <- stringr::str_replace(levels(vec)[length(levels(vec))], "([:digit:]+[.]|)[:digit:]+", \(x) as.character(as.numeric(x) - (1 / (10^dec))))
-    # Pour ttes les cat sauf la 1ère (pas besoin) et la dernière (déjà fait) : +1 car on choppe le - dans le string_replace, et converti en numerique ça fait un chiffre négatif !
+    # Pour ttes les cat sauf la 1ère (pas besoin) et la dernière (déjà fait) : +1 unité car on choppe le - dans le string_replace, et converti en numerique ça fait un chiffre négatif !
     # NOTE : ça peut tomber sur les premières et dernières cat si 2 catégories à cut() : mais ça ne modifie rien car -[:digit:]+ (avec le signe négatif) ne sélectionne rien (à cause des "Plus de" / "Moins de")
     # NOTE2 : malgré tout, je mets un if statement, car l'opération est inutile si nlevels(vec) > 2
     if(nlevels(vec) > 2){
@@ -68,7 +72,7 @@ relab_cut <- function(vec, # Vecteur factor à recoder
     }
   }
   if (right == TRUE) {
-    # On ajoute 1 à tous les premiers chiffres sauf la dernière cat (pas besoin)
+    # On ajoute 1 unité à tous les premiers chiffres sauf la dernière cat (pas besoin)
     levels(vec)[1:(length(levels(vec)) - 1)] <- stringr::str_replace(levels(vec)[1:(length(levels(vec)) - 1)], "([:digit:]+[.]|)[:digit:]+", \(x) as.character(as.numeric(x) + (1 / (10^dec))))
   }
 
