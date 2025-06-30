@@ -34,6 +34,17 @@ relab_cut <- function(vec, # Vecteur factor à recoder
     more <- "More than"
     less <- "Less than"
   }
+  if (lang == "sign") {
+    more <- ">"
+    less <- "<"
+  }
+
+  # Check
+  vec_check <- stringr::str_detect(levels(vec), "(\\[|\\()(-|)([:digit:]+[.]|)[:digit:]+,(-|)([:digit:]+[.]|)[:digit:]+(\\]|\\))")
+  if(sum(vec_check) != length(unique(vec))){
+    stop("Le formatage de la variable à recoder n'est pas compatible avec la fonction relab_cut()")
+  }
+
   # On enlève crochets et parenthèses
   levels(vec) <- stringr::str_replace_all(levels(vec), "\\[|\\]|\\(|\\)", "")
   # On transforme la virgule entre les valeurs en tiret
@@ -58,7 +69,6 @@ relab_cut <- function(vec, # Vecteur factor à recoder
   else {
     # On détecte le max de décimales dans vec_digits => cela définit les unités à ajouter /supprimer
     dec <- max(nchar(vec_digits)) - 1
-    print(1 / (10^dec))
   }
 
   if (right == FALSE) {
