@@ -40,7 +40,7 @@ relab_cut <- function(vec, # Vecteur factor à recoder
   }
 
   # Check
-  vec_check <- stringr::str_detect(levels(vec), "(\\[|\\()(-|)([:digit:]+[.]|)[:digit:]+,(-|)([:digit:]+[.]|)[:digit:]+(\\]|\\))")
+  vec_check <- stringr::str_detect(levels(vec), "(\\[|\\()(-|)(([:digit:]+[.]|)[:digit:]+|Inf),(-|)(([:digit:]+[.]|)[:digit:]+| Inf)(\\]|\\))")
   if(sum(vec_check) != length(unique(vec))){
     stop("Le formatage de la variable à recoder n'est pas compatible avec la fonction relab_cut()")
   }
