@@ -39,9 +39,15 @@ relab_cut <- function(vec, # Vecteur factor à recoder
     less <- "<"
   }
 
-  # Check
+  # Check le nombre de modalites du vecteur dont le format est valide
   vec_check <- stringr::str_detect(levels(vec), "(\\[|\\()(-|)(([:digit:]+[.]|)[:digit:]+|Inf),(-|)(([:digit:]+[.]|)[:digit:]+| Inf)(\\]|\\))")
-  if(sum(vec_check) != length(unique(vec))){
+  sum_values_vec <- sum(vec_check)
+  # On ajoute 1 s'il y a au moins 1 NA
+  if(anyNA(vec)){
+    sum_values_vec <- sum_values_vec + 1
+  }
+  # Toutes les valeurs detectees doivent etre OK (somme des OK == toutes les valeurs)
+  if(sum_values_vec != length(unique(vec))){
     stop("Le formatage de la variable à recoder n'est pas compatible avec la fonction relab_cut()")
   }
 
