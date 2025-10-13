@@ -89,10 +89,10 @@ load_and_active_fonts <- function(){
                      bold = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Bold.otf"),
                      bolditalic = paste0(system.file("font", package = "fonctionr"), "/Gotham_Narrow_Bold_Italic.otf"))
   sysfonts::font_add(family = "Euclid Circular A",
-                     regular = paste0(system.file("font", package = "fonctionr"), "/Euclid Circular A Regular.ttf"),
-                     italic = paste0(system.file("font", package = "fonctionr"), "/Euclid Circular A Italic.ttf"),
-                     bold = paste0(system.file("font", package = "fonctionr"), "/Euclid Circular A Bold.ttf"),
-                     bolditalic = paste0(system.file("font", package = "fonctionr"), "/Euclid Circular A Bold Italic.ttf"))
+                     regular = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Regular.ttf"),
+                     italic = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Italic.ttf"),
+                     bold = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Bold.ttf"),
+                     bolditalic = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Bold_Italic.ttf"))
   sysfonts::font_add(family = "Helvetica Neue", regular = paste0(system.file("font", package = "fonctionr"), "/HelveticaNeueRoman.otf"))
   sysfonts::font_add(family = "League Gothic", regular = paste0(system.file("font", package = "fonctionr"), "/LeagueGothic-Regular.otf"))
   sysfonts::font_add(family = "Amatic", regular = paste0(system.file("font", package = "fonctionr"), "/AmaticSC-Regular.ttf"))

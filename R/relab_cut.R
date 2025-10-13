@@ -14,13 +14,13 @@
 #' cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
 #' table()
 #'
-#' cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
+#' cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE, dig.lab = 4) |>
 #' relab_cut(suffix = "€", right = FALSE) |>
 #' table()
 #'
-relab_cut <- function(vec, # Vecteur factor à recoder
+relab_cut <- function(vec, # Vecteur factor a recoder
                       suffix = NULL, # Suffixe
-                      right = TRUE, # Argument qui a été utilisé pour cut
+                      right = TRUE, # Argument qui a ete utilise pour cut
                       lang = "fr") {
   if (lang == "fr") {
     more <- "Plus de"
@@ -48,52 +48,52 @@ relab_cut <- function(vec, # Vecteur factor à recoder
   }
   # Toutes les valeurs detectees doivent etre OK (somme des OK == toutes les valeurs)
   if(sum_values_vec != length(unique(vec))){
-    stop("Le formatage de la variable à recoder n'est pas compatible avec la fonction relab_cut()")
+    stop("Le formatage de la variable a recoder n'est pas compatible avec la fonction relab_cut()")
   }
 
-  # On enlève crochets et parenthèses
+  # On enleve crochets et parentheses
   levels(vec) <- stringr::str_replace_all(levels(vec), "\\[|\\]|\\(|\\)", "")
   # On transforme la virgule entre les valeurs en tiret
   levels(vec) <- stringr::str_replace_all(levels(vec), ",", "-")
 
-  # Pour la 1ère cat, on écrit "Moins de" + "DEUXIEME CHIFFRE" (identifié au tiret devant, qu'on enlève après)
+  # Pour la 1ere cat, on ecrit "Moins de" + "DEUXIEME CHIFFRE" (identifie au tiret devant, qu'on enleve apres)
   levels(vec)[1] <- paste(less, stringr::str_extract(utils::head(levels(vec), 1), "-([:digit:]+[.]|)[:digit:]+$")) |>
     stringr::str_replace("-", "")
-  # Pour la dernière cat, on écrit "Plus de" + PREMIER CHIFFRE
+  # Pour la derniere cat, on ecrit "Plus de" + PREMIER CHIFFRE
   levels(vec)[length(levels(vec))] <- paste(more, stringr::str_extract(utils::tail(levels(vec), 1), "^([:digit:]+[.]|)[:digit:]+"))
 
-  # On détecte le nombre de décimales
-  # On extrait la partie décimales de tous les nombres, et on les place à la suite dans un vecteur vec_digits
+  # On detecte le nombre de decimales
+  # On extrait la partie decimales de tous les nombres, et on les place a la suite dans un vecteur vec_digits
   vec_digits <- stringr::str_extract_all(levels(vec), "[.][:digit:]+") |>
   unlist()
 
-  # Si pas de décimales détectées
+  # Si pas de decimales detectees
   if (identical(vec_digits, character(0))) {
     dec <- 0
   }
-  # Si décimales détectées
+  # Si decimales detectees
   else {
-    # On détecte le max de décimales dans vec_digits => cela définit les unités à ajouter /supprimer
+    # On detecte le max de decimales dans vec_digits => cela definit les unites a ajouter /supprimer
     dec <- max(nchar(vec_digits)) - 1
   }
 
   if (right == FALSE) {
-    # On enlève 1 unité à la dernière cat
+    # On enleve 1 unite a la derniere cat
     levels(vec)[length(levels(vec))] <- stringr::str_replace(levels(vec)[length(levels(vec))], "([:digit:]+[.]|)[:digit:]+", \(x) as.character(as.numeric(x) - (1 / (10^dec))))
-    # Pour ttes les cat sauf la 1ère (pas besoin) et la dernière (déjà fait) : +1 unité car on choppe le - dans le string_replace, et converti en numerique ça fait un chiffre négatif !
-    # NOTE : ça peut tomber sur les premières et dernières cat si 2 catégories à cut() : mais ça ne modifie rien car -[:digit:]+ (avec le signe négatif) ne sélectionne rien (à cause des "Plus de" / "Moins de")
-    # NOTE2 : malgré tout, je mets un if statement, car l'opération est inutile si nlevels(vec) > 2
+    # Pour ttes les cat sauf la 1ere (pas besoin) et la derniere (deja fait) : +1 unite car on choppe le - dans le string_replace, et converti en numerique ca fait un chiffre negatif !
+    # NOTE : ca peut tomber sur les premieres et dernieres cat si 2 categories a cut() : mais ca ne modifie rien car -[:digit:]+ (avec le signe negatif) ne selectionne rien (a cause des "Plus de" / "Moins de")
+    # NOTE2 : malgre tout, je mets un if statement, car l'operation est inutile si nlevels(vec) > 2
     if(nlevels(vec) > 2){
       levels(vec)[2:(length(levels(vec)) - 1)] <- stringr::str_replace(levels(vec)[2:(length(levels(vec)) - 1)], "-([:digit:]+[.]|)[:digit:]+$", \(x) as.character(as.numeric(x) + (1 / (10^dec))))
     }
   }
   if (right == TRUE) {
-    # On ajoute 1 unité à tous les premiers chiffres sauf la dernière cat (pas besoin)
+    # On ajoute 1 unite a tous les premiers chiffres sauf la derniere cat (pas besoin)
     levels(vec)[1:(length(levels(vec)) - 1)] <- stringr::str_replace(levels(vec)[1:(length(levels(vec)) - 1)], "([:digit:]+[.]|)[:digit:]+", \(x) as.character(as.numeric(x) + (1 / (10^dec))))
   }
 
-  levels(vec) <- stringr::str_replace_all(levels(vec), "-", " - ") # Plus joli ? On le fait pas au début car ça permet l'astuce du chiffre négatif
-  levels(vec) <- paste0(levels(vec), suffix) # On ajoute un suffixe (symbole pour l'unité)
+  levels(vec) <- stringr::str_replace_all(levels(vec), "-", " - ") # Plus joli ? On le fait pas au debut car ca permet l'astuce du chiffre negatif
+  levels(vec) <- paste0(levels(vec), suffix) # On ajoute un suffixe (symbole pour l'unite)
 
   return(vec)
 }

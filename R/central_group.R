@@ -660,6 +660,7 @@ central_group <- function(data,
   }
   if (!quo_is_null(quo_group.fill)) { # Si group.fill
     graph <- graph |>
+      mutate("{{ group.fill }}" := forcats::fct_rev({{ group.fill }})) |>
       ggplot(aes(
         x = {{ group }},
         y = indice,
@@ -690,7 +691,13 @@ central_group <- function(data,
       labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
       limits = levels
     ) +
-    guides(fill = guide_legend(ncol = legend_ncol)) +
+    guides(
+      fill = guide_legend(
+        ncol = legend_ncol,
+        # avec group.fill : pour accorder l'ordre des couleurs sur le graphique et la legende
+        reverse = TRUE
+      )
+    ) +
     labs(
       title = title,
       subtitle = subtitle

@@ -25,7 +25,7 @@ Function to recode the default labels of a factor created by cut() from base R
 cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
 table()
 
-cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
+cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE, dig.lab = 4) |>
 relab_cut(suffix = "€", right = FALSE) |>
 table()
 

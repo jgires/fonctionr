@@ -518,6 +518,8 @@ prop_group <- function(data,
   }
 
   if(!quo_is_null(quo_group.fill)) {
+    # Note : la direction est inversee pour respecter l'ordre naturel de la palette
+
     # On cree la palette avec le package MetBrewer
     if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
       palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
@@ -554,6 +556,7 @@ prop_group <- function(data,
     }
 
   }
+  print(palette)
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
@@ -669,6 +672,7 @@ prop_group <- function(data,
   }
   if (!quo_is_null(quo_group.fill)) { # Si group.fill
     graph <- graph |>
+      mutate("{{ group.fill }}" := forcats::fct_rev({{ group.fill }})) |>
       ggplot(aes(
         x = {{ group }},
         y = prop,
@@ -700,7 +704,12 @@ prop_group <- function(data,
       labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
       limits = levels
     ) +
-    guides(fill = guide_legend(ncol = legend_ncol)
+    guides(
+      fill = guide_legend(
+        ncol = legend_ncol,
+        # avec group.fill : pour accorder l'ordre des couleurs sur le graphique et la legende
+        reverse = TRUE
+        )
     ) +
     labs(
       title = title,

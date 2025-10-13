@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.18
+
+Date : 2025-10-13
+
+-   Correction de l'ordre des couleurs pour la légende avec le `group.fill` activé pour `prop_group()` et `central_group()`.
+
 ## fonctionr 0.3.17
 
 Date : 2025-06-28
@@ -325,12 +331,10 @@ Date : 2024-02-14
 
 #### prop_group
 
--   **Lorsque group.fill activé, les modalités de la légende et des barres sont dans un sens inverse.**
 -   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 
 #### central_group
 
--   **Lorsque group.fill activé, les modalités de la légende et des barres sont dans un sens inverse.**
 -   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
 
@@ -345,6 +349,7 @@ Date : 2024-02-14
 
 #### many_val_group
 
+-   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
 -   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
