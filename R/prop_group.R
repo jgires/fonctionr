@@ -556,7 +556,6 @@ prop_group <- function(data,
     }
 
   }
-  print(palette)
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$prop, na.rm = TRUE)
