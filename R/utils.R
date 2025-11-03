@@ -488,19 +488,19 @@ official_pal <- function(inst,
     if(inst == "OBSS_old"){pal_cols <- c("#5e9ad2", "#f18d6e", "#accd6c")}
     # Palettes continues
     if(inst == "OBSS_Candy"){pal_cols <- c("#EDA1C2", "#BF2433")}
-    if(inst == "OBSS_Candy2"){pal_cols <- c("#F0D3DF", "#BF2433")}
+    if(inst == "OBSS_Candy2"){pal_cols <- c("#FFDBE9", "#BF2433")}
     if(inst == "OBSS_Greens"){pal_cols <- c("#adce6d", "#066969")}
-    if(inst == "OBSS_Greens2"){pal_cols <- c("#D6E8B5", "#066969")}
+    if(inst == "OBSS_Greens2"){pal_cols <- c("#DDF7AF", "#066969")}
     if(inst == "OBSS_Sea"){pal_cols <- c("#99D4AD", "#0F7D7D", "#303C66")}
-    if(inst == "OBSS_Sea2"){pal_cols <- c("#C5EBD2", "#1E9494", "#303C66")}
+    if(inst == "OBSS_Sea2"){pal_cols <- c("#C3FAD7", "#1E9494", "#303C66")}
     if(inst == "OBSS_Sunset"){pal_cols <- c("#FFC012", "#cf4d4a")}
-    if(inst == "OBSS_Sunset2"){pal_cols <- c("#FAEBB9", "#cf4d4a")}
+    if(inst == "OBSS_Sunset2"){pal_cols <- c("#FFE991", "#cf4d4a")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
-    if(inst == "OBSS_Purples2"){pal_cols <- c("#EDDFF5", "#4236A3")}
+    if(inst == "OBSS_Purples2"){pal_cols <- c("#F4E0FF", "#4236A3")}
     if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#2B4570")}
-    if(inst == "OBSS_Blues2"){pal_cols <- c("#D5E7F5", "#2B4570")}
+    if(inst == "OBSS_Blues2"){pal_cols <- c("#CCE8FF", "#1D4891")}
     if(inst == "OBSS_Brown"){pal_cols <- c("#DBC5B6", "#6E3D10")}
-    if(inst == "OBSS_Brown2"){pal_cols <- c("#F0E5DD", "#6E3D10")}
+    if(inst == "OBSS_Brown2"){pal_cols <- c("#FFEDE0", "#6E3D10")}
     # Palettes divergentes avec point central
     if(inst == "OBSS_div_mid1"){pal_cols <- c("#C2324D", "#EDA1C2", "#DBD2CC", "#adce6d", "#0F7D7D")}
     if(inst == "OBSS_div_mid2"){pal_cols <- c("#C2324D", "#EB7FAE", "#DBD2CC", "#5e9ad3", "#3A456B")}
