@@ -497,8 +497,8 @@ official_pal <- function(inst,
     if(inst == "OBSS_Sunset2"){pal_cols <- c("#FFE991", "#cf4d4a")}
     if(inst == "OBSS_Purples"){pal_cols <- c("#c7b0d5", "#4236A3")}
     if(inst == "OBSS_Purples2"){pal_cols <- c("#F4E0FF", "#4236A3")}
-    if(inst == "OBSS_Blues"){pal_cols <- c("#84BBE3", "#2B4570")}
-    if(inst == "OBSS_Blues2"){pal_cols <- c("#CCE8FF", "#1D4891")}
+    if(inst == "OBSS_Blues"){pal_cols <- c("#95BFF0", "#0F4F99")}
+    if(inst == "OBSS_Blues2"){pal_cols <- c("#CFE5FF", "#0F4F99")}
     if(inst == "OBSS_Brown"){pal_cols <- c("#DBC5B6", "#6E3D10")}
     if(inst == "OBSS_Brown2"){pal_cols <- c("#FFEDE0", "#6E3D10")}
     # Palettes divergentes avec point central

@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.19
+
+Date : 2025-11-03
+
+-   Ajout de nouvelles palettes dérivées des palettes continues : ce sont les mêmes avec plus de contraste, ce qui est plus adapté pour réaliser des cartes.
+
 ## fonctionr 0.3.18
 
 Date : 2025-10-13
