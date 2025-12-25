@@ -718,7 +718,12 @@ theme_fonctionr <- function(font = "Roboto",
   if (display == "ggtext") {
     theme_fonctionr_def <- theme_fonctionr_def +
       theme(
-        axis.text = ggtext::element_markdown(color = "black")
+        # On definit chaque axe individuellement pour contrer le bug avec ggplot 4 => https://github.com/tidyverse/ggplot2/issues/6752
+        # Changer en plus simple quand ggtext aura résolu le bug => https://github.com/wilkelab/ggtext/issues/128
+        axis.text.y.left = ggtext::element_markdown(color = "black"),
+        axis.text.y.right = ggtext::element_markdown(color = "black"),
+        axis.text.x.bottom = ggtext::element_markdown(color = "black"),
+        axis.text.x.top = ggtext::element_markdown(color = "black")
         )
   }
 
