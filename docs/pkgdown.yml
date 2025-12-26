@@ -1,5 +1,5 @@
 pandoc: '3.4'
-pkgdown: 2.1.0
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   changelog: changelog.html
@@ -7,7 +7,7 @@ articles:
   articles/esthetic_functions: esthetic_functions.html
   articles/fonctionr_functions: fonctionr_functions.html
   articles/Obss_colors: Obss_colors.html
-last_built: 2025-10-13T18:13Z
+last_built: 2025-12-26T10:46Z
 urls:
   reference: https://jgires.github.io/fonctionr/reference
   article: https://jgires.github.io/fonctionr/articles

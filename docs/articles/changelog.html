@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.20</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,35 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-3-20">fonctionr 0.3.20<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-20"></a>
+</h2>
+<p>Date : 2025-12-26</p>
+<ul>
+<li>Correction temporaire d’un bug graphique provoqué par le passage à
+<code>ggplot 4.0</code>, qui impliquait que le <strong>total</strong>
+sur les graphiques (en gras) soit indiqué ** total ** (avec des
+astérisques). C’est le package <code>ggtext</code> qui est utilisé pour
+mettre en gras le total dans les graphiques. Or, <code>ggtext</code>
+n’est pas complètement compatible avec le nouveau fonctionnement de
+<code>ggplot 4.0</code> : l’héritage des propriétés ne se fait pas entre
+éléments S3 et S7 (voir : <a href="https://github.com/tidyverse/ggplot2/issues/6752" class="external-link">ggtext and
+parsing html with latest version of ggplot · Issue #6752 ·
+tidyverse/ggplot2</a>). Une solution temporaire a été ajoutée (à
+corriger lorsque <code>ggtext</code> sera mis à jour : <a href="https://github.com/wilkelab/ggtext/issues/128" class="external-link">Update theme
+elements to S7 class system · Issue #128 · wilkelab/ggtext</a>).</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="fonctionr-0-3-19">fonctionr 0.3.19<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-19"></a>
+</h2>
+<p>Date : 2025-11-03</p>
+<ul>
+<li>Ajout de nouvelles palettes dérivées des palettes continues : ce
+sont les mêmes avec plus de contraste, ce qui est plus adapté pour
+réaliser des cartes.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-18">fonctionr 0.3.18<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-18"></a>
 </h2>
@@ -744,7 +773,7 @@ différentes.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

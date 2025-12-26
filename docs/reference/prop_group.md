@@ -1,0 +1,325 @@
+# prop_group
+
+Function to compare proportions in different groups from complex survey
+data. It produces a table, a graphic and a statistical test.
+
+## Usage
+
+``` r
+prop_group(
+  data,
+  group,
+  prop_exp,
+  group.fill = NULL,
+  facet = NULL,
+  filter_exp = NULL,
+  ...,
+  na.rm.group = T,
+  na.rm.facet = T,
+  na.prop = "rm",
+  total = TRUE,
+  prop_method = "beta",
+  reorder = F,
+  show_ci = T,
+  show_n = FALSE,
+  show_value = TRUE,
+  show_labs = TRUE,
+  total_name = NULL,
+  scale = 100,
+  digits = 0,
+  unit = "%",
+  dec = NULL,
+  pal = NULL,
+  direction = 1,
+  desaturate = 0,
+  lighten = 0,
+  darken = 0,
+  dodge = 0.9,
+  font = "Roboto",
+  wrap_width_y = 25,
+  wrap_width_leg = 25,
+  legend_ncol = 4,
+  title = NULL,
+  subtitle = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  legend_lab = NULL,
+  caption = NULL,
+  lang = "fr",
+  theme = NULL,
+  export_path = NULL
+)
+```
+
+## Arguments
+
+- data:
+
+  A dataframe or an object from the survey package or an object from the
+  srvyr package.
+
+- group:
+
+  A variable defining the groups to be compared.
+
+- prop_exp:
+
+  An expression that define the proportion to be computed.
+
+- group.fill:
+
+  A variable defining a second variable of groups to be compared.
+
+- facet:
+
+  A variable defining the faceting group.
+
+- filter_exp:
+
+  An expression that filters the data, preserving the design.
+
+- ...:
+
+  All options possible in as_survey_design in srvyr package.
+
+- na.rm.group:
+
+  TRUE if you want to remove observations with NA on the group variable
+  or NA on the facet variable. FALSE if you want to create a group with
+  the NA value for the group variable and a facet with the NA value for
+  the facet variable. NA in the variables included in prop_exp are not
+  affected in this argument. All the observation with a NA in the
+  variables included in prop_exp are excluded.
+
+- na.rm.facet:
+
+  TRUE if you want to remove observations with NA on the group variable
+  or NA on the facet variable. FALSE if you want to create a group with
+  the NA value for the group variable and a facet with the NA value for
+  the facet variable. NA in the variables included in prop_exp are not
+  affected in this argument. All the observation with a NA in the
+  variables included in prop_exp are excluded.
+
+- na.prop:
+
+  "rm" to remove the NA in the variables used in prop_exp before
+  computing the proportions, "include" to compute the proportions with
+  the NA's in the denominators. Default is "rm". When "rm" NA are not
+  allowed in prop_exp.
+
+- total:
+
+  TRUE if you want to calculate a total, FALSE if you don't. The default
+  is TRUE
+
+- prop_method:
+
+  Type of proportion method to use. See svyciprop in survey package for
+  details. Default is the beta method.
+
+- reorder:
+
+  TRUE if you want to reorder the groups according to the proportion. NA
+  value, in case if na.rm.group = FALSE, is not included in the reorder.
+
+- show_ci:
+
+  TRUE if you want to show the error bars on the graphic. FALSE if you
+  do not want to show the error bars.
+
+- show_n:
+
+  TRUE if you want to show on the graphic the number of individuals in
+  the sample in each group. FALSE if you do not want to show this
+  number. Default is FALSE.
+
+- show_value:
+
+  TRUE if you want to show the proportion in each group on the graphic.
+  FALSE if you do not want to show the proportion.
+
+- show_labs:
+
+  TRUE if you want to show axes, titles and caption labels. FALSE if you
+  do not want to show any label on axes and titles. Default is TRUE.
+
+- total_name:
+
+  Name of the total shown on the graphic. Default is "Total".
+
+- scale:
+
+  Denominator of the proportion. Default is 100 to interprets numbers as
+  percentages.
+
+- digits:
+
+  Numbers of digits showed on the values labels on the graphic. Default
+  is 0.
+
+- unit:
+
+  Unit showed in the graphic. Default is percent.
+
+- dec:
+
+  Decimal mark shown on the graphic. Depends on lang: "," for fr and nl
+  ; "." for en.
+
+- pal:
+
+  If group.fill is empty, pal must be a vector containing a single color
+  to define the color of the bars. If a variable is specified in
+  group.fill, pal is the color palette used on the graph to
+  differentiate its different modalities. Palettes from the MetBrewer,
+  MoMAColors and PrettyCols packages are available. The NA bar, if
+  na.rm.group = FALSE, and the total bar are always in gray.
+
+- direction:
+
+  Direction of the palette color. Default is 1. The opposite direction
+  is -1.
+
+- desaturate:
+
+  Numeric specifying the amount of desaturation where 1 corresponds to
+  complete desaturation, 0 to no desaturation, and values in between to
+  partial desaturation.
+
+- lighten:
+
+  Numeric specifying the amount of lightening. Negative numbers cause
+  darkening.
+
+- darken:
+
+  Numeric specifying the amount of lightening. Negative numbers cause
+  lightening.
+
+- dodge:
+
+  Width of the bar, between 0 and 1.
+
+- font:
+
+  Font used in the graphic. See load_and_active_fonts() for available
+  fonts.
+
+- wrap_width_y:
+
+  Number of characters before going to the line. Applies to the labels
+  of the groups. Default is 25.
+
+- wrap_width_leg:
+
+  Number of characters before going to the line for the labels of the
+  categories of group.fill. Default is 25.
+
+- legend_ncol:
+
+  Number of colomns in the legend. Default is 4.
+
+- title:
+
+  Title of the graphic.
+
+- subtitle:
+
+  Subtitle of the graphic.
+
+- xlab:
+
+  X label on the graphic. As coord_flip() is used in the graphic, xlab
+  refers to the x label on the graphic, after the coord_flip(), and not
+  to the x variable in the data.
+
+- ylab:
+
+  Y label on the graphic. As coord_flip() is used in the graphic, xlab
+  refers to the x label on the graphic, after the coord_flip(), and not
+  to the x variable in the data.
+
+- legend_lab:
+
+  Legend (fill) label on the graphic. If legend_lab = NULL, legend label
+  on the graphic will be group.fill. To show no legend label, use
+  legend_lab = "".
+
+- caption:
+
+  Caption of the graphic.
+
+- lang:
+
+  The language of the indications on the chart. Possibilities: "fr",
+  "nl", "en". Default is "fr".
+
+- theme:
+
+  Theme of the graphic. IWEPS adds y axis lines and ticks.
+
+- export_path:
+
+  Path to export the results in an xlsx file. The file includes two
+  sheets : the table and the graphic.
+
+## Value
+
+A list that contains a table, a graphic and a statistical test
+
+## Examples
+
+``` r
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Recoding eusilc$pl030 into eusilc$pl030_rec
+eusilc$pl030_rec <- NA
+eusilc$pl030_rec[eusilc$pl030 == "1"] <- "Working full time"
+eusilc$pl030_rec[eusilc$pl030 == "2"] <- "Working part time"
+eusilc$pl030_rec[eusilc$pl030 == "3"] <- "Unemployed"
+eusilc$pl030_rec[eusilc$pl030 == "4"] <- "Student"
+eusilc$pl030_rec[eusilc$pl030 == "5"] <- "Retired"
+eusilc$pl030_rec[eusilc$pl030 == "6"] <- "Permanently disabled"
+eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
+
+# Computation, taking sample design into account
+eusilc_prop <- prop_group(
+eusilc,
+group = pl030_rec,
+prop_exp = py090n > 0,
+strata = db040,
+ids = db030,
+weight = rb050,
+title = "% of ind. receiving unemployment benefits in their hh",
+subtitle = "Example with austrian SILC data from 'laeken' package"
+)
+#> Input: data.frame
+#> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> Variable(s) detectee(s) dans l'expression : py090n
+#> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
+
+# Results in graph form
+eusilc_prop$graph
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_text()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_text()`).
+
+
+# Results in table format
+eusilc_prop$tab
+#> # A tibble: 8 × 11
+#>   pl030_rec                   prop prop_low prop_upp n_sample n_true_weighted
+#>   <fct>                      <dbl>    <dbl>    <dbl>    <int>           <dbl>
+#> 1 Fulfilling domestic tasks 0.0485   0.0369   0.0624     1207          31048.
+#> 2 Permanently disabled      0.209    0.148    0.282       178          21975.
+#> 3 Retired                   0.0177   0.0134   0.0229     3146          31988.
+#> 4 Student                   0.0194   0.0106   0.0323      736           7666.
+#> 5 Unemployed                0.732    0.690    0.770       518         221878.
+#> 6 Working full time         0.0818   0.0741   0.0899     5162         234629.
+#> 7 Working part time         0.110    0.0921   0.130      1160          69869.
+#> 8 Total                     0.0916   0.0863   0.0971    12107         619054.
+#> # ℹ 5 more variables: n_true_weighted_low <dbl>, n_true_weighted_upp <dbl>,
+#> #   n_tot_weighted <dbl>, n_tot_weighted_low <dbl>, n_tot_weighted_upp <dbl>
+```

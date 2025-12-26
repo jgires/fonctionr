@@ -18,6 +18,12 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.20
+
+Date : 2025-12-26
+
+-   Correction temporaire d'un bug graphique provoqué par le passage à `ggplot 4.0`, qui impliquait que le **total** sur les graphiques (en gras) soit indiqué \*\* total \*\* (avec des astérisques). C'est le package `ggtext` qui est utilisé pour mettre en gras le total dans les graphiques. Or, `ggtext` n'est pas complètement compatible avec le nouveau fonctionnement de `ggplot 4.0` : l'héritage des propriétés ne se fait pas entre éléments S3 et S7 (voir : [ggtext and parsing html with latest version of ggplot · Issue #6752 · tidyverse/ggplot2](https://github.com/tidyverse/ggplot2/issues/6752)). Une solution temporaire a été ajoutée (à corriger lorsque `ggtext` sera mis à jour : [Update theme elements to S7 class system · Issue #128 · wilkelab/ggtext](https://github.com/wilkelab/ggtext/issues/128)).
+
 ## fonctionr 0.3.19
 
 Date : 2025-11-03
@@ -283,9 +289,13 @@ Date : 2024-02-14
 
 #### En général
 
--   L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir.
+-   L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.
+
+-   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 -   **L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
+
+-   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ? **(prioritaire vu usage par Statbel)**
 
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
@@ -313,8 +323,6 @@ Date : 2024-02-14
 -   Ajouter des checks pour les inputs :
 
     -   Pas mettre les mêmes colonnes dans les différents arguments ? (`group`, `var_distrib`, `facet_var`, etc.).
-
--   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ?
 
 #### **distrib_c**
 

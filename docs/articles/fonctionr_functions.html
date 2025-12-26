@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.20</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,7 +165,7 @@ indiquées sans mentionner le dataframe (<code>var</code> au lieu de
 :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-4-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="100%"></p>
 <p>La liste contient également un dataframe <code>tab</code> qui reprend
 les chiffres sur base desquels le graphique est construit. Il comprend
 les colonnes suivantes : le nom de la modalité (<code>pl030_rec</code>),
@@ -244,7 +244,7 @@ nationalité (<code>pb220a</code>).</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 28 × 9</span></span></span>
@@ -295,7 +295,7 @@ socio-économiques (<code>pl030_rec</code>).</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Le graphique et le tableau contiennent aussi une modalité
 <code>Total</code> qui reprend l’estimation de la proportion pour
 l’ensemble de la population de référence. Dans le dataframe
@@ -367,7 +367,7 @@ lorsque des sous-groupes sont définis.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">eusilc_prop_sex</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-15-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="central_group-valeur-centrale-moyennemédiane-par-groupe">
@@ -414,7 +414,7 @@ le test statistique effectué est celui de Kruskal Wallis.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-17-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 8</span></span></span>
@@ -479,7 +479,7 @@ dans la totalité de la population.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-21-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
@@ -530,7 +530,7 @@ allocation de chômage des femmes et des hommes.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-24-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 9</span></span></span>
@@ -571,7 +571,7 @@ et <code>tab</code>, comme dans les autres fonction.</p>
 <code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span>, type <span class="op">=</span> <span class="st">"mean"</span>, bw <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-27-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-27-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
@@ -644,7 +644,7 @@ mensuel.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-32-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-32-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">tab</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 8</span></span></span>
@@ -2381,7 +2381,7 @@ fonction de <code>fonctionr</code>, en créant au préalable un objet
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_2</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_3</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
@@ -2443,7 +2443,7 @@ fonctions.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
@@ -2475,7 +2475,7 @@ par statut socio-économique et sexe.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">eusilc_income_status_sex</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="100%"></p>
 </li>
 <li><p><code>facet</code> permet d’indiquer une variable qualitative
 pour différencier les résultats selon les différentes modalités de cette
@@ -2501,7 +2501,7 @@ région (indiquée comme variable de facettes) :</p></li>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-44-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li><p><code>filter_exp</code> est une expression qui permet de filtrer
 les données de manière à produire les résultats sur une partie de
@@ -2590,7 +2590,7 @@ couleur, de manière à les identifier spécifiquement.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>na.prop</code> indique la manière dont les éventuels
@@ -2647,7 +2647,7 @@ sont comptabilisées dans le dénominateur.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_NA_incl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-48-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-48-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>na.vars</code> indique la manière dont les <code>NA</code>
@@ -2724,7 +2724,7 @@ part time” (16511€).</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-50-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>position</code> est un argument qui ne se trouve uniquement
@@ -2766,7 +2766,7 @@ confiance sur le graphique.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2a</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2b</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <p><code>show_ci</code>, <code>show_n</code>,
@@ -2820,7 +2820,7 @@ changé le nom du “Total”.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-54-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Certains arguments sont spécifiques aux fonctions
 <code>distrib_continous()</code> et
 <code>distrib_group_continous()</code> :</p>
@@ -2920,7 +2920,7 @@ revenu d’une activité indépendante avant de diviser le tout par 12.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-56-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-56-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
@@ -3010,7 +3010,7 @@ représentés.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_sub_group</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_no_sub_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
 <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, <code>pal</code> peut soit
@@ -3066,7 +3066,7 @@ densité en rouge.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-60-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-60-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
@@ -3120,7 +3120,7 @@ la virgule.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-62-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-62-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
@@ -3245,7 +3245,7 @@ est le néerlandais et l’on a tracé l’axe des ordonnées
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-64-1.png" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-64-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
 </div>
@@ -3286,7 +3286,7 @@ plaisir !</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
