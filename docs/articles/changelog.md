@@ -1,5 +1,18 @@
 # Changelog
 
+## fonctionr 0.3.21
+
+Date : 2026-01-05
+
+- Simplification du code de
+  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+  pour formater le label du total en gras avec le package `ggtext`
+  (inspiration :
+  <https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111>).
+  Mise en italique du groupe *NA* par la même occasion. La fonction
+  interne `relab_ggtext()` a été crée pour opérer cette simplification.
+  Les autres fonctions doivent encore être modifiées dans le même sens.
+
 ## fonctionr 0.3.20
 
 Date : 2025-12-26
@@ -437,12 +450,26 @@ Date : 2024-02-14
 - L’utilisation de `ggtext` a été implémentée de manière un peu bricolée
   (comme un code en “surcouche”). Ça fonctionne, mais le code est
   largement simplifiable (mieux pour la lisibilité). Si on l’implémente
-  de manière durable, à revoir.
+  de manière durable, à revoir. Par exemple, voir solution proposée ici
+  : <https://github.com/wilkelab/ggtext/issues/121>.  
+  **=\> Code simplifié pour
+  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
+  faire pareil pour les autres fonctions !**
+
+- Revoir la solution apportée dans
+  [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
+  au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext
+  aura été mis à jour. Voir :
+  <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 - **L’utilisation de caractères spéciaux dans les noms des groupes (par
   exemple `>` ou `<`) pose problème du fait de l’utilisation de
   `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de
   la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
+
+- Les cluster / strates / weights n’apparaissent pas dans le message de
+  la console avec les replicates =\> pourquoi ? **(prioritaire vu usage
+  par Statbel)**
 
 - BUG : si une variable de design == le nom d’un objet externe, ça
   fonctionne =\> APPROFONDIR ET REGLER CA ?
@@ -493,9 +520,6 @@ Date : 2024-02-14
 
   - Pas mettre les mêmes colonnes dans les différents arguments ?
     (`group`, `var_distrib`, `facet_var`, etc.).
-
-- Les cluster / strates / weights n’apparaissent pas dans le message de
-  la console avec les replicates =\> pourquoi ?
 
 #### **distrib_c**
 

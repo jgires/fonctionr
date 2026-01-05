@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.20</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.21</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,20 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-3-21">fonctionr 0.3.21<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-21"></a>
+</h2>
+<p>Date : 2026-01-05</p>
+<ul>
+<li>Simplification du code de <code><a href="../reference/prop_group.html">prop_group()</a></code> pour formater le
+label du total en gras avec le package <code>ggtext</code> (inspiration
+: <a href="https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111" class="external-link uri">https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111</a>).
+Mise en italique du groupe <em>NA</em> par la même occasion. La fonction
+interne <code>relab_ggtext()</code> a été crée pour opérer cette
+simplification. Les autres fonctions doivent encore être modifiées dans
+le même sens.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-20">fonctionr 0.3.20<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-20"></a>
 </h2>
@@ -510,12 +524,20 @@ inclues dans le package laeken.</p></li>
 <li><p>L’utilisation de <code>ggtext</code> a été implémentée de manière
 un peu bricolée (comme un code en “surcouche”). Ça fonctionne, mais le
 code est largement simplifiable (mieux pour la lisibilité). Si on
-l’implémente de manière durable, à revoir.</p></li>
+l’implémente de manière durable, à revoir. Par exemple, voir solution
+proposée ici : <a href="https://github.com/wilkelab/ggtext/issues/121" class="external-link uri">https://github.com/wilkelab/ggtext/issues/121</a>.<br><strong>=&gt; Code simplifié pour <code><a href="../reference/prop_group.html">prop_group()</a></code>, faire
+pareil pour les autres fonctions !</strong></p></li>
+<li><p>Revoir la solution apportée dans <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code>
+au bug de compatibilité entre <code>ggtext</code> et
+<code>ggplot 4.0</code> lorsque ggtext aura été mis à jour. Voir : <a href="https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6" class="external-link uri">https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6</a>.</p></li>
 <li><p><strong>L’utilisation de caractères spéciaux dans les noms des
 groupes (par exemple <code>&gt;</code> ou <code>&lt;</code>) pose
 problème du fait de l’utilisation de <code>ggtext</code>. Il faut
 convertir ces caractères spéciaux en html au sein de la fonction. Voir :
 <a href="https://github.com/wilkelab/ggtext/issues/48" class="external-link uri">https://github.com/wilkelab/ggtext/issues/48</a>.</strong></p></li>
+<li><p>Les cluster / strates / weights n’apparaissent pas dans le
+message de la console avec les replicates =&gt; pourquoi ?
+<strong>(prioritaire vu usage par Statbel)</strong></p></li>
 <li><p>BUG : si une variable de design == le nom d’un objet externe, ça
 fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
 <li><p>Rendre l’usage non interactif (= la programmation via d’autres
@@ -558,8 +580,6 @@ interne ?</p></li>
 etc.).</li>
 </ul>
 </li>
-<li><p>Les cluster / strates / weights n’apparaissent pas dans le
-message de la console avec les replicates =&gt; pourquoi ?</p></li>
 </ul>
 </div>
 <div class="section level4">

@@ -383,6 +383,24 @@ isColor <- function(x) {
 }
 
 
+#' relabel_ggtext
+#'
+#' Internal function to format labels of total and NAs in the way ggtext works
+#'
+#' @param x A string to modify
+#' @param wrap_width_y Number of characters before going to the line
+#'
+#' @noRd
+#'
+
+relabel_ggtext <- function(x, wrap_width, total_name){
+  x <- ifelse(is.na(x), '*NA*', x)
+  x <- ifelse(x == total_name, paste0("**", total_name, "**"), x)
+  x <- stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width), "\n", "<br>")
+  return(x)
+}
+
+
 #' official_pal
 #'
 #' Function to produce color palettes from different institutions
@@ -719,7 +737,7 @@ theme_fonctionr <- function(font = "Roboto",
     theme_fonctionr_def <- theme_fonctionr_def +
       theme(
         # On definit chaque axe individuellement pour contrer le bug avec ggplot 4 => https://github.com/tidyverse/ggplot2/issues/6752
-        # Changer en plus simple quand ggtext aura résolu le bug => https://github.com/wilkelab/ggtext/issues/128
+        # Rechanger vers la formule plus generale (avec heritage) lorsque ggtext a corrige => https://github.com/wilkelab/ggtext/issues/128
         axis.text.y.left = ggtext::element_markdown(color = "black"),
         axis.text.y.right = ggtext::element_markdown(color = "black"),
         axis.text.x.bottom = ggtext::element_markdown(color = "black"),
