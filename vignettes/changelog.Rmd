@@ -22,7 +22,7 @@ library(fonctionr)
 
 Date : 2026-01-05
 
--   Simplification du code de `prop_group()` pour formater le label du total en gras avec le package `ggtext` (inspiration : <https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111>). Mise en italique du groupe *NA* par la même occasion. La fonction interne `relab_ggtext()` a été crée pour opérer cette simplification. Les autres fonctions doivent encore être modifiées dans le même sens.
+-   Simplification du code de `prop_group()` pour formater le label du total en gras avec le package `ggtext` (inspiration : <https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111>). Mise en italique du groupe *NA* par la même occasion. La fonction interne `relab_ggtext()` a été créée pour opérer cette simplification. Les autres fonctions doivent encore être modifiées dans le même sens.
 
 ## fonctionr 0.3.20
 
@@ -295,20 +295,31 @@ Date : 2024-02-14
 
 #### En général
 
--   L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.\
-    **=\> Code simplifié pour `prop_group()`, faire pareil pour les autres fonctions !**
+-   **(Joël) L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.\
+    =\> Code simplifié pour `prop_group()`, faire pareil pour les autres fonctions !**
+
+-   **(Joël) Faire une fonction commune pour la création de palettes + checks =\> redondance inutile entre les fonctions.**
+
+-   **(Joël) Laisser la possibilité d'introduire des palettes personnalisées dans les fonctions.**
+
+-   **(François) Créer un tableau joli en output (avec flextable).**
+
+-   **(Joël) Créer facteur multiplicateur de la taille des polices.**
+
+-   **Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
 
 -   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
--   **L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
+-   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
 
--   Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ? **(prioritaire vu usage par Statbel)**
+-   **(Joël) Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ? (prioritaire vu usage par Statbel)**
 
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.
+-   **(François) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.\
+    =\> CRAN oblige à ne pas utiliser des packages pas sur CRAN =\> retirer MoMAColors ?**
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
@@ -318,14 +329,12 @@ Date : 2024-02-14
     *=\> En cours : il faut encore checker le code du graphique ggplot.\
     =\> L'ajout de `ggtext` pour mettre le total en gras a compliqué le code*
 
--   Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.
+-   **(François) Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.**
 
--   Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
-    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?*
+-   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
+    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
-
--   Changer la fonction `scales::pvalue`, qui n'est plus valide (`superseded`) =\> Faire une fonction maison en interne ?
 
 -   Ajouter des checks pour les inputs :
 
@@ -336,7 +345,9 @@ Date : 2024-02-14
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
 -   Ajouter la possibilité de facets.
 
-#### **distrib_group_c**
+#### **distrib_group_c** 
+
+-   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
 
@@ -353,6 +364,9 @@ Date : 2024-02-14
 #### prop_group
 
 -   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'utilisation de %in% dans une expression ne transforme pas les NA en FALSE ou TRUE (alors que c'est le comportement par défaut de %in%) : na.prop est prioritaire !\
+    =\> L'indiquer dans le manuel.\
+    =\> Voir si c'est le cas ailleurs ?**
 
 #### central_group
 
@@ -361,20 +375,21 @@ Date : 2024-02-14
 
 #### distrib_group_d
 
+-   **(François) Ajouter hauteur des barres proportionnelle aux effectifs pondérés.**
 -   Implémenter un test stat lorsqu'il y a des facets =\> via modélisation loglinéaire, mais j'ai un peu de mal à comprendre les erreurs de `survey` (erreurs fréquentes).
 -   Redondance du code avec total pour le `geom_text()` ?
 
 #### many_val
 
--   Les couleurs des palettes sont attachées à l'indicateur, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
+-   Les couleurs des palettes sont attachées à l'indicateur, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté =\> changer le comportement ?
 
 #### many_val_group
 
 -   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
--   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté **=\> changer le comportement ?**
--   **Fusionner `many_val_group()` et `many_val()` !**
+-   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté =\> changer le comportement ?
+-   Fusionner `many_val_group()` et `many_val()` !
 
 #### make_surface
 
@@ -399,7 +414,6 @@ Date : 2024-02-14
 
 #### En général
 
--   Faire une fonction commune pour la création de palettes + checks =\> redondance inutile entre les fonctions.
 -   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
