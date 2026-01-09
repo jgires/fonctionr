@@ -318,7 +318,7 @@ Date : 2024-02-14
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   **(François) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.\
+-   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.\
     =\> CRAN oblige à ne pas utiliser des packages pas sur CRAN =\> retirer MoMAColors ?**
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
@@ -345,7 +345,7 @@ Date : 2024-02-14
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
 -   Ajouter la possibilité de facets.
 
-#### **distrib_group_c** 
+#### **distrib_group_c**
 
 -   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
 
@@ -363,14 +363,14 @@ Date : 2024-02-14
 
 #### prop_group
 
--   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   **(François) L'utilisation de %in% dans une expression ne transforme pas les NA en FALSE ou TRUE (alors que c'est le comportement par défaut de %in%) : na.prop est prioritaire !\
     =\> L'indiquer dans le manuel.\
     =\> Voir si c'est le cas ailleurs ?**
 
 #### central_group
 
--   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
 
 #### distrib_group_d
@@ -385,7 +385,7 @@ Date : 2024-02-14
 
 #### many_val_group
 
--   **L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
 -   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté =\> changer le comportement ?
