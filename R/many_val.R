@@ -21,7 +21,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.
+#' @param pal Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
@@ -381,41 +381,18 @@ many_val = function(data,
     }
   }
 
-  # On cree la palette avec le package met.brewer
-  if(pal %in% names(MetBrewer::MetPalettes)){
-    palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
+  # On cree la palette
 
-  # On cree avec le package MoMAColors
-  } else if(pal %in% names(MoMAColors::MoMAPalettes)){
-    palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-
-  # On cree la palette avec le package PrettyCols
-  } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
-    palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(tab[["list_col"]]), type = "continuous", direction = direction))
-
-  # On cree la palette avec la fonction interne official_pal
-  } else if(pal %in% official_pal(list_pal_names = T)){
-    palette <- as.character(official_pal(inst = pal, n = nlevels(tab[["list_col"]]), direction = direction))
-
-  # On cree une palette unicolore
-  } else if(all(isColor(pal)) == TRUE){
-    palette <- rep(pal, nlevels(tab[["list_col"]]))
-
-  } else { # Si la couleur/palette n'est pas valide => on met la palette par defaut
-    palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = nlevels(tab[["list_col"]]), type = "continuous", direction = 1))
-    warning("La couleur ou palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
-  }
-
-  # Pour modifier la palette (desaturer, eclaircir, foncer)
-  if(desaturate != 0){
-    palette <- colorspace::desaturate(palette, desaturate)
-  }
-  if(lighten != 0){
-    palette <- colorspace::lighten(palette, lighten)
-  }
-  if(darken != 0){
-    palette <- colorspace::darken(palette, darken)
-  }
+  palette <- create_palette(
+    pal = pal,
+    # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
+    levels_palette = nlevels(tab[["list_col"]]),
+    direction = direction,
+    name_function = "many_val",
+    desaturate = desaturate,
+    lighten = lighten,
+    darken = darken
+  )
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)

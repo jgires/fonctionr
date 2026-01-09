@@ -1,19 +1,16 @@
 Package: fonctionr
 Type: Package
-Title: Easy estimation and vizualisation of indicators from data with complex design
+Title: Easy Estimation and Vizualisation of Indicators from Data with Complex Design
 Version: 0.3.21
 Authors@R: 
     c(person("Joel", "Gires", email = "joel.gires@vivalis.brussels", role = c("aut", "cre", "cph")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
 Description: Many functions to easily vizualise and estimate indicators such as proportions, means, medians and continuous/discrete distributions from complex survey data. The package also estimates confidence intervals for all indicators, compares different groups and computes different statistical tests.
 License: GPL-3
-URL: https://jgires.github.io/fonctionr, https://github.com/jgires/fonctionr
+URL: https://jgires.github.io/fonctionr/, https://github.com/jgires/fonctionr/
 Encoding: UTF-8
 LazyData: true
-Remotes:
-    github::BlakeRMills/MoMAColors
 Imports: 
-    MoMAColors,
     dplyr,
     forcats,
     ggplot2,

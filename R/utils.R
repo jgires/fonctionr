@@ -747,3 +747,83 @@ theme_fonctionr <- function(font = "Roboto",
 
   return(theme_fonctionr_def)
 }
+
+
+#' create_palette
+#'
+#' @param pal Value of argument "pal" from the original function
+#' @param levels_palette Number of colors needed
+#'
+#' @noRd
+#'
+create_palette <- function(pal,
+                           levels_palette,
+                           direction,
+                           name_function,
+                           desaturate,
+                           lighten,
+                           darken) {
+
+  # Fonction qui change la palette selon la fonction (utilise plus bas)
+  palette_function <- function(levels_palette2 = levels_palette,
+                               direction2 = direction,
+                               name_function2 = name_function){
+
+    if(name_function2 == "prop_group"){
+      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = levels_palette2, type = "continuous", direction = direction2))
+    }
+    if(name_function2 == "central_group"){
+      palette <- as.character(PrettyCols::prettycols(palette = "Peppers", n = levels_palette2, type = "continuous", direction = direction2))
+    }
+    if(name_function2 == "make_surface"){
+      palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = levels_palette2, type = "continuous", direction = direction2))
+    }
+    if(name_function2 %in% c("many_val_group", "many_val")){
+      palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = levels_palette2, type = "continuous", direction = direction2))
+    }
+    if(name_function2 == "distrib_group_discrete"){
+      palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = levels_palette2, type = "continuous", direction = direction2))
+    }
+
+    return(palette)
+  }
+
+  # On cree la palette avec le package MetBrewer
+  # NOTE : on utilise all() dans la condition car si pal est NULL, la condition donne logical(0)
+  if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
+    palette <- as.character(MetBrewer::met.brewer(name = pal, n = levels_palette, type = "continuous", direction = direction))
+
+  # On cree la palette avecle package PrettyCols
+  } else if(!is.null(pal) & all(pal %in% names(PrettyCols::PrettyColsPalettes))){
+    palette <- as.character(PrettyCols::prettycols(palette = pal, n = levels_palette, type = "continuous", direction = direction))
+
+  # On cree la palette avec la fonction interne official_pal()
+  } else if(!is.null(pal) & all(pal %in% official_pal(list_pal_names = T))){
+    palette <- as.character(official_pal(inst = pal, n = levels_palette, direction = direction))
+
+  # On cree une palette unicolore (specifique a many_val())
+  } else if(!is.null(pal) & all(isColor(pal)) & name_function == "many_val"){
+    palette <- rep(pal, levels_palette)
+
+  } else if(is.null(pal)) {
+    palette <- palette_function()
+
+  # Si la couleur/palette n'est pas valide => on met la palette par defaut
+  } else {
+    palette <- palette_function()
+    warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
+  }
+
+  # Pour modifier la palette (desaturer, eclaircir, foncer)
+  if(desaturate != 0){
+    palette <- colorspace::desaturate(palette, desaturate)
+  }
+  if(lighten != 0){
+    palette <- colorspace::lighten(palette, lighten)
+  }
+  if(darken != 0){
+    palette <- colorspace::darken(palette, darken)
+  }
+
+  return(palette)
+}

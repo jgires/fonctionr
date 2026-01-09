@@ -24,7 +24,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from the MetBrewer, MoMAColors and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
+#' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
@@ -499,6 +499,8 @@ prop_group <- function(data,
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
+  # On cree la palette
+
   # La palette est differente selon qu'il y a group.fill (1 couleur) ou non (1 palette)
   if(quo_is_null(quo_group.fill)) {
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
@@ -518,43 +520,15 @@ prop_group <- function(data,
   }
 
   if(!quo_is_null(quo_group.fill)) {
-    # Note : la direction est inversee pour respecter l'ordre naturel de la palette
-
-    # On cree la palette avec le package MetBrewer
-    if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
-      palette <- as.character(MetBrewer::met.brewer(name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
-
-      # On cree la palette avec le package MoMAColors
-    } else if(!is.null(pal) & all(pal %in% names(MoMAColors::MoMAPalettes))){
-      palette <- as.character(MoMAColors::moma.colors(palette_name = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
-
-      # On cree la palette avecle package PrettyCols
-    } else if(!is.null(pal) & all(pal %in% names(PrettyCols::PrettyColsPalettes))){
-      palette <- as.character(PrettyCols::prettycols(palette = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
-
-      # On cree la palette avec la fonction interne official_pal()
-    } else if(!is.null(pal) & all(pal %in% official_pal(list_pal_names = T))){
-      palette <- as.character(official_pal(inst = pal, n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), direction = direction))
-
-    } else if(is.null(pal)) {
-      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
-
-    } else {
-      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])), type = "continuous", direction = direction))
-      warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
-    }
-
-    # Pour modifier la palette (desaturer, eclaircir, foncer)
-    if(desaturate != 0){
-      palette <- colorspace::desaturate(palette, desaturate)
-    }
-    if(lighten != 0){
-      palette <- colorspace::lighten(palette, lighten)
-    }
-    if(darken != 0){
-      palette <- colorspace::darken(palette, darken)
-    }
-
+    palette <- create_palette(
+      pal = pal,
+      levels_palette = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])),
+      direction = direction,
+      name_function = "prop_group",
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken
+    )
   }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
