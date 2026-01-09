@@ -35,7 +35,44 @@
 #' @export
 #'
 #' @examples
+#' # Making fictional dataframe
 #'
+#' data_test<-data.frame(Indicators = c("Variable 1","Variable 2","Variable 3","Variable 4","Variable 5","Tot"),
+#'                       Estimates = c(1.52,1.63,2.34,4.15,1.32,2.13),
+#'                       IC_low = c(1.32,1.4,1.98,4,14.2,26),
+#'                       IC_upp = c(1.73,1.81,22.4,47.44,1.45,2.34),
+#'                       sample_size = c(215,300,129,212,189,1045))
+#'
+#' # Using dataframe to make a plot
+#' plot_test<-esth_graph(data_test,
+#'            var = Indicators,
+#'            value = Estimates,
+#'            error_low = IC_low,
+#'            error_upp = IC_upp,
+#'            n_var = sample_size,
+#'            pvalue = .001,
+#'            reorder = TRUE,
+#'            show_value = TRUE,
+#'            name_total = "Tot",
+#'            scale = 1,
+#'            digits = 1,
+#'            unit = "%",
+#'            dec = ".",
+#'            pal = "green4",
+#'            dodge = 0.8,
+#'            font = "Montserrat",
+#'            wrap_width_y = 25,
+#'            title = "Plot",
+#'            subtitle = "Using fake data",
+#'            xlab = "Proportion (in %)",
+#'            ylab = "Indicators",
+#'            caption = "Source: fictional own calculation",
+#'            theme = "IWEPS")
+#'
+#'# Result is a ggplot
+#'plot_test
+#'
+
 esth_graph <- function(tab,
                        var,
                        value,
