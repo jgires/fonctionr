@@ -163,8 +163,8 @@ mean_group(..., type = "mean")
   If group.fill is empty, pal must be a vector containing a single color
   to define the color of the bars. If a variable is specified in
   group.fill, pal is the color palette used on the graph to
-  differentiate its different modalities. Palettes from the MetBrewer,
-  MoMAColors and PrettyCols packages are available. The NA bar, if
+  differentiate its different modalities. Palettes from fonctionr and
+  the MetBrewer and PrettyCols packages are available. The NA bar, if
   na.rm.group = FALSE, and the total bar are always in gray.
 
 - direction:

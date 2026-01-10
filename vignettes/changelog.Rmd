@@ -18,6 +18,13 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.3.22
+
+Date : 2026-01-10
+
+-   Simplification du code de `esth_graph()`, `many_val_group()`, `distrib_group_discrete()`, `central_group()` pour l'utilisation de `ggtext`.
+-   Simplification du code de création des palettes avec la fonction interne `create_palette()`.
+
 ## fonctionr 0.3.21
 
 Date : 2026-01-05
@@ -295,20 +302,21 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.\
-    =\> Code simplifié pour toutes les fonctions qui utilisaient `ggtext`, faire pareil pour les fonctions qui ne l'utilisaient pas** (pour groupe *NA* en italique).
+-   **(Joël) Le code a été simplifié pour toutes les fonctions qui utilisaient `ggtext` (suivant la logique ici : <https://github.com/wilkelab/ggtext/issues/121>), faire pareil pour les fonctions qui ne l'utilisaient pas (pour groupe *NA* en italique).**
+
+-   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
 
 -   **(Joël) Laisser la possibilité d'introduire des palettes personnalisées dans les fonctions.**
 
--   **(François) Créer un tableau joli en output (avec flextable).**
+-   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
+
+-   **(François) Créer un tableau joli en output (avec `flextable`).**
 
 -   **(Joël) Créer facteur multiplicateur de la taille des polices.**
 
 -   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
 
 -   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
-
--   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
 
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
@@ -323,8 +331,6 @@ Date : 2024-02-14
 -   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
     *=\> En cours : il faut encore checker le code du graphique ggplot.\
     =\> L'ajout de `ggtext` pour mettre le total en gras a compliqué le code*
-
--   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
 
 -   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
     *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
@@ -414,7 +420,7 @@ Date : 2024-02-14
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
 -   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
-    ***=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).***
+    *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
 
 #### distrib_group_d
 

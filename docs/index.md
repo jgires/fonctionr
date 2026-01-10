@@ -39,15 +39,18 @@ supplémentaires…), sans que cela impacte l’utilisation du programme.
 
 Vous pouvez installer le package `fonctionr` depuis
 [GitHub](https://github.com/). Pour cela, il vous faut d’abord installer
-et charger le package `devtools` :
+et charger le package `devtools`. Une version CRAN est en cours de
+soumission.
 
 ``` r
-# Installer devtools si celui-ci n'est pas installé et charger le package
+# Installer devtools si celui-ci n'est pas installé
 install.packages("devtools")
-library(devtools)
 
 # Installer fonctionr
 devtools::install_github("jgires/fonctionr")
+
+# Installer depuis CRAN (en cours de soumission)
+install.packages("fonctionr")
 ```
 
 ## Utilisation
@@ -227,6 +230,6 @@ de l’évaluation, de la prospective et de la statistique.
 
 Nous sommes ouverts à toute remarque afin d’améliorer notre package.
 
-[![](reference/figures/logo_observatoire_sante_social.png)](https://www.ccc-ggc.brussels/fr/observatbru/accueil)[![](reference/figures/logo_iweps.png)](https://www.iweps.be)
+[![](reference/figures/logo_observatoire_sante_social.png)](https://www.vivalis.brussels/fr/informer-et-communiquer/observatoire/observatoire-de-la-sante-et-du-social-de-bruxelles-capitale)[![](reference/figures/logo_iweps.png)](https://www.iweps.be)
 
 ## 

@@ -1,5 +1,18 @@
 # Changelog
 
+## fonctionr 0.3.22
+
+Date : 2026-01-10
+
+- Simplification du code de
+  [`esth_graph()`](https://jgires.github.io/fonctionr/reference/esth_graph.md),
+  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+  [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
+  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+  pour l’utilisation de `ggtext`.
+- Simplification du code de création des palettes avec la fonction
+  interne `create_palette()`.
+
 ## fonctionr 0.3.21
 
 Date : 2026-01-05
@@ -10,7 +23,7 @@ Date : 2026-01-05
   (inspiration :
   <https://github.com/wilkelab/ggtext/issues/121#issuecomment-3637732111>).
   Mise en italique du groupe *NA* par la même occasion. La fonction
-  interne `relab_ggtext()` a été crée pour opérer cette simplification.
+  interne `relab_ggtext()` a été créée pour opérer cette simplification.
   Les autres fonctions doivent encore être modifiées dans le même sens.
 
 ## fonctionr 0.3.20
@@ -447,29 +460,36 @@ Date : 2024-02-14
 
 #### En général
 
-- L’utilisation de `ggtext` a été implémentée de manière un peu bricolée
-  (comme un code en “surcouche”). Ça fonctionne, mais le code est
-  largement simplifiable (mieux pour la lisibilité). Si on l’implémente
-  de manière durable, à revoir. Par exemple, voir solution proposée ici
-  : <https://github.com/wilkelab/ggtext/issues/121>.  
-  **=\> Code simplifié pour
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
-  faire pareil pour les autres fonctions !**
+- **(Joël) Le code a été simplifié pour toutes les fonctions qui
+  utilisaient `ggtext` (suivant la logique ici :
+  <https://github.com/wilkelab/ggtext/issues/121>), faire pareil pour
+  les fonctions qui ne l’utilisaient pas (pour groupe *NA* en
+  italique).**
+
+- **(François) L’utilisation de caractères spéciaux dans les noms des
+  groupes (par exemple `>` ou `<`) pose problème du fait de
+  l’utilisation de `ggtext`. Il faut convertir ces caractères spéciaux
+  en html au sein de la fonction. Voir :
+  <https://github.com/wilkelab/ggtext/issues/48>.**
+
+- **(Joël) Laisser la possibilité d’introduire des palettes
+  personnalisées dans les fonctions.**
+
+- **(Joël) Exemples et valeurs pour return manquants dans utils (faire
+  tourner `roxygenise()`)**.
+
+- **(François) Créer un tableau joli en output (avec `flextable`).**
+
+- **(Joël) Créer facteur multiplicateur de la taille des polices.**
+
+- **(Joël + François) Créer un fichier d’option pour régler a priori des
+  arguments pour toutes les fonctions dans un script (la police, etc.)**
 
 - Revoir la solution apportée dans
   [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
   au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext
   aura été mis à jour. Voir :
   <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
-
-- **L’utilisation de caractères spéciaux dans les noms des groupes (par
-  exemple `>` ou `<`) pose problème du fait de l’utilisation de
-  `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de
-  la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
-
-- Les cluster / strates / weights n’apparaissent pas dans le message de
-  la console avec les replicates =\> pourquoi ? **(prioritaire vu usage
-  par Statbel)**
 
 - BUG : si une variable de design == le nom d’un objet externe, ça
   fonctionne =\> APPROFONDIR ET REGLER CA ?
@@ -478,9 +498,9 @@ Date : 2024-02-14
   fonctions) possible =\> gros travail, usage de `rlang` à la place de
   [`substitute()`](https://rdrr.io/r/base/substitute.html).
 
-- Bug à l’import de `fonctionr` du fait de collision entre `MetBrewer`,
-  `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends
-  pas le message.
+- **(Joël) Bug à l’import de `fonctionr` du fait de collision entre
+  `PrettyCols` et les fonctions de base ? Je ne comprends pas le
+  message.**
 
 - Documenter tous les arguments des différentes fonctions + vérifier que
   les explications sont bien correctes (quelques erreurs, par ex. à
@@ -498,23 +518,15 @@ Date : 2024-02-14
   =\> L’ajout de `ggtext` pour mettre le total en gras a compliqué le
   code*
 
-- Ajouter des exemples pour chaque fonction (pour le site) : manque
-  [`pivot_longer_survey()`](https://jgires.github.io/fonctionr/reference/pivot_longer_survey.md),
-  [`esth_graph()`](https://jgires.github.io/fonctionr/reference/esth_graph.md).
-
-- Vérifier les messages à l’utilisateur : voir quoi garder, corriger,
-  traduire, indiquer les accents (é, è…), ajouter des guillemets pour
-  les arguments dans les checks, mieux écrire les résultats des tests
-  stat (on ne sait pas quelle est l’hypothèse nulle).  
-  *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?*
+- **(François) Vérifier les messages à l’utilisateur : voir quoi garder,
+  corriger, traduire, indiquer les accents (é, è…), ajouter des
+  guillemets pour les arguments dans les checks, mieux écrire les
+  résultats des tests stat (on ne sait pas quelle est l’hypothèse
+  nulle).  
+  *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
 
 - Mettre des conditions pour réaliser les tests (n min, distribution,
   variances égales…).
-
-- Changer la fonction
-  [`scales::pvalue`](https://scales.r-lib.org/reference/pvalue_format.html),
-  qui n’est plus valide (`superseded`) =\> Faire une fonction maison en
-  interne ?
 
 - Ajouter des checks pour les inputs :
 
@@ -529,6 +541,9 @@ Date : 2024-02-14
 - Ajouter la possibilité de facets.
 
 #### **distrib_group_c**
+
+- **(François + Joël) Ajouter hauteur des densités proportionnelle aux
+  effectifs pondérés.**
 
 - Le groupe `NA` est transfomé en level du facteur de groupe. De ce
   fait, il n’apparaît pas toujours en dernier, notamment lorsque
@@ -551,20 +566,27 @@ Date : 2024-02-14
 
 #### prop_group
 
-- **L’ordre des couleurs est inversé par défaut ? Se corrige avec
-  l’argument `direction`, mais pas cohérent avec autres fonctions =\>
-  voir d’où ça vient.**
+- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
+  avec l’argument `direction`, mais pas cohérent avec autres fonctions
+  =\> voir d’où ça vient.**
+- **(François) L’utilisation de `%in%` dans une expression ne transforme
+  pas les `NA` en `FALSE` ou `TRUE` (alors que c’est le comportement par
+  défaut de `%in%`) : `na.prop` est prioritaire !  
+  =\> L’indiquer dans le manuel.  
+  =\> Voir si c’est le cas ailleurs ?**
 
 #### central_group
 
-- **L’ordre des couleurs est inversé par défaut ? Se corrige avec
-  l’argument `direction`, mais pas cohérent avec autres fonctions =\>
-  voir d’où ça vient.**
+- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
+  avec l’argument `direction`, mais pas cohérent avec autres fonctions
+  =\> voir d’où ça vient.**
 - Bypasser l’erreur du test stat avec
   [`tryCatch()`](https://rdrr.io/r/base/conditions.html).
 
 #### distrib_group_d
 
+- **(François) Ajouter hauteur des barres proportionnelle aux effectifs
+  pondérés.**
 - Implémenter un test stat lorsqu’il y a des facets =\> via modélisation
   loglinéaire, mais j’ai un peu de mal à comprendre les erreurs de
   `survey` (erreurs fréquentes).
@@ -574,24 +596,24 @@ Date : 2024-02-14
 
 - Les couleurs des palettes sont attachées à l’indicateur, mais pas à la
   position. De ce fait, lorsque `reorder = T`, l’ordre des couleurs de
-  la palette n’est pas respecté **=\> changer le comportement ?**
+  la palette n’est pas respecté =\> changer le comportement ?
 
 #### many_val_group
 
-- **L’ordre des couleurs est inversé par défaut ? Se corrige avec
-  l’argument `direction`, mais pas cohérent avec autres fonctions =\>
-  voir d’où ça vient.**
+- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
+  avec l’argument `direction`, mais pas cohérent avec autres fonctions
+  =\> voir d’où ça vient.**
 - Améliorer l’alignement des effectifs avec `show_n = T` lorsque
   `position == "stack"`
 - Redondance du code avec total pour le `geom_text()` ?
 - Les couleurs des palettes sont attachées au groupe, mais pas à la
   position. De ce fait, lorsque `reorder = T`, l’ordre des couleurs de
-  la palette n’est pas respecté **=\> changer le comportement ?**
-- **Fusionner
+  la palette n’est pas respecté =\> changer le comportement ?
+- Fusionner
   [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
   et
   [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  !**
+  !
 
 #### make_surface
 
@@ -619,8 +641,6 @@ Date : 2024-02-14
 
 #### En général
 
-- Faire une fonction commune pour la création de palettes + checks =\>
-  redondance inutile entre les fonctions.
 - Réécrire le code du test pour avoir la formule originale =\> possible
   avec [`eval()`](https://rdrr.io/r/base/eval.html), voir code de
   [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
@@ -639,8 +659,8 @@ Date : 2024-02-14
   [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#id_0)
   et pour plus de détails :
   [https://r-pkgs.org/dependencies-in-practice.html](#id_0).  
-  ***=\> A faire : importer seulement les fonctions utiles (mutate,
-  select, etc.).***
+  *=\> A faire : importer seulement les fonctions utiles (mutate,
+  select, etc.).*
 
 #### distrib_group_d
 

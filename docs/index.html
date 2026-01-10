@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Package for easy manipulation of data with complex design • fonctionr</title>
+<title>Easy Estimation and Vizualisation of Indicators from Data with Complex Design • fonctionr</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Package for easy manipulation of data with complex design">
-<meta name="description" content="Package pour faire des analyses faciles sur base de données d'enquête avec design complexe.">
-<meta property="og:description" content="Package pour faire des analyses faciles sur base de données d'enquête avec design complexe.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Easy Estimation and Vizualisation of Indicators from Data with Complex Design">
+<meta name="description" content="Many functions to easily vizualise and estimate indicators such as proportions, means, medians and continuous/discrete distributions from complex survey data. The package also estimates confidence intervals for all indicators, compares different groups and computes different statistical tests.">
+<meta property="og:description" content="Many functions to easily vizualise and estimate indicators such as proportions, means, medians and continuous/discrete distributions from complex survey data. The package also estimates confidence intervals for all indicators, compares different groups and computes different statistical tests.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.21</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,21 +69,23 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Vous pouvez installer le package <code>fonctionr</code> depuis <a href="https://github.com/" class="external-link">GitHub</a>. Pour cela, il vous faut d’abord installer et charger le package <code>devtools</code> :</p>
+<p>Vous pouvez installer le package <code>fonctionr</code> depuis <a href="https://github.com/" class="external-link">GitHub</a>. Pour cela, il vous faut d’abord installer et charger le package <code>devtools</code>. Une version CRAN est en cours de soumission.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Installer devtools si celui-ci n'est pas installé et charger le package</span></span>
+<code class="sourceCode R"><span><span class="co"># Installer devtools si celui-ci n'est pas installé</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Installer fonctionr</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jgires/fonctionr"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jgires/fonctionr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Installer depuis CRAN (en cours de soumission)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fonctionr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="utilisation">Utilisation<a class="anchor" aria-label="anchor" href="#utilisation"></a>
 </h2>
 <p>Avant toute utilisation, il faut bien entendu charger le package :</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jgires.github.io/fonctionr">fonctionr</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jgires.github.io/fonctionr/">fonctionr</a></span><span class="op">)</span></span></code></pre></div>
 <p>L’utilisation de <code>fonctionr</code> a pour but d’être simple. Pour nos exemples, nous utilisons les données de l’enquête SILC pour l’Autriche contenues dans le package <code>laeken</code>. Nous recodons d’abord la variable de statut économique pour la lisibilité des résultats :</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Loading of data</span></span>
@@ -139,7 +141,7 @@
 <span><span class="co">#&gt; (`geom_text()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" alt="" width="100%"></p>
 <p><code>fonctionr</code> comprend plusieurs autres fonctions pour réaliser des opérations similaires, par exemple pour calculer des proportions par groupe avec la fonction <code><a href="reference/prop_group.html">prop_group()</a></code>. On peut à nouveau indiquer directement une expression à partir de laquelle calculer les proportions dans l’argument <code>prop_exp</code> : dans ce cas la proportion à recevoir des revenus du chômage (<code>py090n</code> supérieurs à 0).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
@@ -182,7 +184,7 @@
 <span><span class="co">#&gt; (`geom_text()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text()`).</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="auteurs">Auteurs<a class="anchor" aria-label="anchor" href="#auteurs"></a>
@@ -190,7 +192,7 @@
 <p><strong>Joël Girès</strong> est sociologue et travaille à l’Observatoire de la Santé et du Social de la Région de Bruxelles-Capitale.</p>
 <p><strong>François Ghesquière</strong> est sociologue et travaille à l’Institut wallon de l’évaluation, de la prospective et de la statistique.</p>
 <p>Nous sommes ouverts à toute remarque afin d’améliorer notre package.</p>
-<p><a href="https://www.ccc-ggc.brussels/fr/observatbru/accueil" class="external-link"><img src="reference/figures/logo_observatoire_sante_social.png" align="center" height="120/"></a><a href="https://www.iweps.be" class="external-link"><img src="reference/figures/logo_iweps.png" align="center" height="120/"></a></p>
+<p><a href="https://www.vivalis.brussels/fr/informer-et-communiquer/observatoire/observatoire-de-la-sante-et-du-social-de-bruxelles-capitale" class="external-link"><img src="reference/figures/logo_observatoire_sante_social.png" align="center" height="120/"></a><a href="https://www.iweps.be" class="external-link"><img src="reference/figures/logo_iweps.png" align="center" height="120/"></a></p>
 </div>
 <div class="section level2">
 <h2 id="section"></h2>
@@ -221,7 +223,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Joel Gires <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Joel Gires <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
 <li>Francois Ghesquiere <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
@@ -230,6 +232,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></li>
+<li><a href="https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 

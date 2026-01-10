@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.21</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -182,6 +182,52 @@
     <p>A ggplot graphic.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Making fictional dataframe</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data_test</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Indicators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Variable 1"</span>,<span class="st">"Variable 2"</span>,<span class="st">"Variable 3"</span>,<span class="st">"Variable 4"</span>,<span class="st">"Variable 5"</span>,<span class="st">"Tot"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      Estimates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.52</span>,<span class="fl">1.63</span>,<span class="fl">2.34</span>,<span class="fl">4.15</span>,<span class="fl">1.32</span>,<span class="fl">2.13</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      IC_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.32</span>,<span class="fl">1.4</span>,<span class="fl">1.98</span>,<span class="fl">4</span>,<span class="fl">14.2</span>,<span class="fl">26</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      IC_upp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.73</span>,<span class="fl">1.81</span>,<span class="fl">22.4</span>,<span class="fl">47.44</span>,<span class="fl">1.45</span>,<span class="fl">2.34</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">215</span>,<span class="fl">300</span>,<span class="fl">129</span>,<span class="fl">212</span>,<span class="fl">189</span>,<span class="fl">1045</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using dataframe to make a plot</span></span></span>
+<span class="r-in"><span><span class="va">plot_test</span><span class="op">&lt;-</span><span class="fu">esth_graph</span><span class="op">(</span><span class="va">data_test</span>,</span></span>
+<span class="r-in"><span>           var <span class="op">=</span> <span class="va">Indicators</span>,</span></span>
+<span class="r-in"><span>           value <span class="op">=</span> <span class="va">Estimates</span>,</span></span>
+<span class="r-in"><span>           error_low <span class="op">=</span> <span class="va">IC_low</span>,</span></span>
+<span class="r-in"><span>           error_upp <span class="op">=</span> <span class="va">IC_upp</span>,</span></span>
+<span class="r-in"><span>           n_var <span class="op">=</span> <span class="va">sample_size</span>,</span></span>
+<span class="r-in"><span>           pvalue <span class="op">=</span> <span class="fl">.001</span>,</span></span>
+<span class="r-in"><span>           reorder <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>           show_value <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>           name_total <span class="op">=</span> <span class="st">"Tot"</span>,</span></span>
+<span class="r-in"><span>           scale <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>           digits <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>           unit <span class="op">=</span> <span class="st">"%"</span>,</span></span>
+<span class="r-in"><span>           dec <span class="op">=</span> <span class="st">"."</span>,</span></span>
+<span class="r-in"><span>           pal <span class="op">=</span> <span class="st">"green4"</span>,</span></span>
+<span class="r-in"><span>           dodge <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
+<span class="r-in"><span>           font <span class="op">=</span> <span class="st">"Montserrat"</span>,</span></span>
+<span class="r-in"><span>           wrap_width_y <span class="op">=</span> <span class="fl">25</span>,</span></span>
+<span class="r-in"><span>           title <span class="op">=</span> <span class="st">"Plot"</span>,</span></span>
+<span class="r-in"><span>           subtitle <span class="op">=</span> <span class="st">"Using fake data"</span>,</span></span>
+<span class="r-in"><span>           xlab <span class="op">=</span> <span class="st">"Proportion (in %)"</span>,</span></span>
+<span class="r-in"><span>           ylab <span class="op">=</span> <span class="st">"Indicators"</span>,</span></span>
+<span class="r-in"><span>           caption <span class="op">=</span> <span class="st">"Source: fictional own calculation"</span>,</span></span>
+<span class="r-in"><span>           theme <span class="op">=</span> <span class="st">"IWEPS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Result is a ggplot</span></span></span>
+<span class="r-in"><span><span class="va">plot_test</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_text()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 5 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_text()`).</span>
+<span class="r-plt img"><img src="esth_graph-1.png" alt="" width="384" height="240"></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

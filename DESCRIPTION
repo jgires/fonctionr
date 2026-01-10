@@ -1,7 +1,7 @@
 Package: fonctionr
 Type: Package
 Title: Easy Estimation and Vizualisation of Indicators from Data with Complex Design
-Version: 0.3.21
+Version: 0.3.22
 Authors@R: 
     c(person("Joel", "Gires", email = "joel.gires@vivalis.brussels", role = c("aut", "cre", "cph")),
     person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))

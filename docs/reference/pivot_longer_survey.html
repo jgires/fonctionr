@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.21</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,6 +64,70 @@
     <p>A dataframe</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Loading data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">eusilc</span>, package <span class="op">=</span> <span class="st">"laeken"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Loading srvyr</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://gdfe.co/srvyr/" class="external-link">srvyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'srvyr'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:stats':</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Making srvyr object</span></span></span>
+<span class="r-in"><span><span class="va">eusilc_srvyr</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey_design.html" class="external-link">as_survey_design</a></span><span class="op">(</span><span class="va">eusilc</span>, ids <span class="op">=</span> <span class="va">db030</span>, strata <span class="op">=</span> <span class="va">db040</span>, weights <span class="op">=</span> <span class="va">rb050</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># computing srvyr result using summarise()</span></span></span>
+<span class="r-in"><span><span class="va">result_srvyr</span><span class="op">&lt;-</span><span class="va">eusilc_srvyr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">rb090</span>,<span class="va">pb220a</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># by sex and nationality</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean_eqIncome <span class="op">=</span> <span class="fu"><a href="http://gdfe.co/srvyr/reference/survey_mean.html" class="external-link">survey_mean</a></span><span class="op">(</span><span class="va">eqIncome</span><span class="op">)</span>,mean_age <span class="op">=</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/survey_mean.html" class="external-link">survey_mean</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Showing the srvyr summirise output</span></span></span>
+<span class="r-in"><span><span class="va">result_srvyr</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   rb090 [2]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rb090  pb220a mean_eqIncome mean_eqIncome_se mean_age mean_age_se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> male   AT            <span style="text-decoration: underline;">21</span>721.             172.    46.0        0.247</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> male   EU            <span style="text-decoration: underline;">22</span>045.            <span style="text-decoration: underline;">1</span>137.    42.4        1.37 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> male   Other         <span style="text-decoration: underline;">16</span>962.             465.    38.2        0.781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> male   <span style="color: #BB0000;">NA</span>            <span style="text-decoration: underline;">17</span>614.             265.     7.81       0.141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> female AT            <span style="text-decoration: underline;">19</span>702.             155.    48.4        0.263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> female EU            <span style="text-decoration: underline;">19</span>783.            <span style="text-decoration: underline;">1</span>252.    44.2        1.41 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> female Other         <span style="text-decoration: underline;">16</span>840.             447.    39.5        0.709</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> female <span style="color: #BB0000;">NA</span>            <span style="text-decoration: underline;">17</span>017.             281.     7.85       0.140</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pivoting the out with pivot_longer_survey()</span></span></span>
+<span class="r-in"><span>   <span class="va">pivoted_result</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer_survey</span><span class="op">(</span><span class="va">result_srvyr</span>, n_groups <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(rb090, pb220a)`</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Output is pivoted</span></span></span>
+<span class="r-in"><span><span class="va">pivoted_result</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    rb090  pb220a type             value       se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> male   AT     mean_eqIncome <span style="text-decoration: underline;">21</span>721.    172.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> male   AT     mean_age         46.0     0.247</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> male   EU     mean_eqIncome <span style="text-decoration: underline;">22</span>045.   <span style="text-decoration: underline;">1</span>137.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> male   EU     mean_age         42.4     1.37 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> male   Other  mean_eqIncome <span style="text-decoration: underline;">16</span>962.    465.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> male   Other  mean_age         38.2     0.781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> male   <span style="color: #BB0000;">NA</span>     mean_eqIncome <span style="text-decoration: underline;">17</span>614.    265.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> male   <span style="color: #BB0000;">NA</span>     mean_age          7.81    0.141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> female AT     mean_eqIncome <span style="text-decoration: underline;">19</span>702.    155.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> female AT     mean_age         48.4     0.263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> female EU     mean_eqIncome <span style="text-decoration: underline;">19</span>783.   <span style="text-decoration: underline;">1</span>252.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> female EU     mean_age         44.2     1.41 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> female Other  mean_eqIncome <span style="text-decoration: underline;">16</span>840.    447.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> female Other  mean_age         39.5     0.709</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> female <span style="color: #BB0000;">NA</span>     mean_eqIncome <span style="text-decoration: underline;">17</span>017.    281.   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> female <span style="color: #BB0000;">NA</span>     mean_age          7.85    0.140</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

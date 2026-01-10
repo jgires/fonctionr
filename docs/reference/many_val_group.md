@@ -180,8 +180,8 @@ many_mean_group(..., type = "mean")
 
 - pal:
 
-  Color palette used on the graphic. The palettes from the packages
-  MetBrewer, MoMAColors and PrettyCols are available.
+  Color palette used on the graphic. Palettes from fonctionr and the
+  MetBrewer and PrettyCols packages are available.
 
 - direction:
 
