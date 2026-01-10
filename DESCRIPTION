@@ -10,6 +10,7 @@ License: GPL-3
 URL: https://jgires.github.io/fonctionr/, https://github.com/jgires/fonctionr/
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 4.1.0)
 Imports: 
     dplyr,
     forcats,
