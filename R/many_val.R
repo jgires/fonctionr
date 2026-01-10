@@ -430,14 +430,17 @@ many_val = function(data,
       x = list_col,
       y = indice,
       fill = list_col
-    )) +
+      )
+    ) +
     geom_bar(
       width = dodge,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme) +
+    theme_fonctionr(
+      font = font,
+      theme = theme
+    ) +
     scale_fill_manual(
       values = palette
     ) +
@@ -445,11 +448,14 @@ many_val = function(data,
       labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
       limits = levels
     )+
-    labs(title = title,
-         subtitle = subtitle,
-         caption = stringr::str_wrap(caption, width = 100)
+    labs(
+      title = title,
+      subtitle = subtitle,
+      caption = stringr::str_wrap(caption, width = 100)
     ) +
-    guides(fill="none") +
+    guides(
+      fill="none"
+    ) +
     coord_flip()
 
   # Ajouter les axes

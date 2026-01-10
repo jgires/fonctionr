@@ -571,63 +571,10 @@ central_group <- function(data,
     levels <- levels[levels != total_name]
   }
 
-  # GGTEXT start ---------------
-
-  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
-  levels[is.na(levels)] <- "NA"
-
-  if(total == TRUE) {
-    levels[levels == total_name] <- paste0("**", total_name, "**")
-
-    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          {{ group }} == total_name ~ paste0("**", total_name, "**"),
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
-        )
-      )
-
-    # On renomme le total (n'est plus utilise que pour le graphique)
-    total_name <- paste0("**", total_name, "**")
-
-  }
-
-  if(total == FALSE) {
-
-    # Il faut changer les modalites de la variable de groupe ("NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
-        )
-      )
-  }
-
-  # Si une modalite "NA" a ete ajoutee (en transformant le vrai NA en "NA" string)
-  # alors il faut ajouter une couleur "NA" a la palette (car ggplot n'appliquera pas la couleur defaut au NA qui n'en est plus un)
-  # @@@ Il s'agit d'un bricolage du a l'utilisation tardive de ggtext(). Ce pourrait etre largement optimise => on laisse comme ca pour le test @@@
-  if (quo_is_null(quo_group.fill) & "NA" %in% levels) { # Ne s'applique pas si group.fill
-    if(total == TRUE) {
-      # Si un total, juste avant le total (car NA toujours avant le total)
-      palette <- c(utils::head(palette, -1),
-                   "grey",
-                   utils::head(rev(palette), 1))
-    }
-    else {
-      # Si pas de total, juste a la fin (car NA toujours a la fin)
-      palette <- c(palette,
-                   "grey")
-    }
-  }
-  # GGTEXT end ---------------
-
   # On cree le graphique
 
   if (quo_is_null(quo_group.fill)) { # Si pas de group.fill
-    graph <- graph |>
+    graph <- tab |>
       ggplot(aes(
         x = {{ group }},
         y = indice,
@@ -635,7 +582,7 @@ central_group <- function(data,
       ))
   }
   if (!quo_is_null(quo_group.fill)) { # Si group.fill
-    graph <- graph |>
+    graph <- tab |>
       mutate("{{ group.fill }}" := forcats::fct_rev({{ group.fill }})) |>
       ggplot(aes(
         x = {{ group }},
@@ -650,21 +597,24 @@ central_group <- function(data,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme,
-                    display = "ggtext") +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      display = "ggtext"
+    ) +
     theme(
       legend.position = if (quo_is_null(quo_group.fill)) "none" else "bottom"
     ) +
     scale_fill_manual(
       # if statement car palette differente si group.fill ou non
-      # Si non group.fill, les couleurs de la palette sont associees aux levels avec un vecteur nomme (pour eviter les erreurs)
-      values = if (quo_is_null(quo_group.fill)) stats::setNames(rev(palette), levels) else palette,
+      # Si non group.fill, les couleurs de la palette sont associees aux levels avec un named vector (pour eviter les erreurs) => le named vector ne comprend pas l'eventuel groupe NA, dont la couleur est geree par na.value (argument ci-dessous)
+      values = if (quo_is_null(quo_group.fill)) stats::setNames(rev(palette), levels[!is.na(levels)]) else palette,
       na.value = "grey",
       labels = function(x) stringr::str_wrap(x, width = wrap_width_leg)
     ) +
     scale_x_discrete(
-      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      # fonction interne relabel_ggtext() pour compatibilite avec ggtext
+      labels = ~relabel_ggtext(x = ., wrap_width = wrap_width_y, total_name = total_name),
       limits = levels
     ) +
     guides(

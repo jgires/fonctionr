@@ -404,9 +404,11 @@ isColor <- function(x) {
 #' @noRd
 #'
 
-relabel_ggtext <- function(x, wrap_width, total_name){
+relabel_ggtext <- function(x, wrap_width, total_name = NULL){
   x <- ifelse(is.na(x), '*NA*', x)
-  x <- ifelse(x == total_name, paste0("**", total_name, "**"), x)
+  if(!is.null(total_name)){
+    x <- ifelse(x == total_name, paste0("**", total_name, "**"), x)
+  }
   x <- stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width), "\n", "<br>")
   return(x)
 }

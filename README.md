@@ -7,6 +7,7 @@
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![R-CMD-check](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
@@ -57,15 +58,18 @@ supplémentaires…), sans que cela impacte l’utilisation du programme.
 
 Vous pouvez installer le package `fonctionr` depuis
 [GitHub](https://github.com/). Pour cela, il vous faut d’abord installer
-et charger le package `devtools` :
+et charger le package `devtools`. Une version CRAN est en cours de
+soumission.
 
 ``` r
-# Installer devtools si celui-ci n'est pas installé et charger le package
+# Installer devtools si celui-ci n'est pas installé
 install.packages("devtools")
-library(devtools)
 
 # Installer fonctionr
 devtools::install_github("jgires/fonctionr")
+
+# Installer depuis CRAN (en cours de soumission)
+install.packages("fonctionr")
 ```
 
 ## Utilisation
@@ -167,7 +171,7 @@ eusilc_mean$graph
 #> (`geom_text()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" alt="" width="100%" />
 
 `fonctionr` comprend plusieurs autres fonctions pour réaliser des
 opérations similaires, par exemple pour calculer des proportions par
@@ -229,7 +233,7 @@ eusilc_prop$graph
 #> (`geom_text()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" alt="" width="100%" />
 
 ## Auteurs
 

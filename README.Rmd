@@ -17,8 +17,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![R-CMD-check](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![R-CMD-check](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jgires/fonctionr/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 `fonctionr` est un package R qui a pour but de produire facilement des statistiques descriptives complètes à partir de données individuelles issues de sondages avec un design complexe. Le package inclut des fonctions permettant de produire les résultats les plus usuels (comparaison de proportions, de moyennes, de médianes, de distributions), en tenant compte du plan d'échantillonnage réel grâce au package `survey`.
@@ -35,15 +35,17 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-Vous pouvez installer le package `fonctionr` depuis [GitHub](https://github.com/). Pour cela, il vous faut d'abord installer et charger le package `devtools` :
+Vous pouvez installer le package `fonctionr` depuis [GitHub](https://github.com/). Pour cela, il vous faut d'abord installer et charger le package `devtools`. Une version CRAN est en cours de soumission.
 
 ```{r, eval=FALSE}
-# Installer devtools si celui-ci n'est pas installé et charger le package
+# Installer devtools si celui-ci n'est pas installé
 install.packages("devtools")
-library(devtools)
 
 # Installer fonctionr
 devtools::install_github("jgires/fonctionr")
+
+# Installer depuis CRAN (en cours de soumission)
+install.packages("fonctionr")
 ```
 
 ## Utilisation

@@ -497,44 +497,9 @@ distrib_group_discrete <- function(data,
     levels <- levels[levels != total_name]
   }
 
-  # GGTEXT start ---------------
-
-  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
-  levels[is.na(levels)] <- "NA"
-
-  if(total == TRUE) {
-    levels[levels == total_name] <- paste0("**", total_name, "**")
-
-    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          {{ group }} == total_name ~ paste0("**", total_name, "**"),
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
-          )
-        )
-
-    # On renomme le total (n'est plus utilise que pour le graphique)
-    total_name <- paste0("**", total_name, "**")
-
-  }
-
-  if(total == FALSE) {
-
-    # Il faut changer les modalites de la variable de groupe ("NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ group }}" := case_when(
-          is.na({{ group }}) ~ "NA",
-          .default = {{ group }}
-        )
-      )
-  }
-  # GGTEXT end ---------------
-
   # On cree le graphique
-  graph <- graph |>
+
+  graph <- tab |>
     ggplot(aes(
       x = {{ group }},
       y = prop,
@@ -545,9 +510,11 @@ distrib_group_discrete <- function(data,
       stat = "identity",
       position = position_stack(reverse = TRUE)
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme,
-                    display = "ggtext") +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      display = "ggtext"
+    ) +
     theme(
       legend.position = "bottom"
     ) +
@@ -563,8 +530,8 @@ distrib_group_discrete <- function(data,
       expand = expansion(mult = c(.01, .01))
     ) +
     scale_x_discrete(
-      # str_replace_all pour changer les "\n" produits par str_wrap() en "<br>" (pour ggtext())
-      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      # fonction interne relabel_ggtext() pour compatibilite avec ggtext
+      labels = ~relabel_ggtext(x = ., wrap_width = wrap_width_y, total_name = total_name),
       limits = levels
     ) +
     guides(fill = guide_legend(ncol = legend_ncol)) +

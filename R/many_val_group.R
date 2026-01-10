@@ -495,6 +495,8 @@ many_val_group = function(data,
     column_fill <- "list_col"
   }
 
+  print(nlevels(tab[[column_fill]]))
+
   palette <- create_palette(
     pal = pal,
     # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
@@ -558,53 +560,10 @@ many_val_group = function(data,
     type_ggplot <- lang_mean
   }
 
-  # GGTEXT start ---------------
-
-  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
-  # Mais pas necessaire avec position = flip, qui n'utilise pas levels, n'a pas de total et pour qui les NA sont en vrai NA pour le ggplot (manque de coherence ?)
-  if(position != "flip"){
-
-    levels[is.na(levels)] <- "NA"
-
-    if(total == TRUE) {
-      levels[levels == total_name] <- paste0("**", total_name, "**")
-
-      # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
-      graph <- tab |>
-        mutate(
-          "{{ group }}" := case_when(
-            {{ group }} == total_name ~ paste0("**", total_name, "**"),
-            is.na({{ group }}) ~ "NA",
-            .default = {{ group }}
-          )
-        )
-
-      # On renomme le total (n'est plus utilise que pour le graphique)
-      total_name <- paste0("**", total_name, "**")
-
-    }
-
-    if(total == FALSE) {
-
-      # Il faut changer les modalites de la variable de groupe ("NA" en string)
-      graph <- tab |>
-        mutate(
-          "{{ group }}" := case_when(
-            is.na({{ group }}) ~ "NA",
-            .default = {{ group }}
-          )
-        )
-    }
-  # Pour position = flip
-  } else {
-    graph <- tab
-  }
-
-  # GGTEXT end ---------------
-
   # On cree le graphique
 
-  graph <- graph |>
+  # NOTE : la position = flip n'utilise pas levels et n'a pas de total
+  graph <- tab |>
     mutate("{{ group }}" := forcats::fct_rev({{ group }})) |>
     ggplot(aes(
       x = if(position == "dodge"|position == "stack") {{ group }} else list_col,
@@ -616,9 +575,11 @@ many_val_group = function(data,
       stat = "identity",
       position = if(position == "stack") "stack" else "dodge"
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme,
-                    display = "ggtext") +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      display = "ggtext"
+    ) +
     theme(
       legend.position = "bottom"
     ) +
@@ -628,7 +589,8 @@ many_val_group = function(data,
       na.value = "grey"
     ) +
     scale_x_discrete(
-      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      # fonction interne relabel_ggtext() pour compatibilite avec ggtext
+      labels = ~relabel_ggtext(x = ., wrap_width = wrap_width_y, total_name = total_name),
       limits = if(position == "stack"|position == "dodge") levels else NULL
     ) +
     labs(

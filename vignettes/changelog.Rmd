@@ -296,7 +296,7 @@ Date : 2024-02-14
 #### En général
 
 -   **(Joël) L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.\
-    =\> Code simplifié pour `prop_group()`, faire pareil pour les autres fonctions !**
+    =\> Code simplifié pour toutes les fonctions qui utilisaient `ggtext`, faire pareil pour les fonctions qui ne l'utilisaient pas** (pour groupe *NA* en italique).
 
 -   **(Joël) Laisser la possibilité d'introduire des palettes personnalisées dans les fonctions.**
 
@@ -314,7 +314,7 @@ Date : 2024-02-14
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.**
+-   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.**
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 

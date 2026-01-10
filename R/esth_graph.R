@@ -288,61 +288,9 @@ esth_graph <- function(tab,
     ylab <- NULL
   }
 
-  # GGTEXT start ---------------
-
-  # On transforme les choses pour rendre compatible avec ggtext, pour mettre le total en gras et le NA en "NA" (string)
-  levels[is.na(levels)] <- "NA"
-
-  if(!is.null(name_total)) {
-    levels[levels == name_total] <- paste0("**", name_total, "**")
-
-    # Il faut changer les modalites de la variable de groupe (total avec ** et "NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ var }}" := case_when(
-          {{ var }} == name_total ~ paste0("**", name_total, "**"),
-          is.na({{ var }}) ~ "NA",
-          .default = {{ var }}
-        )
-      )
-
-    # On renomme le total (n'est plus utilise que pour le graphique)
-    name_total <- paste0("**", name_total, "**")
-
-  }
-
-  if(is.null(name_total)) {
-    # Il faut changer les modalites de la variable de groupe ("NA" en string)
-    graph <- tab |>
-      mutate(
-        "{{ var }}" := case_when(
-          is.na({{ var }}) ~ "NA",
-          .default = {{ var }}
-        )
-      )
-  }
-
-  # Si une modalite "NA" a ete ajoutee (en transformant le vrai NA en "NA" string)
-  # alors il faut ajouter une couleur "NA" a la palette (car ggplot n'appliquera pas la couleur defaut au NA qui n'en est plus un)
-  # @@@ Il s'agit d'un bricolage du a l'utilisation tardive de ggtext(). Ce pourrait etre largement optimise => on laisse comme ca pour le test @@@
-  if ("NA" %in% levels) {
-    if(!is.null(name_total)) {
-      # Si un total, juste avant le total (car NA toujours avant le total)
-      palette <- c(utils::head(palette, -1),
-                   "grey",
-                   utils::head(rev(palette), 1))
-    }
-    else {
-      # Si pas de total, juste a la fin (car NA toujours a la fin)
-      palette <- c(palette,
-                   "grey")
-    }
-  }
-  # GGTEXT end ---------------
-
   # On cree le graphique
 
-  graph <- graph |>
+  graph <- tab |>
     ggplot(aes(
       x = {{ var }},
       y = {{ value }},
@@ -353,17 +301,21 @@ esth_graph <- function(tab,
       stat = "identity",
       position = "dodge"
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme,
-                    display = "ggtext") +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      display = "ggtext"
+    ) +
     theme(
       legend.position = "none"
     ) +
     scale_x_discrete(
-      labels = function(x) stringr::str_replace_all(stringr::str_wrap(x, width = wrap_width_y), "\n", "<br>"),
+      # fonction interne relabel_ggtext() pour compatibilite avec ggtext
+      labels = ~relabel_ggtext(x = ., wrap_width = wrap_width_y, total_name = name_total),
       limits = levels) +
     scale_fill_manual(
-      values = stats::setNames(rev(palette), levels),
+      # Les couleurs de la palette sont associees aux levels avec un named vector (pour eviter les erreurs) => le named vector ne comprend pas l'eventuel groupe NA, dont la couleur est geree par na.value (argument ci-dessous)
+      values = stats::setNames(rev(palette), levels[!is.na(levels)]),
       na.value = "grey"
     ) +
     labs(
