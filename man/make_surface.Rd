@@ -68,7 +68,7 @@ make_surface(
 
 \item{unit}{The unit showd on the plot. Default is percent.}
 
-\item{pal}{Color palette used on the graphic. The palettes from the packages MetBrewer, MoMAColors and PrettyCols are available.}
+\item{pal}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 

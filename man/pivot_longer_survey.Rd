@@ -17,3 +17,28 @@ A dataframe
 \description{
 Function to pivot from wide to long agregated data by group produced with srvyr::summarise
 }
+\examples{
+# Loading data
+data(eusilc, package = "laeken")
+
+# Loading srvyr
+library(srvyr)
+
+# Making srvyr object
+eusilc_srvyr <- as_survey_design(eusilc, ids = db030, strata = db040, weights = rb050)
+
+# computing srvyr result using summarise()
+result_srvyr<-eusilc_srvyr \%>\%
+ group_by(rb090,pb220a) \%>\% # by sex and nationality
+   summarise(mean_eqIncome = survey_mean(eqIncome),mean_age =survey_mean(age))
+
+# Showing the srvyr summirise output
+result_srvyr
+
+# Pivoting the out with pivot_longer_survey()
+   pivoted_result <- pivot_longer_survey(result_srvyr, n_groups = 2)
+
+# Output is pivoted
+pivoted_result
+
+}

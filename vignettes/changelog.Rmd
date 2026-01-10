@@ -298,8 +298,6 @@ Date : 2024-02-14
 -   **(Joël) L'utilisation de `ggtext` a été implémentée de manière un peu bricolée (comme un code en "surcouche"). Ça fonctionne, mais le code est largement simplifiable (mieux pour la lisibilité). Si on l'implémente de manière durable, à revoir. Par exemple, voir solution proposée ici : <https://github.com/wilkelab/ggtext/issues/121>.\
     =\> Code simplifié pour `prop_group()`, faire pareil pour les autres fonctions !**
 
--   **(Joël) Faire une fonction commune pour la création de palettes + checks =\> redondance inutile entre les fonctions.**
-
 -   **(Joël) Laisser la possibilité d'introduire des palettes personnalisées dans les fonctions.**
 
 -   **(François) Créer un tableau joli en output (avec flextable).**
@@ -318,8 +316,7 @@ Date : 2024-02-14
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.\
-    =\> CRAN oblige à ne pas utiliser des packages pas sur CRAN =\> retirer MoMAColors ?**
+-   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `MetBrewer`, `MoMAColors`, `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.**
 
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
@@ -329,7 +326,7 @@ Date : 2024-02-14
     *=\> En cours : il faut encore checker le code du graphique ggplot.\
     =\> L'ajout de `ggtext` pour mettre le total en gras a compliqué le code*
 
--   **(François) Ajouter des exemples pour chaque fonction (pour le site) : manque `pivot_longer_survey()`, `esth_graph()`.**
+-   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
 
 -   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
     *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
@@ -364,7 +361,7 @@ Date : 2024-02-14
 #### prop_group
 
 -   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
--   **(François) L'utilisation de %in% dans une expression ne transforme pas les NA en FALSE ou TRUE (alors que c'est le comportement par défaut de %in%) : na.prop est prioritaire !\
+-   **(François) L'utilisation de `%in%` dans une expression ne transforme pas les `NA` en `FALSE` ou `TRUE` (alors que c'est le comportement par défaut de `%in%`) : `na.prop` est prioritaire !\
     =\> L'indiquer dans le manuel.\
     =\> Voir si c'est le cas ailleurs ?**
 

@@ -753,6 +753,11 @@ theme_fonctionr <- function(font = "Roboto",
 #'
 #' @param pal Value of argument "pal" from the original function
 #' @param levels_palette Number of colors needed
+#' @param direction Value of argument "direction" from the original function
+#' @param name_function Name of the function in which we are
+#' @param desaturate Value of argument "desaturate" from the original function
+#' @param lighten Value of argument "lighten" from the original function
+#' @param darken Value of argument "darken" from the original function
 #'
 #' @noRd
 #'
@@ -805,6 +810,7 @@ create_palette <- function(pal,
   } else if(!is.null(pal) & all(isColor(pal)) & name_function == "many_val"){
     palette <- rep(pal, levels_palette)
 
+  # Si pal est NULL => defaut
   } else if(is.null(pal)) {
     palette <- palette_function()
 
