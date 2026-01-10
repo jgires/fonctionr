@@ -310,8 +310,6 @@ Date : 2024-02-14
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
 
--   **(Joël) Les cluster / strates / weights n'apparaissent pas dans le message de la console avec les replicates =\> pourquoi ? (prioritaire vu usage par Statbel)**
-
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.

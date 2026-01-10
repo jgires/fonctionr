@@ -37,6 +37,12 @@ convert_to_srvyr <- function(data, ...) {
       as_survey_design(...)
   }
 
+  # On determine si replicates ou non (pour message plus bas)
+  replicates <- FALSE
+  if(any(class(data) %in% c("svyrep.design"))){
+    replicates <- TRUE
+  }
+
   # message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
 
   # On extrait les variables du design
@@ -57,7 +63,12 @@ convert_to_srvyr <- function(data, ...) {
   }
 
   # On affiche les variables du design dans un message
-  message("Sampling design -> ", paste(vec_design, collapse = " "))
+  if(replicates == FALSE){
+    message("Sampling design -> ", paste(vec_design, collapse = " "))
+  }
+  if(replicates == TRUE){
+    message("Sampling design -> replicate weights")
+  }
 
   return(data_W)
 
