@@ -37,7 +37,12 @@
 #' @examples
 #' # Making fictional dataframe
 #'
-#' data_test<-data.frame(Indicators = c("Variable 1","Variable 2","Variable 3","Variable 4","Variable 5","Tot"),
+#' data_test<-data.frame(Indicators = c("Variable 1",
+#'                                      "Variable 2",
+#'                                      "Variable 3",
+#'                                      "Variable 4",
+#'                                      "Variable 5",
+#'                                      "Tot"),
 #'                       Estimates = c(1.52,1.63,2.34,4.15,1.32,2.13),
 #'                       IC_low = c(1.32,1.4,1.98,4,14.2,26),
 #'                       IC_upp = c(1.73,1.81,22.4,47.44,1.45,2.34),
