@@ -306,8 +306,6 @@ Date : 2024-02-14
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
 
--   **(Joël) Laisser la possibilité d'introduire des palettes personnalisées dans les fonctions.**
-
 -   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**

@@ -788,49 +788,70 @@ create_palette <- function(pal,
                                name_function2 = name_function){
 
     if(name_function2 == "prop_group"){
-      palette <- as.character(PrettyCols::prettycols(palette = "Coast", n = levels_palette2, type = "continuous", direction = direction2))
+      palette_created <- as.character(PrettyCols::prettycols(palette = "Coast", n = levels_palette2, type = "continuous", direction = direction2))
     }
     if(name_function2 == "central_group"){
-      palette <- as.character(PrettyCols::prettycols(palette = "Peppers", n = levels_palette2, type = "continuous", direction = direction2))
+      palette_created <- as.character(PrettyCols::prettycols(palette = "Peppers", n = levels_palette2, type = "continuous", direction = direction2))
     }
     if(name_function2 == "make_surface"){
-      palette <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = levels_palette2, type = "continuous", direction = direction2))
+      palette_created <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = levels_palette2, type = "continuous", direction = direction2))
     }
     if(name_function2 %in% c("many_val_group", "many_val")){
-      palette <- as.character(MetBrewer::met.brewer(name = "Egypt", n = levels_palette2, type = "continuous", direction = direction2))
+      palette_created <- as.character(MetBrewer::met.brewer(name = "Egypt", n = levels_palette2, type = "continuous", direction = direction2))
     }
     if(name_function2 == "distrib_group_discrete"){
-      palette <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = levels_palette2, type = "continuous", direction = direction2))
+      palette_created <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = levels_palette2, type = "continuous", direction = direction2))
     }
 
-    return(palette)
+    return(palette_created)
   }
+  # Si pal est rempli par l'utilisateur
+  if(!is.null(pal)){
+    # Si pal est de longueur 1 (= soit 1 couleur soit le nom d'1 palette)
+    if(length(pal) == 1){
 
-  # On cree la palette avec le package MetBrewer
-  # NOTE : on utilise all() dans la condition car si pal est NULL, la condition donne logical(0)
-  if(!is.null(pal) & all(pal %in% names(MetBrewer::MetPalettes))){
-    palette <- as.character(MetBrewer::met.brewer(name = pal, n = levels_palette, type = "continuous", direction = direction))
+      # On cree la palette avec le package MetBrewer
+      # NOTE : on utilise all() dans la condition car si pal est NULL, la condition donne logical(0)
+      if(pal %in% names(MetBrewer::MetPalettes)){
+        palette <- as.character(MetBrewer::met.brewer(name = pal, n = levels_palette, type = "continuous", direction = direction))
 
-  # On cree la palette avecle package PrettyCols
-  } else if(!is.null(pal) & all(pal %in% names(PrettyCols::PrettyColsPalettes))){
-    palette <- as.character(PrettyCols::prettycols(palette = pal, n = levels_palette, type = "continuous", direction = direction))
+      # On cree la palette avecle package PrettyCols
+      } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+        palette <- as.character(PrettyCols::prettycols(palette = pal, n = levels_palette, type = "continuous", direction = direction))
 
-  # On cree la palette avec la fonction interne official_pal()
-  } else if(!is.null(pal) & all(pal %in% official_pal(list_pal_names = T))){
-    palette <- as.character(official_pal(inst = pal, n = levels_palette, direction = direction))
+      # On cree la palette avec la fonction interne official_pal()
+      } else if(pal %in% official_pal(list_pal_names = T)){
+        palette <- as.character(official_pal(inst = pal, n = levels_palette, direction = direction))
 
-  # On cree une palette unicolore (specifique a many_val())
-  } else if(!is.null(pal) & all(isColor(pal)) & name_function == "many_val"){
-    palette <- rep(pal, levels_palette)
+      # Particulier a many_val() : on cree une palette unicolore (pour que tous les indicateurs aient la meme couleur => pas de sens ailleurs)
+      } else if(isColor(pal) & name_function == "many_val"){
+        palette <- rep(pal, levels_palette)
 
+      # Si la couleur/palette n'est pas valide => defaut
+      } else {
+        palette <- palette_function()
+        warning("La palette indiquee n'existe pas : la palette par defaut est utilisee")
+      }
+    # Si pal est de longueur > 1 avec uniquement des couleurs valides
+    } else if(length(pal) > 1 & all(isColor(pal))){
+      # S'il y a le bon nombre de couleurs
+      if(length(pal) == levels_palette){
+        palette <- pal
+      }
+      # S'il n'y a PAS le bon nombre de couleurs => defaut
+      if(length(pal) != levels_palette){
+        palette <- palette_function()
+        warning("La palette indiquee ne contient pas le bon nombre de couleurs : la palette par defaut est utilisee")
+      }
+    # Si aucun de ces cas => defaut
+    } else {
+      palette <- palette_function()
+      warning("La palette indiquee n'est pas valide : la palette par defaut est utilisee")
+    }
+  }
   # Si pal est NULL => defaut
-  } else if(is.null(pal)) {
+  if(is.null(pal)){
     palette <- palette_function()
-
-  # Si la couleur/palette n'est pas valide => on met la palette par defaut
-  } else {
-    palette <- palette_function()
-    warning("La palette indiquee dans pal n'existe pas : la palette par defaut est utilisee")
   }
 
   # Pour modifier la palette (desaturer, eclaircir, foncer)
