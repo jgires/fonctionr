@@ -383,21 +383,25 @@ distrib_discrete <- function(data,
       na.value = "grey"
       ) +
     scale_x_discrete(
-      labels = function(x) stringr::str_wrap(x, width = wrap_width_y),
+      labels = ~relabel_ggtext(x = ., wrap_width = wrap_width_y),
       limits = levels
       ) +
-    theme_fonctionr(font = font,
-                    theme = theme) +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      display = "ggtext"
+    ) +
     theme(
       legend.position = "none"
     ) +
     coord_flip() +
-    labs(title = title,
-         subtitle = subtitle,
-         caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
-           lang_khi2_ad, scales::pvalue(test.stat$p.value, add_p = T),
-           caption) else stringr::str_wrap(caption, width = 100)
-         )
+    labs(
+      title = title,
+      subtitle = subtitle,
+      caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
+        lang_khi2_ad, scales::pvalue(test.stat$p.value, add_p = T),
+        caption) else stringr::str_wrap(caption, width = 100)
+      )
 
   # Ajouter les axes au besoin
   if(show_labs == TRUE){
