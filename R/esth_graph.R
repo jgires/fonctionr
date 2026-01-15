@@ -27,6 +27,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
 #' @param caption Caption of the graphic.
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #'
 #' @return A ggplot graphic.
 #' @import rlang
@@ -102,7 +103,8 @@ esth_graph <- function(tab,
                        xlab = NULL,
                        ylab = NULL,
                        caption = NULL,
-                       theme = NULL) {
+                       theme = NULL,
+                       coef_font = 1) {
 
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -148,7 +150,8 @@ esth_graph <- function(tab,
       scale = scale,
       digits = digits,
       dodge = dodge,
-      wrap_width_y = wrap_width_y
+      wrap_width_y = wrap_width_y,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -309,7 +312,8 @@ esth_graph <- function(tab,
     theme_fonctionr(
       font = font,
       theme = theme,
-      display = "ggtext"
+      display = "ggtext",
+      coef_font = coef_font
     ) +
     theme(
       legend.position = "none"
@@ -343,7 +347,7 @@ esth_graph <- function(tab,
                                               dec),
                          unit),
           family = font),
-        size = 3.5,
+        size = coef_font * fonctionr_font_size(type = "normal"),
         vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
                        -0.5,
                        0.5),
@@ -364,7 +368,7 @@ esth_graph <- function(tab,
                                                 dec),
                            unit),
             family = font),
-          size = 3.5,
+          size = coef_font * fonctionr_font_size(type = "normal"),
           vjust = ifelse(!quo_is_null(quo_low) & !quo_is_null(quo_up),
                          -0.5,
                          0.5),
@@ -442,7 +446,7 @@ esth_graph <- function(tab,
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", {{n_var}}),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4

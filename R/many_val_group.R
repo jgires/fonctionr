@@ -43,6 +43,7 @@
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param caption Caption of the graphic.
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table and a graphic
@@ -124,6 +125,7 @@ many_val_group = function(data,
                           lang = "fr",
                           caption = NULL,
                           theme = NULL,
+                          coef_font = 1,
                           export_path = NULL){
 
 
@@ -189,7 +191,8 @@ many_val_group = function(data,
       dodge = dodge,
       wrap_width_y = wrap_width_y,
       wrap_width_leg = wrap_width_leg,
-      legend_ncol = legend_ncol
+      legend_ncol = legend_ncol,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -495,8 +498,6 @@ many_val_group = function(data,
     column_fill <- "list_col"
   }
 
-  print(nlevels(tab[[column_fill]]))
-
   palette <- create_palette(
     pal = pal,
     # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
@@ -578,7 +579,8 @@ many_val_group = function(data,
     theme_fonctionr(
       font = font,
       theme = theme,
-      display = "ggtext"
+      display = "ggtext",
+      coef_font = coef_font
     ) +
     theme(
       legend.position = "bottom"
@@ -657,7 +659,7 @@ many_val_group = function(data,
             },
             family = font
           ),
-          size = 3,
+          size = coef_font * fonctionr_font_size(type = "little"),
           vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
           hjust = if (position == "dodge") "left" else "center",
           color = "grey10",
@@ -790,7 +792,7 @@ many_val_group = function(data,
             )
           },
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         vjust = if (position == "dodge"|position == "flip") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
         hjust = if (position == "dodge"|position == "flip") "left" else "center",
         color = if (position == "dodge"|position == "flip") "black" else "white",
@@ -808,7 +810,7 @@ many_val_group = function(data,
           y = if (position == "dodge"|position == "flip") 0 + (0.01 * max_ggplot) else indice, # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", n_sample),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4,

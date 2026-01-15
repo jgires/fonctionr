@@ -40,6 +40,7 @@
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -120,6 +121,7 @@ distrib_group_discrete <- function(data,
                                    caption = NULL,
                                    lang = "fr",
                                    theme = NULL,
+                                   coef_font = 1,
                                    export_path = NULL) {
 
 
@@ -180,7 +182,8 @@ distrib_group_discrete <- function(data,
       dodge = dodge,
       wrap_width_y = wrap_width_y,
       wrap_width_leg = wrap_width_leg,
-      legend_ncol = legend_ncol
+      legend_ncol = legend_ncol,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -513,7 +516,8 @@ distrib_group_discrete <- function(data,
     theme_fonctionr(
       font = font,
       theme = theme,
-      display = "ggtext"
+      display = "ggtext",
+      coef_font = coef_font
     ) +
     theme(
       legend.position = "bottom"
@@ -583,7 +587,7 @@ distrib_group_discrete <- function(data,
                                                     "n=", n_sample),
                                              NA),
               family = font),
-            size = if (show_n == FALSE) 3.5 else 3,
+            size = if (show_n == FALSE) size = coef_font * fonctionr_font_size(type = "normal") else size = coef_font * fonctionr_font_size(type = "little"),
             alpha = .9,
             color = "grey10",
             fontface = "bold",
@@ -703,7 +707,7 @@ distrib_group_discrete <- function(data,
                                                 "n=", n_sample),
                                          NA),
           family = font),
-        size = if(show_n == FALSE) 3.5 else 3,
+        size = if (show_n == FALSE) size = coef_font * fonctionr_font_size(type = "normal") else size = coef_font * fonctionr_font_size(type = "little"),
         color = "white",
         position = position_stack(vjust = .5,
                                   reverse = TRUE)

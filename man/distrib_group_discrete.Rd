@@ -44,6 +44,7 @@ distrib_group_discrete(
   caption = NULL,
   lang = "fr",
   theme = NULL,
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -125,6 +126,8 @@ distrib_group_d(...)
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
 \item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+
+\item{coef_font}{A multiplier factor for font size}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
 }

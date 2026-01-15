@@ -29,7 +29,8 @@ esth_graph(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
-  theme = NULL
+  theme = NULL,
+  coef_font = 1
 )
 }
 \arguments{
@@ -82,6 +83,8 @@ esth_graph(
 \item{caption}{Caption of the graphic.}
 
 \item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+
+\item{coef_font}{A multiplier factor for font size}
 }
 \value{
 A ggplot graphic.

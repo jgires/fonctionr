@@ -36,6 +36,7 @@
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param caption Caption of the graphic.
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table and a graphic
@@ -110,6 +111,7 @@ many_val = function(data,
                     lang = "fr",
                     caption = NULL,
                     theme = NULL,
+                    coef_font = 1,
                     export_path = NULL){
 
 
@@ -168,7 +170,8 @@ many_val = function(data,
       lighten = lighten,
       darken = darken,
       dodge = dodge,
-      wrap_width_y = wrap_width_y
+      wrap_width_y = wrap_width_y,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -439,7 +442,8 @@ many_val = function(data,
     ) +
     theme_fonctionr(
       font = font,
-      theme = theme
+      theme = theme,
+      coef_font = coef_font
     ) +
     scale_fill_manual(
       values = palette
@@ -542,7 +546,7 @@ many_val = function(data,
                                               ","),
                          unit),
           family = font),
-        size = 3.5,
+        size = coef_font * fonctionr_font_size(type = "normal"),
         vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
@@ -562,7 +566,7 @@ many_val = function(data,
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", n_sample),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4,

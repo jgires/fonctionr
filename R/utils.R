@@ -807,9 +807,6 @@ create_palette <- function(pal,
                            lighten,
                            darken) {
 
-  print(levels_palette)
-  print(length(pal))
-
   # Fonction qui change la palette selon la fonction (utilise plus bas)
   palette_function <- function(levels_palette2 = levels_palette,
                                direction2 = direction,
