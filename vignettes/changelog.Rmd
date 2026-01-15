@@ -302,9 +302,11 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) Le code a été simplifié pour toutes les fonctions qui utilisaient `ggtext` (suivant la logique ici : <https://github.com/wilkelab/ggtext/issues/121>), faire pareil pour les fonctions qui ne l'utilisaient pas (pour groupe *NA* en italique).**
+-   **(Joël) Le fonctionnement de `theme_fonctionr()` avec `theme == NULL` par défaut est pas terrible =\> changer.**
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
+
+-   **(Joël) Le changement du code pour les palettes fait qu'on peut désormais introduire une palette lorsqu'il y a une seule couleur (ex. : `central_group()`)**
 
 -   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
 
@@ -349,6 +351,8 @@ Date : 2024-02-14
 -   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
+
+-   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
 
 -   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
 
