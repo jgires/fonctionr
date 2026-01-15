@@ -35,6 +35,7 @@ distrib_discrete(
   lang = "fr",
   caption = NULL,
   theme = NULL,
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -98,6 +99,8 @@ distrib_d(...)
 \item{caption}{Caption in the graphic.}
 
 \item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+
+\item{coef_font}{A multiplier factor for font size}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).}
 }

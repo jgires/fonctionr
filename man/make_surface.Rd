@@ -26,6 +26,7 @@ make_surface(
   lighten = 0,
   darken = 0,
   size_text = 3.88,
+  coef_font = 1,
   bg = "#f8f5f5",
   linewidth_ci = 0.5,
   ratio = 3/2,
@@ -79,6 +80,8 @@ make_surface(
 \item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
 
 \item{size_text}{Text size displayed in surfaces. Default is 3.88 (as in ggplot2).}
+
+\item{coef_font}{A multiplier factor for font size}
 
 \item{bg}{Color of the background.}
 

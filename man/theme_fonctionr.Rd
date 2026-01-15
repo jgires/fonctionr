@@ -8,7 +8,8 @@ theme_fonctionr(
   font = "Roboto",
   theme = NULL,
   display = "ggplot",
-  grid.lines = "x"
+  grid.lines = "x",
+  coef_font = 1
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ theme_fonctionr(
 \item{display}{The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.}
 
 \item{grid.lines}{Specify major grid lines : "x", "y" or "both". Default is "x".}
+
+\item{coef_font}{A multiplier factor for font size}
 }
 \description{
 theme_fonctionr
