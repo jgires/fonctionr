@@ -31,6 +31,7 @@
 #' @param caption Caption in the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test (if probs is not NULL).
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -101,6 +102,7 @@ distrib_discrete <- function(data,
                              lang = "fr",
                              caption = NULL,
                              theme = NULL,
+                             coef_font = 1,
                              export_path = NULL) {
 
 
@@ -146,7 +148,8 @@ distrib_discrete <- function(data,
       scale = scale,
       digits = digits,
       dodge = dodge,
-      wrap_width_y = wrap_width_y
+      wrap_width_y = wrap_width_y,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -389,7 +392,8 @@ distrib_discrete <- function(data,
     theme_fonctionr(
       font = font,
       theme = theme,
-      display = "ggtext"
+      display = "ggtext",
+      coef_font = coef_font
     ) +
     theme(
       legend.position = "none"
@@ -464,7 +468,7 @@ distrib_discrete <- function(data,
                                               dec),
                          unit),
           family = font),
-        size = 3.5,
+        size = coef_font * fonctionr_font_size(type = "normal"),
         vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
@@ -484,7 +488,7 @@ distrib_discrete <- function(data,
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", n_sample),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4

@@ -677,6 +677,7 @@ official_pal <- function(inst,
 #' @param theme The theme you want for the graphic. Available themes: the default theme and “IWEPS”.
 #' @param display The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.
 #' @param grid.lines Specify major grid lines : "x", "y" or "both". Default is "x".
+#' @param coef_font A multiplier factor for font size
 #'
 #' @return
 #' @import ggplot2
@@ -687,10 +688,13 @@ official_pal <- function(inst,
 theme_fonctionr <- function(font = "Roboto",
                             theme = NULL,
                             display = "ggplot",
-                            grid.lines = "x") {
+                            grid.lines = "x",
+                            coef_font = 1) {
   load_and_active_fonts()
 
-  theme_fonctionr_def <- theme_minimal() +
+  theme_fonctionr_def <- theme_minimal(
+    base_size = coef_font * 11
+  ) +
     theme(
       text = element_text(family = font),
       panel.grid.minor.y = element_blank(),
@@ -762,6 +766,27 @@ theme_fonctionr <- function(font = "Roboto",
 }
 
 
+#' fonctionr_font_size
+#'
+#' Internal function to define font size among fonctions
+#'
+#' @param type Several font sizes related to type
+#'
+#' @noRd
+#'
+
+fonctionr_font_size <- function(type = "normal") {
+
+  if(type == "normal"){
+    font_size <- 3.5
+  }
+  if(type == "little"){
+    font_size <- 3
+  }
+  return(font_size)
+}
+
+
 #' create_palette
 #'
 #' @param pal Value of argument "pal" from the original function
@@ -781,6 +806,9 @@ create_palette <- function(pal,
                            desaturate,
                            lighten,
                            darken) {
+
+  print(levels_palette)
+  print(length(pal))
 
   # Fonction qui change la palette selon la fonction (utilise plus bas)
   palette_function <- function(levels_palette2 = levels_palette,

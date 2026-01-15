@@ -42,6 +42,7 @@
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -124,6 +125,7 @@ prop_group <- function(data,
                        caption = NULL,
                        lang = "fr",
                        theme = NULL,
+                       coef_font = 1,
                        export_path = NULL) {
 
   # start_time <- Sys.time()
@@ -182,7 +184,8 @@ prop_group <- function(data,
       dodge = dodge,
       wrap_width_y = wrap_width_y,
       wrap_width_leg = wrap_width_leg,
-      legend_ncol = legend_ncol
+      legend_ncol = legend_ncol,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -609,7 +612,8 @@ prop_group <- function(data,
     theme_fonctionr(
       font = font,
       theme = theme,
-      display = "ggtext"
+      display = "ggtext",
+      coef_font = coef_font
     ) +
     theme(
       legend.position = if (quo_is_null(quo_group.fill)) "none" else "bottom"
@@ -672,7 +676,7 @@ prop_group <- function(data,
                                                 dec),
                            unit),
             family = font),
-          size = 3.5,
+          size = coef_font * fonctionr_font_size(type = "normal"),
           vjust = ifelse(show_ci == T,
                          -0.5,
                          0.5),
@@ -811,7 +815,7 @@ prop_group <- function(data,
                                               dec),
                          unit),
           family = font),
-        size = 3.5,
+        size = coef_font * fonctionr_font_size(type = "normal"),
         vjust = ifelse(show_ci == T,
                        -0.5,
                        0.5),
@@ -831,7 +835,7 @@ prop_group <- function(data,
           y = 0 + (0.01 * max_ggplot), # Pour ajouter des labels avec les effectifs en dessous des barres
           label = paste0("n=", n_sample),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.7,
         hjust = 0, # Justifie a droite
         vjust = 0.4,

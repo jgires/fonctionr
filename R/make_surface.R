@@ -22,6 +22,7 @@
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
 #' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
 #' @param size_text Text size displayed in surfaces. Default is 3.88 (as in ggplot2).
+#' @param coef_font A multiplier factor for font size
 #' @param bg Color of the background.
 #' @param linewidth_ci linewidth of ci borders.
 #' @param ratio Aspect ratio of the surfaces.
@@ -96,6 +97,7 @@ make_surface <- function(tab,
                          lighten = 0,
                          darken = 0,
                          size_text = 3.88,
+                         coef_font = 1,
                          bg = "#f8f5f5",
                          linewidth_ci = .5,
                          ratio = 3/2,
@@ -146,6 +148,7 @@ make_surface <- function(tab,
       lighten = lighten,
       darken = darken,
       size_text = size_text,
+      coef_font = coef_font,
       ratio = ratio,
       wrap_width_lab = wrap_width_lab,
       hjust.title = hjust.title
@@ -378,7 +381,9 @@ make_surface <- function(tab,
     ) +
     scale_color_manual(values = palette) +
     scale_x_continuous(expand = c(0.01, 0.01)) +
-    theme_void() +
+    theme_void(
+      base_size = coef_font * 11
+    ) +
     theme(
       legend.position = "none",
       plot.background = element_rect(fill = bg, color = NA),
@@ -460,7 +465,7 @@ make_surface <- function(tab,
           )
         }
       ),
-      size = size_text,
+      size = coef_font * size_text,
       family = font
     )
 
