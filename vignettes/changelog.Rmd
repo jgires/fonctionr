@@ -312,8 +312,6 @@ Date : 2024-02-14
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 
--   **(Joël) Créer facteur multiplicateur de la taille des polices.**
-
 -   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
 
 -   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.

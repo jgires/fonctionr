@@ -35,6 +35,7 @@
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table (tab), a graphic (garph) and a density table (dens) and a quantile table (quant)
@@ -99,6 +100,7 @@ distrib_continuous <- function(data,
                           caption = NULL,
                           lang = "fr",
                           theme = NULL,
+                          coef_font = 1,
                           export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -150,7 +152,8 @@ distrib_continuous <- function(data,
     arg = list(
       bw = bw,
       resolution = resolution,
-      digits = digits
+      digits = digits,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -483,8 +486,11 @@ distrib_continuous <- function(data,
     scale_fill_manual(
       values = palette
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme) +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      coef_font = coef_font
+    ) +
     theme(
       panel.grid.minor.x = element_blank(),
       panel.grid.major.x = element_blank(),
@@ -546,7 +552,7 @@ distrib_continuous <- function(data,
           x = coord_x + (0.001 * limits[2]), # Pour ajouter des labels avec les effectifs
           label = paste0("n=", n),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         alpha = 0.5,
         hjust = 0, # Justifie a droite
         vjust = 1,
@@ -618,7 +624,7 @@ distrib_continuous <- function(data,
                                               dec),
                          unit),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         vjust = -1,
         color = "black",
         alpha = 0.9)

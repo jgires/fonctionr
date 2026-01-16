@@ -45,6 +45,7 @@
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
+#' @param coef_font A multiplier factor for font size
 #' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
 #'
 #' @return A list that contains a table, a graphic and a statistical test
@@ -129,6 +130,7 @@ distrib_group_continuous <- function(data,
                                caption = NULL,
                                lang = "fr",
                                theme = NULL,
+                               coef_font = 1,
                                export_path = NULL) {
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -188,7 +190,8 @@ distrib_group_continuous <- function(data,
       height = height,
       digits = digits,
       alpha = alpha,
-      wrap_width_y = wrap_width_y
+      wrap_width_y = wrap_width_y,
+      coef_font = coef_font
     ),
     type = "numeric"
   )
@@ -800,8 +803,11 @@ distrib_group_continuous <- function(data,
       labels = stringr::str_wrap(tab_level[[1]], width = wrap_width_y),
       expand = expansion(mult = c(0.005, 0.05))
     ) +
-    theme_fonctionr(font = font,
-                    theme = theme) +
+    theme_fonctionr(
+      font = font,
+      theme = theme,
+      coef_font = coef_font
+    ) +
     theme(
       legend.position = "bottom"
     ) +
@@ -947,7 +953,7 @@ distrib_group_continuous <- function(data,
                                               dec),
                          unit),
           family = font),
-        size = 3,
+        size = coef_font * fonctionr_font_size(type = "little"),
         vjust = -1,
         color = "black",
         alpha = 0.9)
