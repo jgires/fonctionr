@@ -35,6 +35,9 @@ official_pal(
 
 \item{list_pal_names}{TRUE to generate a vector with palette names.}
 }
+\value{
+A vector containing hexadecimals color codes
+}
 \description{
 Function to produce color palettes from different institutions
 }

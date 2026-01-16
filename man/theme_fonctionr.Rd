@@ -15,14 +15,36 @@ theme_fonctionr(
 \arguments{
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
-\item{theme}{The theme you want for the graphic. Available themes: the default theme and “IWEPS”.}
+\item{theme}{The optionnal theme you want for the graphic. Available theme: “IWEPS”. Default is NULL}
 
 \item{display}{The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.}
 
 \item{grid.lines}{Specify major grid lines : "x", "y" or "both". Default is "x".}
 
-\item{coef_font}{A multiplier factor for font size}
+\item{coef_font}{A multiplier factor for font size.}
 }
 \description{
 theme_fonctionr
+}
+\examples{
+# Loading of data
+data(eusilc, package = "laeken")
+
+# Loading of fonts from fonctionr
+load_and_active_fonts()
+
+# Making a graphic
+eusilc |>
+  as_survey_design(ids = db030, strata = db040, weights = rb050) |>
+  group_by(pb220a) |>
+  summarise(
+    prop = survey_mean(eqIncome > 10000)
+  ) |>
+  ggplot(aes(x = pb220a, y = prop)) +
+  geom_col() +
+  geom_text(aes(label = round(prop * 100)), hjust = 0) +
+  coord_flip() +
+  # Using font from fonctionr outside fonctionr
+  theme_fonctionr(font = "Montserrat", coef_font = 1.2)
+
 }
