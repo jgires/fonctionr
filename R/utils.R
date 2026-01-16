@@ -80,10 +80,28 @@ convert_to_srvyr <- function(data, ...) {
 #' Function to load and activate fonctionr's built-in fonts.
 #' Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".
 #'
-#' @return
 #' @export
 #'
 #' @examples
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Loading of fonts from fonctionr
+#' load_and_active_fonts()
+#'
+#' # Making a graphic
+#' eusilc |>
+#'   as_survey_design(ids = db030, strata = db040, weights = rb050) |>
+#'   group_by(pb220a) |>
+#'   summarise(
+#'     prop = survey_mean(eqIncome > 10000)
+#'   ) |>
+#'   ggplot(aes(x = pb220a, y = prop)) +
+#'   geom_col() +
+#'   geom_text(aes(label = round(prop * 100)), hjust = 0) +
+#'   coord_flip() +
+#'   # Using font from fonctionr outside fonctionr
+#'   theme_minimal(base_family = "League Gothic", base_size = 15)
 #'
 load_and_active_fonts <- function(){
 
@@ -261,7 +279,7 @@ export_excel <- function(tab_excel,
 #'
 #' @param arg List of arguments to check
 #' @param short Chek if arguments lenght is not superior to 1
-#' @param type Type of check
+#' @param type Type of check : "character", "logical" or "numeric"
 #'
 #' @noRd
 #'
@@ -314,8 +332,7 @@ check_bin <- function(data,
 #'
 #' Internal function to check if probs are between 0 & 1
 #'
-#' @param data A dataframe in which to check
-#' @param vec_list_vars A vector containing names of columns
+#' @param arg List of arguments to check
 #'
 #' @noRd
 #'
@@ -338,7 +355,7 @@ check_prob <- function(arg) {
 #' Internal function to check if input variables exist in data
 #'
 #' @param data A dataframe or survey object in which to check
-#' @param vec_list_vars A named vector containing names of columns and names of input arguments
+#' @param vars_input_char A vector containing names of columns
 #'
 #' @noRd
 #'
@@ -396,7 +413,7 @@ isColor <- function(x) {
 
 #' relabel_ggtext
 #'
-#' Internal function to format labels of total and NAs in the way ggtext works
+#' Internal function that formats graph labels to work with ggtext.
 #'
 #' @param x A string to modify
 #' @param wrap_width_y Number of characters before going to the line
@@ -519,7 +536,7 @@ relabel_ggtext <- function(x, wrap_width, total_name = NULL){
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param list_pal_names TRUE to generate a vector with palette names.
 #'
-#' @return
+#' @return A vector containing hexadecimals color codes
 #' @export
 #'
 #' @examples
@@ -765,16 +782,34 @@ official_pal <- function(inst,
 #' theme_fonctionr
 #'
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param theme The theme you want for the graphic. Available themes: the default theme and “IWEPS”.
+#' @param theme The optionnal theme you want for the graphic. Available theme: “IWEPS”. Default is NULL
 #' @param display The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.
 #' @param grid.lines Specify major grid lines : "x", "y" or "both". Default is "x".
-#' @param coef_font A multiplier factor for font size
+#' @param coef_font A multiplier factor for font size.
 #'
-#' @return
 #' @import ggplot2
 #' @export
 #'
 #' @examples
+#' # Loading of data
+#' data(eusilc, package = "laeken")
+#'
+#' # Loading of fonts from fonctionr
+#' load_and_active_fonts()
+#'
+#' # Making a graphic
+#' eusilc |>
+#'   as_survey_design(ids = db030, strata = db040, weights = rb050) |>
+#'   group_by(pb220a) |>
+#'   summarise(
+#'     prop = survey_mean(eqIncome > 10000)
+#'   ) |>
+#'   ggplot(aes(x = pb220a, y = prop)) +
+#'   geom_col() +
+#'   geom_text(aes(label = round(prop * 100)), hjust = 0) +
+#'   coord_flip() +
+#'   # Using font from fonctionr outside fonctionr
+#'   theme_fonctionr(font = "Montserrat", coef_font = 1.2)
 #'
 theme_fonctionr <- function(font = "Roboto",
                             theme = NULL,
@@ -861,7 +896,7 @@ theme_fonctionr <- function(font = "Roboto",
 #'
 #' Internal function to define font size among fonctions
 #'
-#' @param type Several font sizes related to type
+#' @param type Several font sizes related to type : "normal" or "little".
 #'
 #' @noRd
 #'
