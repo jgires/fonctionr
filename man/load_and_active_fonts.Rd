@@ -11,24 +11,7 @@ Function to load and activate fonctionr's built-in fonts.
 Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".
 }
 \examples{
-# Loading of data
-data(eusilc, package = "laeken")
-
-# Loading of fonts from fonctionr
+# Loading of fonts from fonctionr. You can now use it in fonctionr !
 load_and_active_fonts()
-
-# Making a graphic
-eusilc |>
-  as_survey_design(ids = db030, strata = db040, weights = rb050) |>
-  group_by(pb220a) |>
-  summarise(
-    prop = survey_mean(eqIncome > 10000)
-  ) |>
-  ggplot(aes(x = pb220a, y = prop)) +
-  geom_col() +
-  geom_text(aes(label = round(prop * 100)), hjust = 0) +
-  coord_flip() +
-  # Using font from fonctionr outside fonctionr
-  theme_minimal(base_family = "League Gothic", base_size = 15)
 
 }

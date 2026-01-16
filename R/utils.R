@@ -83,25 +83,8 @@ convert_to_srvyr <- function(data, ...) {
 #' @export
 #'
 #' @examples
-#' # Loading of data
-#' data(eusilc, package = "laeken")
-#'
-#' # Loading of fonts from fonctionr
+#' # Loading of fonts from fonctionr. You can now use it in fonctionr !
 #' load_and_active_fonts()
-#'
-#' # Making a graphic
-#' eusilc |>
-#'   as_survey_design(ids = db030, strata = db040, weights = rb050) |>
-#'   group_by(pb220a) |>
-#'   summarise(
-#'     prop = survey_mean(eqIncome > 10000)
-#'   ) |>
-#'   ggplot(aes(x = pb220a, y = prop)) +
-#'   geom_col() +
-#'   geom_text(aes(label = round(prop * 100)), hjust = 0) +
-#'   coord_flip() +
-#'   # Using font from fonctionr outside fonctionr
-#'   theme_minimal(base_family = "League Gothic", base_size = 15)
 #'
 load_and_active_fonts <- function(){
 
@@ -698,27 +681,6 @@ official_pal <- function(inst,
 #'
 #' @import ggplot2
 #' @export
-#'
-#' @examples
-#' # Loading of data
-#' data(eusilc, package = "laeken")
-#'
-#' # Loading of fonts from fonctionr
-#' load_and_active_fonts()
-#'
-#' # Making a graphic
-#' eusilc |>
-#'   as_survey_design(ids = db030, strata = db040, weights = rb050) |>
-#'   group_by(pb220a) |>
-#'   summarise(
-#'     prop = survey_mean(eqIncome > 10000)
-#'   ) |>
-#'   ggplot(aes(x = pb220a, y = prop)) +
-#'   geom_col() +
-#'   geom_text(aes(label = round(prop * 100)), hjust = 0) +
-#'   coord_flip() +
-#'   # Using font from fonctionr outside fonctionr
-#'   theme_fonctionr(font = "Montserrat", coef_font = 1.2)
 #'
 theme_fonctionr <- function(font = "Roboto",
                             theme = NULL,
