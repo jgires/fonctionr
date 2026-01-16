@@ -192,12 +192,12 @@ esth_graph <- function(tab,
 
   # On cree la palette
 
-  if(!is.null(pal) & all(isColor(pal)) == TRUE){
+  if(!is.null(pal) & all(isColor(pal)) == TRUE & length(pal) == 1){
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
     palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
-  } else { # Si pal est NULL ou la couleur n'est pas valide => on met la couleur par defaut
-    if(!is.null(pal) & all(isColor(pal)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
-      warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+  } else { # Si pal est NULL, n'est pas valide ou de longueur != 1 => on met la couleur par defaut
+    if(!is.null(pal) & (all(isColor(pal)) == FALSE)|length(pal) != 1){ # Warning uniquement si une couleur fausse a ete entree
+      warning("pal n'est pas valide : la couleur par defaut est utilisee")
     }
     pal <- "indianred4" # Alors pal == "indianred4"
     palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")

@@ -507,11 +507,11 @@ prop_group <- function(data,
   # La palette est differente selon qu'il y a group.fill (1 couleur) ou non (1 palette)
   if(quo_is_null(quo_group.fill)) {
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
-    if(!is.null(pal) & all(isColor(pal)) == TRUE){
+    if(!is.null(pal) & all(isColor(pal)) == TRUE & length(pal) == 1){
       palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-    } else { # Si pal est NULL ou la couleur n'est pas valide => on met la couleur par defaut
-      if(!is.null(pal) & all(isColor(pal)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
-        warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+    } else { # Si pal est NULL, n'est pas valide ou de longueur != 1 => on met la couleur par defaut
+      if(!is.null(pal) & (all(isColor(pal)) == FALSE)|length(pal) != 1){ # Warning uniquement si une couleur fausse a ete entree
+        warning("pal n'est pas valide : la couleur par defaut est utilisee")
       }
       pal <- "deepskyblue3" # Alors pal == "deepskyblue3"
       palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")

@@ -304,11 +304,7 @@ Date : 2024-02-14
 
 -   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc.**
 
--   **(Joël) Le fonctionnement de `theme_fonctionr()` avec `theme == NULL` par défaut est pas terrible =\> changer.**
-
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
-
--   **(Joël) Le changement du code pour les palettes fait qu'on peut désormais introduire une palette lorsqu'il y a une seule couleur (ex. : `central_group()`)**
 
 -   **(Joël) Exemples et valeurs pour return manquants dans utils (faire tourner `roxygenise()`)**.
 
@@ -316,24 +312,19 @@ Date : 2024-02-14
 
 -   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
 
--   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
+-   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
+    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
+
+-   Le fonctionnement de `theme_fonctionr()` avec `theme == NULL` par défaut est pas terrible =\> changer.
 
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
 
--   **(Joël) Bug à l'import de `fonctionr` du fait de collision entre `PrettyCols` et les fonctions de base ? Je ne comprends pas le message.**
-
 -   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
--   Vérifier que les scripts sont bien commentés pour qu'on se rappelle ce qu'on a fait (il manque des notes et quelques explications d'opérations dont je ne me rappelle plus le but).
-
 -   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
-    *=\> En cours : il faut encore checker le code du graphique ggplot.\
-    =\> L'ajout de `ggtext` pour mettre le total en gras a compliqué le code*
-
--   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
-    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
+    *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
@@ -348,11 +339,13 @@ Date : 2024-02-14
 
 #### **distrib_group_c**
 
+-   **(Joël) Supprimer les warnings sur la fonction de densité (chercher ce que ça veut dire ?)**
+
+-   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
+
 -   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
-
--   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
 
 -   Faire en sorte que le nom du groupe soit toujours le même dans les sorties de la liste (pour le moment, parfois "group", parfois le nom de la variable) =\> implique de changer l'argument `by =` des `left_join()` dans le script, et donc le nommage des colonnes.
 
@@ -423,6 +416,7 @@ Date : 2024-02-14
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
 -   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
     *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
+-   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 #### distrib_group_d
 
