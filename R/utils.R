@@ -733,16 +733,6 @@ theme_fonctionr <- function(font = "Roboto",
       )
   }
 
-  if (!is.null(theme)) {
-    if (theme == "IWEPS") {
-      theme_fonctionr_def <- theme_fonctionr_def +
-        theme(
-          axis.line.y = element_line(color = "black"),
-          axis.ticks.y = element_line(color = "black")
-          )
-    }
-  }
-
   if (display == "ggplot") {
     theme_fonctionr_def <- theme_fonctionr_def +
       theme(
@@ -760,6 +750,16 @@ theme_fonctionr <- function(font = "Roboto",
         axis.text.x.bottom = ggtext::element_markdown(color = "black"),
         axis.text.x.top = ggtext::element_markdown(color = "black")
         )
+  }
+
+  if (!is.null(theme)) {
+    if (theme == "IWEPS") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          axis.line.y = element_line(color = "black"),
+          axis.ticks.y = element_line(color = "black")
+        )
+    }
   }
 
   return(theme_fonctionr_def)

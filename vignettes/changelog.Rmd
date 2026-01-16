@@ -302,6 +302,8 @@ Date : 2024-02-14
 
 #### En général
 
+-   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc.**
+
 -   **(Joël) Le fonctionnement de `theme_fonctionr()` avec `theme == NULL` par défaut est pas terrible =\> changer.**
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
