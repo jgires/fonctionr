@@ -79,6 +79,7 @@
 #'   ids = db030,
 #'   weight = rb050,
 #'   limits = c(0, 50000),
+#'   resolution = 128,
 #'   title = "Distribution of eq. income",
 #'   subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
