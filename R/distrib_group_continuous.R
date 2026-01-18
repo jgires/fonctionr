@@ -926,7 +926,7 @@ distrib_group_continuous <- function(data,
           y = level - 1
         ),
         alpha = 0.5,
-        height = .2
+        width = .2
       )
   }
 
