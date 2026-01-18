@@ -302,6 +302,9 @@ Date : 2024-02-14
 
 #### En général
 
+-   **(Joël) distrib_group_c() renvoie un message :** \`**`` height` was translated to `width`. ``\
+    =\> Corriger.**
+
 -   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc.**
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
