@@ -462,7 +462,10 @@ distrib_group_continuous <- function(data,
     estDensity_group <- stats::density(data_W_group$variables[["quanti_exp_flattened"]],
       n = resolution,
       adjust = bw,
+      # Pour faire taire le warning qui dit que la somme des poids != 1
       subdensity = T,
+      # Pour faire taire le warning qui dit que bw ne prend pas en compte les poids
+      warnWbw = F,
       weights = if (is.null(var_weights)) {
         NULL
       # On introduit la variable de ponderation identifiee dans var_weights mais transformee pour que la somme = 1

@@ -302,9 +302,6 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) distrib_group_c() renvoie un message :** \`**`` height` was translated to `width`. ``\
-    =\> Corriger.**
-
 -   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc.**
 
 -   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
@@ -340,11 +337,12 @@ Date : 2024-02-14
 
 #### **distrib_group_c**
 
--   **(Joël) Supprimer les warnings sur la fonction de densité (chercher ce que ça veut dire ?)**
-
 -   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
 
 -   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
+
+-   Il y a un warning de la fonction `density()` qui dit que `Selecting bandwidth not using 'weights'`. La doc de density() dit : "automatic bandwidth selection will not take the weights into account and hence may be suboptimal."\
+    =\> Voir si c'est un problème ?
 
 -   Le groupe `NA` est transfomé en level du facteur de groupe. De ce fait, il n'apparaît pas toujours en dernier, notamment lorsque `reorder = T`. Régler ça (pas cohérent avec les autres fonctions).
 
