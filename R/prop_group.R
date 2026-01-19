@@ -4,7 +4,7 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining the groups to be compared.
-#' @param prop_exp An expression that define the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. %in%) will not work as designed in this argument.
+#' @param prop_exp An expression that define the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. 'in') will not work as designed in this argument.
 #' @param group.fill A variable defining a second variable of groups to be compared.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
@@ -133,7 +133,7 @@ prop_group <- function(data,
   # Options
   if(any(stringr::str_detect(names(options()), "^fonctionr."))){
     warning(
-      "Paramètres actifs dans fonctionr_options(): ",
+      "Parametres actifs dans fonctionr_options(): ",
       paste(
         stringr::str_replace(
           names(options())[stringr::str_detect(names(options()), "^fonctionr.")],

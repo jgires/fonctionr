@@ -54,7 +54,7 @@ prop_group(
 
 \item{group}{A variable defining the groups to be compared.}
 
-\item{prop_exp}{An expression that define the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. %in%) will not work as designed in this argument.}
+\item{prop_exp}{An expression that define the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. 'in') will not work as designed in this argument.}
 
 \item{group.fill}{A variable defining a second variable of groups to be compared.}
 
