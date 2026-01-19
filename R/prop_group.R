@@ -4,7 +4,7 @@
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining the groups to be compared.
-#' @param prop_exp An expression that define the proportion to be computed.
+#' @param prop_exp An expression that define the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. %in%) will not work as designed in this argument.
 #' @param group.fill A variable defining a second variable of groups to be compared.
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression that filters the data, preserving the design.
@@ -42,7 +42,7 @@
 #' @param caption Caption of the graphic.
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
-#' @param coef_font A multiplier factor for font size
+#' @param coef_font A multiplier factor for font size of all fonts on the plot. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
 #'
 #' @return A list that contains a table, a graphic and a statistical test

@@ -27,7 +27,7 @@
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
 #' @param caption Caption of the graphic.
 #' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
-#' @param coef_font A multiplier factor for font size
+#' @param coef_font A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).
 #'
 #' @return A ggplot graphic.
 #' @import rlang

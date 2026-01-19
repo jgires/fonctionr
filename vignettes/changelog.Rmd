@@ -302,9 +302,9 @@ Date : 2024-02-14
 
 #### En général
 
--   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc.**
+-   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc. FAIT**
 
--   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>.**
+-   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>. FAIT**
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 
@@ -360,8 +360,8 @@ Date : 2024-02-14
 
 -   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
 -   **(François) L'utilisation de `%in%` dans une expression ne transforme pas les `NA` en `FALSE` ou `TRUE` (alors que c'est le comportement par défaut de `%in%`) : `na.prop` est prioritaire !\
-    =\> L'indiquer dans le manuel.\
-    =\> Voir si c'est le cas ailleurs ?**
+    =\> L'indiquer dans le manuel. FAIT\
+    =\> Voir si c'est le cas ailleurs ? NON, c'est propre à cette fonction (car pas de prop_exp ailleurs)**
 
 #### central_group
 
