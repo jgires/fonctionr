@@ -130,6 +130,30 @@ prop_group <- function(data,
 
   # start_time <- Sys.time()
 
+  # Options
+  if(any(stringr::str_detect(names(options()), "^fonctionr."))){
+    warning(
+      "Paramètres actifs dans fonctionr_options(): ",
+      paste(
+        stringr::str_replace(
+          names(options())[stringr::str_detect(names(options()), "^fonctionr.")],
+          "^fonctionr.",
+          ""
+          ),
+        collapse = ", "
+        )
+      )
+
+  }
+  if(!is.null(getOption("fonctionr.font"))){
+    font = getOption("fonctionr.font")
+  }
+  if(!is.null(getOption("fonctionr.coef_font"))){
+    coef_font = getOption("fonctionr.coef_font")
+  }
+  if(!is.null(getOption("fonctionr.lang"))){
+    lang = getOption("fonctionr.lang")
+  }
 
   # 1. CHECKS DES ARGUMENTS --------------------
 
