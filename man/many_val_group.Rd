@@ -142,7 +142,7 @@ many_mean_group(..., type = "mean")
 
 \item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
 
-\item{coef_font}{A multiplier factor for font size}
+\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
 }
