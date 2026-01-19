@@ -302,9 +302,8 @@ Date : 2024-02-14
 
 #### En général
 
--   **(François) Ajouter l'explication de l'argument coef_font à la doc et l'indiquer au grand tableau de la doc. FAIT**
-
--   **(François) L'utilisation de caractères spéciaux dans les noms des groupes (par exemple `>` ou `<`) pose problème du fait de l'utilisation de `ggtext`. Il faut convertir ces caractères spéciaux en html au sein de la fonction. Voir : <https://github.com/wilkelab/ggtext/issues/48>. FAIT**
+-   **(Joël) Choisir quelles polices inclure.\
+    =\> Montserrat n'a pas les polices en gras, par ex. !**
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 

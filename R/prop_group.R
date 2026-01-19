@@ -143,7 +143,6 @@ prop_group <- function(data,
         collapse = ", "
         )
       )
-
   }
   if(!is.null(getOption("fonctionr.font"))){
     font = getOption("fonctionr.font")
