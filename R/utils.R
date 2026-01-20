@@ -89,7 +89,11 @@ convert_to_srvyr <- function(data, ...) {
 load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
-  sysfonts::font_add(family = "Montserrat", regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.otf"))
+  sysfonts::font_add(family = "Montserrat",
+                     regular = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Regular.ttf"),
+                     italic = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Italic.ttf"),
+                     bold = paste0(system.file("font", package = "fonctionr"), "/Montserrat-Bold.ttf"),
+                     bolditalic = paste0(system.file("font", package = "fonctionr"), "/Montserrat-BoldItalic.ttf"))
   sysfonts::font_add(family = "Roboto",
                      regular = paste0(system.file("font", package = "fonctionr"), "/Roboto-Regular.ttf"),
                      italic = paste0(system.file("font", package = "fonctionr"), "/Roboto-Italic.ttf"),
@@ -105,9 +109,7 @@ load_and_active_fonts <- function(){
                      italic = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Italic.ttf"),
                      bold = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Bold.ttf"),
                      bolditalic = paste0(system.file("font", package = "fonctionr"), "/Euclid_Circular_A_Bold_Italic.ttf"))
-  sysfonts::font_add(family = "Helvetica Neue", regular = paste0(system.file("font", package = "fonctionr"), "/HelveticaNeueRoman.otf"))
   sysfonts::font_add(family = "League Gothic", regular = paste0(system.file("font", package = "fonctionr"), "/LeagueGothic-Regular.otf"))
-  sysfonts::font_add(family = "Amatic", regular = paste0(system.file("font", package = "fonctionr"), "/AmaticSC-Regular.ttf"))
   showtext::showtext_auto()
 }
 
