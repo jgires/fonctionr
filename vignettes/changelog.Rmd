@@ -357,14 +357,14 @@ Date : 2024-02-14
 
 #### prop_group
 
--   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient. FAIT, mais je ne sais pas trop d'où ça vient (peut-être du as.factor, deparse ou substitute?)**
 -   **(François) L'utilisation de `%in%` dans une expression ne transforme pas les `NA` en `FALSE` ou `TRUE` (alors que c'est le comportement par défaut de `%in%`) : `na.prop` est prioritaire !\
     =\> L'indiquer dans le manuel. FAIT\
     =\> Voir si c'est le cas ailleurs ? NON, c'est propre à cette fonction (car pas de prop_exp ailleurs)**
 
 #### central_group
 
--   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient.**
+-   **(François) L'ordre des couleurs est inversé par défaut ? Se corrige avec l'argument `direction`, mais pas cohérent avec autres fonctions =\> voir d'où ça vient. FAIT (IDEM)**
 -   Bypasser l'erreur du test stat avec `tryCatch()`.
 
 #### distrib_group_d

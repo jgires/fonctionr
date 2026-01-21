@@ -561,7 +561,7 @@ prop_group <- function(data,
     palette <- create_palette(
       pal = pal,
       levels_palette = nlevels(as.factor(tab[[deparse(substitute(group.fill))]])),
-      direction = direction,
+      direction = -1*direction,
       name_function = "prop_group",
       desaturate = desaturate,
       lighten = lighten,

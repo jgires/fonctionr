@@ -15,7 +15,7 @@
 #' @param na.vars The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
 #' @param total TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE
 #' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
-#' @param position Position adjustment for the ggplot.
+#' @param position Position adjustment for the ggplot. Default is "dodge". Other possible values are "flip" and "stack". "dodge" means that groups are on the y axe and variables are in differents colors, "flip" means that variables are on the y axe and groups are in differents colors, and "stack" means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum varible (e.g. different sources of income).
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
@@ -502,7 +502,7 @@ many_val_group = function(data,
     pal = pal,
     # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
     levels_palette = nlevels(tab[[column_fill]]),
-    direction = direction,
+    direction = -1*direction,
     name_function = "make_surface",
     desaturate = desaturate,
     lighten = lighten,
