@@ -24,6 +24,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
+#' @param col If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param pal If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -107,7 +108,8 @@ prop_group <- function(data,
                        digits = 0,
                        unit = "%",
                        dec = NULL,
-                       pal = NULL,
+                       col = "deepskyblue3",
+                       pal = "Coast",
                        direction = 1,
                        desaturate = 0,
                        lighten = 0,
@@ -181,6 +183,7 @@ prop_group <- function(data,
       total_name = total_name,
       unit = unit,
       dec = dec,
+      col = col,
       # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       font = font,
       title = title,
@@ -539,21 +542,23 @@ prop_group <- function(data,
 
   # On cree la palette
 
-  # La palette est differente selon qu'il y a group.fill (1 couleur) ou non (1 palette)
+  # La palette est differente selon qu'il y a group.fill (1 palette) ou non (1 couleur)
   if(quo_is_null(quo_group.fill)) {
-    # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
-    if(!is.null(pal) & all(isColor(pal)) == TRUE & length(pal) == 1){
-      palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
-    } else { # Si pal est NULL, n'est pas valide ou de longueur != 1 => on met la couleur par defaut
-      if(!is.null(pal) & (all(isColor(pal)) == FALSE)|length(pal) != 1){ # Warning uniquement si une couleur fausse a ete entree
-        warning("pal n'est pas valide : la couleur par defaut est utilisee")
+    # On cree la palette : avec le total au debut (en gris fonce) puis x fois la col selon le nombre de levels - 1 (le total etant deja un niveau)
+    if(!is.null(col) & isColor(col) == TRUE){
+      palette <- c(rep(col, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+    # Si col est NULL ou n'est pas valide => on met la couleur par defaut
+    } else {
+      # Warning uniquement si une couleur fausse a ete entree
+      if(!is.null(col) & isColor(col) == FALSE){
+        warning("col n'est pas valide : la couleur par defaut est utilisee")
       }
-      pal <- "deepskyblue3" # Alors pal == "deepskyblue3"
-      palette <- c(rep(pal, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
+      col <- "deepskyblue3" # Alors col == "deepskyblue3"
+      palette <- c(rep(col, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
     }
     # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
     if(total == FALSE) {
-      palette[palette == "grey40"] <- pal
+      palette[palette == "grey40"] <- col
     }
   }
 
