@@ -892,6 +892,10 @@ create_palette <- function(pal,
       # S'il y a le bon nombre de couleurs
       if(length(pal) == levels_palette){
         palette <- pal
+        # Pour rendre compatible avec direction, meme si rien ne doit etre change dans la palette !
+        if(direction == -1){
+          palette <- rev(palette)
+        }
       }
       # S'il n'y a PAS le bon nombre de couleurs => defaut
       if(length(pal) != levels_palette){
