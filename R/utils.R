@@ -866,7 +866,7 @@ create_palette <- function(pal,
   }
   # Si pal est rempli par l'utilisateur
   if(!is.null(pal)){
-    # Si pal est de longueur 1 (= soit 1 couleur soit le nom d'1 palette)
+    # Si pal est de longueur 1 (= le nom d'1 palette)
     if(length(pal) == 1){
 
       # On cree la palette avec le package MetBrewer

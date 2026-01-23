@@ -302,6 +302,9 @@ Date : 2024-02-14
 
 #### En général
 
+-   **(Joël) Lorsqu'on rentre une palette soi même, elle est inversée dans certaines fonctions, alors que ce n'est pas le cas pour les palettes automatiques ???\
+    =\> refaire le chemin de la génération des palettes.**
+
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 
 -   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
@@ -375,6 +378,8 @@ Date : 2024-02-14
 
 #### many_val_group
 
+-   **(Joël) Le `NA` apparait en premier ?\
+    =\> Corriger, il doit apparaître en dernier.**
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
 -   Les couleurs des palettes sont attachées au groupe, mais pas à la position. De ce fait, lorsque `reorder = T`, l'ordre des couleurs de la palette n'est pas respecté =\> changer le comportement ?
