@@ -86,7 +86,7 @@ many_mean_group(..., type = "mean")
 
 \item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
 
-\item{position}{Position adjustment for the ggplot.}
+\item{position}{Position adjustment for the ggplot. Default is "dodge". Other possible values are "flip" and "stack". "dodge" means that groups are on the y axe and variables are in differents colors, "flip" means that variables are on the y axe and groups are in differents colors, and "stack" means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum varible (e.g. different sources of income).}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
 

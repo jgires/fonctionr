@@ -168,6 +168,8 @@ prop_group <- function(data,
     }
 
   }
+
+
   # 1. CHECKS DES ARGUMENTS --------------------
 
   # Check des arguments necessaires
@@ -545,18 +547,19 @@ prop_group <- function(data,
   # La palette est differente selon qu'il y a group.fill (1 palette) ou non (1 couleur)
   if(quo_is_null(quo_group.fill)) {
     # On cree la palette : avec le total au debut (en gris fonce) puis x fois la col selon le nombre de levels - 1 (le total etant deja un niveau)
-    if(!is.null(col) & isColor(col) == TRUE){
+    # Si couleur introduite par l'utilisateur
+    if(!is.null(col) & all(isColor(col)) == TRUE){
       palette <- c(rep(col, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
     # Si col est NULL ou n'est pas valide => on met la couleur par defaut
     } else {
       # Warning uniquement si une couleur fausse a ete entree
-      if(!is.null(col) & isColor(col) == FALSE){
+      if(!is.null(col) & all(isColor(col)) == FALSE){
         warning("col n'est pas valide : la couleur par defaut est utilisee")
       }
       col <- "deepskyblue3" # Alors col == "deepskyblue3"
       palette <- c(rep(col, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")
     }
-    # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
+    # Si pas de total, alors pas de gris mais tout en col (indiquee par l'utilisateur ou par defaut si n'existe pas)
     if(total == FALSE) {
       palette[palette == "grey40"] <- col
     }

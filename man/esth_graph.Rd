@@ -20,7 +20,8 @@ esth_graph(
   digits = 2,
   unit = "",
   dec = ",",
-  pal = "indianred4",
+  pal = NULL,
+  col = "indianred4",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -64,7 +65,9 @@ esth_graph(
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
-\item{pal}{Colour of the bars.}
+\item{pal}{For compatibility with old versions.}
+
+\item{col}{Colour of the bars.}
 
 \item{dodge}{Width of the bar, between 0 and 1.}
 
@@ -121,7 +124,7 @@ plot_test<-esth_graph(data_test,
            digits = 1,
            unit = "\%",
            dec = ".",
-           pal = "green4",
+           col = "green4",
            dodge = 0.8,
            font = "Montserrat",
            wrap_width_y = 25,

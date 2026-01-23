@@ -32,9 +32,12 @@
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal Color of the density areas. Can be one or sereval colors to create a palette.
-#' @param pal_moustache Color of the moustache. Can be one or sereval colors to create a palette.
-#' @param color Color of the density curve. Has to be one color.
+#' @param pal For compatibility with old versions.
+#' @param col_density color of the density area. maybe one color or a vector with several colors.
+#' @param pal_moustache For compatibility with old versions.
+#' @param col_moustache Color of the moustache. Can be one or sereval colors to create a palette.
+#' @param color For compatibility with old versions.
+#' @param col_border color of the density line.
 #' @param alpha Transparence of the density curve. Default is 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line in the labels of the groups. Default is 25
@@ -118,9 +121,12 @@ distrib_group_continuous <- function(data,
                                digits = 0,
                                unit = "",
                                dec = NULL,
-                               pal = "#e0dfe0",
-                               pal_moustache = c("#EB9BA0", "#FAD7B1"),
-                               color = NA,
+                               pal = NULL,
+                               col_density = "#e0dfe0",
+                               pal_moustache = NULL,
+                               col_moustache = c("#EB9BA0", "#FAD7B1"),
+                               color = NULL,
+                               col_border = NA,
                                alpha = 1,
                                font ="Roboto",
                                wrap_width_y = 25,
@@ -147,7 +153,7 @@ distrib_group_continuous <- function(data,
       type = type,
       unit = unit,
       dec = dec,
-      color = color,
+      col_border = col_border,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -162,8 +168,8 @@ distrib_group_continuous <- function(data,
   # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
   # check_arg(
   #   arg = list(
-  #     pal = pal,
-  #     pal_moustache = pal_moustache
+  #     col_density = col_density,
+  #     col_moustache = col_moustache
   #   ),
   #   type = "character",
   #   short = F
@@ -225,7 +231,7 @@ distrib_group_continuous <- function(data,
   }
 
   # On empeche une hauteur de plus de 1 si palette multicolore (ca deconne si chevauchement)
-  if(height > 1 & length(pal) > 1){
+  if(height > 1 & length(col_density) > 1){
     message("Une hauteur de plus de 1 n'est pas possible lorsque la palette est multicolore. La hauteur est redefinie a .8")
     height <- .8
   }
@@ -697,21 +703,21 @@ distrib_group_continuous <- function(data,
 
   # 6. CREATION DU GRAPHIQUE --------------------
 
-  if(all(isColor(pal)) == TRUE){
+  if(all(isColor(col_density)) == TRUE){
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    message("Une couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
-    pal <- "#e0dfe0"
+    message("Une couleur indiquee dans col_density n'existe pas : la couleur par defaut est utilisee")
+    col_density <- "#e0dfe0"
   }
 
   # La palette divergente => varie selon que le nombre de quantiles soit pair ou impair
   if(length(estQuant_W_group$quantile) %% 2 == 0){
-    palette <- grDevices::colorRampPalette(pal)((length(unique(estQuant_W$probs))/2)+1)
+    palette <- grDevices::colorRampPalette(col_density)((length(unique(estQuant_W$probs))/2)+1)
     palette <- c(palette, rev(palette)[-1])
   }
   if(length(estQuant_W_group$quantile) %% 2 == 1){
-    palette <- grDevices::colorRampPalette(pal)(((length(unique(estQuant_W$probs))+1)/2)+1)
+    palette <- grDevices::colorRampPalette(col_density)(((length(unique(estQuant_W$probs))+1)/2)+1)
     palette <- c(palette, rev(palette)[-c(1,2)])
     # palette <- c(rev(rev(palette)[-2]), rev(palette)[-1])
   }
@@ -719,15 +725,15 @@ distrib_group_continuous <- function(data,
   # Palette pour les moustaches, selon le nombre de proportions dans moustache_probs
   if (show_moustache == T) {
 
-    if(all(isColor(pal_moustache)) == TRUE){
+    if(all(isColor(col_moustache)) == TRUE){
       # Si condition remplie on ne fait rien => on garde la palette
     } else {
       # Sinon on met la couleur par defaut
-      message("Une couleur indiquee dans pal_moustache n'existe pas : la couleur par defaut est utilisee")
-      pal_moustache <- c("#EB9BA0", "#FAD7B1")
+      message("Une couleur indiquee dans col_moustache n'existe pas : la couleur par defaut est utilisee")
+      col_moustache <- c("#EB9BA0", "#FAD7B1")
     }
 
-    pal_mous_calc <- grDevices::colorRampPalette(pal_moustache)(length(unique(moustache_probs)))
+    pal_mous_calc <- grDevices::colorRampPalette(col_moustache)(length(unique(moustache_probs)))
   }
 
   # Les limites de la variable quanti si non indiquee par l'utilisateur => pour ggplot
@@ -743,7 +749,7 @@ distrib_group_continuous <- function(data,
     data = df_dens,
   )
 
-  if(length(unique(pal)) != 1){
+  if(length(unique(col_density)) != 1){
     graph <- graph +
       geom_ribbon(
         data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
@@ -759,7 +765,7 @@ distrib_group_continuous <- function(data,
         guide = "none"
       )
   }
-  if(length(unique(pal)) == 1){
+  if(length(unique(col_density)) == 1){
     graph <- graph +
       geom_ribbon(
         data = df_dens[!is.na(df_dens$quantFct), ], # Car geom_ribbon n'accepte pas les NA => warning si je le fais pas !
@@ -768,7 +774,7 @@ distrib_group_continuous <- function(data,
           group = group # Ici le groupe doit etre l'interaction du groupe et des quantiles pour dessiner correctement les ribbon par groupe
         ),
         alpha = alpha,
-        fill = pal
+        fill = col_density
       )
   }
 
@@ -780,7 +786,7 @@ distrib_group_continuous <- function(data,
         y = y_ridges,
         group = group
       ),
-      color = color,
+      color = col_border,
       linewidth = .7
     ) +
     # geom_line(
@@ -789,7 +795,7 @@ distrib_group_continuous <- function(data,
     #     y = level - 1,
     #     group = group
     #   ),
-    #   color = color,
+    #   color = col_border,
     #   linewidth = .7
     # ) +
     scale_x_continuous(

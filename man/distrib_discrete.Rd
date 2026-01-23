@@ -24,7 +24,8 @@ distrib_discrete(
   digits = 0,
   unit = "\%",
   dec = NULL,
-  pal = "sienna2",
+  pal = NULL,
+  col = "sienna2",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -78,7 +79,9 @@ distrib_d(...)
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
+\item{pal}{For compatibility with old versions.}
+
+\item{col}{Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.}
 
 \item{dodge}{Width of the bar, between 0 and 1. Default is 0.9.}
 

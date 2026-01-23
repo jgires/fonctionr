@@ -20,7 +20,8 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
+#' @param pal For compatibility with old versions.
+#' @param col Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total bar are always in grey.
 #' @param dodge Width of the bar, between 0 and 1. Default is 0.9.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line in the labels of the categories. Default is 25.
@@ -91,7 +92,8 @@ distrib_discrete <- function(data,
                              digits = 0,
                              unit = "%",
                              dec = NULL,
-                             pal = "sienna2",
+                             pal = NULL,
+                             col = "sienna2",
                              dodge = 0.9,
                              font ="Roboto",
                              wrap_width_y = 25,
@@ -119,7 +121,7 @@ distrib_discrete <- function(data,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
-      pal = pal,
+      col = col,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -322,11 +324,11 @@ distrib_discrete <- function(data,
   # 5. CREATION DU GRAPHIQUE --------------------
 
   # On cree la palette : x fois la couleur selon le nombre de levels
-  if(all(isColor(pal)) == TRUE){
-    palette <- c(rep(pal, nlevels(tab[[deparse(substitute(quali_var))]])))
+  if(all(isColor(col)) == TRUE){
+    palette <- c(rep(col, nlevels(tab[[deparse(substitute(quali_var))]])))
   } else { # Si la couleur n'est pas valide => on met la couleur par defaut
     palette <- c(rep("sienna2", nlevels(tab[[deparse(substitute(quali_var))]])))
-    warning("La couleur indiquee dans pal n'existe pas : la couleur par defaut est utilisee")
+    warning("La couleur indiquee dans col n'existe pas : la couleur par defaut est utilisee")
   }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot

@@ -27,7 +27,8 @@ central_group(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = NULL,
+  col = NULL,
+  pal = "Peppers",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -49,9 +50,9 @@ central_group(
   export_path = NULL
 )
 
-median_group(..., type = "median")
+median_group(..., type = "median", col = "deeppink3")
 
-mean_group(..., type = "mean")
+mean_group(..., type = "mean", col = "mediumorchid3")
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
@@ -93,6 +94,8 @@ mean_group(..., type = "mean")
 \item{unit}{Unit showed on the graphic. Default is no unit.}
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+
+\item{col}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
 
 \item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
 

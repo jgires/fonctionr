@@ -25,8 +25,10 @@
 #' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
 #' @param unit Unit showed on the graphic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal color of the density area. maybe one color or a vector with several colors.
-#' @param color color of the density line.
+#' @param pal For compatibility with old versions.
+#' @param col_density color of the density area. maybe one color or a vector with several colors.
+#' @param color For compatibility with old versions.
+#' @param col_border color of the density line.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
@@ -90,8 +92,10 @@ distrib_continuous <- function(data,
                           digits = 0,
                           unit = "",
                           dec = NULL,
-                          pal = c("#00708C", "mediumturquoise"),
-                          color = NA,
+                          pal = NULL,
+                          col_density = c("#00708C", "mediumturquoise"),
+                          color = NULL,
+                          col_border = NA,
                           font ="Roboto",
                           title = NULL,
                           subtitle = NULL,
@@ -116,7 +120,7 @@ distrib_continuous <- function(data,
       type = type,
       unit = unit,
       dec = dec,
-      color = color,
+      col_border = col_border,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -131,7 +135,7 @@ distrib_continuous <- function(data,
   # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
   # check_arg(
   #   arg = list(
-  #     pal = pal
+  #     col_density = col_density
   #   ),
   #   type = "character",
   #   short = F
@@ -308,7 +312,10 @@ distrib_continuous <- function(data,
   estDensity <- stats::density(data_W$variables[["quanti_exp_flattened"]],
     n = resolution,
     adjust = bw,
+    # Pour faire taire le warning qui dit que la somme des poids != 1
     subdensity = T,
+    # Pour faire taire le warning qui dit que bw ne prend pas en compte les poids
+    warnWbw = F,
     weights = if (is.null(var_weights)) {
       NULL
     # On introduit la variable de ponderation identifiee dans var_weights mais transformee pour que la somme = 1
@@ -421,21 +428,21 @@ distrib_continuous <- function(data,
 
   # 5. CREATION DU GRAPHIQUE --------------------
 
-  if(all(isColor(pal)) == TRUE){
+  if(all(isColor(col_density)) == TRUE){
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    message("Une couleur indiquee dans pal n'existe pas : la palette de couleurs par defaut est utilisee")
-    pal <- c("#00708C", "mediumturquoise")
+    message("Une couleur indiquee dans col_density n'existe pas : la palette de couleurs par defaut est utilisee")
+    col_density <- c("#00708C", "mediumturquoise")
   }
 
   # La palette divergente => varie selon que le nombre de quantiles soit pair ou impair
   if(length(estQuant_W$quantile) %% 2 == 0){
-    palette <- grDevices::colorRampPalette(pal)((length(estQuant_W$quantile)/2)+1)
+    palette <- grDevices::colorRampPalette(col_density)((length(estQuant_W$quantile)/2)+1)
     palette <- c(palette, rev(palette)[-1])
   }
   if(length(estQuant_W$quantile) %% 2 == 1){
-    palette <- grDevices::colorRampPalette(pal)(((length(estQuant_W$quantile)+1)/2)+1)
+    palette <- grDevices::colorRampPalette(col_density)(((length(estQuant_W$quantile)+1)/2)+1)
     palette <- c(palette, rev(palette)[-c(1,2)])
     # palette <- c(rev(rev(palette)[-2]), rev(palette)[-1])
   }
@@ -466,7 +473,7 @@ distrib_continuous <- function(data,
         x = x,
         y = y
       ),
-      color = color,
+      color = col_border,
       linewidth = .7
     ) +
     scale_x_continuous(

@@ -27,8 +27,10 @@ distrib_continuous(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = c("#00708C", "mediumturquoise"),
-  color = NA,
+  pal = NULL,
+  col_density = c("#00708C", "mediumturquoise"),
+  color = NULL,
+  col_border = NA,
   font = "Roboto",
   title = NULL,
   subtitle = NULL,
@@ -86,9 +88,13 @@ distrib_c(...)
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{color of the density area. maybe one color or a vector with several colors.}
+\item{pal}{For compatibility with old versions.}
 
-\item{color}{color of the density line.}
+\item{col_density}{color of the density area. maybe one color or a vector with several colors.}
+
+\item{color}{For compatibility with old versions.}
+
+\item{col_border}{color of the density line.}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 

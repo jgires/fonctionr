@@ -16,6 +16,7 @@
 #' @param name_total Name of the var label that may contain the total. When indicated, it is not displayed on the graph.
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit The unit showd on the plot. Default is percent.
+#' @param col Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
 #' @param pal Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -91,6 +92,7 @@ make_surface <- function(tab,
                          name_total = "Total",
                          digits = 0,
                          unit = NULL,
+                         col = NULL,
                          pal = "Kandinsky",
                          direction = 1,
                          desaturate = 0,
@@ -108,6 +110,19 @@ make_surface <- function(tab,
                          subtitle = NULL,
                          caption = NULL) {
 
+  # On enregistre le call
+  call <- match.call()
+  # On cree un vecteur avec le nom des arguments definis explicitement par l'utilisateur (sans le nom de la fonction)
+  user.args <- names(call[-1])
+  # On cree un vecteur avec le nom des arguments definis dans fonctionr_options()
+  options_args <- stringr::str_replace(
+    names(options())[stringr::str_detect(names(options()), "^fonctionr.")],
+    # On enleve le prefixe "fontionr." pour retrouver les memes noms que dans la fonction
+    "^fonctionr.",
+    ""
+  )
+
+
   # 1. CHECKS DES ARGUMENTS --------------------
 
   # Check des arguments necessaires
@@ -121,6 +136,7 @@ make_surface <- function(tab,
       position = position,
       name_total = name_total,
       unit = unit,
+      col = col,
       # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       bg = bg,
       font = font,
@@ -308,16 +324,42 @@ make_surface <- function(tab,
 
   # On cree la palette
 
-  palette <- create_palette(
-    pal = pal,
-    # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
-    levels_palette = length(unique(tab[[deparse(substitute(var))]])),
-    direction = direction,
-    name_function = "make_surface",
-    desaturate = desaturate,
-    lighten = lighten,
-    darken = darken
-  )
+  # On cree la palette
+  # Particulier a many_val() et make_surface() : possibilite d'une palette unicolore
+
+  # Si :
+  # * col est defini (= option ou utilisateur)
+  # * + pal n'est pas indique par l'utilisateur (dans user.args car pal est defini par defaut, sinon col ne peut jamais etre applique !)
+  # * + pal n'est pas dans les options (dans options_args)
+  # => Autrement dit, col est prioritaire seulement si pal n'est pas la.
+  # OU
+  # * col est indique par l'utilisateur
+  # * + pal n'est pas indique par l'utilisateur
+  # => Dans ce cas, col de l'utilisateur est prioritaire sur pal des options
+  if((!is.null(col) & !"pal" %in% user.args & !"pal" %in% options_args) | ("col" %in% user.args & !"pal" %in% user.args)){
+    # On cree la palette
+    if(all(isColor(col)) == TRUE){
+      palette <- rep(col, length(unique(tab[[deparse(substitute(var))]])))
+      # Si col est pas valide => on met la couleur par defaut
+    } else {
+      if(all(isColor(col)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
+        warning("col n'est pas valide : la couleur par defaut est utilisee")
+      }
+      col <- "indianred4" # Alors col == "indianred4"
+      palette <- rep(col, length(unique(tab[[deparse(substitute(var))]])))
+    }
+  } else {
+    palette <- create_palette(
+      pal = pal,
+      # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
+      levels_palette = length(unique(tab[[deparse(substitute(var))]])),
+      direction = direction,
+      name_function = "make_surface",
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken
+    )
+  }
 
   # On cree le graphique
 

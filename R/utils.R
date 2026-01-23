@@ -882,10 +882,6 @@ create_palette <- function(pal,
       } else if(pal %in% official_pal(list_pal_names = T)){
         palette <- as.character(official_pal(inst = pal, n = levels_palette, direction = direction))
 
-      # Particulier a many_val() : on cree une palette unicolore (pour que tous les indicateurs aient la meme couleur => pas de sens ailleurs)
-      } else if(isColor(pal) & name_function == "many_val"){
-        palette <- rep(pal, levels_palette)
-
       # Si la couleur/palette n'est pas valide => defaut
       } else {
         palette <- palette_function()

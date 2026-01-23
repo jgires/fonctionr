@@ -17,7 +17,8 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit The unit showd on the plot. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Default is ","
-#' @param pal Colour of the bars.
+#' @param pal For compatibility with old versions.
+#' @param col Colour of the bars.
 #' @param dodge Width of the bar, between 0 and 1.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param wrap_width_y Number of characters before going to the line. Applies to the labels var. Default is 25.
@@ -64,7 +65,7 @@
 #'            digits = 1,
 #'            unit = "%",
 #'            dec = ".",
-#'            pal = "green4",
+#'            col = "green4",
 #'            dodge = 0.8,
 #'            font = "Montserrat",
 #'            wrap_width_y = 25,
@@ -94,7 +95,8 @@ esth_graph <- function(tab,
                        digits = 2,
                        unit = "",
                        dec = ",",
-                       pal = "indianred4",
+                       pal = NULL,
+                       col = "indianred4",
                        dodge = 0.9,
                        font ="Roboto",
                        wrap_width_y = 25,
@@ -127,7 +129,7 @@ esth_graph <- function(tab,
       name_total = name_total,
       unit = unit,
       dec = dec,
-      pal = pal,
+      col = col,
       font = font,
       title = title,
       subtitle = subtitle,
@@ -190,21 +192,20 @@ esth_graph <- function(tab,
 
   # 3. CREATION DU GRAPHIQUE --------------------
 
-  # On cree la palette
-
-  if(!is.null(pal) & all(isColor(pal)) == TRUE & length(pal) == 1){
-    # On cree la palette : avec le total au debut (en gris fonce) puis x fois le pal selon le nombre de levels - 1 (le total etant deja un niveau)
-    palette <- c(rep(pal, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
-  } else { # Si pal est NULL, n'est pas valide ou de longueur != 1 => on met la couleur par defaut
-    if(!is.null(pal) & (all(isColor(pal)) == FALSE)|length(pal) != 1){ # Warning uniquement si une couleur fausse a ete entree
-      warning("pal n'est pas valide : la couleur par defaut est utilisee")
+  # On cree la palette : avec le total au debut (en gris fonce) puis x fois la col selon le nombre de levels - 1 (le total etant deja un niveau)
+  if(!is.null(col) & all(isColor(col)) == TRUE){
+    palette <- c(rep(col, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
+  # Si col est NULL ou n'est pas valide => on met la couleur par defaut
+  } else {
+    if(!is.null(col) & (all(isColor(col)) == FALSE)){ # Warning uniquement si une couleur fausse a ete entree
+      warning("col n'est pas valide : la couleur par defaut est utilisee")
     }
-    pal <- "indianred4" # Alors pal == "indianred4"
-    palette <- c(rep("indianred4", nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
+    col <- "indianred4" # Alors col == "indianred4"
+    palette <- c(rep(col, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
   }
-  # Si pas de total, alors pas de gris mais tout en pal (indiquee par l'utilisateur ou par defaut si n'existe pas)
+  # Si pas de total, alors pas de gris mais tout en col (indiquee par l'utilisateur ou par defaut si n'existe pas)
   if(is.null(name_total)) {
-    palette[palette == "grey40"] <- pal
+    palette[palette == "grey40"] <- col
   }
 
   # Creer max_ggplot

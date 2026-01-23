@@ -27,6 +27,7 @@ many_val(
   digits = 0,
   unit = NULL,
   dec = NULL,
+  col = NULL,
   pal = "Egypt",
   direction = 1,
   desaturate = 0,
@@ -90,6 +91,8 @@ many_mean(..., type = "mean")
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+
+\item{col}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
 
 \item{pal}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
 

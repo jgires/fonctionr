@@ -20,6 +20,7 @@ make_surface(
   name_total = "Total",
   digits = 0,
   unit = NULL,
+  col = NULL,
   pal = "Kandinsky",
   direction = 1,
   desaturate = 0,
@@ -68,6 +69,8 @@ make_surface(
 \item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
 
 \item{unit}{The unit showd on the plot. Default is percent.}
+
+\item{col}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
 
 \item{pal}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
 

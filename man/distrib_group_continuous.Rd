@@ -34,9 +34,12 @@ distrib_group_continuous(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = "#e0dfe0",
-  pal_moustache = c("#EB9BA0", "#FAD7B1"),
-  color = NA,
+  pal = NULL,
+  col_density = "#e0dfe0",
+  pal_moustache = NULL,
+  col_moustache = c("#EB9BA0", "#FAD7B1"),
+  color = NULL,
+  col_border = NA,
   alpha = 1,
   font = "Roboto",
   wrap_width_y = 25,
@@ -110,11 +113,17 @@ distrib_group_c(...)
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Color of the density areas. Can be one or sereval colors to create a palette.}
+\item{pal}{For compatibility with old versions.}
 
-\item{pal_moustache}{Color of the moustache. Can be one or sereval colors to create a palette.}
+\item{col_density}{color of the density area. maybe one color or a vector with several colors.}
 
-\item{color}{Color of the density curve. Has to be one color.}
+\item{pal_moustache}{For compatibility with old versions.}
+
+\item{col_moustache}{Color of the moustache. Can be one or sereval colors to create a palette.}
+
+\item{color}{For compatibility with old versions.}
+
+\item{col_border}{color of the density line.}
 
 \item{alpha}{Transparence of the density curve. Default is 1.}
 

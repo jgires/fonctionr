@@ -27,7 +27,8 @@ prop_group(
   digits = 0,
   unit = "\%",
   dec = NULL,
-  pal = NULL,
+  col = "deepskyblue3",
+  pal = "Coast",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -93,6 +94,8 @@ prop_group(
 \item{unit}{Unit showed in the graphic. Default is percent.}
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+
+\item{col}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
 
 \item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
 

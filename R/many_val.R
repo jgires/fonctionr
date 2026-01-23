@@ -21,6 +21,7 @@
 #' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
 #' @param unit Unit showed in the graphic. Default is percent.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
+#' @param col Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
 #' @param pal Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
@@ -96,6 +97,7 @@ many_val = function(data,
                     digits = 0,
                     unit = NULL,
                     dec = NULL,
+                    col = NULL,
                     pal = "Egypt",
                     direction = 1,
                     desaturate = 0,
@@ -113,6 +115,18 @@ many_val = function(data,
                     theme = NULL,
                     coef_font = 1,
                     export_path = NULL){
+
+  # On enregistre le call
+  call <- match.call()
+  # On cree un vecteur avec le nom des arguments definis explicitement par l'utilisateur (sans le nom de la fonction)
+  user.args <- names(call[-1])
+  # On cree un vecteur avec le nom des arguments definis dans fonctionr_options()
+  options_args <- stringr::str_replace(
+    names(options())[stringr::str_detect(names(options()), "^fonctionr.")],
+    # On enleve le prefixe "fontionr." pour retrouver les memes noms que dans la fonction
+    "^fonctionr.",
+    ""
+  )
 
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -133,6 +147,7 @@ many_val = function(data,
       prop_method = prop_method,
       unit = unit,
       dec = dec,
+      col = col,
       # pal = pal, # Je supprime pour pouvoir generer automatiquement des palettes dans l'argument avec des fonctions
       font = font,
       title = title,
@@ -385,17 +400,41 @@ many_val = function(data,
   }
 
   # On cree la palette
+  # Particulier a many_val() et make_surface() : possibilite d'une palette unicolore
 
-  palette <- create_palette(
-    pal = pal,
-    # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
-    levels_palette = nlevels(tab[["list_col"]]),
-    direction = direction,
-    name_function = "many_val",
-    desaturate = desaturate,
-    lighten = lighten,
-    darken = darken
-  )
+  # Si :
+  # * col est defini (= option ou utilisateur)
+  # * + pal n'est pas indique par l'utilisateur (dans user.args car pal est defini par defaut, sinon col ne peut jamais etre applique !)
+  # * + pal n'est pas dans les options (dans options_args)
+  # => Autrement dit, col est prioritaire seulement si pal n'est pas la.
+  # OU
+  # * col est indique par l'utilisateur
+  # * + pal n'est pas indique par l'utilisateur
+  # => Dans ce cas, col de l'utilisateur est prioritaire sur pal des options
+  if((!is.null(col) & !"pal" %in% user.args & !"pal" %in% options_args) | ("col" %in% user.args & !"pal" %in% user.args)){
+    # On cree la palette
+    if(all(isColor(col)) == TRUE){
+      palette <- rep(col, nlevels(tab[["list_col"]]))
+    # Si col est pas valide => on met la couleur par defaut
+    } else {
+      if(all(isColor(col)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
+        warning("col n'est pas valide : la couleur par defaut est utilisee")
+      }
+      col <- "indianred4" # Alors col == "indianred4"
+      palette <- rep(col, nlevels(tab[["list_col"]]))
+    }
+  } else {
+    palette <- create_palette(
+      pal = pal,
+      # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
+      levels_palette = nlevels(tab[["list_col"]]),
+      direction = direction,
+      name_function = "many_val",
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken
+    )
+  }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
   max_ggplot <- max(tab$indice, na.rm = TRUE)
