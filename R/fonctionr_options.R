@@ -2,10 +2,22 @@
 #'
 #' Function to set global options for fonctionr
 #'
+#' @param total total
+#' @param prop_method prop_method
+#' @param reorder reorder
+#' @param show_ci show_ci
+#' @param show_n show_n
+#' @param show_value show_value
+#' @param show_labs show_labs
+#' @param dec dec
+#' @param pal pal
+#' @param col col
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param coef_font A multiplier factor for font size
+#' @param caption caption
+#' @param theme theme
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param reset TRUE erases all the options. Default is FALSE.
+#' @param erase_all TRUE erases all the options. Default is FALSE.
 #'
 #' @export
 #'
@@ -39,25 +51,54 @@
 #' # Results in graph form
 #' eusilc_prop$graph
 #'
-fonctionr_options <- function(font = NULL,
+fonctionr_options <- function(total = NULL,
+                              prop_method = NULL,
+                              reorder = NULL,
+                              show_ci = NULL,
+                              show_n = NULL,
+                              show_value = NULL,
+                              show_labs = NULL,
+                              dec = NULL,
+                              pal = NULL,
+                              col = NULL,
+                              font = NULL,
                               coef_font = NULL,
+                              caption = NULL,
+                              theme = NULL,
                               lang = NULL,
-                              reset = FALSE) {
+                              erase_all = FALSE) {
 
-  if(!is.null(font)){
-    options(fonctionr.font = font)
+  # On enregistre le call
+  call_options <- match.call()
+  # On cree une liste avec le nom des options definies par l'utilisateur + leur valeur
+  options.args <- as.list(call_options[-1]) # -1 pour enlever le nom de la fonction
+  # On enleve erase_all (qu'on ne veut pas ajouter aux options generales)
+  options.args <- options.args[names(options.args) != "erase_all"]
+
+
+  if(erase_all == TRUE){
+    # Pour le erase_all : uniquement si pas d'options renseignees dans le call
+    if(length(options.args) == 0){
+      options(fonctionr.options = NULL)
+    }
+    # Sinon erreur
+    if(length(options.args) > 0){
+      stop("Impossible d'effacer et d'activer des options simultanement")
+    }
   }
-  if(!is.null(coef_font)){
-    options(fonctionr.coef_font = coef_font)
-  }
-  if(!is.null(lang)){
-    options(fonctionr.lang = lang)
+  if(erase_all == FALSE){
+    # SSI il y a des options renseignees dans le call => sinon il efface alors qu'on ne fait que demander les options actives
+    if(length(options.args) > 0){
+      # On ajoute les options de fonctionr_options() aux options generales
+      options(fonctionr.options = options.args)
+    }
   }
 
-  if(reset){
-    options(fonctionr.font = NULL)
-    options(fonctionr.coef_font = NULL)
-    options(fonctionr.lang = NULL)
+  # On affiche les options actives de fonctionr
+  if(length(options()[names(options()) == "fonctionr.options"]) > 0){
+    options()[names(options()) == "fonctionr.options"]
+  } else {
+    message("Aucune option de fonctionr active")
   }
 
 }

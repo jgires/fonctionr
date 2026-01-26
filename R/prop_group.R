@@ -130,43 +130,33 @@ prop_group <- function(data,
                        coef_font = 1,
                        export_path = NULL) {
 
-  # start_time <- Sys.time()
+  # start_time <- Sys.time
 
+  # Les arguments par defaut
+  formals.args <- formals()
   # On enregistre le call
   call <- match.call()
   # On cree un vecteur avec le nom des arguments definis explicitement par l'utilisateur (sans le nom de la fonction)
   user.args <- names(call[-1])
-  # On cree un vecteur avec le nom des arguments definis dans fonctionr_options()
-  options_args <- stringr::str_replace(
-    names(options())[stringr::str_detect(names(options()), "^fonctionr.")],
-    # On enleve le prefixe "fontionr." pour retrouver les memes noms que dans la fonction
-    "^fonctionr.",
-    ""
-    )
 
-  # On liste les options actives (= definies dans fonctionr_options() MAIS qui ne sont pas definies par l'utilisateur)
+  # On cree une liste avec les noms et valeurs des arguments definis dans fonctionr_options()
+  list_opt_fonctionr <- options()[names(options()) == "fonctionr.options"]
+  # On ne retient que les options definies dans fonctionr_options() MAIS qui ne sont pas definies par l'utilisateur et qui sont bien utilisees dans cette fonction (pour ne pas creer d'objets pour rien, source potentielle d'erreur)
+  list_opt_fonctionr$fonctionr.options <- list_opt_fonctionr$fonctionr.options[!(names(list_opt_fonctionr$fonctionr.options) %in% user.args) & names(list_opt_fonctionr$fonctionr.options) %in% names(formals.args)]
 
-  # NOTE : on fait la suite SSI il y a des options definies dans fonctionr_options() MAIS qui ne sont pas definies par l'utilisateur
-  if(length(options_args[!options_args %in% user.args] > 0)){
+  # NOTE : on fait la suite SSI il y a des options qui remplissent cette condition
+  if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
       "Parametres actifs dans fonctionr_options(): ",
       paste(
-        options_args[!options_args %in% user.args],
+        names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
         )
       )
-    # SSI les arguments ne sont pas repris dans la fonction
-    if("font" %in% options_args[!options_args %in% user.args]){
-      font = getOption("fonctionr.font")
-    }
-    if("coef_font" %in% options_args[!options_args %in% user.args]){
-      coef_font = getOption("fonctionr.coef_font")
-    }
-    if("lang" %in% options_args[!options_args %in% user.args]){
-      lang = getOption("fonctionr.lang")
-    }
 
+    # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
+    for(x in names(list_opt_fonctionr$fonctionr.options)) assign(x, list_opt_fonctionr$fonctionr.options[[x]])
   }
 
 

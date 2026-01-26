@@ -4,16 +4,57 @@
 \alias{fonctionr_options}
 \title{fonctionr_options}
 \usage{
-fonctionr_options(font = NULL, coef_font = NULL, lang = NULL, reset = FALSE)
+fonctionr_options(
+  total = NULL,
+  prop_method = NULL,
+  reorder = NULL,
+  show_ci = NULL,
+  show_n = NULL,
+  show_value = NULL,
+  show_labs = NULL,
+  dec = NULL,
+  pal = NULL,
+  col = NULL,
+  font = NULL,
+  coef_font = NULL,
+  caption = NULL,
+  theme = NULL,
+  lang = NULL,
+  erase_all = FALSE
+)
 }
 \arguments{
+\item{total}{total}
+
+\item{prop_method}{prop_method}
+
+\item{reorder}{reorder}
+
+\item{show_ci}{show_ci}
+
+\item{show_n}{show_n}
+
+\item{show_value}{show_value}
+
+\item{show_labs}{show_labs}
+
+\item{dec}{dec}
+
+\item{pal}{pal}
+
+\item{col}{col}
+
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{coef_font}{A multiplier factor for font size}
 
+\item{caption}{caption}
+
+\item{theme}{theme}
+
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 
-\item{reset}{TRUE erases all the options. Default is FALSE.}
+\item{erase_all}{TRUE erases all the options. Default is FALSE.}
 }
 \description{
 Function to set global options for fonctionr

@@ -123,6 +123,34 @@ central_group <- function(data,
                           coef_font = 1,
                           export_path = NULL) {
 
+  # Les arguments par defaut
+  formals.args <- formals()
+  # On enregistre le call
+  call <- match.call()
+  # On cree un vecteur avec le nom des arguments definis explicitement par l'utilisateur (sans le nom de la fonction)
+  user.args <- names(call[-1])
+
+  # On cree une liste avec les noms et valeurs des arguments definis dans fonctionr_options()
+  list_opt_fonctionr <- options()[names(options()) == "fonctionr.options"]
+  # On ne retient que les options definies dans fonctionr_options() MAIS qui ne sont pas definies par l'utilisateur et qui sont bien utilisees dans cette fonction (pour ne pas creer d'objets pour rien, source potentielle d'erreur)
+  list_opt_fonctionr$fonctionr.options <- list_opt_fonctionr$fonctionr.options[!(names(list_opt_fonctionr$fonctionr.options) %in% user.args) & names(list_opt_fonctionr$fonctionr.options) %in% names(formals.args)]
+
+  # NOTE : on fait la suite SSI il y a des options qui remplissent cette condition
+  if(length(list_opt_fonctionr$fonctionr.options > 0)){
+
+    warning(
+      "Parametres actifs dans fonctionr_options(): ",
+      paste(
+        names(list_opt_fonctionr$fonctionr.options),
+        collapse = ", "
+      )
+    )
+
+    # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
+    for(x in names(list_opt_fonctionr$fonctionr.options)) assign(x, list_opt_fonctionr$fonctionr.options[[x]])
+  }
+
+
   # 1. CHECKS DES ARGUMENTS --------------------
 
   # Un check imperatif

@@ -116,17 +116,32 @@ many_val = function(data,
                     coef_font = 1,
                     export_path = NULL){
 
+  # Les arguments par defaut
+  formals.args <- formals()
   # On enregistre le call
   call <- match.call()
   # On cree un vecteur avec le nom des arguments definis explicitement par l'utilisateur (sans le nom de la fonction)
   user.args <- names(call[-1])
-  # On cree un vecteur avec le nom des arguments definis dans fonctionr_options()
-  options_args <- stringr::str_replace(
-    names(options())[stringr::str_detect(names(options()), "^fonctionr.")],
-    # On enleve le prefixe "fontionr." pour retrouver les memes noms que dans la fonction
-    "^fonctionr.",
-    ""
-  )
+
+  # On cree une liste avec les noms et valeurs des arguments definis dans fonctionr_options()
+  list_opt_fonctionr <- options()[names(options()) == "fonctionr.options"]
+  # On ne retient que les options definies dans fonctionr_options() MAIS qui ne sont pas definies par l'utilisateur et qui sont bien utilisees dans cette fonction (pour ne pas creer d'objets pour rien, source potentielle d'erreur)
+  list_opt_fonctionr$fonctionr.options <- list_opt_fonctionr$fonctionr.options[!(names(list_opt_fonctionr$fonctionr.options) %in% user.args) & names(list_opt_fonctionr$fonctionr.options) %in% names(formals.args)]
+
+  # NOTE : on fait la suite SSI il y a des options qui remplissent cette condition
+  if(length(list_opt_fonctionr$fonctionr.options > 0)){
+
+    warning(
+      "Parametres actifs dans fonctionr_options(): ",
+      paste(
+        names(list_opt_fonctionr$fonctionr.options),
+        collapse = ", "
+      )
+    )
+
+    # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
+    for(x in names(list_opt_fonctionr$fonctionr.options)) assign(x, list_opt_fonctionr$fonctionr.options[[x]])
+  }
 
 
   # 1. CHECKS DES ARGUMENTS --------------------
@@ -405,13 +420,13 @@ many_val = function(data,
   # Si :
   # * col est defini (= option ou utilisateur)
   # * + pal n'est pas indique par l'utilisateur (dans user.args car pal est defini par defaut, sinon col ne peut jamais etre applique !)
-  # * + pal n'est pas dans les options (dans options_args)
+  # * + pal n'est pas dans les options (names(list_opt_fonctionr$fonctionr.options))
   # => Autrement dit, col est prioritaire seulement si pal n'est pas la.
   # OU
   # * col est indique par l'utilisateur
   # * + pal n'est pas indique par l'utilisateur
   # => Dans ce cas, col de l'utilisateur est prioritaire sur pal des options
-  if((!is.null(col) & !"pal" %in% user.args & !"pal" %in% options_args) | ("col" %in% user.args & !"pal" %in% user.args)){
+  if((!is.null(col) & !"pal" %in% user.args & !"pal" %in% names(list_opt_fonctionr$fonctionr.options)) | ("col" %in% user.args & !"pal" %in% user.args)){
     # On cree la palette
     if(all(isColor(col)) == TRUE){
       palette <- rep(col, nlevels(tab[["list_col"]]))
