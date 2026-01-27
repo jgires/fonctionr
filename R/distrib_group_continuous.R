@@ -136,7 +136,7 @@ distrib_group_continuous <- function(data,
                                ylab = NULL,
                                caption = NULL,
                                lang = "fr",
-                               theme = NULL,
+                               theme = "fonctionr",
                                coef_font = 1,
                                export_path = NULL) {
 

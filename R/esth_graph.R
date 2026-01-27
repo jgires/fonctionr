@@ -105,7 +105,7 @@ esth_graph <- function(tab,
                        xlab = NULL,
                        ylab = NULL,
                        caption = NULL,
-                       theme = NULL,
+                       theme = "fonctionr",
                        coef_font = 1) {
 
   # Les arguments par defaut

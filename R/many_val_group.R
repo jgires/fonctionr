@@ -124,7 +124,7 @@ many_val_group = function(data,
                           legend_lab = NULL,
                           lang = "fr",
                           caption = NULL,
-                          theme = NULL,
+                          theme = "fonctionr",
                           coef_font = 1,
                           export_path = NULL){
 

@@ -119,7 +119,7 @@ central_group <- function(data,
                           legend_lab = NULL,
                           caption = NULL,
                           lang = "fr",
-                          theme = NULL,
+                          theme = "fonctionr",
                           coef_font = 1,
                           export_path = NULL) {
 
@@ -894,6 +894,8 @@ central_group <- function(data,
 
   # On cree l'objet final
   res <- list()
+  # res$formals <- formals.args
+  # res$call <- call
   res$tab <- tab
   res$graph <- graph
   if (quo_is_null(quo_group.fill)) { # Pas de test stat si group.fill
