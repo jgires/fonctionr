@@ -89,11 +89,11 @@ central_group <- function(data,
                           facet = NULL,
                           filter_exp = NULL,
                           ...,
-                          na.rm.group = T,
-                          na.rm.facet = T,
+                          na.rm.group = TRUE,
+                          na.rm.facet = TRUE,
                           total = TRUE,
-                          reorder = F,
-                          show_ci = T,
+                          reorder = FALSE,
+                          show_ci = TRUE,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_labs = TRUE,
@@ -894,8 +894,6 @@ central_group <- function(data,
 
   # On cree l'objet final
   res <- list()
-  # res$formals <- formals.args
-  # res$call <- call
   res$tab <- tab
   res$graph <- graph
   if (quo_is_null(quo_group.fill)) { # Pas de test stat si group.fill
@@ -948,13 +946,13 @@ central_group <- function(data,
 
 #' @rdname central_group
 #' @export
-median_group <- function(..., type = "median", col = "deeppink3") {
+median_group <- function(..., type = "median") {
   central_group(..., type = type)
 }
 
 
 #' @rdname central_group
 #' @export
-mean_group <- function(..., type = "mean", col = "mediumorchid3") {
+mean_group <- function(..., type = "mean") {
   central_group(..., type = type)
 }
