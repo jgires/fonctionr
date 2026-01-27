@@ -738,8 +738,6 @@ theme_fonctionr <- function(font = "Roboto",
         panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank(),
         axis.line.x = element_line(color = "black"),
-        axis.line.y = element_blank(),
-        axis.ticks.y = element_blank(),
         axis.ticks.x = element_line(color = "black"),
         plot.margin = margin(10, 15, 10, 10),
         plot.caption = element_text(
@@ -796,7 +794,11 @@ theme_fonctionr <- function(font = "Roboto",
         display_base = display,
         grid.lines_base = grid.lines,
         coef_font_base = coef_font
-      )
+      ) +
+        theme(
+          axis.line.y = element_blank(),
+          axis.ticks.y = element_blank()
+        )
     }
     if (theme == "IWEPS") {
       theme_fonctionr_custom <- theme_fonctionr_base(
@@ -810,10 +812,24 @@ theme_fonctionr <- function(font = "Roboto",
           axis.ticks.y = element_line(color = "black")
         )
     }
-
-    return(theme_fonctionr_custom)
-
+  # Un theme par defaut qui correspond le + à ggplot, tout en implementant les options de theme_fonctionr()
+  } else {
+    theme_fonctionr_custom <- theme_gray(
+      base_size = coef_font * 11
+    ) +
+      theme(
+        text = element_text(family = font),
+        # On definit chaque axe individuellement pour contrer le bug avec ggplot 4 => https://github.com/tidyverse/ggplot2/issues/6752
+        # Rechanger vers la formule plus generale (avec heritage) lorsque ggtext a corrige => https://github.com/wilkelab/ggtext/issues/128
+        axis.text.y.left = ggtext::element_markdown(color = "black"),
+        axis.text.y.right = ggtext::element_markdown(color = "black"),
+        axis.text.x.bottom = ggtext::element_markdown(color = "black"),
+        axis.text.x.top = ggtext::element_markdown(color = "black")
+        )
   }
+
+  return(theme_fonctionr_custom)
+
 }
 
 

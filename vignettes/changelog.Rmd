@@ -302,22 +302,20 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) Lorsque `NULL` dans theme_fonctionr(), caractères spéciaux mode HTML ggtext pas pris en charge =\> modifier la fonction pour que ça marche.**
+-   **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer `NA` et pas seulement "".**
 
--   **(François) Créer un tableau joli en output (avec `flextable`).**
+-   **(François) Ajouter toutes les options dans `fonctionr_options()`, sauf les arguments avec données ou variables.**
 
--   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**
+-   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.**
 
 -   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
     *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
 
--   Le fonctionnement de `theme_fonctionr()` avec `theme == NULL` par défaut est pas terrible =\> changer.
+-   **(François) Créer un tableau joli en output (avec `flextable`).**
 
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
-
--   Documenter tous les arguments des différentes fonctions + vérifier que les explications sont bien correctes (quelques erreurs, par ex. à cause de copier-coller ou de l'ajout de nouveaux argument avec la nouvelle logique des na.rm). Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.
 
 -   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
     *=\> En cours : il faut encore checker le code du graphique ggplot.*
@@ -417,8 +415,6 @@ Date : 2024-02-14
 #### distrib_group_d
 
 -   Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-
--   Possibilité d'indiquer un vecteur avec une palette de couleur ?
 
 ### Notes
 
