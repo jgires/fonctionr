@@ -302,6 +302,8 @@ Date : 2024-02-14
 
 #### En général
 
+-   **(Joël) Lorsque `NULL` dans theme_fonctionr(), caractères spéciaux mode HTML ggtext pas pris en charge =\> modifier la fonction pour que ça marche.**
+
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 
 -   **(Joël + François) Créer un fichier d'option pour régler a priori des arguments pour toutes les fonctions dans un script (la police, etc.)**

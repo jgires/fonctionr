@@ -720,83 +720,100 @@ official_pal <- function(inst,
 #' @export
 #'
 theme_fonctionr <- function(font = "Roboto",
-                            theme = NULL,
+                            theme = "fonctionr",
                             display = "ggplot",
                             grid.lines = "x",
                             coef_font = 1) {
+
+  theme_fonctionr_base <- function(font_base = font,
+                                   display_base = display,
+                                   grid.lines_base = grid.lines,
+                                   coef_font_base = coef_font){
+
+    theme_fonctionr_def <- theme_minimal(
+      base_size = coef_font_base * 11
+    ) +
+      theme(
+        text = element_text(family = font_base),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.line.x = element_line(color = "black"),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.ticks.x = element_line(color = "black"),
+        plot.margin = margin(10, 15, 10, 10),
+        plot.caption = element_text(
+          color = "grey30"
+        )
+      )
+    if (grid.lines_base == "x") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_line(color = "#dddddd")
+          )
+    }
+    if (grid.lines_base == "y") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          panel.grid.major.y = element_line(color = "#dddddd"),
+          panel.grid.major.x = element_blank()
+          )
+    }
+    if (grid.lines_base == "both") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          panel.grid.major.y = element_line(color = "#dddddd"),
+          panel.grid.major.x = element_line(color = "#dddddd")
+        )
+    }
+    if (display_base == "ggplot") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          axis.text = element_text(color = "black")
+          )
+    }
+    if (display_base == "ggtext") {
+      theme_fonctionr_def <- theme_fonctionr_def +
+        theme(
+          # On definit chaque axe individuellement pour contrer le bug avec ggplot 4 => https://github.com/tidyverse/ggplot2/issues/6752
+          # Rechanger vers la formule plus generale (avec heritage) lorsque ggtext a corrige => https://github.com/wilkelab/ggtext/issues/128
+          axis.text.y.left = ggtext::element_markdown(color = "black"),
+          axis.text.y.right = ggtext::element_markdown(color = "black"),
+          axis.text.x.bottom = ggtext::element_markdown(color = "black"),
+          axis.text.x.top = ggtext::element_markdown(color = "black")
+          )
+    }
+    return(theme_fonctionr_def)
+  }
+
   load_and_active_fonts()
 
-  theme_fonctionr_def <- theme_minimal(
-    base_size = coef_font * 11
-  ) +
-    theme(
-      text = element_text(family = font),
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      axis.line.x = element_line(color = "black"),
-      axis.line.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.ticks.x = element_line(color = "black"),
-      plot.margin = margin(10, 15, 10, 10),
-      plot.caption = element_text(
-        color = "grey30"
-      )
-    )
-
-  if (grid.lines == "x") {
-    theme_fonctionr_def <- theme_fonctionr_def +
-      theme(
-        panel.grid.major.y = element_blank(),
-        panel.grid.major.x = element_line(color = "#dddddd")
-        )
-  }
-
-  if (grid.lines == "y") {
-    theme_fonctionr_def <- theme_fonctionr_def +
-      theme(
-        panel.grid.major.y = element_line(color = "#dddddd"),
-        panel.grid.major.x = element_blank()
-        )
-  }
-
-  if (grid.lines == "both") {
-    theme_fonctionr_def <- theme_fonctionr_def +
-      theme(
-        panel.grid.major.y = element_line(color = "#dddddd"),
-        panel.grid.major.x = element_line(color = "#dddddd")
-      )
-  }
-
-  if (display == "ggplot") {
-    theme_fonctionr_def <- theme_fonctionr_def +
-      theme(
-        axis.text = element_text(color = "black")
-        )
-  }
-
-  if (display == "ggtext") {
-    theme_fonctionr_def <- theme_fonctionr_def +
-      theme(
-        # On definit chaque axe individuellement pour contrer le bug avec ggplot 4 => https://github.com/tidyverse/ggplot2/issues/6752
-        # Rechanger vers la formule plus generale (avec heritage) lorsque ggtext a corrige => https://github.com/wilkelab/ggtext/issues/128
-        axis.text.y.left = ggtext::element_markdown(color = "black"),
-        axis.text.y.right = ggtext::element_markdown(color = "black"),
-        axis.text.x.bottom = ggtext::element_markdown(color = "black"),
-        axis.text.x.top = ggtext::element_markdown(color = "black")
-        )
-  }
-
   if (!is.null(theme)) {
+    if (theme == "fonctionr") {
+      theme_fonctionr_custom <- theme_fonctionr_base(
+        font_base = font,
+        display_base = display,
+        grid.lines_base = grid.lines,
+        coef_font_base = coef_font
+      )
+    }
     if (theme == "IWEPS") {
-      theme_fonctionr_def <- theme_fonctionr_def +
+      theme_fonctionr_custom <- theme_fonctionr_base(
+        font_base = font,
+        display_base = display,
+        grid.lines_base = grid.lines,
+        coef_font_base = coef_font
+      ) +
         theme(
           axis.line.y = element_line(color = "black"),
           axis.ticks.y = element_line(color = "black")
         )
     }
-  }
 
-  return(theme_fonctionr_def)
+    return(theme_fonctionr_custom)
+
+  }
 }
 
 
