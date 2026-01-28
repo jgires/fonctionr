@@ -15,11 +15,11 @@ central_group(
   facet = NULL,
   filter_exp = NULL,
   ...,
-  na.rm.group = T,
-  na.rm.facet = T,
+  na.rm.group = TRUE,
+  na.rm.facet = TRUE,
   total = TRUE,
-  reorder = F,
-  show_ci = T,
+  reorder = FALSE,
+  show_ci = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
@@ -45,14 +45,14 @@ central_group(
   legend_lab = NULL,
   caption = NULL,
   lang = "fr",
-  theme = NULL,
+  theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
 )
 
-median_group(..., type = "median", col = "deeppink3")
+median_group(..., type = "median")
 
-mean_group(..., type = "mean", col = "mediumorchid3")
+mean_group(..., type = "mean")
 }
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}

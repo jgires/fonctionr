@@ -30,7 +30,7 @@ esth_graph(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
-  theme = NULL,
+  theme = "fonctionr",
   coef_font = 1
 )
 }

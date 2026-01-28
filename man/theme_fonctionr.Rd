@@ -6,7 +6,7 @@
 \usage{
 theme_fonctionr(
   font = "Roboto",
-  theme = NULL,
+  theme = "fonctionr",
   display = "ggplot",
   grid.lines = "x",
   coef_font = 1

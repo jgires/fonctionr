@@ -18,6 +18,28 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.4.0
+
+Date : 2026-01-27
+
+-   Ajout de la possibilité de définir des options globales grâce à la fonction `fonctionr_options()`.
+
+-   Nouveaux arguments pour les palettes et les couleurs.
+
+    -   Séparation de la couleur unie et de la palette dans les arguments `col` (nouveau) et `pal`. Cette modification engendre une différence de comportement par rapport aux versions antérieures de `fonctionr` : la couleur unie définie dans `pal` ne fonctionnera plus et la couleur par défaut sera appliquée.
+
+    -   Dans `distrib_continuous()` et `distrib_group_continuous()`, il y a plusieurs changements dans les arguments : `pal` devient `col_density` ; `pal_moustache` devient `col_moustache` ; `color` devient `col_border`. La raison de ce changement est lié à un impératif de cohérence entre les fonctions : l'argument `pal` est désormais réservé aux palettes de type qualitatif. Néanmoins pour des raisons de compatibilité, les anciens arguments demeurent dans la fonction, mais sont inactifs.
+
+-   Introduction de l'argument `coef_font` pour multiplier la taille de toutes les polices de caractère dans les graphiques de toutes les fonctions.
+
+-   Un grand nombre de caractères spéciaux sont désormais utilisables dans le noms des groupes (du fait que `ggtext` a besoin d'un formatage en codes HTML, cela provoquait auparavant des bugs dans les graphiques).
+
+-   Les palettes de toutes les fonctions ont désormais la même direction (cohérence entre toutes les fonctions).
+
+-   Le thème par défaut de `theme_fonctionr()` devient `"fonctionr"`. La valeur `NULL` pour le theme crée désormais un design très proche du thème par défaut de ggplot (mais en gérant la taille de la police et le formatage permis par ggtext).
+
+-   Mise à jour des polices de caractère contenues dans `fonctionr` : la police Montserrat inclue dans le package peut désormais être formatée en italique et gras ; les polices 'Amatic' et 'Helvetica Neue' sont supprimées (du fait de la limite de 5Mo de CRAN).
+
 ## fonctionr 0.3.22
 
 Date : 2026-01-10

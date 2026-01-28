@@ -35,7 +35,7 @@ distrib_discrete(
   ylab = NULL,
   lang = "fr",
   caption = NULL,
-  theme = NULL,
+  theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
 )
