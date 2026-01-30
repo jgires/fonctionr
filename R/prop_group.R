@@ -46,7 +46,7 @@
 #' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the Chi-Square statistical test result.
 #'
-#' @return A list that contains a table, a graphic and, often, a Chi-square statistical test
+#' @return A list that contains a table, a ggplot graphic and, in most cases, a Chi-square statistical test.
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -164,7 +164,7 @@ prop_group <- function(data,
 
   # Check des arguments necessaires
   if((missing(data) | missing(group) | missing(prop_exp)) == TRUE){
-    stop("Les arguments data, group et prop_exp doivent etre remplis")
+    stop("data, group and prop_exp arguments must be filled in")
   }
 
   # Check des autres arguments
@@ -271,14 +271,14 @@ prop_group <- function(data,
   # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
   data_W <- data_W |>
     mutate(fonctionr_test_prop_exp = {{ prop_exp }})
-  if (!all(data_W$variables[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp doit etre une expression produisant des TRUE-FALSE ou etre une variable binaire (0-1/TRUE-FALSE)"), call. = FALSE)
+  if (!all(data_W$variables[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp must be an expression that produces TRUE-FALSE or be a binary variable (0-1/TRUE-FALSE)"), call. = FALSE)
 
   if(na.prop == "rm"){
     # Si na.prop == "rm", l'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ca ne marche pas !
     # On regarde donc si la fonction is.na() est utilisee dans l'expression, et on bloque si c'est le cas
     names_expression <- all.names(substitute(prop_exp))
     if("is.na" %in% names_expression){
-      stop("is.na() est detecte dans l'expression : prop_group() ne permet pas de calculer la proportion de valeurs manquantes lorsque na.prop == 'rm'")
+      stop("is.na() is detected in prop_exp. prop_group() does not allow the proportion of missing values to be calculated when na.prop == 'rm'")
     }
   }
 
@@ -350,7 +350,7 @@ prop_group <- function(data,
   # On supprime les NA sur la/les variable(s) de l'expression si na.prop == "rm" => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ca on s'en fout)
   if(na.prop == "rm"){
     # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_prop_exp cree au debut
-    message("Variable(s) detectee(s) dans l'expression : ", paste(vec_prop_exp, collapse = ", "))
+    message("Variable(s) detected in prop_exp: ", paste(vec_prop_exp, collapse = ", "))
     # On calcule les effectifs avant filtre
     before <- data_W |>
       summarise(n=unweighted(n()))
@@ -363,7 +363,7 @@ prop_group <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression")
+    message(paste0(before[[1]] - after[[1]]), " observations excluded with missing value(s) for the variable(s) in prop_exp")
 
     # On convertit la variable de groupe en facteur si pas facteur
     # On cree egalement une variable binaire liee a la proportion pour le khi2
