@@ -326,24 +326,71 @@ prop_group <- function(data,
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
+
+    # On calcule les effectifs avant filtre
+    before <- data_W |>
+      summarise(n=unweighted(n()))
+
     data_W <- data_W |>
       filter({{ filter_exp }})
+
+    # On calcule les effectifs apres filtre
+    after <- data_W |>
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " observations excluded by filter_exp")
+
   }
   # On supprime les NA sur group + group.fill si na.rm.group = T
   if (na.rm.group == T) {
+
+    # On calcule les effectifs avant filtre
+    before <- data_W |>
+      summarise(n=unweighted(n()))
+
     data_W <- data_W |>
       filter(!is.na({{ group }}))
 
+    # On calcule les effectifs apres filtre
+    after <- data_W |>
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " observations excluded with missing group")
+
     if(!quo_is_null(quo_group.fill)){
+
+      # On calcule les effectifs avant filtre
+      before <- data_W |>
+        summarise(n=unweighted(n()))
+
       data_W <- data_W |>
         filter(!is.na({{ group.fill }}))
+
+      # On calcule les effectifs apres filtre
+      after <- data_W |>
+        summarise(n=unweighted(n()))
+      # On affiche le nombre de lignes supprimees (pour verification)
+      message(paste0(before[[1]] - after[[1]]), " observations excluded with missing group.fill")
+
     }
   }
   # idem sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
+
+      # On calcule les effectifs avant filtre
+      before <- data_W |>
+        summarise(n=unweighted(n()))
+
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
+
+      # On calcule les effectifs apres filtre
+      after <- data_W |>
+        summarise(n=unweighted(n()))
+      # On affiche le nombre de lignes supprimees (pour verification)
+      message(paste0(before[[1]] - after[[1]]), " observations excluded with missing facet")
+
     }
   }
 
