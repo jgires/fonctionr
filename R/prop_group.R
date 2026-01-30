@@ -344,33 +344,24 @@ prop_group <- function(data,
   # On supprime les NA sur group + group.fill si na.rm.group = T
   if (na.rm.group == T) {
 
-    # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
+    # message avec le nombre d'exclus pour group
+    message(paste0(data_W |>
+                     filter(is.na({{group}})) |>
+                     summarise(n = unweighted(n())), " observations excluded with missing group"))
 
     data_W <- data_W |>
       filter(!is.na({{ group }}))
 
-    # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations excluded with missing group")
 
     if(!quo_is_null(quo_group.fill)){
 
-      # On calcule les effectifs avant filtre
-      before <- data_W |>
-        summarise(n=unweighted(n()))
+      # message avec le nombre d'exclus pour group.fill
+      message(paste0(data_W |>
+                       filter(is.na({{group.fill}})) |>
+                       summarise(n = unweighted(n())), " observations excluded with missing group.fill"))
 
       data_W <- data_W |>
         filter(!is.na({{ group.fill }}))
-
-      # On calcule les effectifs apres filtre
-      after <- data_W |>
-        summarise(n=unweighted(n()))
-      # On affiche le nombre de lignes supprimees (pour verification)
-      message(paste0(before[[1]] - after[[1]]), " observations excluded with missing group.fill")
 
     }
   }
@@ -378,18 +369,13 @@ prop_group <- function(data,
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
 
-      # On calcule les effectifs avant filtre
-      before <- data_W |>
-        summarise(n=unweighted(n()))
+      # message avec le nombre d'exclus pour facet
+      message(paste0(data_W |>
+                       filter(is.na({{facet}})) |>
+                       summarise(n = unweighted(n())), " observations excluded with missing facet"))
 
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
-
-      # On calcule les effectifs apres filtre
-      after <- data_W |>
-        summarise(n=unweighted(n()))
-      # On affiche le nombre de lignes supprimees (pour verification)
-      message(paste0(before[[1]] - after[[1]]), " observations excluded with missing facet")
 
     }
   }
