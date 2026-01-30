@@ -16,18 +16,18 @@ convert_to_srvyr <- function(data, ...) {
 
   # Si objet survey (avec replicates ou non)
   if(any(class(data) %in% c("survey.design2","survey.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input: objet survey")
+    message("Input: survey object")
     data_W <- data |>
       as_survey_design()
   }
   if(any(class(data) %in% c("svyrep.design")) & all(class(data) %ni% c("tbl_svy"))){
-    message("Input: objet survey")
+    message("Input: survey object")
     data_W <- data |>
       as_survey_rep()
   }
   # Si objet srvyr (avec replicates ou non)
   if(any(class(data) %in% c("tbl_svy"))){
-    message("Input: objet srvyr")
+    message("Input: srvyr object")
     data_W <- data
   }
   # Si data.frame (pas de replicate prevu => A FAIRE A TERME)
@@ -277,17 +277,17 @@ check_arg <- function(arg,
   for(check_i in seq_along(arg)){
     if(!is.null(arg[[check_i]])){
       if(short == T){
-        if (!length(arg[[check_i]]) == 1) stop(paste("L'argument", names(arg)[[check_i]], "n'a pas la bonne longueur (max 1)"), call. = FALSE)
+        if (!length(arg[[check_i]]) == 1) stop(paste("Argument", names(arg)[[check_i]], "does not have the correct length (max 1)"), call. = FALSE)
       }
       if(all(!is.na(arg[[check_i]]))){
         if(type == "character"){
-          if (!is.character(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (caractere)"), call. = FALSE)
+          if (!is.character(arg[[check_i]])) stop(paste("Argument", names(arg)[[check_i]], "is not in the correct format (character)"), call. = FALSE)
         }
         if(type == "logical"){
-          if (!is.logical(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (logique)"), call. = FALSE)
+          if (!is.logical(arg[[check_i]])) stop(paste("Argument", names(arg)[[check_i]], "is not in the correct format (logical)"), call. = FALSE)
         }
         if(type == "numeric"){
-          if (!is.numeric(arg[[check_i]])) stop(paste("L'argument", names(arg)[[check_i]], "n'est pas au bon format (numerique)"), call. = FALSE)
+          if (!is.numeric(arg[[check_i]])) stop(paste("Argument", names(arg)[[check_i]], "is not in the correct format (numeric)"), call. = FALSE)
         }
       }
     }
@@ -308,7 +308,7 @@ check_arg <- function(arg,
 check_bin <- function(data,
                       vec_list_vars) {
   for (var in vec_list_vars) {
-    if (!all(data[[var]] %in% c(0,1,NA))) stop(paste("La colonne", var, "doit etre binaire (0-1 ou TRUE-FALSE)"), call. = FALSE)
+    if (!all(data[[var]] %in% c(0,1,NA))) stop(paste("Variable", var, "must be binary (0-1 ou TRUE-FALSE)"), call. = FALSE)
   }
 }
 
@@ -328,7 +328,7 @@ check_prob <- function(arg) {
       if(all(!is.na(arg[[check_i]]))){
         min_check <- (min(arg[[check_i]]))
         max_check <- (max(arg[[check_i]]))
-        if (!(min_check >= 0 & max_check <= 1)) stop(paste("L'argument", names(arg)[[check_i]], "doit contenir des valeurs entre 0 et 1"), call. = FALSE)
+        if (!(min_check >= 0 & max_check <= 1)) stop(paste("Argument", names(arg)[[check_i]], "must range between 0 and 1"), call. = FALSE)
       }
     }
   }
@@ -354,13 +354,13 @@ check_input <- function(data,
   # Si data.frame
   if(any(class(data) %ni% c("survey.design2","survey.design")) & any(class(data) %ni% c("tbl_svy")) & any(class(data) %in% c("data.frame"))){
     for (i in seq_along(vars_input_char)) {
-      if (!vars_input_char[i] %in% names(data)) stop(paste("La colonne", vars_input_char[i], "introduite dans", names(vars_input_char[i]) , "n'est pas presente dans data"), call. = FALSE)
+      if (!vars_input_char[i] %in% names(data)) stop(paste("Variable", vars_input_char[i], "in", names(vars_input_char[i]) , "is not in data"), call. = FALSE)
     }
   }
   # Si objet sondage
   if(any(class(data) %in% c("survey.design2","survey.design","tbl_svy","svyrep.design"))){
     for (i in seq_along(vars_input_char)) {
-      if (!vars_input_char[i] %in% names(data[["variables"]])) stop(paste("La colonne", vars_input_char[i], "introduite dans", names(vars_input_char[i]) , "n'est pas presente dans data"), call. = FALSE)
+      if (!vars_input_char[i] %in% names(data[["variables"]])) stop(paste("Variable", vars_input_char[i], "in", names(vars_input_char[i]) , "is not in data"), call. = FALSE)
     }
   }
 
