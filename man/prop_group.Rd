@@ -138,7 +138,7 @@ prop_group(
 \item{export_path}{Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the Chi-Square statistical test result.}
 }
 \value{
-A list that contains a table, a graphic and a statistical test
+A list that contains a table, a graphic and, often, a Chi-square statistical test
 }
 \description{
 Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test. Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (group.fill), no Chi-square test is computed.

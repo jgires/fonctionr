@@ -46,7 +46,7 @@
 #' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the Chi-Square statistical test result.
 #'
-#' @return A list that contains a table, a graphic and a statistical test
+#' @return A list that contains a table, a graphic and, often, a Chi-square statistical test
 #' @import rlang
 #' @import survey
 #' @import srvyr
