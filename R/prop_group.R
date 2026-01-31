@@ -341,6 +341,22 @@ prop_group <- function(data,
     message(paste0(before[[1]] - after[[1]]), " observations excluded by filter_exp")
 
   }
+
+  # On supprime les NA sur facet sifacet non-NULL et na.rm.facet = T
+  if (na.rm.facet == T) {
+    if(!quo_is_null(quo_facet)){
+
+      # message avec le nombre d'exclus pour facet
+      message(paste0(data_W |>
+                       filter(is.na({{facet}})) |>
+                       summarise(n = unweighted(n())), " observations excluded with missing facet"))
+
+      data_W <- data_W |>
+        filter(!is.na({{ facet }}))
+
+    }
+  }
+
   # On supprime les NA sur group + group.fill si na.rm.group = T
   if (na.rm.group == T) {
 
@@ -365,20 +381,7 @@ prop_group <- function(data,
 
     }
   }
-  # idem sur la variable de facet si non-NULL
-  if (na.rm.facet == T) {
-    if(!quo_is_null(quo_facet)){
 
-      # message avec le nombre d'exclus pour facet
-      message(paste0(data_W |>
-                       filter(is.na({{facet}})) |>
-                       summarise(n = unweighted(n())), " observations excluded with missing facet"))
-
-      data_W <- data_W |>
-        filter(!is.na({{ facet }}))
-
-    }
-  }
 
   # On supprime les NA sur la/les variable(s) de l'expression si na.prop == "rm" => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ca on s'en fout)
   if(na.prop == "rm"){
