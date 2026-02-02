@@ -139,7 +139,7 @@ distrib_discrete <- function(data,
 
   # Un check imperatif
   if((missing(data) | missing(quali_var)) == TRUE){
-    stop("Les arguments data et quali_var doivent etre remplis")
+    stop("Arguments data and quali_var should be filled in")
   }
 
   # Check des autres arguments
@@ -224,7 +224,7 @@ distrib_discrete <- function(data,
 
   # Un check sur quali_var
   if(length(vec_quali_var) != 1){
-    stop("quali_var ne doit comprendre qu'une seule variable")
+    stop("quali_var should be only one variable")
   }
 
   # Dictionnaire

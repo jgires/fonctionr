@@ -1,46 +1,46 @@
 #' many_val
 #'
-#' Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
+#' Function to compute the proportions of a set of several binary variables or means or medians of a set of quantitative variables, based on complex survey data. It produces  a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. Exporting the results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param list_vars A vector containing names of the dummy variables on which to compute the proportions
-#' @param type "mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.
-#' @param list_vars_lab Names of the variables
+#' @param list_vars A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians
+#' @param type "prop" to compute proportions ; "mean" to compute means ; "median" to compute medians.
+#' @param list_vars_lab A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.
 #' @param facet A variable defining the faceting group.
-#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param filter_exp AAn expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.facet TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.
-#' @param na.vars The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.
-#' @param prop_method Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.
-#' @param reorder TRUE if you want to reorder the variables according to the proportion.
-#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.
-#' @param show_value TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.
-#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
-#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param unit Unit showed in the graphic. Default is percent.
-#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param col Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
-#' @param pal Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
+#' @param na.vars The treatment of NA values in variables (list_vars). "rm" removes NA seperately in each individual variable, "rm.all" removes every individual that has at least one NA in one variable. Default is "rm".
+#' @param prop_method Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method. This argument is only used in case of type = "prop".
+#' @param reorder TRUE if you want to reorder the variables according to the proportions/means/medians. Default is FALSE.
+#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
+#' @param show_n TRUE if you want to show on the graphic the number of observations in the sample for each variable. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_value TRUE if you want to show the proportions/means/median for each variable on the graphic. FALSE if you do not want to show the proportions/means/medians. Default is TRUE.
+#' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.
+#' @param scale Denominator of the proportions. Default is 100 to interpret numbers as percentages. This argument is only used in case of type = "prop".
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
+#' @param unit Unit displayed on the graphic. Default is percent for type = "prop" or no unit for type = "mean" or "median".
+#' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
+#' @param col Color of the bars if the user wants a monocolor graph. col must be a R color or an hexadecimal color code. As pal has a priority over col, if the user wants to use col, he must not use simultaneously the pal argument (even pal = NULL).
+#' @param pal Colors of the bars if the user wants the bars to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer pal has a priority over col.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
-#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
-#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before going to the line. Applies to the labels of the groups. Default is 25.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col).See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param dodge Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
+#' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.
-#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays, for type = prop, "Proportion :" (if lang == "fr"), "Proportion:" (if lang == "en" ) or "Aandeel:" (if lang == "nl"), or, for type = "mean", "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en" ) or "Gemiddelde:" (if lang == "nl"), or, for type = "median", "Médiane :" (if lang == "fr"), "Median:" (if lang == "en" ) or "Mediaan:" (if lang == "nl"),  followed by the labels of the variables (list_vars_lab). To show no X label, use xlab = "".
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays no Y label.
 #' @param caption Caption of the graphic.
-#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
-#' @param coef_font A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).
-#' @param export_path Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.
+#' @param lang Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".
+#' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
+#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
+#' @param export_path Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.
 #'
-#' @return A list that contains a table and a graphic
+#' @return A list that contains a table and a ggplot graphic.
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -110,8 +110,8 @@ many_val = function(data,
                     subtitle = NULL,
                     xlab = NULL,
                     ylab = NULL,
-                    lang = "fr",
                     caption = NULL,
+                    lang = "fr",
                     theme = "fonctionr",
                     coef_font = 1,
                     export_path = NULL){
@@ -148,10 +148,10 @@ many_val = function(data,
 
   # Check des arguments necessaires
   if(missing(type) == TRUE){
-    stop("L'argument type doit etre rempli")
+    stop("Argument should be filled in")
   }
   if((missing(data) | missing(list_vars)) == TRUE){
-    stop("Les arguments data et list_vars doivent etre remplis")
+    stop("Arguments data and list_vars should be filled in")
   }
 
   # Check des autres arguments
@@ -230,7 +230,7 @@ many_val = function(data,
               vec_list_vars = vec_list_vars)
   }
 
-  message("Variable(s) entrees : ", paste(vec_list_vars, collapse = ", "))
+  message("Variables used: ", paste(vec_list_vars, collapse = ", "))
 
   # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
   # On cree un vecteur string qui contient toutes les variables entrees
@@ -290,14 +290,35 @@ many_val = function(data,
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
+
+    # On calcule les effectifs avant filtre
+    before <- data_W |>
+      summarise(n=unweighted(n()))
+
     data_W <- data_W |>
       filter({{ filter_exp }})
+
+    # On calcule les effectifs apres filtre
+    after <- data_W |>
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+
   }
-  # On supprime les NA sur la variable de facet si non-NULL
+
+
+  # On supprime les NA sur facet sifacet non-NULL et na.rm.facet = T
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
+
+      # message avec le nombre d'exclus pour facet
+      message(paste0(data_W |>
+                       filter(is.na({{facet}})) |>
+                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
+
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
+
     }
   }
 
@@ -315,8 +336,12 @@ many_val = function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) entrees")
+    message(paste0(before[[1]] - after[[1]]), " observations removed due to missing in at least one of the variables")
   }
+  else{
+    message("With na.vars = 'rm', observations removed varies between variables")
+  }
+
 
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {
@@ -375,7 +400,7 @@ many_val = function(data,
     # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      message("Le nombre de labels n'est pas egal au nombre de variables")
+      message("The number of labels is not equal to the number of variables")
 
     # si oui, on remplace dans tab$list_col le nom des variables par les labels definis par l'utilisateur dans list_vars_lab
     } else {

@@ -155,10 +155,10 @@ central_group <- function(data,
 
   # Un check imperatif
   if(missing(type) == TRUE){
-    stop("L'argument type doit etre rempli")
+    stop("Argument type should be filled in")
   }
   if((missing(data) | missing(group) | missing(quanti_exp)) == TRUE){
-    stop("Les arguments data, group et quanti_exp doivent etre remplis")
+    stop("Arguments data, group and quanti_exp should be filled in")
   }
 
   # Check des autres arguments
@@ -365,7 +365,7 @@ central_group <- function(data,
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
   # On les affiche via message (pour verification)
-  message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
+  message("Variable(s) detected in quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W |>
     summarise(n=unweighted(n()))

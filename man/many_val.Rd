@@ -40,8 +40,8 @@ many_val(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  lang = "fr",
   caption = NULL,
+  lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
@@ -56,83 +56,83 @@ many_mean(..., type = "mean")
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
+\item{list_vars}{A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians}
 
-\item{type}{"mean" to compute means ; "median" to compute medians ; "prop" to compute proportions.}
+\item{type}{"prop" to compute proportions ; "mean" to compute means ; "median" to compute medians.}
 
-\item{list_vars_lab}{Names of the variables}
+\item{list_vars_lab}{A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.}
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression that filters the data, preserving the design.}
+\item{filter_exp}{AAn expression filtering the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
 
-\item{na.vars}{The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
+\item{na.vars}{The treatment of NA values in variables (list_vars). "rm" removes NA seperately in each individual variable, "rm.all" removes every individual that has at least one NA in one variable. Default is "rm".}
 
-\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method. This argument is only used in case of type = "prop".}
 
-\item{reorder}{TRUE if you want to reorder the variables according to the proportion.}
+\item{reorder}{TRUE if you want to reorder the variables according to the proportions/means/medians. Default is FALSE.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample for each variable. FALSE if you do not want to show this number. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
+\item{show_value}{TRUE if you want to show the proportions/means/median for each variable on the graphic. FALSE if you do not want to show the proportions/means/medians. Default is TRUE.}
 
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+\item{scale}{Denominator of the proportions. Default is 100 to interpret numbers as percentages. This argument is only used in case of type = "prop".}
 
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is percent.}
+\item{unit}{Unit displayed on the graphic. Default is percent for type = "prop" or no unit for type = "mean" or "median".}
 
-\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 
-\item{col}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
+\item{col}{Color of the bars if the user wants a monocolor graph. col must be a R color or an hexadecimal color code. As pal has a priority over col, if the user wants to use col, he must not use simultaneously the pal argument (even pal = NULL).}
 
-\item{pal}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
+\item{pal}{Colors of the bars if the user wants the bars to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer pal has a priority over col.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col).See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays, for type = prop, "Proportion :" (if lang == "fr"), "Proportion:" (if lang == "en" ) or "Aandeel:" (if lang == "nl"), or, for type = "mean", "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en" ) or "Gemiddelde:" (if lang == "nl"), or, for type = "median", "Médiane :" (if lang == "fr"), "Median:" (if lang == "en" ) or "Mediaan:" (if lang == "nl"),  followed by the labels of the variables (list_vars_lab). To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
-
-\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays no Y label.}
 
 \item{caption}{Caption of the graphic.}
 
-\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+\item{lang}{Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 
-\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
+\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+
+\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
 }
 \value{
-A list that contains a table and a graphic
+A list that contains a table and a ggplot graphic.
 }
 \description{
-Function to compute de proportions of a set of several binary variables. It can use complex survey data. It produces a table and a graphic.
+Function to compute the proportions of a set of several binary variables or means or medians of a set of quantitative variables, based on complex survey data. It produces  a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. Exporting the results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data

@@ -156,12 +156,12 @@ distrib_group_discrete <- function(data,
 
   # Un check imperatif
   if((missing(data) | missing(group) | missing(quali_var)) == TRUE){
-    stop("Les arguments data, group et quali_var doivent etre remplis")
+    stop("Arguments data, group and quali_var must be filled in")
   }
 
   # Un check pour voir si quali_var n'a pas qu'un unique level => sinon aucun interet a l'analyse
   if(nlevels(droplevels(as.factor(data[[deparse(substitute(quali_var))]]))) == 1){
-    stop(paste(deparse(substitute(quali_var)), "ne possede qu'un level"))
+    stop(paste(deparse(substitute(quali_var)), "has only one level"))
   }
 
   # Check des autres arguments
@@ -251,7 +251,7 @@ distrib_group_discrete <- function(data,
 
   # Un check sur quali_var
   if(length(vec_quali_var) != 1){
-    stop("quali_var ne doit comprendre qu'une seule variable")
+    stop("quali_var should be only one variable")
   }
 
   # Dictionnaire
