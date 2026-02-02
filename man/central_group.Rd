@@ -59,7 +59,7 @@ mean_group(..., type = "mean")
 
 \item{group}{A variable defining groups to be compared.}
 
-\item{quanti_exp}{An expression that define the variable from which the mean/median is computed.}
+\item{quanti_exp}{An expression defining the quantitative variable from which the mean/median is computed. Notice that if any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the indicators.}
 
 \item{type}{"mean" to compute mean by group ; "median" to compute median by group.}
 
@@ -67,53 +67,53 @@ mean_group(..., type = "mean")
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression that filters the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable, if applicable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are always excluded. Default is TRUE.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable.}
 
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+\item{total}{TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.}
 
 \item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
+\item{show_value}{TRUE if you want to show the mean/median in each group on the graphic. FALSE if you don't want to show the mean/median. Default is TRUE.}
 
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes and legend (in case of a group.fill) labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.}
 
-\item{total_name}{Name of the total bar on the graphic. Default is Total.}
+\item{total_name}{Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.}
 
-\item{digits}{Numbers of digits showed on the value labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed on the graphic. Default is no unit.}
+\item{unit}{Unit displayed in the graphic. Default is none.}
 
-\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 
-\item{col}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
+\item{col}{Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default color used depends on type : "deeppink3" for mean and "mediumorchid3" for median. The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.}
 
-\item{pal}{If group.fill is empty, pal must be a vector containing a single color to define the color of the bars. If a variable is specified in group.fill, pal is the color palette used on the graph to differentiate its different modalities. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available. The NA bar, if na.rm.group = FALSE, and the total bar are always in gray.}
+\item{pal}{Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Peppers" from PrettyCols. The color of NA group.fill (in case of na.rm.group == FALSE) are is always "grey". If there is no group.fill, pal has no effect and col argument should be used instead.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1. If there is no group.fill, this argument has no effect.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group).See desaturate function from colorspace package for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See lighten function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See darken function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bar, between 0 and 1.Default is 0.9.}
+\item{dodge}{Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between second groups (group.fill). There is always no space between second groups.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
 
-\item{wrap_width_leg}{Number of characters before going to the line for the labels of the categories of group.fill. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the group.fill. Default is 25.}
 
 \item{legend_ncol}{Number of colomns in the legend. Default is 4.}
 
@@ -121,27 +121,27 @@ mean_group(..., type = "mean")
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays, for type = "mean", "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en" ) or "Gemiddelde:" (if lang == "nl"), or, for type = "median", "Médiane :" (if lang == "fr"), "Median:" (if lang == "en" ) or "Mediaan:" (if lang == "nl"), followed by the quanti_exp argument. To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the group variable. To show no Y label, use ylab = "".}
 
 \item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".}
 
-\item{caption}{Caption of the graphic.}
+\item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the chi-square test as a caption.}
 
-\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 
-\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the statistical test result.}
 }
 \value{
-A list that contains a table, a graphic and a statistical test
+A list that contains a table, a ggplot graphic and, in most cases, a statistical test.
 }
 \description{
-Function to compare means or medians in different groups from complex survey data. It produces a table, a graphic and a statistical test.
+Function to compare means or medians among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a statistical test. In case of mean comparison, the statistical test is a Wald test (using survey::regTermTest). In case of median comparison the statistical test is a Kruskal Wallis test (using survey::svyranktest(test = "KruskalWallis")). Exporting the results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the statistical test is computed on the total means or medians between facets (and not within facets). In case of second group (group.fill), no statistical test is computed.
 }
 \examples{
 # Loading of data

@@ -1,6 +1,6 @@
 #' prop_group
 #'
-#' Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test. Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (group.fill), no Chi-square test is computed.
+#' Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using survey::svychisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (group.fill), no Chi-square test is computed.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining the groups to be compared.
@@ -16,21 +16,21 @@
 #' @param prop_method Type of proportion method used. See svyciprop() in survey package for details and possible values. Default is the beta method.
 #' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.
+#' @param show_n TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportions in each group on the graphic. FALSE if you don't want to show the proportion. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes and legend (in case of a group.fill) labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.
-#' @param total_name Name of the total shown on the graphic Default is "Total" in french and tin englis and "Totaal" in Dutch.
+#' @param total_name Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.
 #' @param scale Denominator of the proportions. Default is 100 to interpret proporitons as percentages.
-#' @param digits Number of digits shown on the values labels on the graphic. Default is 0.
-#' @param unit Unit shown in the graphic. Default is percent.
-#' @param dec Decimal mark shown on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
+#' @param unit Unit displayed in the graphic. Default is percent.
+#' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
 #' @param col Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default is "deepskyblue3". The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.
 #' @param pal Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Coast" from PrettyCols. The color of NA group.fill (in case of na.rm.group == FALSE) are is always "grey". If there is no group.fill, pal has no effect and col argument should be used instead.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1. If there is no group.fill, this argument has no effect.
-#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group).See desaturate function from colorspace package for details. If desaturate and lighten/darken arguments are used lighten/darken applies in a second time (i.e. on the color transformed by desaturate).
-#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See lighten function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken applies in a second time (i.e. on the color transformed by lighten).
-#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See darken function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken applies in a second time (i.e. on the color transformed by lighten).
-#' @param dodge Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because it causes an overlaping of the bars. dodge doesn't affect the spaces between second groups (group.fill). There is always no space between second groups.
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group).See desaturate function from colorspace package for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See lighten function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See darken function from colorspace package for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param dodge Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between second groups (group.fill). There is always no space between second groups.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is 25.
 #' @param wrap_width_leg Number of characters before going to the line for the labels of the group.fill. Default is 25.
@@ -338,7 +338,7 @@ prop_group <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations excluded by filter_exp")
+    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
 
   }
 
@@ -349,7 +349,7 @@ prop_group <- function(data,
       # message avec le nombre d'exclus pour facet
       message(paste0(data_W |>
                        filter(is.na({{facet}})) |>
-                       summarise(n = unweighted(n())), " observations excluded with missing facet"))
+                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
 
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
@@ -363,7 +363,7 @@ prop_group <- function(data,
     # message avec le nombre d'exclus pour group
     message(paste0(data_W |>
                      filter(is.na({{group}})) |>
-                     summarise(n = unweighted(n())), " observations excluded with missing group"))
+                     summarise(n = unweighted(n())), " observations removed due to missing group"))
 
     data_W <- data_W |>
       filter(!is.na({{ group }}))
@@ -374,7 +374,7 @@ prop_group <- function(data,
       # message avec le nombre d'exclus pour group.fill
       message(paste0(data_W |>
                        filter(is.na({{group.fill}})) |>
-                       summarise(n = unweighted(n())), " observations excluded with missing group.fill"))
+                       summarise(n = unweighted(n())), " observations removed due to missing group.fill"))
 
       data_W <- data_W |>
         filter(!is.na({{ group.fill }}))
@@ -399,7 +399,7 @@ prop_group <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations excluded with missing value(s) for the variable(s) in prop_exp")
+    message(paste0(before[[1]] - after[[1]]), " observations removed due to missing value(s) for the variable(s) in prop_exp")
 
     # On convertit la variable de groupe en facteur si pas facteur
     # On cree egalement une variable binaire liee a la proportion pour le khi2
