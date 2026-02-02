@@ -160,10 +160,10 @@ many_val_group = function(data,
 
   # Check des arguments necessaires
   if(missing(type) == TRUE){
-    stop("L'argument type doit etre rempli")
+    stop("Argument type should be filled in")
   }
   if((missing(data) | missing(group) | missing(list_vars)) == TRUE){
-    stop("Les arguments data, group, list_vars doivent etre remplis")
+    stop("Arguments data, group and list_vars should be filled in")
   }
 
   # Check des autres arguments
@@ -254,7 +254,7 @@ many_val_group = function(data,
               vec_list_vars = vec_list_vars)
   }
 
-  message("Variable(s) entrees : ", paste(vec_list_vars, collapse = ", "))
+  message("Variables used: ", paste(vec_list_vars, collapse = ", "))
 
   # On procede d'abord a un test : il faut que toutes les variables entrees soient presentes dans data => sinon stop et erreur
   # On cree un vecteur string qui contient toutes les variables entrees
@@ -324,21 +324,50 @@ many_val_group = function(data,
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
+
+    # On calcule les effectifs avant filtre
+    before <- data_W |>
+      summarise(n=unweighted(n()))
+
     data_W <- data_W |>
       filter({{ filter_exp }})
+
+    # On calcule les effectifs apres filtre
+    after <- data_W |>
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+
   }
+
+
+  # On supprime les NA sur facet si facet non-NULL et na.rm.facet = T
+  if (na.rm.facet == T) {
+    if(!quo_is_null(quo_facet)){
+
+      # message avec le nombre d'exclus pour facet
+      message(paste0(data_W |>
+                       filter(is.na({{facet}})) |>
+                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
+
+      data_W <- data_W |>
+        filter(!is.na({{ facet }}))
+
+    }
+  }
+
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
+
+    # message avec le nombre d'exclus pour groupe
+    message(paste0(data_W |>
+                     filter(is.na({{group}})) |>
+                     summarise(n = unweighted(n())), " observations removed due to missing group"))
+
     data_W <- data_W |>
       filter(!is.na({{ group }}))
   }
-  # idem sur la variable de facet si non-NULL
-  if (na.rm.facet == T) {
-    if(!quo_is_null(quo_facet)){
-      data_W <- data_W |>
-        filter(!is.na({{ facet }}))
-    }
-  }
+
 
   # On supprime les NA sur la/les variable(s) entrees si na.vars == "rm.all" => de cette facon les effectifs sont les memes pour tous les indicateurs.
   if(na.vars == "rm.all"){
@@ -354,8 +383,12 @@ many_val_group = function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) entrees")
+    message(paste0(before[[1]] - after[[1]]), " observations removed due to missing in at least one of the variables")
   }
+  else{
+    message("With na.vars = 'rm', observations removed differ between variables")
+  }
+
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W |>
@@ -493,7 +526,7 @@ many_val_group = function(data,
     # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      warning("Le nombre de labels n'est pas egal au nombre de variables : les labels ne sont pas pris en compte")
+      warning("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used")
 
       # On cree un facteur avec l'ordre tel qu'il est entre par l'utilisateur (pour ggplot)
       tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))

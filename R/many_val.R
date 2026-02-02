@@ -339,7 +339,7 @@ many_val = function(data,
     message(paste0(before[[1]] - after[[1]]), " observations removed due to missing in at least one of the variables")
   }
   else{
-    message("With na.vars = 'rm', observations removed varies between variables")
+    message("With na.vars = 'rm', observations removed differ between variables")
   }
 
 
@@ -400,7 +400,7 @@ many_val = function(data,
     # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      message("The number of labels is not equal to the number of variables")
+      message("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used")
 
     # si oui, on remplace dans tab$list_col le nom des variables par les labels definis par l'utilisateur dans list_vars_lab
     } else {
