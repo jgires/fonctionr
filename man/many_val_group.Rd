@@ -46,8 +46,8 @@ many_val_group(
   xlab = NULL,
   ylab = NULL,
   legend_lab = NULL,
-  lang = "fr",
   caption = NULL,
+  lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
@@ -64,65 +64,65 @@ many_mean_group(..., type = "mean")
 
 \item{group}{A variable defining groups to be compared.}
 
-\item{list_vars}{A vector containing names of the dummy variables on which to compute the proportions}
+\item{list_vars}{A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians.}
 
-\item{type}{"mean" to compute means by group ; "median" to compute medians by group ; "prop" to compute proportions by group.}
+\item{type}{"prop" to compute proportions by group ; "mean" to compute means by group ; "median" to compute medians by group.}
 
-\item{list_vars_lab}{Names of the variables}
+\item{list_vars_lab}{A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.}
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression that filters the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the group variable or NA on the facet variable. FALSE if you want to create a group with the NA value for the group variable and a facet with the NA value for the facet variable. NA in the variables included in prop_exp are not affected in this argument. All the observation with a NA in the variables included in prop_exp are excluded.}
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
 
-\item{na.vars}{The treatment of NA values in variables. "rm" removes NA only in each individual variable, "rm.all" removes every individual that has at least one NA in one variable.}
+\item{na.vars}{TThe treatment of NA values in variables (list_vars). "rm" removes NA seperately in each individual variable, "rm.all" removes every individual that has at least one NA in one variable. Default is "rm".}
 
-\item{total}{TRUE if you want to calculate a total, FALSE if you don't. The default is TRUE}
+\item{total}{TRUE if you want to compute a total, FALSE if you don't. Default is TRUE. Total is not displayed nor computed if position = 'flip'.}
 
-\item{prop_method}{Type of proportion method to use. See svyciprop in survey package for details. Default is the beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
 
-\item{position}{Position adjustment for the ggplot. Default is "dodge". Other possible values are "flip" and "stack". "dodge" means that groups are on the y axe and variables are in differents colors, "flip" means that variables are on the y axe and groups are in differents colors, and "stack" means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum varible (e.g. different sources of income).}
+\item{position}{Position adjustment for the ggplot. Default is "dodge". Other possible values are "flip" and "stack". "dodge" means that groups are on the y axe and variables are in differents colors, "flip" means that variables are on the y axe and groups are in differents colors, and "stack" means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum variable (e.g. different sources of income). If position = 'flip', total is not displayed nor computed. If position = "stack", confidence intervals are never shown on the graphic.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars.}
+\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE. If position = "stack", confidence intervals are never shown on the graphic.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each group. FALSE if you do not want to show this number. Default is FALSE.}
+\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample for each group and variable. The number can varie between variables if na.vars = "rm". FALSE if you do not want to show this number. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the proportion in each group on the graphic. FALSE if you do not want to show the proportion.}
+\item{show_value}{TRUE if you want to show the proportions/means/median for each group and variable on the graphic. FALSE if you do not want to show the proportions/means/medians. Default is TRUE.}
 
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
 
-\item{total_name}{Name of the total bar on the graphic. Default is Total.}
+\item{total_name}{Name of the total bars on the graphic. Default is Total. Notice that total is not displayed nor computed if position = 'flip'.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+\item{scale}{Denominator of the proportions. Default is 100 to interpret numbers as percentages. This argument is only used in case of type = "prop".}
 
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed in the graphic. Default is percent.}
+\item{unit}{Unit displayed on the graphic. Default is percent for type = "prop" and no unit for type = "mean" or "median".}
 
-\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.}
+\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between sub-groups (group in case of position = 'dodge' or variables in case of position = 'flip'). There is always no space between sub-groups.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels on de Y axe (groups if position = 'dodge' or 'stack', variables if position = 'flip'). Default is 25.}
 
-\item{wrap_width_leg}{Number of characters before going to the line. Applies to the labels of the legend. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels the legend (variables if position = 'dodge' or 'stack', groups if position = 'flip'). Default is 25.}
 
 \item{legend_ncol}{Number maximum of colomn in the legend. Default is 4.}
 
@@ -130,27 +130,27 @@ many_mean_group(..., type = "mean")
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Proportion :" (if lang = "fr"), "Proportion:" (if lang = "en") or "Aandeel:" folowed by the names of the variables (list_vars). To show no X label, use xlab = "".}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data.}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the groups variable (if position = 'dodge' or 'stack') or no Y axe label (if position = 'flip'). To show no Y label, use ylab = "".}
 
-\item{legend_lab}{Legend (fill) label on the graphic.}
-
-\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
+\item{legend_lab}{Legend (fill) label on the graphic. Default (legend_lab = NULL) displays no legend label (if position = 'dodge' or 'stack') or the name of the groups variable (if position = 'flip'). To show no legend label, use legend_lab = "".}
 
 \item{caption}{Caption of the graphic.}
 
-\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+\item{lang}{Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 
-\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
+\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets : the table and the graphic.}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+
+\item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
 }
 \value{
 A list that contains a table and a graphic
 }
 \description{
-Function to compare de proportions/means/medians of a set of several binary/continuous variables between different groups. It can use complex survey data. It produces a table and a graphic.
+Function to compare de proportions/means/medians of a set of several binary/quantitatives variables between different groups, based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. Exporting the results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data

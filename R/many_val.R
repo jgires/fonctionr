@@ -3,31 +3,31 @@
 #' Function to compute the proportions of a set of several binary variables or means or medians of a set of quantitative variables, based on complex survey data. It produces  a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. Exporting the results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param list_vars A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians
+#' @param list_vars A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians.
 #' @param type "prop" to compute proportions ; "mean" to compute means ; "median" to compute medians.
 #' @param list_vars_lab A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.
 #' @param facet A variable defining the faceting group.
-#' @param filter_exp AAn expression filtering the data, preserving the design.
+#' @param filter_exp An expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
 #' @param na.vars The treatment of NA values in variables (list_vars). "rm" removes NA seperately in each individual variable, "rm.all" removes every individual that has at least one NA in one variable. Default is "rm".
 #' @param prop_method Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method. This argument is only used in case of type = "prop".
 #' @param reorder TRUE if you want to reorder the variables according to the proportions/means/medians. Default is FALSE.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
-#' @param show_n TRUE if you want to show on the graphic the number of observations in the sample for each variable. FALSE if you do not want to show this number. Default is FALSE.
+#' @param show_n TRUE if you want to show on the graphic the number of observations in the sample for each variable. The number can varie if na.vars = "rm". FALSE if you do not want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportions/means/median for each variable on the graphic. FALSE if you do not want to show the proportions/means/medians. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.
 #' @param scale Denominator of the proportions. Default is 100 to interpret numbers as percentages. This argument is only used in case of type = "prop".
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
-#' @param unit Unit displayed on the graphic. Default is percent for type = "prop" or no unit for type = "mean" or "median".
+#' @param unit Unit displayed on the graphic. Default is percent for type = "prop" and no unit for type = "mean" or "median".
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
 #' @param col Color of the bars if the user wants a monocolor graph. col must be a R color or an hexadecimal color code. As pal has a priority over col, if the user wants to use col, he must not use simultaneously the pal argument (even pal = NULL).
-#' @param pal Colors of the bars if the user wants the bars to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer pal has a priority over col.
+#' @param pal Colors of the bars if the user wants the bars to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer. pal has a priority over col.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col).See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
 #' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
-#' @param dodge Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
+#' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is 25.
 #' @param title Title of the graphic.

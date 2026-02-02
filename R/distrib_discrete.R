@@ -22,7 +22,7 @@
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
 #' @param pal Argument kept for compatibility with old versions.
 #' @param col Color of the bars. col must be a R color or an hexadecimal color code. Default is "sienna2". The color of NA category (in case of na.rm.var == FALSE) is always "grey".
-#' @param dodge Width of the bar. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
+#' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels of the categories. Default is 25.
 #' @param title Title of the graphic.
