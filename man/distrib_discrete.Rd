@@ -61,7 +61,7 @@ distrib_d(...)
 
 \item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder. Default is FALSE.}
+\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.var = FALSE, is not included in the reorder. In case of facets, the categories are reordered based on each median category Default is FALSE.}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
 
@@ -111,7 +111,7 @@ distrib_d(...)
 A list that contains a table, a ggplot graphic and, if probs is not NULL, a statistical test.
 }
 \description{
-Function describe the distribution of a discrete variable from complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and, if proportions for H0 are specified, a Chi-Square statistical test (using survey::svygofchisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
+Function to describe the distribution of a discrete variable from complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and, if proportions for H0 are specified, a Chi-Square statistical test (using survey::svygofchisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
 }
 \examples{
 # Loading of data
