@@ -71,13 +71,13 @@ mean_group(..., type = "mean")
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable. Default is TRUE.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable.}
+\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
 
 \item{total}{TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.}
+\item{reorder}{TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder. Default is FALSE.}
 
 \item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
 
@@ -91,7 +91,7 @@ mean_group(..., type = "mean")
 
 \item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit displayed in the graphic. Default is none.}
+\item{unit}{Unit displayed on the graphic. Default is none.}
 
 \item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 

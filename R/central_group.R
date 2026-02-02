@@ -12,17 +12,17 @@
 #' @param facet A variable defining the faceting group.
 #' @param filter_exp An expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable.
-#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable. Default is TRUE.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
 #' @param total TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.
-#' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param reorder TRUE if you want to reorder the groups according to the mean/median. NA value, in case if na.rm.group = FALSE, is not included in the reorder. Default is FALSE.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median in each group on the graphic. FALSE if you don't want to show the mean/median. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes and legend (in case of a group.fill) labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.
 #' @param total_name Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
-#' @param unit Unit displayed in the graphic. Default is none.
+#' @param unit Unit displayed on the graphic. Default is none.
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
 #' @param col Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default color used depends on type : "deeppink3" for mean and "mediumorchid3" for median. The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.
 #' @param pal Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Peppers" from PrettyCols. The color of NA group.fill (in case of na.rm.group == FALSE) are is always "grey". If there is no group.fill, pal has no effect and col argument should be used instead.

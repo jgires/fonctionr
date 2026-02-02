@@ -9,12 +9,12 @@
 #' @param facet A variable defining the faceting groups.
 #' @param filter_exp An expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable.
-#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable.
+#' @param na.rm.group TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable. Default is TRUE.
+#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
 #' @param na.prop "rm" to remove observations with NA on one of the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". If na.prop is set to "rm" the function 'is.na()' is not allowed in prop_exp.
 #' @param total TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.
-#' @param prop_method Type of proportion method used. See svyciprop() in survey package for details and possible values. Default is the beta method.
-#' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder.
+#' @param prop_method Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.
+#' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder. Default is FALSE.
 #' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
 #' @param show_n TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.
 #' @param show_value TRUE if you want to show the proportions in each group on the graphic. FALSE if you don't want to show the proportion. Default is TRUE.
@@ -22,7 +22,7 @@
 #' @param total_name Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.
 #' @param scale Denominator of the proportions. Default is 100 to interpret proporitons as percentages.
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
-#' @param unit Unit displayed in the graphic. Default is percent.
+#' @param unit Unit displayed on the graphic. Default is percent.
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
 #' @param col Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default is "deepskyblue3". The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.
 #' @param pal Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Coast" from PrettyCols. The color of NA group.fill (in case of na.rm.group == FALSE) are is always "grey". If there is no group.fill, pal has no effect and col argument should be used instead.
