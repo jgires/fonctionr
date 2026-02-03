@@ -3,7 +3,7 @@
 \name{distrib_continuous}
 \alias{distrib_continuous}
 \alias{distrib_c}
-\title{distrib_continuous va}
+\title{distrib_continuous}
 \usage{
 distrib_continuous(
   data,
@@ -120,7 +120,7 @@ distrib_c(...)
 A list that contains a density table (dens), a central value table (tab), a quantile table (quant) and a ggplot graphic (graph).
 }
 \description{
-Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data

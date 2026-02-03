@@ -1,12 +1,12 @@
-#' distrib_continuous va
+#' distrib_continuous
 #'
-#' Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+#' Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 #'
 #' @name distrib_continuous
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param quanti_exp An expression defining the quantitative variable from which the mean/median is computed. Notice that if any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and the indicators.
-#' @param type "mean" to compute mean as the central value ; "median" to compute median as the central value.
+#' @param quanti_exp An expression defining the quantitatie variable the variable to be described. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and of the indicators.
+#' @param type Type of central value : "mean" to compute mean as the central value ; "median" to compute median as the central value.
 #' @param facet Not yet implemented.
 #' @param filter_exp An expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
@@ -20,12 +20,12 @@
 #' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
 #' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
 #' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each quantile. FALSE if you do not want to show the numbers. Default is FALSE.
-#' @param show_value TRUE if you want to show the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
+#' @param show_value TRUE if you want to show the value of the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
 #' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
 #' @param unit Unit displayed on the graphic. Default is none.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
-#' @param pal For compatibility with old versions.
+#' @param pal For compatibility with older versions.
 #' @param col_density Color of the density area. It may be one color or a vector with several colors. Colors should be R color or an hexadecimal color code. In case of one color, the density is monocolor. In case of a vector, the quantile areas are painted in continuous colors going from the last color in the vector (center quantile) to the first color (first and last quantiles). In case of an even quantile area numbers (e.g. deciles, quartiles) the last color of the vector is only applied to the highcenter quantile area to avoid two continuous quantile areas having the same color.
 #' @param color Not currently used except for compatibility with old versions.
 #' @param col_border Color of the density line. Color should be one R color or one hexadecimal color code. Default (NULL) does not draw the density line.

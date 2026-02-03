@@ -153,7 +153,7 @@ distrib_group_c(...)
 A list that contains a table, a graphic and a statistical test
 }
 \description{
-Function to compare means or medians in different groups from complex survey data. It produces a table, a graphic and a statistical test.
+Function to compare the distribution of a continuous variable between groups from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant), a ready-to-be published ggplot graphic (graph) and a box-plot table (moustache). The density table contains x-y coordinates to draw density curve for each group. The central value table contains, for each group, the median or the mean of the continuous variable, with their confidence intervals, the sample size and the estimations of the totals, with their confidence intervals. The quantile table contains, for each group, quantiles and their confidence intervals. The box-plot table contains the X coordinates to draw the moustache, for each group. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data
