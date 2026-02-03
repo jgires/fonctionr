@@ -144,7 +144,7 @@ many_val_group = function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -233,7 +233,7 @@ many_val_group = function(data,
 
   if(total == TRUE & position == "flip"){
     total <- FALSE
-    warning("La position 'flip' n'accepte pas de total : celui-ci est donc desactive")
+    warning("The 'flip' position does not allow a total: it is therefore disabled")
   }
 
   # Petite fonction utile

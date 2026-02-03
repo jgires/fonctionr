@@ -1,46 +1,46 @@
-#' distrib_continuous
+#' distrib_continuous va
 #'
-#' Function to describe a continuous variable from complex survey data
+#' Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 #'
 #' @name distrib_continuous
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param quanti_exp An expression that define the variable to be described.
+#' @param quanti_exp An expression defining the quantitative variable from which the mean/median is computed. Notice that if any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and the indicators.
 #' @param type "mean" to compute mean as the central value ; "median" to compute median as the central value.
-#' @param facet A supprimer?
-#' @param filter_exp An expression that filters the data, preserving the design.
+#' @param facet Not yet implemented.
+#' @param filter_exp An expression filtering the data, preserving the design.
 #' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.facet A supprimer?
-#' @param quantiles quantiles to be computed in the distribution. Default are deciles.
+#' @param na.rm.facet Not yet implemented.
+#' @param quantiles Quantiles computed. Default are deciles.
 #' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.
 #' @param resolution Resolution of the density curve. Default is 1024.
-#' @param limits Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.
+#' @param limits Limits of the X axe of the graphic. Does not apply to the computation of indicators (median/mean and quantiles). Default is NULL to show the entire distribution on the graphic.
 #' @param show_mid_line TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.
-#' @param show_ci_lines TRUE if you want to show confidence interval of the mean or median (depending on type) as lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
+#' @param show_ci_lines TRUE if you want to show confidence interval of the mean or median (depending on type) as dotted lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
 #' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
 #' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each quantile FALSE if you do not want to show the numbers. Default is FALSE.
+#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each quantile. FALSE if you do not want to show the numbers. Default is FALSE.
 #' @param show_value TRUE if you want to show the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
-#' @param show_labs TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.
-#' @param digits Numbers of digits showed on the value labels on the graphic. Default is 0.
-#' @param unit Unit showed on the graphic. Default is no unit.
+#' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
+#' @param unit Unit displayed on the graphic. Default is none.
 #' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
 #' @param pal For compatibility with old versions.
-#' @param col_density color of the density area. maybe one color or a vector with several colors.
-#' @param color For compatibility with old versions.
-#' @param col_border color of the density line.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
+#' @param col_density Color of the density area. It may be one color or a vector with several colors. Colors should be R color or an hexadecimal color code. In case of one color, the density is monocolor. In case of a vector, the quantile areas are painted in continuous colors going from the last color in the vector (center quantile) to the first color (first and last quantiles). In case of an even quantile area numbers (e.g. deciles, quartiles) the last color of the vector is only applied to the highcenter quantile area to avoid two continuous quantile areas having the same color.
+#' @param color Not currently used except for compatibility with old versions.
+#' @param col_border Color of the density line. Color should be one R color or one hexadecimal color code. Default (NULL) does not draw the density line.
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".
+#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be quanti_exp.
+#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be "Densité" (if lang = "fr), "Density" (if lang = "en") or "Densiteit (if lang = "nl").
 #' @param caption Caption of the graphic.
-#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
-#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
-#' @param coef_font A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).
-#' @param export_path Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.
+#' @param lang Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".
+#' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
+#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
+#' @param export_path Path to export the results in an xlsx file. The file includes four sheets: the central value table, the quantile table, the density table and the graphic.
 #'
-#' @return A list that contains a table (tab), a graphic (garph) and a density table (dens) and a quantile table (quant)
+#' @return A list that contains a density table (dens), a central value table (tab), a quantile table (quant) and a ggplot graphic (graph).
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -123,7 +123,7 @@ distrib_continuous <- function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -139,7 +139,7 @@ distrib_continuous <- function(data,
 
   # Un check imperatif
   if((missing(data) | missing(quanti_exp)) == TRUE){
-    stop("Les arguments data et quanti_exp doivent etre remplis")
+    stop("Arguments data and quanti_exp should be filled in")
   }
 
   # Check des autres arguments
@@ -205,7 +205,7 @@ distrib_continuous <- function(data,
 
   # Check que limit ne contient que 2 valeurs
   if(!is.null(limits) & length(limits) != 2){
-    stop("limits doit etre un vecteur contenant 2 valeurs (min et max)")
+    stop("limits must be a vector containing 2 values (min and max)")
   }
 
   # On cree une quosure de facet & filter_exp => pour if statements dans la fonction (voir ci-dessous)
@@ -271,9 +271,23 @@ distrib_continuous <- function(data,
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
+
+    # On calcule les effectifs avant filtre
+    before <- data_W |>
+      summarise(n=unweighted(n()))
+
     data_W <- data_W |>
       filter({{ filter_exp }})
+
+    # On calcule les effectifs apres filtre
+    after <- data_W |>
+      summarise(n=unweighted(n()))
+    # On affiche le nombre de lignes supprimees (pour verification)
+    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+
   }
+
+
   # On supprimes les NA sur la variable de facet si non-NULL
   if (na.rm.facet == T) {
     if(!quo_is_null(quo_facet)){
@@ -284,7 +298,7 @@ distrib_continuous <- function(data,
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
   # On les affiche via message (pour verification)
-  message("Variable(s) detectee(s) dans quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
+  message("Variable(s) detected in quanti_exp:  ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W |>
     summarise(n=unweighted(n()))
@@ -297,7 +311,7 @@ distrib_continuous <- function(data,
   after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
-  message(paste0(before[[1]] - after[[1]]), " lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp")
+  message(paste0(before[[1]] - after[[1]]), "  observations removed due to missing value(s) for the variable(s) in quanti_exp")
 
   # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite
   data_W <- data_W |>
@@ -460,7 +474,7 @@ distrib_continuous <- function(data,
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    message("Une couleur indiquee dans col_density n'existe pas : la palette de couleurs par defaut est utilisee")
+    message("A color specified in col_density does not exist: the default color palette is used")
     col_density <- c("#00708C", "mediumturquoise")
   }
 

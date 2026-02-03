@@ -132,7 +132,7 @@ many_val = function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -458,7 +458,7 @@ many_val = function(data,
     # Si col est pas valide => on met la couleur par defaut
     } else {
       if(all(isColor(col)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
-        warning("col n'est pas valide : la couleur par defaut est utilisee")
+        warning("color is invalid: default color is used")
       }
       col <- "indianred4" # Alors col == "indianred4"
       palette <- rep(col, nlevels(tab[["list_col"]]))

@@ -140,7 +140,7 @@ distrib_group_discrete <- function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "

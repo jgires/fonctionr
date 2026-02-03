@@ -139,7 +139,7 @@ central_group <- function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -365,7 +365,7 @@ central_group <- function(data,
 
   # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
   # On les affiche via message (pour verification)
-  message("Variable(s) detected in quanti_exp : ", paste(vec_quanti_exp, collapse = ", "))
+  message("Variable(s) detected in quanti_exp: ", paste(vec_quanti_exp, collapse = ", "))
   # On calcule les effectifs avant filtre
   before <- data_W |>
     summarise(n=unweighted(n()))
@@ -565,7 +565,7 @@ central_group <- function(data,
     } else {
       # Warning uniquement si une couleur fausse a ete entree
       if(!is.null(col) & all(isColor(col)) == FALSE){
-        warning("col n'est pas valide : la couleur par defaut est utilisee")
+        warning("color is invalid: default color is used")
       }
       if(type == "mean"){
         col <- "deeppink3"

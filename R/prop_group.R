@@ -148,7 +148,7 @@ prop_group <- function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -580,7 +580,7 @@ prop_group <- function(data,
     } else {
       # Warning uniquement si une couleur fausse a ete entree
       if(!is.null(col) & all(isColor(col)) == FALSE){
-        warning("col n'est pas valide : la couleur par defaut est utilisee")
+        warning("color is invalid: default color is used")
       }
       col <- "deepskyblue3" # Alors col == "deepskyblue3"
       palette <- c(rep(col, nlevels(tab[[deparse(substitute(group))]]) - 1), "grey40")

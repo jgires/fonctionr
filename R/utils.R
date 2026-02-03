@@ -918,7 +918,7 @@ create_palette <- function(pal,
       # Si la couleur/palette n'est pas valide => defaut
       } else {
         palette <- palette_function()
-        warning("La palette indiquee n'existe pas : la palette par defaut est utilisee")
+        warning("The specified palette does not exist: the default palette is used")
       }
     # Si pal est de longueur > 1 avec uniquement des couleurs valides
     } else if(length(pal) > 1 & all(isColor(pal))){
@@ -933,12 +933,12 @@ create_palette <- function(pal,
       # S'il n'y a PAS le bon nombre de couleurs => defaut
       if(length(pal) != levels_palette){
         palette <- palette_function()
-        warning("La palette indiquee ne contient pas le bon nombre de couleurs : la palette par defaut est utilisee")
+        warning("The specified palette does not contain the correct number of colors: the default palette is used.")
       }
     # Si aucun de ces cas => defaut
     } else {
       palette <- palette_function()
-      warning("La palette indiquee n'est pas valide : la palette par defaut est utilisee")
+      warning("The specified palette is invalid: the default palette is used")
     }
   }
   # Si pal est NULL => defaut

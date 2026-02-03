@@ -123,7 +123,7 @@ distrib_discrete <- function(data,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -382,7 +382,7 @@ distrib_discrete <- function(data,
     palette <- c(rep(col, nlevels(tab[[deparse(substitute(quali_var))]])))
   } else { # Si la couleur n'est pas valide => on met la couleur par defaut
     palette <- c(rep("sienna2", nlevels(tab[[deparse(substitute(quali_var))]])))
-    warning("La couleur indiquee dans col n'existe pas : la couleur par defaut est utilisee")
+    warning("color is invalid: default color is used")
   }
 
   # On calcule la valeur max de la proportion, pour l'ecart des geom_text dans le ggplot
