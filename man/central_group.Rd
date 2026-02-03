@@ -127,7 +127,7 @@ mean_group(..., type = "mean")
 
 \item{legend_lab}{Legend (fill) label on the graphic. If legend_lab = NULL, legend label on the graphic will be group.fill. To show no legend label, use legend_lab = "".}
 
-\item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the chi-square test as a caption.}
+\item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the statistical test. There is no way of not showing the result of the chi-square test as a caption.}
 
 \item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 

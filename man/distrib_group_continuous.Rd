@@ -61,37 +61,37 @@ distrib_group_c(...)
 
 \item{group}{A variable defining groups to be compared.}
 
-\item{quanti_exp}{An expression that define the variable the variable to be described.}
+\item{quanti_exp}{An expression defining the quantitatie variable the variable to be described and compared between groups. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the densities and of the indicators.}
 
-\item{type}{Type of central value : "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group..}
+\item{type}{Type of central value : "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group.}
 
-\item{facet}{A supprimer?}
+\item{facet}{Not yet implemented.}
 
-\item{filter_exp}{An expression that filters the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA value for the group variable. NA in the variables included in quanti_exp are not affected in this argument. All the observation with a NA in the variables included in quanti_exp are excluded.}
+\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.}
 
-\item{na.rm.facet}{Argument a supprimer?}
+\item{na.rm.facet}{Not yet implemented.}
 
-\item{quantiles}{Quantiles to be computed in the distributions. Default are deciles.}
+\item{quantiles}{Quantiles computed in the distributions. Default are deciles.}
 
-\item{moustache_probs}{A vector defining the proportions of the population used to draw the moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three groups containing respectively 50 percent, 80 percent and 95 percent of the population closest to the median.}
+\item{moustache_probs}{A vector defining the proportions of the population used to draw the boxplot. Default is 0.95, 0.8, 0.5 to draw a boxplot with three groups containing respectively 50 percent, 80 percent and 95 percent of the population around to the median.}
 
 \item{bw}{The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.}
 
 \item{resolution}{Resolution of the density curve. Default is 512}
 
-\item{height}{Height of the curves. Default is 0.8}
+\item{height}{Height of the curves. Default is 0.8. Values higher than 1 may cause curves to overlap.}
 
-\item{limits}{Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic.}
+\item{limits}{Limits of the x axe of the graphic. Does not apply to the computation. Default is NULL to show the entire distribution on the graphic. If the limits are shorter than the boxplot, some part of some boxplot will not be drawn.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the mean/median (depending on type). NA value, in case if na.rm.group = FALSE, is not included in the reorder (A VERIFIER).}
+\item{reorder}{TRUE if you want to reorder the groups according to the mean/median (depending on type). Unlike other functions, NA values, in case if na.rm.group = FALSE, is included in the reorder.}
 
-\item{show_mid_point}{TRUE if you want to show the mean or median (depending on type) as a point on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+\item{show_mid_point}{TRUE if you want to show the mean or median (depending on type) as a point on the graphic. FALSE if you do not want to. Default is TRUE.}
 
-\item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is FALSE}
+\item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to. Default is FALSE}
 
 \item{show_ci_errorbar}{TRUE if you want to show confidence interval of the mean or median (depending on type) as an error bar on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
 
@@ -101,59 +101,59 @@ distrib_group_c(...)
 
 \item{show_quant_lines}{TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.}
 
-\item{show_moustache}{TRUE if you want to show the moustache on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+\item{show_moustache}{TRUE if you want to show the boxplot on the graphic. FALSE if you do not want to show it. Default is TRUE.}
 
-\item{show_value}{TRUE if you want to show the mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
+\item{show_value}{TRUE if you want to show the value of mean/median of each group on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
-\item{show_labs}{TRUE if you want to show axes, titles and caption labels. FALSE if you do not want to show any label on axes and titles. Default is TRUE.}
+\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
 
-\item{digits}{Numbers of digits showed on the value labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{Unit showed on the graphic. Default is no unit.}
+\item{unit}{Unit displayed on the graphic. Default is none.}
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{For compatibility with old versions.}
+\item{pal}{For compatibility with older versions.}
 
-\item{col_density}{color of the density area. maybe one color or a vector with several colors.}
+\item{col_density}{Color of the density area. It may be one color or a vector with several colors. Colors should be R color or an hexadecimal color code. In case of one color, the density is monocolor. In case of a vector, the quantile areas are painted in continuous colors going from the last color in the vector (center quantile) to the first color (first and last quantiles). In case of an even quantile area numbers (e.g. deciles, quartiles) the last color of the vector is only applied to the highcenter quantile area to avoid two continuous quantile areas having the same color.}
 
 \item{pal_moustache}{For compatibility with old versions.}
 
-\item{col_moustache}{Color of the moustache. Can be one or sereval colors to create a palette.}
+\item{col_moustache}{Color of the moustache. Can be one or several colors to create a palette. In case of a vector, the different areas of the box-plot are painted in continuous colors going from the first color in the vector (center of the bo-plot) to the last color (extern area of the box-plot).}
 
-\item{color}{For compatibility with old versions.}
+\item{color}{For compatibility with older versions.}
 
-\item{col_border}{color of the density line.}
+\item{col_border}{Color of the density line. Color should be one R color or one hexadecimal color code. Default (NULL) does not draw the density line.}
 
-\item{alpha}{Transparence of the density curve. Default is 1.}
+\item{alpha}{Transparence of the density areas. Default is 1. It applies only to col_density.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line in the labels of the groups. Default is 25}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be quanti_exp.}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be group. To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the group variable. To show no Y label, use ylab = "".}
 
-\item{caption}{Caption of the graphic.}
+\item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the statistical test as a caption.}
 
-\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 
-\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes three sheets : the table, the graphic and the statistical test.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes five sheets: the central values table, the quantile table, the densities table, the graphic and the statistical test result.}
 }
 \value{
-A list that contains a table, a graphic and a statistical test
+A list that contains a density table (dens), a central values table (tab), a quantile table (quant), a ggplot graphic (graph), boxplot table (moustache) and a statistical test (test).
 }
 \description{
-Function to compare the distribution of a continuous variable between groups from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant), a ready-to-be published ggplot graphic (graph) and a box-plot table (moustache). The density table contains x-y coordinates to draw density curve for each group. The central value table contains, for each group, the median or the mean of the continuous variable, with their confidence intervals, the sample size and the estimations of the totals, with their confidence intervals. The quantile table contains, for each group, quantiles and their confidence intervals. The box-plot table contains the X coordinates to draw the moustache, for each group. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+Function to compare the distribution of a continuous variable between groups from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant), a ready-to-be published ggplot graphic (graph), a box-plot table (moustache) and a statistical test (test). The density table contains x-y coordinates to draw density curve for each group. The central value table contains, for each group, the median or the mean of the continuous variable, with their confidence intervals, the sample size and the estimations of the totals, with their confidence intervals. The quantile table contains, for each group, quantiles and their confidence intervals. The box-plot table contains the X coordinates to draw the moustache, for each group. In case of mean comparison, the statistical test is a Wald test (using survey::regTermTest). In case of median comparison the statistical test is a Kruskal Wallis test (using survey::svyranktest(test = "KruskalWallis")). Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data

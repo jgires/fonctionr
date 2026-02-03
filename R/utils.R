@@ -959,3 +959,22 @@ create_palette <- function(pal,
 
   return(palette)
 }
+
+
+#' count_NA_deleted
+#'
+#' Internal function to mention how many NA have been deleted
+#'
+#' @param x Variable on wich to count NA.
+#' @param type type of variable to show on the message (group, group.fill, facet...)
+#'
+#' @noRd
+#'
+
+count_NA_deleted <- function(x,
+                             type) {
+
+  count <- sum(is.na(x))
+  message(count, " observation(s) removed due to missing ", type)
+
+}

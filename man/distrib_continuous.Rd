@@ -48,9 +48,9 @@ distrib_c(...)
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{quanti_exp}{An expression defining the quantitative variable from which the mean/median is computed. Notice that if any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and the indicators.}
+\item{quanti_exp}{An expression defining the quantitatie variable the variable to be described. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and of the indicators.}
 
-\item{type}{"mean" to compute mean as the central value ; "median" to compute median as the central value.}
+\item{type}{Type of central value : "mean" to compute mean as the central value ; "median" to compute median as the central value.}
 
 \item{facet}{Not yet implemented.}
 
@@ -78,7 +78,7 @@ distrib_c(...)
 
 \item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each quantile. FALSE if you do not want to show the numbers. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
+\item{show_value}{TRUE if you want to show the value of the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
 
 \item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
 
@@ -88,7 +88,7 @@ distrib_c(...)
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{For compatibility with old versions.}
+\item{pal}{For compatibility with older versions.}
 
 \item{col_density}{Color of the density area. It may be one color or a vector with several colors. Colors should be R color or an hexadecimal color code. In case of one color, the density is monocolor. In case of a vector, the quantile areas are painted in continuous colors going from the last color in the vector (center quantile) to the first color (first and last quantiles). In case of an even quantile area numbers (e.g. deciles, quartiles) the last color of the vector is only applied to the highcenter quantile area to avoid two continuous quantile areas having the same color.}
 
@@ -120,7 +120,7 @@ distrib_c(...)
 A list that contains a density table (dens), a central value table (tab), a quantile table (quant) and a ggplot graphic (graph).
 }
 \description{
-Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
 }
 \examples{
 # Loading of data

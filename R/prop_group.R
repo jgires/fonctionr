@@ -328,17 +328,16 @@ prop_group <- function(data,
   if(!quo_is_null(quo_filter)){
 
     # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
+    before <- nrow(data_W$variables)
 
     data_W <- data_W |>
       filter({{ filter_exp }})
 
     # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
+    after <- nrow(data_W$variables)
+
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+    message(paste0(before - after), " observations removed by filter_exp")
 
   }
 
@@ -347,9 +346,8 @@ prop_group <- function(data,
     if(!quo_is_null(quo_facet)){
 
       # message avec le nombre d'exclus pour facet
-      message(paste0(data_W |>
-                       filter(is.na({{facet}})) |>
-                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
+      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
+                       type = "facet")
 
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
@@ -361,9 +359,8 @@ prop_group <- function(data,
   if (na.rm.group == T) {
 
     # message avec le nombre d'exclus pour group
-    message(paste0(data_W |>
-                     filter(is.na({{group}})) |>
-                     summarise(n = unweighted(n())), " observations removed due to missing group"))
+    count_NA_deleted(data_W$variables[[deparse(substitute(group))]],
+                     type = "group")
 
     data_W <- data_W |>
       filter(!is.na({{ group }}))
@@ -372,9 +369,8 @@ prop_group <- function(data,
     if(!quo_is_null(quo_group.fill)){
 
       # message avec le nombre d'exclus pour group.fill
-      message(paste0(data_W |>
-                       filter(is.na({{group.fill}})) |>
-                       summarise(n = unweighted(n())), " observations removed due to missing group.fill"))
+      count_NA_deleted(data_W$variables[[deparse(substitute(group.fill))]],
+                       type = "group.fill")
 
       data_W <- data_W |>
         filter(!is.na({{ group.fill }}))
@@ -388,18 +384,16 @@ prop_group <- function(data,
     # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_prop_exp cree au debut
     message("Variable(s) detected in prop_exp: ", paste(vec_prop_exp, collapse = ", "))
     # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
+    before <- nrow(data_W$variables)
     # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
     for (var in vec_prop_exp) {
       data_W <- data_W |>
         filter(!is.na(.data[[var]]))
     }
     # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
+    after <- nrow(data_W$variables)
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed due to missing value(s) for the variable(s) in prop_exp")
+    message(paste0(before - after), " observations removed due to missing value(s) for the variable(s) in prop_exp")
 
     # On convertit la variable de groupe en facteur si pas facteur
     # On cree egalement une variable binaire liee a la proportion pour le khi2
