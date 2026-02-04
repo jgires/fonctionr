@@ -9,8 +9,8 @@
 #' @param error_upp The variable in tab with the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
 #' @param n_var The variable in tab containing the number of observations for each indicator ploted. Default (NULL) does not show the numbers of observations on the plot.
-#' @param pvalue The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.
-#' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
+#' @param pvalue The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.
+#' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. NA and total labels in var are not included in the reorder. Default is FALSE.
 #' @param show_value TRUE if you want to show the values on the graphic. FALSE if you do not want to show them. Default is TRUE.
 #' @param name_total Name of the var label that may contain the total. When indicated, it is displayed separately (bold name and value color is 'grey40') on the graph.
 #' @param scale Denominator of the indicator. Default is 1 to not modify indicators.
@@ -18,7 +18,7 @@
 #' @param unit The unit displayed on the grphaic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param pal For compatibility with old versions.
-#' @param col Color of the bars. col must be a R color or an hexadecimal color code. Default is "indianred4". The color of total is always "grey40".
+#' @param col Color of the bars. col must be a R color or an hexadecimal color code. Default is "indianred4". The color of NA and total are always "grey" and "grey40".
 #' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels of var Default is 25.

@@ -7,15 +7,15 @@
 pivot_longer_survey(data, n_groups)
 }
 \arguments{
-\item{data}{A dataframe with Agregated data to pivot}
+\item{data}{A dataframe produced  produced by srvyr::summarise with group(s)}
 
-\item{n_groups}{Number of groups by which data have been agregated}
+\item{n_groups}{Number of groups by which data has been agregated}
 }
 \value{
-A dataframe
+A pivoted dataframe
 }
 \description{
-Function to pivot from wide to long agregated data by group produced with srvyr::summarise
+Function to pivot, from wide to long, a dataframe produced  produced by srvyr::summarise with group(s)
 }
 \examples{
 # Loading data

@@ -1,13 +1,13 @@
 #' relab_cut
 #'
-#' Function to recode the default labels of a factor created by cut() from base R
+#' Function to recode the default labels of a factor created by cut() from base R into more intuitive labels
 #'
-#' @param vec The vector to be recoded
-#' @param suffix The suffix to be indicated after the values
-#' @param right TRUE if categories have been created with parameter right = TRUE in cut().
-#' @param lang The language of new labels
+#' @param vec The vector to be recoded. It should be produced by cut(). Notice that the labels may not include scientific notation. Thus, in cut(), dig.lab argument should be high enough in order to produce labels without scientific notation.
+#' @param suffix The suffix to be indicated after the values. Usualy, the unit of the variable will be used (e.g. euros, percents). Default is NULL, for no suffix.
+#' @param right TRUE if categories have been created with parameter right = TRUE in cut(). FALSE if categories have been created with parameter right = FALSE in cut(). Default is TRUE.
+#' @param lang Language of new labels. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".
 #'
-#' @returns A vector
+#' @returns A vector with new labels
 #' @export
 #'
 #' @examples

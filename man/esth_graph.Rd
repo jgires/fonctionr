@@ -35,45 +35,45 @@ esth_graph(
 )
 }
 \arguments{
-\item{tab}{dataframe with the variables to be ploted.}
+\item{tab}{dataframe with the indicators to be ploted.}
 
-\item{var}{The variable in tab with the labels of the indicators to be ploted.}
+\item{var}{The variable in tab with the labels of the indicator to be ploted.}
 
 \item{value}{The variable in tab with the values of the indicator to be ploted.}
 
-\item{error_low}{The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
+\item{error_low}{The variable in tab with the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
-\item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
+\item{error_upp}{The variable in tab with the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.}
 
 \item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
-\item{n_var}{The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.}
+\item{n_var}{The variable in tab containing the number of observations for each indicator ploted. Default (NULL) does not show the numbers of observations on the plot.}
 
-\item{pvalue}{The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.}
+\item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.}
 
-\item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.}
+\item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. NA and total labels in var are not included in the reorder. Default is FALSE.}
 
-\item{show_value}{TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.}
+\item{show_value}{TRUE if you want to show the values on the graphic. FALSE if you do not want to show them. Default is TRUE.}
 
-\item{name_total}{Name of the var label that may contain the total. When indicated, it is displayed separately on the graph.}
+\item{name_total}{Name of the var label that may contain the total. When indicated, it is displayed separately (bold name and value color is 'grey40') on the graph.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+\item{scale}{Denominator of the indicator. Default is 1 to not modify indicators.}
 
-\item{digits}{Numbers of digits showed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
 
-\item{unit}{The unit showd on the plot. Default is percent.}
+\item{unit}{The unit displayed on the grphaic. Default is no unit.}
 
 \item{dec}{Decimal mark shown on the graphic. Default is ","}
 
 \item{pal}{For compatibility with old versions.}
 
-\item{col}{Colour of the bars.}
+\item{col}{Color of the bars. col must be a R color or an hexadecimal color code. Default is "indianred4". The color of NA and total are always "grey" and "grey40".}
 
-\item{dodge}{Width of the bar, between 0 and 1.}
+\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
 
-\item{wrap_width_y}{Number of characters before going to the line. Applies to the labels var. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of var Default is 25.}
 
 \item{title}{Title of the graphic.}
 
@@ -85,15 +85,15 @@ esth_graph(
 
 \item{caption}{Caption of the graphic.}
 
-\item{theme}{Theme of the graphic. IWEPS adds y axis lines and ticks.}
+\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 }
 \value{
 A ggplot graphic.
 }
 \description{
-Function to construct a graphic following the aestetics of the other function function of this package from a table
+Function to construct a graphic following the aestetics of the other functions of functionr from a table
 }
 \examples{
 # Making fictional dataframe

@@ -7,19 +7,19 @@
 relab_cut(vec, suffix = NULL, right = TRUE, lang = "fr")
 }
 \arguments{
-\item{vec}{The vector to be recoded}
+\item{vec}{The vector to be recoded. It should be produced by cut(). Notice that the labels may not include scientific notation. Thus, in cut(), dig.lab argument should be high enough in order to produce labels without scientific notation.}
 
-\item{suffix}{The suffix to be indicated after the values}
+\item{suffix}{The suffix to be indicated after the values. Usualy, the unit of the variable will be used (e.g. euros, percents). Default is NULL, for no suffix.}
 
-\item{right}{TRUE if categories have been created with parameter right = TRUE in cut().}
+\item{right}{TRUE if categories have been created with parameter right = TRUE in cut(). FALSE if categories have been created with parameter right = FALSE in cut(). Default is TRUE.}
 
-\item{lang}{The language of new labels}
+\item{lang}{Language of new labels. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 }
 \value{
-A vector
+A vector with new labels
 }
 \description{
-Function to recode the default labels of a factor created by cut() from base R
+Function to recode the default labels of a factor created by cut() from base R into more intuitive labels
 }
 \examples{
 cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
