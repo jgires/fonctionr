@@ -1,34 +1,34 @@
 #' esth_graph
 #'
-#' Function to construct a graphic following the aestetics of the other function function of this package from a table
+#' Function to construct a graphic following the aestetics of the other functions of functionr from a table
 #'
-#' @param tab dataframe with the variables to be ploted.
-#' @param var The variable in tab with the labels of the indicators to be ploted.
+#' @param tab dataframe with the indicators to be ploted.
+#' @param var The variable in tab with the labels of the indicator to be ploted.
 #' @param value The variable in tab with the values of the indicator to be ploted.
-#' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
-#' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
+#' @param error_low The variable in tab with the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
+#' @param error_upp The variable in tab with the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param n_var The variable in tab containing the number of observation per for each indicator. Default is NULL, not showing the number of observation on the plot.
+#' @param n_var The variable in tab containing the number of observations for each indicator ploted. Default (NULL) does not show the numbers of observations on the plot.
 #' @param pvalue The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.
 #' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. Default is FALSE.
-#' @param show_value TRUE if you want to show the values of value on the graphic. FALSE if you do not want to show the proportion. Default is TRUE.
-#' @param name_total Name of the var label that may contain the total. When indicated, it is displayed separately on the graph.
-#' @param scale Denominator of the proportion. Default is 100 to interprets numbers as percentages.
-#' @param digits Numbers of digits showed on the values labels on the graphic. Default is 0.
-#' @param unit The unit showd on the plot. Default is percent.
+#' @param show_value TRUE if you want to show the values on the graphic. FALSE if you do not want to show them. Default is TRUE.
+#' @param name_total Name of the var label that may contain the total. When indicated, it is displayed separately (bold name and value color is 'grey40') on the graph.
+#' @param scale Denominator of the indicator. Default is 1 to not modify indicators.
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
+#' @param unit The unit displayed on the grphaic. Default is no unit.
 #' @param dec Decimal mark shown on the graphic. Default is ","
 #' @param pal For compatibility with old versions.
-#' @param col Colour of the bars.
-#' @param dodge Width of the bar, between 0 and 1.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param wrap_width_y Number of characters before going to the line. Applies to the labels var. Default is 25.
+#' @param col Color of the bars. col must be a R color or an hexadecimal color code. Default is "indianred4". The color of total is always "grey40".
+#' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
+#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
+#' @param wrap_width_y Number of characters before going to the line for the labels of var Default is 25.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to var in tab.
 #' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to value in tab.
 #' @param caption Caption of the graphic.
-#' @param theme Theme of the graphic. IWEPS adds y axis lines and ticks.
-#' @param coef_font A multiplier factor for font size. Default is 1. Usefull when exporting the plot for a publication (for instance with a Quarto document).
+#' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
+#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #'
 #' @return A ggplot graphic.
 #' @import rlang
@@ -124,7 +124,7 @@ esth_graph <- function(tab,
   if(length(list_opt_fonctionr$fonctionr.options > 0)){
 
     warning(
-      "Parametres actifs dans fonctionr_options(): ",
+      "Active parameters in function r_options(): ",
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
@@ -140,13 +140,13 @@ esth_graph <- function(tab,
 
   # Check des arguments necessaires
   if((missing(tab) | missing(value) | missing(var)) == TRUE){
-    stop("Les arguments tab, value et var doivent etre remplis")
+    stop("Arguments tab, value and var should be filled in")
   }
 
   # Check si le total existe dans var
   if (!is.null(name_total)) {
     if(!name_total %in% tab[[deparse(substitute(var))]]){
-      stop("Le nom indique pour le total n'existe pas dans var")
+      stop("The name specified for total is not in var")
     }
   }
 
@@ -199,12 +199,12 @@ esth_graph <- function(tab,
       group_by({{ facet}}) |>
       summarise(n_NA = sum(is.na({{ var }})))
     if(any(check_NA$n_NA > 1)){
-      stop("Il y a plusieurs lignes avec des NA dans la variable var")
+      stop("There are several lines with NAs in the variable var.")
     }
   }
   if (quo_is_null(quo_facet)) {
     if(sum(is.na(tab[[deparse(substitute(var))]])) > 1){
-      stop("Il y a plusieurs lignes avec des NA dans la variable var")
+      stop("There are several lines with NAs in the variable var.")
     }
   }
 
@@ -225,7 +225,7 @@ esth_graph <- function(tab,
   # Si col est NULL ou n'est pas valide => on met la couleur par defaut
   } else {
     if(!is.null(col) & (all(isColor(col)) == FALSE)){ # Warning uniquement si une couleur fausse a ete entree
-      warning("col n'est pas valide : la couleur par defaut est utilisee")
+      warning("col is not valid: default color is used")
     }
     col <- "indianred4" # Alors col == "indianred4"
     palette <- c(rep(col, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")
