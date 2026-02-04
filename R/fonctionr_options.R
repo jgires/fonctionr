@@ -83,7 +83,7 @@ fonctionr_options <- function(total = NULL,
     }
     # Sinon erreur
     if(length(options.args) > 0){
-      stop("Impossible d'effacer et d'activer des options simultanement")
+      stop("Not possible to to delete and activate options simultaneously")
     }
   }
   if(erase_all == FALSE){
@@ -98,7 +98,7 @@ fonctionr_options <- function(total = NULL,
   if(length(options()[names(options()) == "fonctionr.options"]) > 0){
     options()[names(options()) == "fonctionr.options"]
   } else {
-    message("Aucune option de fonctionr active")
+    message("No fonctionr option active")
   }
 
 }
