@@ -269,6 +269,8 @@ distrib_continuous <- function(data,
   # data_W <- data_W |>
   #   select(all_of(unname(vars_input_char)))
 
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
+
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
 
@@ -283,7 +285,7 @@ distrib_continuous <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
 
   }
 
@@ -311,7 +313,7 @@ distrib_continuous <- function(data,
   after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
-  message(paste0(before[[1]] - after[[1]]), "  observations removed due to missing value(s) for the variable(s) in quanti_exp")
+  message(paste0(before[[1]] - after[[1]]), "  observation(s) removed due to missing value(s) for the variable(s) in quanti_exp")
 
   # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite
   data_W <- data_W |>

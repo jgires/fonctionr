@@ -331,6 +331,8 @@ distrib_group_continuous <- function(data,
   # data_W <- data_W |>
   #   select(all_of(unname(vars_input_char)))
 
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
+
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
 
@@ -345,16 +347,15 @@ distrib_group_continuous <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
 
   }
   # On supprime les NA sur group  si na.rm.group = T
   if (na.rm.group == T) {
 
     # message avec le nombre d'exclus pour group
-    message(paste0(data_W |>
-                     filter(is.na({{group}})) |>
-                     summarise(n = unweighted(n())), " observations removed due to missing group"))
+    count_NA_deleted(data_W$variables[[deparse(substitute(group))]],
+                     type = "group")
 
     data_W <- data_W |>
       filter(!is.na({{ group }}))
@@ -383,7 +384,7 @@ distrib_group_continuous <- function(data,
   after <- data_W |>
     summarise(n=unweighted(n()))
   # On affiche le nombre de lignes supprimees (pour verification)
-  message(paste0(before[[1]] - after[[1]]), " observations removed due to missing value(s) for the variable(s) in quanti_exp")
+  message(paste0(before[[1]] - after[[1]]), " observation(s) removed due to missing value(s) for the variable(s) in quanti_exp")
 
   # On convertit la variable de groupe en facteur si pas facteur
   # + on recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour calculer la densite

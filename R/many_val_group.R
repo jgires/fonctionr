@@ -322,6 +322,8 @@ many_val_group = function(data,
   data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
+
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
 
@@ -336,7 +338,7 @@ many_val_group = function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
 
   }
 
@@ -346,9 +348,8 @@ many_val_group = function(data,
     if(!quo_is_null(quo_facet)){
 
       # message avec le nombre d'exclus pour facet
-      message(paste0(data_W |>
-                       filter(is.na({{facet}})) |>
-                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
+      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
+                       type = "facet")
 
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
@@ -359,10 +360,9 @@ many_val_group = function(data,
   # On supprime les NA sur le groupe si na.rm.group = T
   if (na.rm.group == T) {
 
-    # message avec le nombre d'exclus pour groupe
-    message(paste0(data_W |>
-                     filter(is.na({{group}})) |>
-                     summarise(n = unweighted(n())), " observations removed due to missing group"))
+    # message avec le nombre d'exclus pour group
+    count_NA_deleted(data_W$variables[[deparse(substitute(group))]],
+                     type = "group")
 
     data_W <- data_W |>
       filter(!is.na({{ group }}))
@@ -383,7 +383,7 @@ many_val_group = function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed due to missing in at least one of the variables")
+    message(paste0(before[[1]] - after[[1]]), " observation(s) removed due to missing in at least one of the variables")
   }
   else{
     message("With na.vars = 'rm', observations removed differ between variables")

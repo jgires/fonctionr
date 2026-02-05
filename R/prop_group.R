@@ -323,6 +323,7 @@ prop_group <- function(data,
   # On ne garde que les colonnes entrees en input
   data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
@@ -337,7 +338,7 @@ prop_group <- function(data,
     after <- nrow(data_W$variables)
 
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before - after), " observations removed by filter_exp")
+    message(paste0(before - after), " observation(s) removed by filter_exp")
 
   }
 
@@ -393,7 +394,7 @@ prop_group <- function(data,
     # On calcule les effectifs apres filtre
     after <- nrow(data_W$variables)
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before - after), " observations removed due to missing value(s) for the variable(s) in prop_exp")
+    message(paste0(before - after), " observation(s) removed due to missing value(s) for the variable(s) in prop_exp")
 
     # On convertit la variable de groupe en facteur si pas facteur
     # On cree egalement une variable binaire liee a la proportion pour le khi2
@@ -413,6 +414,7 @@ prop_group <- function(data,
                                        {{ prop_exp }},
                                        0)
       )
+    message("With na.prop = 'include', NAs in prop_exp variables are not removed but included in the denominator")
   }
 
   # On enregistre les labels originaux pour si total = T

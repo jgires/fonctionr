@@ -259,6 +259,7 @@ distrib_discrete <- function(data,
   # On ne garde que les colonnes entrees en input
   data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
 
   # On filtre si filter est non NULL
   if(!quo_is_null(quo_filter)){
@@ -274,7 +275,7 @@ distrib_discrete <- function(data,
     after <- data_W |>
       summarise(n=unweighted(n()))
     # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observations removed by filter_exp")
+    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
 
   }
 
@@ -283,9 +284,8 @@ distrib_discrete <- function(data,
     if(!quo_is_null(quo_facet)){
 
       # message avec le nombre d'exclus pour facet
-      message(paste0(data_W |>
-                       filter(is.na({{facet}})) |>
-                       summarise(n = unweighted(n())), " observations removed due to missing facet"))
+      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
+                       type = "facet")
 
       data_W <- data_W |>
         filter(!is.na({{ facet }}))
@@ -296,10 +296,9 @@ distrib_discrete <- function(data,
   # On supprime les NA de quali_var si na.rm.var == T
   if(na.rm.var == T){
 
-    # message avec le nombre d'exclus pour facet
-    message(paste0(data_W |>
-                     filter(is.na({{quali_var}})) |>
-                     summarise(n = unweighted(n())), " observations removed due to missing value on quali_var"))
+    # message avec le nombre d'exclus pour quali_var
+    count_NA_deleted(data_W$variables[[deparse(substitute(quali_var))]],
+                     type = "quali_var")
 
     data_W <- data_W |>
       filter(!is.na({{ quali_var }}))
