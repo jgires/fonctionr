@@ -792,8 +792,9 @@ arguments esthétiques – c’est-à-dire qui n’influencent que le graphique.
 | Esthétique: labels | ylab | ylab | ylab | ylab | ylab | ylab | ylab |  |
 | Esthétique: labels | legend_lab | legend_lab |  | legend_lab |  |  | legend_lab |  |
 | Esthétique: labels | caption | caption | caption | caption | caption | caption | caption | caption |
-| Esthétique: labels | lang |  |  | lang | lang |  | lang |  |
+| Esthétique: labels | lang | lang | lang | lang | lang | lang | lang | lang |
 | Esthétique: graphique | theme | theme | theme | theme | theme | theme | theme | theme |
+| Esthétique: graphique | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font |
 
 ### Les arguments liés à la base de données utilisée
 
@@ -882,6 +883,7 @@ et sans guillemet, à la manière du `tidyverse`.
     distribution. Les variables indiquées pour ces arguments sont
     transformées en facteurs pour leur usage dans la fonction.
 
+<<<<<<< HEAD
 -   `prop_exp` et `quanti_exp` sont des expressions qui permettent de
     calculer les proportions ou tendances centrales. Dans `fonctionr`,
     tous les arguments pouvant contenir une expression terminent par
@@ -895,6 +897,30 @@ et sans guillemet, à la manière du `tidyverse`.
     valeurs numérique sont autorisés dans les expressions ; les objets
     extérieurs (par exemple un seuil contenu dans un vecteur stocké dans
     l’environnement global) ne sont pas autorisés.
+=======
+- `prop_exp` et `quanti_exp` sont des expressions qui permettent de
+  calculer les proportions ou tendances centrales. Dans `fonctionr`,
+  tous les arguments pouvant contenir une expression terminent par
+  `_exp`. Ces arguments peuvent être des variables (une variable binaire
+  0-1 pour `prop_exp` et une variable numérique pour `quanti_exp`) ou
+  une expression qui produit une variable (binaire pour `prop_exp` et
+  quantitative pour `quanti_exp`). Ainsi, il n’est pas nécessaire de
+  préparer à l’avance les variables binaire ou la quantitative, elles
+  peuvent être calculées “à la volée”. Précisons que seuls les variables
+  de la base de données, les opérateurs et les valeurs numérique sont
+  autorisés dans les expressions ; les objets extérieurs (par exemple un
+  seuil contenu dans un vecteur stocké dans l’environnement global) ne
+  sont pas autorisés. Précisons aussi que par défaut les `NA` sont
+  retirés avant le calcul des variables de proportions. C’est pourquoi
+  l’utilisation de la fonction
+  [`is.na()`](https://rdrr.io/r/base/NA.html) n’est, par défaut, pas
+  autorisée dans l’argument `prop_exp`. D’autres fonctions, qui prennent
+  en compte les `NA`, par exemple la fonction `%in%`, ne fonctionnent
+  pas comme attendues, car ici les `NA` sont exclus des calculs a
+  priori. Il est possible de changer cette manière de procéder avec
+  l’argument `na.prop`.Plus de détails se trouvent dans le point
+  *Traitement des NA*.
+>>>>>>> 0b180e4159e6d15bb8e96c1478528b9fd4537531
 
 -   `list_vars` doit être un vecteur reprenant l’ensemble des variables
     reprises dans les fonctions
@@ -1102,6 +1128,7 @@ eusilc_dist_group_d$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png)
 
+<<<<<<< HEAD
 -   `na.prop` indique la manière dont les éventuels `NA` sont traités
     dans les variables introduites dans `prop_exp`. Si l’argument prend
     la valeur `"rm"`, tous les `NA` présents dans au moins une des
@@ -1132,6 +1159,46 @@ eusilc_dist_group_d$graph
     une variable indiquée dans `quanti_exp` sont automatiquement exclues
     des calculs, car il n’y a pas d’autre possibilité qui soit
     pertinente.
+=======
+- `na.prop` indique la manière dont les éventuels `NA` sont traités dans
+  les variables introduites dans `prop_exp`. Si l’argument prend la
+  valeur `"rm"`, tous les `NA` présents dans au moins une des variable
+  faisant partie de `prop_exp` sont exclus avant de procéder aux
+  calculs. De cette manière, la proportion est calculée uniquement sur
+  les observations “valides”. Dans ce cas, pour des raisons évidentes,
+  il n’est pas possible d’utiliser la fonction
+  [`is.na()`](https://rdrr.io/r/base/NA.html) dans `prop_exp` (on ne
+  peut pas calculer la proportion de personnes dont le statut
+  professionnel est `NA` si on a supprimé les `NA`). Précisons que
+  l’exclusion des `NA` se fait avant le calcul de l’expression. Ainsi,
+  si des fonctions dont le comportement attendu est d’inclure les `NA`
+  sont indiquées dans l’argument `prop_exp`, par exemple `%in%`, elles
+  ne fonctionnerons pas comme prévu, car les `NA` seront exclus avant
+  que ces fonctions ne pourront les prendre en compte. Pour résumer,
+  quand `na.prop` prend la valeur `"rm"` (ce qui se fait par défaut),
+  toutes les observations pour lesquelles il y a au moins un `NA` pour
+  une variable reprise dans `prop_exp` sont exclues avant que
+  l’expression ne soit calculée. Par contre, si l’argument prend la
+  valeur `"include"`, les `NA` ne sont pas retirés avant de procéder aux
+  calculs et la proportion est calculée sur l’ensemble des observations,
+  `NA` compris. Cela peut être utile quand les `NA` n’indiquent pas une
+  valeur manquante mais une situation spécifique. Par exemple, dans une
+  variable mesurant les points obtenu par des étudiants à un examen, le
+  `NA` peut indiquer que l’étudiant était absent ; on peut donc vouloir
+  calculer la proportion d’étudiants ayant au moins 12/20 en conservant
+  les absents au dénominateur, ce qui est possible avec
+  `na.prop = "include"`. Par défaut, `na.prop` prend la valeur `"rm"`.
+  Précisons aussi que pour
+  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+  et ses alias
+  [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+  et
+  [`median_group()`](https://jgires.github.io/fonctionr/reference/central_group.md),
+  il n’y a pas d’argument permettant de choisir le traitement des `NA`
+  dans `quanti_exp`. Les observations comprenant au moins un `NA` dans
+  une variable indiquée dans `quanti_exp` sont automatiquement exclues
+  des calculs, car il n’y a pas d’autre possibilité qui soit pertinente.
+>>>>>>> 0b180e4159e6d15bb8e96c1478528b9fd4537531
 
 Les deux graphiques ci-dessous comparent la part de travailleurs selon
 le sexe en excluant ou en incluant les `NA`. Les taux du second
@@ -1771,12 +1838,28 @@ ci-dessous n’est indiqué.
     français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour
     l’anglais. Par défaut, c’est le français qui est utilisé.
 
+<<<<<<< HEAD
 -   L’argument `theme`, qui est un argument d’esthétique graphique
     plutôt que de label, permet de modifier le thème du graphique. Le
     thème de base (`theme = NULL`) est celui qu’on retrouve dans tous
     les graphiques dans ce document, mais le thème IWEPS
     (`theme = "IWEPS"`) permet d’ajouter un axe gradué pour les
     ordonnées.
+=======
+- L’argument `coef_font` permet de modifier la taille de l’ensemble des
+  labels (titres, légendes, valeurs…) écrits sur le graphique. Cela peut
+  être utile quand le graphique doit être exporté dans une publication,
+  par exemple à l’aide d’un document quarto. Par défaut, il vaut 1. Une
+  valeur supérieure à 1 permet d’augmenter la taille de tous les textes
+  présents sur le graphique alors qu’une valeur inférieure à 1 permet de
+  la diminuer.
+
+- L’argument `theme`, qui est un argument d’esthétique graphique plutôt
+  que de label, permet de modifier le thème du graphique. Le thème de
+  base (`theme = NULL`) est celui qu’on retrouve dans tous les
+  graphiques dans ce document, mais le thème IWEPS (`theme = "IWEPS"`)
+  permet d’ajouter un axe gradué pour les ordonnées.
+>>>>>>> 0b180e4159e6d15bb8e96c1478528b9fd4537531
 
 Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a mis
 à la ligne les labels de l’ordonnée à partir de 10 caractères et ceux de

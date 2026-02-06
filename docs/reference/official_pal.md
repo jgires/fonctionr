@@ -62,6 +62,10 @@ official_pal(
 
   TRUE to generate a vector with palette names.
 
+## Value
+
+A vector containing hexadecimals color codes
+
 ## Examples
 
 ``` r

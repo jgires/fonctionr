@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -2263,8 +2263,10 @@ Esthétique: labels
 lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
+lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
+lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
 lang
@@ -2273,11 +2275,13 @@ lang
 lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
+lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
 lang
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(212, 232, 215, 255) !important;color: black !important;background-color: rgba(245, 203, 191, 255) !important;">
+lang
 </td>
 </tr>
 <tr>
@@ -2307,6 +2311,35 @@ theme
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 theme
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+coef_font
 </td>
 </tr>
 </tbody>
@@ -2411,8 +2444,16 @@ l’avance les variables binaire ou la quantitative, elles peuvent être
 calculées “à la volée”. Précisons que seuls les variables de la base de
 données, les opérateurs et les valeurs numérique sont autorisés dans les
 expressions ; les objets extérieurs (par exemple un seuil contenu dans
-un vecteur stocké dans l’environnement global) ne sont pas
-autorisés.</p></li>
+un vecteur stocké dans l’environnement global) ne sont pas autorisés.
+Précisons aussi que par défaut les <code>NA</code> sont retirés avant le
+calcul des variables de proportions. C’est pourquoi l’utilisation de la
+fonction <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na()</a></code> n’est, par défaut, pas autorisée dans
+l’argument <code>prop_exp</code>. D’autres fonctions, qui prennent en
+compte les <code>NA</code>, par exemple la fonction <code>%in%</code>,
+ne fonctionnent pas comme attendues, car ici les <code>NA</code> sont
+exclus des calculs a priori. Il est possible de changer cette manière de
+procéder avec l’argument <code>na.prop</code>.Plus de détails se
+trouvent dans le point <em>Traitement des NA</em>.</p></li>
 <li><p><code>list_vars</code> doit être un vecteur reprenant l’ensemble
 des variables reprises dans les fonctions <code><a href="../reference/many_val.html">many_val()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que leurs alias. Pour
@@ -2603,7 +2644,17 @@ observations “valides”. Dans ce cas, pour des raisons évidentes, il
 n’est pas possible d’utiliser la fonction <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na()</a></code> dans
 <code>prop_exp</code> (on ne peut pas calculer la proportion de
 personnes dont le statut professionnel est <code>NA</code> si on a
-supprimé les <code>NA</code>). Si l’argument prend la valeur
+supprimé les <code>NA</code>). Précisons que l’exclusion des
+<code>NA</code> se fait avant le calcul de l’expression. Ainsi, si des
+fonctions dont le comportement attendu est d’inclure les <code>NA</code>
+sont indiquées dans l’argument <code>prop_exp</code>, par exemple
+<code>%in%</code>, elles ne fonctionnerons pas comme prévu, car les
+<code>NA</code> seront exclus avant que ces fonctions ne pourront les
+prendre en compte. Pour résumer, quand <code>na.prop</code> prend la
+valeur <code>"rm"</code> (ce qui se fait par défaut), toutes les
+observations pour lesquelles il y a au moins un <code>NA</code> pour une
+variable reprise dans <code>prop_exp</code> sont exclues avant que
+l’expression ne soit calculée. Par contre, si l’argument prend la valeur
 <code>"include"</code>, les <code>NA</code> ne sont pas retirés avant de
 procéder aux calculs et la proportion est calculée sur l’ensemble des
 observations, <code>NA</code> compris. Cela peut être utile quand les
@@ -2614,7 +2665,7 @@ l’étudiant était absent ; on peut donc vouloir calculer la proportion
 d’étudiants ayant au moins 12/20 en conservant les absents au
 dénominateur, ce qui est possible avec <code>na.prop = "include"</code>.
 Par défaut, <code>na.prop</code> prend la valeur <code>"rm"</code>.
-Précisons que pour <code><a href="../reference/central_group.html">central_group()</a></code> et ses alias
+Précisons aussi que pour <code><a href="../reference/central_group.html">central_group()</a></code> et ses alias
 <code><a href="../reference/central_group.html">mean_group()</a></code> et <code><a href="../reference/central_group.html">median_group()</a></code>, il n’y a pas
 d’argument permettant de choisir le traitement des <code>NA</code> dans
 <code>quanti_exp</code>. Les observations comprenant au moins un
@@ -3209,6 +3260,13 @@ textes automatiques. Trois valeurs sont possibles :
 <code>lang = "fr"</code> pour le français, <code>lang = "nl"</code> pour
 le néerlandais et <code>lang = "en"</code> pour l’anglais. Par défaut,
 c’est le français qui est utilisé.</p></li>
+<li><p>L’argument <code>coef_font</code> permet de modifier la taille de
+l’ensemble des labels (titres, légendes, valeurs…) écrits sur le
+graphique. Cela peut être utile quand le graphique doit être exporté
+dans une publication, par exemple à l’aide d’un document quarto. Par
+défaut, il vaut 1. Une valeur supérieure à 1 permet d’augmenter la
+taille de tous les textes présents sur le graphique alors qu’une valeur
+inférieure à 1 permet de la diminuer.</p></li>
 <li><p>L’argument <code>theme</code>, qui est un argument d’esthétique
 graphique plutôt que de label, permet de modifier le thème du graphique.
 Le thème de base (<code>theme = NULL</code>) est celui qu’on retrouve

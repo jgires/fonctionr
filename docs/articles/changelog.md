@@ -1,5 +1,55 @@
 # Changelog
 
+## fonctionr 0.4.0
+
+Date : 2026-01-27
+
+- Ajout de la possibilité de définir des options globales grâce à la
+  fonction
+  [`fonctionr_options()`](https://jgires.github.io/fonctionr/reference/fonctionr_options.md).
+
+- Nouveaux arguments pour les palettes et les couleurs.
+
+  - Séparation de la couleur unie et de la palette dans les arguments
+    `col` (nouveau) et `pal`. Cette modification engendre une différence
+    de comportement par rapport aux versions antérieures de `fonctionr`
+    : la couleur unie définie dans `pal` ne fonctionnera plus et la
+    couleur par défaut sera appliquée.
+
+  - Dans
+    [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
+    et
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md),
+    il y a plusieurs changements dans les arguments : `pal` devient
+    `col_density` ; `pal_moustache` devient `col_moustache` ; `color`
+    devient `col_border`. La raison de ce changement est lié à un
+    impératif de cohérence entre les fonctions : l’argument `pal` est
+    désormais réservé aux palettes de type qualitatif. Néanmoins pour
+    des raisons de compatibilité, les anciens arguments demeurent dans
+    la fonction, mais sont inactifs.
+
+- Introduction de l’argument `coef_font` pour multiplier la taille de
+  toutes les polices de caractère dans les graphiques de toutes les
+  fonctions.
+
+- Un grand nombre de caractères spéciaux sont désormais utilisables dans
+  le noms des groupes (du fait que `ggtext` a besoin d’un formatage en
+  codes HTML, cela provoquait auparavant des bugs dans les graphiques).
+
+- Les palettes de toutes les fonctions ont désormais la même direction
+  (cohérence entre toutes les fonctions).
+
+- Le thème par défaut de
+  [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
+  devient `"fonctionr"`. La valeur `NULL` pour le theme crée désormais
+  un design très proche du thème par défaut de ggplot (mais en gérant la
+  taille de la police et le formatage permis par ggtext).
+
+- Mise à jour des polices de caractère contenues dans `fonctionr` : la
+  police Montserrat inclue dans le package peut désormais être formatée
+  en italique et gras ; les polices ‘Amatic’ et ‘Helvetica Neue’ sont
+  supprimées (du fait de la limite de 5Mo de CRAN).
+
 ## fonctionr 0.3.22
 
 Date : 2026-01-10
@@ -460,36 +510,30 @@ Date : 2024-02-14
 
 #### En général
 
-- **(Joël) Le code a été simplifié pour toutes les fonctions qui
-  utilisaient `ggtext` (suivant la logique ici :
-  <https://github.com/wilkelab/ggtext/issues/121>), faire pareil pour
-  les fonctions qui ne l’utilisaient pas (pour groupe *NA* en
-  italique).**
+- **(Joël) pour les test stat de prop_group et central_group, modifier
+  le caption quand il y a des facets pour indiquer que le test se fait
+  bien sur le total et ne pas faire le test quand il y a des facets et
+  que total = FALSE.**
 
-- **(François) L’utilisation de caractères spéciaux dans les noms des
-  groupes (par exemple `>` ou `<`) pose problème du fait de
-  l’utilisation de `ggtext`. Il faut convertir ces caractères spéciaux
-  en html au sein de la fonction. Voir :
-  <https://github.com/wilkelab/ggtext/issues/48>.**
+- **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer
+  `NA` et pas seulement ““.**
 
-- **(Joël) Laisser la possibilité d’introduire des palettes
-  personnalisées dans les fonctions.**
+- **(François) Ajouter toutes les options dans
+  [`fonctionr_options()`](https://jgires.github.io/fonctionr/reference/fonctionr_options.md),
+  sauf les arguments avec données ou variables.**
 
-- **(Joël) Exemples et valeurs pour return manquants dans utils (faire
-  tourner `roxygenise()`)**.
+- **(François) Revoir la doc de chaque fonction et le manuel par rapport
+  aux changements. Voir ici pour savoir les différentes options
+  possibles dans la doc : [https://r-pkgs.org/man.html](#id_0).**
+
+- **(François) Vérifier les messages à l’utilisateur : voir quoi garder,
+  corriger, traduire, indiquer les accents (é, è…), ajouter des
+  guillemets pour les arguments dans les checks, mieux écrire les
+  résultats des tests stat (on ne sait pas quelle est l’hypothèse
+  nulle).  
+  *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
 
 - **(François) Créer un tableau joli en output (avec `flextable`).**
-
-- **(Joël) Créer facteur multiplicateur de la taille des polices.**
-
-- **(Joël + François) Créer un fichier d’option pour régler a priori des
-  arguments pour toutes les fonctions dans un script (la police, etc.)**
-
-- Revoir la solution apportée dans
-  [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
-  au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext
-  aura été mis à jour. Voir :
-  <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 - BUG : si une variable de design == le nom d’un objet externe, ça
   fonctionne =\> APPROFONDIR ET REGLER CA ?
@@ -498,32 +542,9 @@ Date : 2024-02-14
   fonctions) possible =\> gros travail, usage de `rlang` à la place de
   [`substitute()`](https://rdrr.io/r/base/substitute.html).
 
-- **(Joël) Bug à l’import de `fonctionr` du fait de collision entre
-  `PrettyCols` et les fonctions de base ? Je ne comprends pas le
-  message.**
-
-- Documenter tous les arguments des différentes fonctions + vérifier que
-  les explications sont bien correctes (quelques erreurs, par ex. à
-  cause de copier-coller ou de l’ajout de nouveaux argument avec la
-  nouvelle logique des na.rm). Voir ici pour savoir les différentes
-  options possibles dans la doc : [https://r-pkgs.org/man.html](#id_0).
-
-- Vérifier que les scripts sont bien commentés pour qu’on se rappelle ce
-  qu’on a fait (il manque des notes et quelques explications
-  d’opérations dont je ne me rappelle plus le but).
-
 - Passer le code de chaque fonction en revue pour cleaner / harmoniser /
   simplifier.  
-  *=\> En cours : il faut encore checker le code du graphique ggplot.  
-  =\> L’ajout de `ggtext` pour mettre le total en gras a compliqué le
-  code*
-
-- **(François) Vérifier les messages à l’utilisateur : voir quoi garder,
-  corriger, traduire, indiquer les accents (é, è…), ajouter des
-  guillemets pour les arguments dans les checks, mieux écrire les
-  résultats des tests stat (on ne sait pas quelle est l’hypothèse
-  nulle).  
-  *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
+  *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 - Mettre des conditions pour réaliser les tests (n min, distribution,
   variances égales…).
@@ -542,8 +563,23 @@ Date : 2024-02-14
 
 #### **distrib_group_c**
 
+- **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile
+  ici car le `NA` a été tranformé en level. Réfléchir à la meilleure
+  solution et revoir éventuellement la fonction.**
+
 - **(François + Joël) Ajouter hauteur des densités proportionnelle aux
   effectifs pondérés.**
+
+- **(Joël) La moustache peut ne prendre qu’une couleur =\> pas
+  cohérent  
+  =\> Ajouter un check**
+
+- Il y a un warning de la fonction
+  [`density()`](https://rdrr.io/r/stats/density.html) qui dit que
+  `Selecting bandwidth not using 'weights'`. La doc de density() dit :
+  “automatic bandwidth selection will not take the weights into account
+  and hence may be suboptimal.”  
+  =\> Voir si c’est un problème ?
 
 - Le groupe `NA` est transfomé en level du facteur de groupe. De ce
   fait, il n’apparaît pas toujours en dernier, notamment lorsque
@@ -566,20 +602,8 @@ Date : 2024-02-14
 
 #### prop_group
 
-- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
-  avec l’argument `direction`, mais pas cohérent avec autres fonctions
-  =\> voir d’où ça vient.**
-- **(François) L’utilisation de `%in%` dans une expression ne transforme
-  pas les `NA` en `FALSE` ou `TRUE` (alors que c’est le comportement par
-  défaut de `%in%`) : `na.prop` est prioritaire !  
-  =\> L’indiquer dans le manuel.  
-  =\> Voir si c’est le cas ailleurs ?**
-
 #### central_group
 
-- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
-  avec l’argument `direction`, mais pas cohérent avec autres fonctions
-  =\> voir d’où ça vient.**
 - Bypasser l’erreur du test stat avec
   [`tryCatch()`](https://rdrr.io/r/base/conditions.html).
 
@@ -594,15 +618,18 @@ Date : 2024-02-14
 
 #### many_val
 
+- **(Joël) Conditions ajoutées pour définir la priorité de pal sur col
+  =\> Voir avec François si c’est OK.  
+  =\> C’est idem pour
+  [`make_surface()`](https://jgires.github.io/fonctionr/reference/make_surface.md).**
 - Les couleurs des palettes sont attachées à l’indicateur, mais pas à la
   position. De ce fait, lorsque `reorder = T`, l’ordre des couleurs de
   la palette n’est pas respecté =\> changer le comportement ?
 
 #### many_val_group
 
-- **(François) L’ordre des couleurs est inversé par défaut ? Se corrige
-  avec l’argument `direction`, mais pas cohérent avec autres fonctions
-  =\> voir d’où ça vient.**
+- Le `NA` apparait en premier lorsque `position = "flip"` =\> Corriger,
+  il doit apparaître en dernier.
 - Améliorer l’alignement des effectifs avec `show_n = T` lorsque
   `position == "stack"`
 - Redondance du code avec total pour le `geom_text()` ?
@@ -661,12 +688,15 @@ Date : 2024-02-14
   [https://r-pkgs.org/dependencies-in-practice.html](#id_0).  
   *=\> A faire : importer seulement les fonctions utiles (mutate,
   select, etc.).*
+- Revoir la solution apportée dans
+  [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
+  au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext
+  aura été mis à jour. Voir :
+  <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 #### distrib_group_d
 
 - Ajouter les effectifs totaux par groupe ? (dans le nom du groupe ?)
-
-- Possibilité d’indiquer un vecteur avec une palette de couleur ?
 
 ### Notes
 

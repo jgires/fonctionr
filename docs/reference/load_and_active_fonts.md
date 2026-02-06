@@ -10,3 +10,10 @@ is "Roboto".
 ``` r
 load_and_active_fonts()
 ```
+
+## Examples
+
+``` r
+# Loading of fonts from fonctionr. You can now use it in fonctionr !
+load_and_active_fonts()
+```

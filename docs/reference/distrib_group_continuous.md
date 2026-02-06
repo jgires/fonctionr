@@ -1,7 +1,22 @@
 # distrib_group_continuous
 
-Function to compare means or medians in different groups from complex
-survey data. It produces a table, a graphic and a statistical test.
+Function to compare the distribution of a continuous variable between
+groups from complex survey data. It produces a list containing a density
+table (dens), a central value table (tab), a quantile table (quant), a
+ready-to-be published ggplot graphic (graph), a box-plot table
+(moustache) and a statistical test (test). The density table contains
+x-y coordinates to draw density curve for each group. The central value
+table contains, for each group, the median or the mean of the continuous
+variable, with their confidence intervals, the sample size and the
+estimations of the totals, with their confidence intervals. The quantile
+table contains, for each group, quantiles and their confidence
+intervals. The box-plot table contains the X coordinates to draw the
+moustache, for each group. In case of mean comparison, the statistical
+test is a Wald test (using survey::regTermTest). In case of median
+comparison the statistical test is a Kruskal Wallis test (using
+survey::svyranktest(test = "KruskalWallis")). Exporting those results to
+an Excell file is possible. The confidence intervals are taking into
+account the complex survey design.
 
 ## Usage
 
@@ -35,9 +50,12 @@ distrib_group_continuous(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = "#e0dfe0",
-  pal_moustache = c("#EB9BA0", "#FAD7B1"),
-  color = NA,
+  pal = NULL,
+  col_density = "#e0dfe0",
+  pal_moustache = NULL,
+  col_moustache = c("#EB9BA0", "#FAD7B1"),
+  color = NULL,
+  col_border = NA,
   alpha = 1,
   font = "Roboto",
   wrap_width_y = 25,
@@ -47,7 +65,8 @@ distrib_group_continuous(
   ylab = NULL,
   caption = NULL,
   lang = "fr",
-  theme = NULL,
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -67,20 +86,23 @@ distrib_group_c(...)
 
 - quanti_exp:
 
-  An expression that define the variable the variable to be described.
+  An expression defining the quantitatie variable the variable to be
+  described and compared between groups. Notice that any observations
+  with NA in at least one of the variable in quanti_exp are excluded for
+  the computation of the densities and of the indicators.
 
 - type:
 
   Type of central value : "mean" to compute mean as the central value by
-  group ; "median" to compute median as the central value by group..
+  group ; "median" to compute median as the central value by group.
 
 - facet:
 
-  A supprimer?
+  Not yet implemented.
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -89,25 +111,23 @@ distrib_group_c(...)
 - na.rm.group:
 
   TRUE if you want to remove observations with NA on the group variable.
-  FALSE if you want to create a group with the NA value for the group
-  variable. NA in the variables included in quanti_exp are not affected
-  in this argument. All the observation with a NA in the variables
-  included in quanti_exp are excluded.
+  FALSE if you want to create a group with the NA values for the group
+  variable. Default is TRUE.
 
 - na.rm.facet:
 
-  Argument a supprimer?
+  Not yet implemented.
 
 - quantiles:
 
-  Quantiles to be computed in the distributions. Default are deciles.
+  Quantiles computed in the distributions. Default are deciles.
 
 - moustache_probs:
 
   A vector defining the proportions of the population used to draw the
-  moustache. Default is 0.95, 0.8, 0.5 to draw a moustache with three
-  groups containing respectively 50 percent, 80 percent and 95 percent
-  of the population closest to the median.
+  boxplot. Default is 0.95, 0.8, 0.5 to draw a boxplot with three groups
+  containing respectively 50 percent, 80 percent and 95 percent of the
+  population around to the median.
 
 - bw:
 
@@ -120,30 +140,31 @@ distrib_group_c(...)
 
 - height:
 
-  Height of the curves. Default is 0.8
+  Height of the curves. Default is 0.8. Values higher than 1 may cause
+  curves to overlap.
 
 - limits:
 
   Limits of the x axe of the graphic. Does not apply to the computation.
-  Default is NULL to show the entire distribution on the graphic.
+  Default is NULL to show the entire distribution on the graphic. If the
+  limits are shorter than the boxplot, some part of some boxplot will
+  not be drawn.
 
 - reorder:
 
   TRUE if you want to reorder the groups according to the mean/median
-  (depending on type). NA value, in case if na.rm.group = FALSE, is not
-  included in the reorder (A VERIFIER).
+  (depending on type). Unlike other functions, NA values, in case if
+  na.rm.group = FALSE, is included in the reorder.
 
 - show_mid_point:
 
   TRUE if you want to show the mean or median (depending on type) as a
-  point on the graphic. FALSE if you do not want to show it. Default is
-  TRUE.
+  point on the graphic. FALSE if you do not want to. Default is TRUE.
 
 - show_mid_line:
 
   TRUE if you want to show the mean or median (depending on type) as a
-  line on the graphic. FALSE if you do not want to show it. Default is
-  FALSE
+  line on the graphic. FALSE if you do not want to. Default is FALSE
 
 - show_ci_errorbar:
 
@@ -170,27 +191,28 @@ distrib_group_c(...)
 
 - show_moustache:
 
-  TRUE if you want to show the moustache on the graphic. FALSE if you do
+  TRUE if you want to show the boxplot on the graphic. FALSE if you do
   not want to show it. Default is TRUE.
 
 - show_value:
 
-  TRUE if you want to show the mean/median of each group on the graphic.
-  FALSE if you do not want to show the mean/median. Default is TRUE.
+  TRUE if you want to show the value of mean/median of each group on the
+  graphic. FALSE if you do not want to show the mean/median. Default is
+  TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes labels. FALSE if you do not want to show
+  any labels on axes. Default is TRUE.
 
 - digits:
 
-  Numbers of digits showed on the value labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed on the graphic. Default is no unit.
+  Unit displayed on the graphic. Default is none.
 
 - dec:
 
@@ -199,31 +221,55 @@ distrib_group_c(...)
 
 - pal:
 
-  Color of the density areas. Can be one or sereval colors to create a
-  palette.
+  For compatibility with older versions.
+
+- col_density:
+
+  Color of the density area. It may be one color or a vector with
+  several colors. Colors should be R color or an hexadecimal color code.
+  In case of one color, the density is monocolor. In case of a vector,
+  the quantile areas are painted in continuous colors going from the
+  last color in the vector (center quantile) to the first color (first
+  and last quantiles). In case of an even quantile area numbers (e.g.
+  deciles, quartiles) the last color of the vector is only applied to
+  the highcenter quantile area to avoid two continuous quantile areas
+  having the same color.
 
 - pal_moustache:
 
-  Color of the moustache. Can be one or sereval colors to create a
-  palette.
+  For compatibility with old versions.
+
+- col_moustache:
+
+  Color of the moustache. Can be one or several colors to create a
+  palette. In case of a vector, the different areas of the box-plot are
+  painted in continuous colors going from the first color in the vector
+  (center of the bo-plot) to the last color (extern area of the
+  box-plot).
 
 - color:
 
-  Color of the density curve. Has to be one color.
+  For compatibility with older versions.
+
+- col_border:
+
+  Color of the density line. Color should be one R color or one
+  hexadecimal color code. Default (NULL) does not draw the density line.
 
 - alpha:
 
-  Transparence of the density curve. Default is 1.
+  Transparence of the density areas. Default is 1. It applies only to
+  col_density.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line in the labels of the
-  groups. Default is 25
+  Number of characters before going to the line for the labels of the
+  groups. Default is 25.
 
 - title:
 
@@ -238,37 +284,48 @@ distrib_group_c(...)
   X label on the graphic. As coord_flip() is used in the graphic, xlab
   refers to the X label on the graphic, after the coord_flip(), and not
   to the x variable in the data. If xlab = NULL, X label on the graphic
-  will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To
-  show no X label, use xlab = "".
+  will be quanti_exp.
 
 - ylab:
 
   Y label on the graphic. As coord_flip() is used in the graphic, ylab
-  refers to the Y label on the graphic, after the coord_flip(), and not
-  to the y variable in the data. If ylab = NULL, Y label on the graphic
-  will be group. To show no Y label, use ylab = "".
+  refers to the y label on the graphic, after the coord_flip(), and not
+  to the y variable in the data. Default (ylab = NULL) displays the name
+  of the group variable. To show no Y label, use ylab = "".
 
 - caption:
 
-  Caption of the graphic.
+  Caption of the graphic. This caption goes under de default caption
+  showing the result of the Chi-Square test. There is no way of not
+  showing the result of the statistical test as a caption.
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
-  Path to export the results in an xlsx file. The file includes three
-  sheets : the table, the graphic and the statistical test.
+  Path to export the results in an xlsx file. The file includes five
+  sheets: the central values table, the quantile table, the densities
+  table, the graphic and the statistical test result.
 
 ## Value
 
-A list that contains a table, a graphic and a statistical test
+A list that contains a density table (dens), a central values table
+(tab), a quantile table (quant), a ggplot graphic (graph), boxplot table
+(moustache) and a statistical test (test).
 
 ## Examples
 
@@ -295,6 +352,7 @@ eusilc_dist_g_c <- distrib_group_c(
   ids = db030,
   weight = rb050,
   limits = c(0, 50000),
+  resolution = 128,
   title = "Distribution of eq. income",
   subtitle = "Example with austrian SILC data from 'laeken' package"
 )
@@ -305,10 +363,9 @@ eusilc_dist_g_c <- distrib_group_c(
 
 # Results in graph form
 eusilc_dist_g_c$graph
-#> `height` was translated to `width`.
-#> Warning: Removed 1978 rows containing missing values or values outside the scale range
+#> Warning: Removed 497 rows containing missing values or values outside the scale range
 #> (`geom_ribbon()`).
-#> Warning: Removed 3710 rows containing missing values or values outside the scale range
+#> Warning: Removed 1022 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
 

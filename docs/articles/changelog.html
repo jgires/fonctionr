@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,54 @@
 
     
     
+<div class="section level2">
+<h2 id="fonctionr-0-4-0">fonctionr 0.4.0<a class="anchor" aria-label="anchor" href="#fonctionr-0-4-0"></a>
+</h2>
+<p>Date : 2026-01-27</p>
+<ul>
+<li><p>Ajout de la possibilité de définir des options globales grâce à
+la fonction <code><a href="../reference/fonctionr_options.html">fonctionr_options()</a></code>.</p></li>
+<li>
+<p>Nouveaux arguments pour les palettes et les couleurs.</p>
+<ul>
+<li><p>Séparation de la couleur unie et de la palette dans les arguments
+<code>col</code> (nouveau) et <code>pal</code>. Cette modification
+engendre une différence de comportement par rapport aux versions
+antérieures de <code>fonctionr</code> : la couleur unie définie dans
+<code>pal</code> ne fonctionnera plus et la couleur par défaut sera
+appliquée.</p></li>
+<li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, il y a plusieurs changements
+dans les arguments : <code>pal</code> devient <code>col_density</code> ;
+<code>pal_moustache</code> devient <code>col_moustache</code> ;
+<code>color</code> devient <code>col_border</code>. La raison de ce
+changement est lié à un impératif de cohérence entre les fonctions :
+l’argument <code>pal</code> est désormais réservé aux palettes de type
+qualitatif. Néanmoins pour des raisons de compatibilité, les anciens
+arguments demeurent dans la fonction, mais sont inactifs.</p></li>
+</ul>
+</li>
+<li><p>Introduction de l’argument <code>coef_font</code> pour multiplier
+la taille de toutes les polices de caractère dans les graphiques de
+toutes les fonctions.</p></li>
+<li><p>Un grand nombre de caractères spéciaux sont désormais utilisables
+dans le noms des groupes (du fait que <code>ggtext</code> a besoin d’un
+formatage en codes HTML, cela provoquait auparavant des bugs dans les
+graphiques).</p></li>
+<li><p>Les palettes de toutes les fonctions ont désormais la même
+direction (cohérence entre toutes les fonctions).</p></li>
+<li><p>Le thème par défaut de <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> devient
+<code>"fonctionr"</code>. La valeur <code>NULL</code> pour le theme crée
+désormais un design très proche du thème par défaut de ggplot (mais en
+gérant la taille de la police et le formatage permis par
+ggtext).</p></li>
+<li><p>Mise à jour des polices de caractère contenues dans
+<code>fonctionr</code> : la police Montserrat inclue dans le package
+peut désormais être formatée en italique et gras ; les polices ‘Amatic’
+et ‘Helvetica Neue’ sont supprimées (du fait de la limite de 5Mo de
+CRAN).</p></li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="fonctionr-0-3-22">fonctionr 0.3.22<a class="anchor" aria-label="anchor" href="#fonctionr-0-3-22"></a>
 </h2>
@@ -534,56 +582,34 @@ inclues dans le package laeken.</p></li>
 <h4 id="en-général">En général<a class="anchor" aria-label="anchor" href="#en-g%C3%A9n%C3%A9ral"></a>
 </h4>
 <ul>
-<li><p><strong>(Joël) Le code a été simplifié pour toutes les fonctions
-qui utilisaient <code>ggtext</code> (suivant la logique ici : <a href="https://github.com/wilkelab/ggtext/issues/121" class="external-link uri">https://github.com/wilkelab/ggtext/issues/121</a>), faire
-pareil pour les fonctions qui ne l’utilisaient pas (pour groupe
-<em>NA</em> en italique).</strong></p></li>
-<li><p><strong>(François) L’utilisation de caractères spéciaux dans les
-noms des groupes (par exemple <code>&gt;</code> ou <code>&lt;</code>)
-pose problème du fait de l’utilisation de <code>ggtext</code>. Il faut
-convertir ces caractères spéciaux en html au sein de la fonction. Voir :
-<a href="https://github.com/wilkelab/ggtext/issues/48" class="external-link uri">https://github.com/wilkelab/ggtext/issues/48</a>.</strong></p></li>
-<li><p><strong>(Joël) Laisser la possibilité d’introduire des palettes
-personnalisées dans les fonctions.</strong></p></li>
-<li><p><strong>(Joël) Exemples et valeurs pour return manquants dans
-utils (faire tourner <code>roxygenise()</code>)</strong>.</p></li>
-<li><p><strong>(François) Créer un tableau joli en output (avec
-<code>flextable</code>).</strong></p></li>
-<li><p><strong>(Joël) Créer facteur multiplicateur de la taille des
-polices.</strong></p></li>
-<li><p><strong>(Joël + François) Créer un fichier d’option pour régler a
-priori des arguments pour toutes les fonctions dans un script (la
-police, etc.)</strong></p></li>
-<li><p>Revoir la solution apportée dans <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code>
-au bug de compatibilité entre <code>ggtext</code> et
-<code>ggplot 4.0</code> lorsque ggtext aura été mis à jour. Voir : <a href="https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6" class="external-link uri">https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6</a>.</p></li>
-<li><p>BUG : si une variable de design == le nom d’un objet externe, ça
-fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
-<li><p>Rendre l’usage non interactif (= la programmation via d’autres
-fonctions) possible =&gt; gros travail, usage de <code>rlang</code> à la
-place de <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code>.</p></li>
-<li><p><strong>(Joël) Bug à l’import de <code>fonctionr</code> du fait
-de collision entre <code>PrettyCols</code> et les fonctions de base ? Je
-ne comprends pas le message.</strong></p></li>
-<li><p>Documenter tous les arguments des différentes fonctions +
-vérifier que les explications sont bien correctes (quelques erreurs, par
-ex. à cause de copier-coller ou de l’ajout de nouveaux argument avec la
-nouvelle logique des na.rm). Voir ici pour savoir les différentes
-options possibles dans la doc : <a href="#id_0" class="uri">https://r-pkgs.org/man.html</a>.</p></li>
-<li><p>Vérifier que les scripts sont bien commentés pour qu’on se
-rappelle ce qu’on a fait (il manque des notes et quelques explications
-d’opérations dont je ne me rappelle plus le but).</p></li>
-<li><p>Passer le code de chaque fonction en revue pour cleaner /
-harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code du graphique
-ggplot.<br>
-=&gt; L’ajout de <code>ggtext</code> pour mettre le total en gras a
-compliqué le code</em></p></li>
+<li><p><strong>(Joël) pour les test stat de prop_group et central_group,
+modifier le caption quand il y a des facets pour indiquer que le test se
+fait bien sur le total et ne pas faire le test quand il y a des facets
+et que total = FALSE.</strong></p></li>
+<li><p><strong>(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse
+entrer <code>NA</code> et pas seulement ““.</strong></p></li>
+<li><p><strong>(François) Ajouter toutes les options dans
+<code><a href="../reference/fonctionr_options.html">fonctionr_options()</a></code>, sauf les arguments avec données ou
+variables.</strong></p></li>
+<li><p><strong>(François) Revoir la doc de chaque fonction et le manuel
+par rapport aux changements. Voir ici pour savoir les différentes
+options possibles dans la doc : <a href="#id_0" class="uri">https://r-pkgs.org/man.html</a>.</strong></p></li>
 <li><p><strong>(François) Vérifier les messages à l’utilisateur : voir
 quoi garder, corriger, traduire, indiquer les accents (é, è…), ajouter
 des guillemets pour les arguments dans les checks, mieux écrire les
 résultats des tests stat (on ne sait pas quelle est l’hypothèse
 nulle).<br><em>=&gt; Traduire ces messages selon la langue ? Ou tout en anglais
 ?</em></strong></p></li>
+<li><p><strong>(François) Créer un tableau joli en output (avec
+<code>flextable</code>).</strong></p></li>
+<li><p>BUG : si une variable de design == le nom d’un objet externe, ça
+fonctionne =&gt; APPROFONDIR ET REGLER CA ?</p></li>
+<li><p>Rendre l’usage non interactif (= la programmation via d’autres
+fonctions) possible =&gt; gros travail, usage de <code>rlang</code> à la
+place de <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code>.</p></li>
+<li><p>Passer le code de chaque fonction en revue pour cleaner /
+harmoniser / simplifier.<br><em>=&gt; En cours : il faut encore checker le code du graphique
+ggplot.</em></p></li>
 <li><p>Mettre des conditions pour réaliser les tests (n min,
 distribution, variances égales…).</p></li>
 <li>
@@ -612,8 +638,20 @@ Apparemment la fonction n’est pas pré-programmée dans
 <strong>distrib_group_c</strong><a class="anchor" aria-label="anchor" href="#distrib_group_c"></a>
 </h4>
 <ul>
+<li><p><strong>(Joël) Introduire la mise en forme avec ggtext =&gt; plus
+difficile ici car le <code>NA</code> a été tranformé en level. Réfléchir
+à la meilleure solution et revoir éventuellement la
+fonction.</strong></p></li>
 <li><p><strong>(François + Joël) Ajouter hauteur des densités
 proportionnelle aux effectifs pondérés.</strong></p></li>
+<li><p><strong>(Joël) La moustache peut ne prendre qu’une couleur =&gt;
+pas cohérent<br>
+=&gt; Ajouter un check</strong></p></li>
+<li><p>Il y a un warning de la fonction <code><a href="https://rdrr.io/r/stats/density.html" class="external-link">density()</a></code> qui dit
+que <code>Selecting bandwidth not using 'weights'</code>. La doc de
+density() dit : “automatic bandwidth selection will not take the weights
+into account and hence may be suboptimal.”<br>
+=&gt; Voir si c’est un problème ?</p></li>
 <li><p>Le groupe <code>NA</code> est transfomé en level du facteur de
 groupe. De ce fait, il n’apparaît pas toujours en dernier, notamment
 lorsque <code>reorder = T</code>. Régler ça (pas cohérent avec les
@@ -635,25 +673,11 @@ centrales.</p></li>
 <div class="section level4">
 <h4 id="prop_group">prop_group<a class="anchor" aria-label="anchor" href="#prop_group"></a>
 </h4>
-<ul>
-<li><strong>(François) L’ordre des couleurs est inversé par défaut ? Se
-corrige avec l’argument <code>direction</code>, mais pas cohérent avec
-autres fonctions =&gt; voir d’où ça vient.</strong></li>
-<li><strong>(François) L’utilisation de <code>%in%</code> dans une
-expression ne transforme pas les <code>NA</code> en <code>FALSE</code>
-ou <code>TRUE</code> (alors que c’est le comportement par défaut de
-<code>%in%</code>) : <code>na.prop</code> est prioritaire !<br>
-=&gt; L’indiquer dans le manuel.<br>
-=&gt; Voir si c’est le cas ailleurs ?</strong></li>
-</ul>
 </div>
 <div class="section level4">
 <h4 id="central_group">central_group<a class="anchor" aria-label="anchor" href="#central_group"></a>
 </h4>
 <ul>
-<li><strong>(François) L’ordre des couleurs est inversé par défaut ? Se
-corrige avec l’argument <code>direction</code>, mais pas cohérent avec
-autres fonctions =&gt; voir d’où ça vient.</strong></li>
 <li>Bypasser l’erreur du test stat avec <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>.</li>
 </ul>
 </div>
@@ -674,6 +698,9 @@ erreurs de <code>survey</code> (erreurs fréquentes).</li>
 <h4 id="many_val">many_val<a class="anchor" aria-label="anchor" href="#many_val"></a>
 </h4>
 <ul>
+<li><strong>(Joël) Conditions ajoutées pour définir la priorité de pal
+sur col =&gt; Voir avec François si c’est OK.<br>
+=&gt; C’est idem pour <code><a href="../reference/make_surface.html">make_surface()</a></code>.</strong></li>
 <li>Les couleurs des palettes sont attachées à l’indicateur, mais pas à
 la position. De ce fait, lorsque <code>reorder = T</code>, l’ordre des
 couleurs de la palette n’est pas respecté =&gt; changer le comportement
@@ -684,9 +711,9 @@ couleurs de la palette n’est pas respecté =&gt; changer le comportement
 <h4 id="many_val_group">many_val_group<a class="anchor" aria-label="anchor" href="#many_val_group"></a>
 </h4>
 <ul>
-<li><strong>(François) L’ordre des couleurs est inversé par défaut ? Se
-corrige avec l’argument <code>direction</code>, mais pas cohérent avec
-autres fonctions =&gt; voir d’où ça vient.</strong></li>
+<li>Le <code>NA</code> apparait en premier lorsque
+<code>position = "flip"</code> =&gt; Corriger, il doit apparaître en
+dernier.</li>
 <li>Améliorer l’alignement des effectifs avec <code>show_n = T</code>
 lorsque <code>position == "stack"</code>
 </li>
@@ -756,16 +783,17 @@ résumé ici : <a href="#id_0" class="uri">https://mdneuzerling.com/post/what-iv
 et pour plus de détails : <a href="#id_0" class="uri">https://r-pkgs.org/dependencies-in-practice.html</a>.<br><em>=&gt; A faire : importer seulement les fonctions utiles (mutate,
 select, etc.).</em>
 </li>
+<li>Revoir la solution apportée dans <code><a href="../reference/theme_fonctionr.html">theme_fonctionr()</a></code> au
+bug de compatibilité entre <code>ggtext</code> et
+<code>ggplot 4.0</code> lorsque ggtext aura été mis à jour. Voir : <a href="https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6" class="external-link uri">https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6</a>.</li>
 </ul>
 </div>
 <div class="section level4">
 <h4 id="distrib_group_d-1">distrib_group_d<a class="anchor" aria-label="anchor" href="#distrib_group_d-1"></a>
 </h4>
 <ul>
-<li><p>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe
-?)</p></li>
-<li><p>Possibilité d’indiquer un vecteur avec une palette de couleur
-?</p></li>
+<li>Ajouter les effectifs totaux par groupe ? (dans le nom du groupe
+?)</li>
 </ul>
 </div>
 </div>

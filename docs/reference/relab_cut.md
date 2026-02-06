@@ -1,7 +1,7 @@
 # relab_cut
 
 Function to recode the default labels of a factor created by cut() from
-base R
+base R into more intuitive labels
 
 ## Usage
 
@@ -13,24 +13,31 @@ relab_cut(vec, suffix = NULL, right = TRUE, lang = "fr")
 
 - vec:
 
-  The vector to be recoded
+  The vector to be recoded. It should be produced by cut(). Notice that
+  the labels may not include scientific notation. Thus, in cut(),
+  dig.lab argument should be high enough in order to produce labels
+  without scientific notation.
 
 - suffix:
 
-  The suffix to be indicated after the values
+  The suffix to be indicated after the values. Usualy, the unit of the
+  variable will be used (e.g. euros, percents). Default is NULL, for no
+  suffix.
 
 - right:
 
   TRUE if categories have been created with parameter right = TRUE in
-  cut().
+  cut(). FALSE if categories have been created with parameter right =
+  FALSE in cut(). Default is TRUE.
 
 - lang:
 
-  The language of new labels
+  Language of new labels. Possibilities are "fr" (french), "nl" (dutch)
+  and "en" (english). Default is "fr".
 
 ## Value
 
-A vector
+A vector with new labels
 
 ## Examples
 
