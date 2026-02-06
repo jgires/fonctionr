@@ -342,9 +342,10 @@ eusilc_mean <- mean_group(
   )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> 0 observations removed due to missing group
-#> Variable(s) detectee(s) dans quanti_exp : eqIncome
-#> 0 observations removed due to missing value(s) for the variable(s) in quanti_exp
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 0 observation(s) removed due to missing group
+#> Variable(s) detected in quanti_exp: eqIncome
+#> 0 observation(s) removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Results in graph form
 eusilc_mean$graph

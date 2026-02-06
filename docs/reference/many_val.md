@@ -304,10 +304,13 @@ title = "Proportion of workers and Autrian according to gender",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
-#> Variable(s) entrees : worker, austrian
+#> Warning: Active parameters in function r_options(): font, coef_font
+#> Variables used: worker, austrian
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 0 observation(s) removed due to missing facet
+#> With na.vars = 'rm', observations removed differ between variables
 
 # Results in graph form
 eusilc_many_prop$graph

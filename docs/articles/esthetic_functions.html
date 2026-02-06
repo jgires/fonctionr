@@ -183,22 +183,22 @@ graphique.</p>
 <code>make_surface()</code><a class="anchor" aria-label="anchor" href="#make_surface"></a>
 </h2>
 <p><code><a href="../reference/make_surface.html">make_surface()</a></code> permet de créer la représentation de
-différentes valeurs déja calculées en tant que surfaces - sous la forme
-de carrés. Il s’agit d’un graphique potentiellement intéressant si l’on
-veut représenter la taille des logements en m², par exemple. La fonction
-est purement graphique ; elle s’applique sur un dataframe de plusieurs
-lignes comprenant les modalités/groupes à comparer (argument
-<code>var</code>) et la valeur pour chacun d’eux (<code>value</code>).
-La fonction est donc idéalement applicable au dataframe <code>tab</code>
-produit par <code><a href="../reference/central_group.html">central_group()</a></code>. Notre package
-<code>fonctionr</code> étant destiné à l’analyse inférentielle, les
-bornes supérieures et inférieures des intervalles de confiance peuvent
-être indiquées (<code>error_low</code> et <code>error_upp</code>) ;
-elles sont alors affichées sur le graphique d’une manière originale,
-comme carrés en pointillés autour de la valeur dans l’échantillon
-(<code>show_ci = FALSE</code> pour les désactiver). L’ordonnancement des
-modalités selon la valeur est possible avec l’argument
-<code>reorder = TRUE</code>.</p>
+différentes valeurs déjà calculées en tant que surfaces - sous la forme
+de rectangles. Il s’agit d’un graphique potentiellement intéressant si
+l’on veut représenter des surfaces, par exemple la taille des logements
+en m². La fonction est purement graphique ; elle s’applique sur un
+dataframe de plusieurs lignes comprenant les modalités/groupes à
+comparer (argument <code>var</code>) et la valeur pour chacun d’eux
+(<code>value</code>). La fonction est donc idéalement applicable au
+dataframe <code>tab</code> produit par <code><a href="../reference/central_group.html">central_group()</a></code>.
+Notre package <code>fonctionr</code> étant destiné à l’analyse
+inférentielle, les bornes supérieures et inférieures des intervalles de
+confiance peuvent être indiquées (<code>error_low</code> et
+<code>error_upp</code>) ; elles sont alors affichées sur le graphique
+d’une manière originale, comme carrés en pointillés autour de la valeur
+dans l’échantillon (<code>show_ci = FALSE</code> pour les désactiver).
+L’ordonnancement des modalités selon la valeur est possible avec
+l’argument <code>reorder = TRUE</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
 <span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030_rec</span><span class="op">[</span><span class="va">eusilc</span><span class="op">$</span><span class="va">pl030</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Working full time"</span></span>
@@ -237,14 +237,17 @@ réordonnancement des modalités fonctionne également avec des facettes :
 dans ce cas, les couleurs des carrés permettent de facilement repérer
 l’ordre différent par modalité de facette ; on peut indiquer dans
 <code>pal</code> n’importe quelle des palettes de couleur des packages
-<code>MetBrewer</code>, <code>MoMAColors</code> ou
-<code>PrettyCols</code>. L’argument <code>compare = TRUE</code> permet
-d’afficher la surface la plus petite en surimposition de chaque carré
-(par modalité de facette le cas échéant), pour facilement visualiser les
-inégalités entre les groupes. L’argument <code>position</code> permet de
-régler l’alignement des surfaces au centre ou en bas (<code>"mid"</code>
-ou <code>"bottom"</code>). L’argument <code>bg</code> (qui signifie
-<em>background</em>) permet de définir la couleur du fond.</p>
+<code>MetBrewer</code>ou <code>PrettyCols</code> , des palettes internes
+à fonctionr ou un vecteur de couleur de base R ou de codes hexadécimaux.
+Si l’utilisateur souhaite un graphique monochrome, il peut utiliser
+l’argument <code>col</code>. L’argument <code>compare = TRUE</code>
+permet d’afficher la surface la plus petite en surimposition de chaque
+carré (par modalité de facette le cas échéant), pour facilement
+visualiser les écarts entre les groupes. L’argument
+<code>position</code> permet de régler l’alignement des surfaces au
+centre ou en bas (<code>"mid"</code> ou <code>"bottom"</code>).
+L’argument <code>bg</code> (qui signifie <em>background</em>) permet de
+définir la couleur du fond.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>

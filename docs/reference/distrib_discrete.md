@@ -31,8 +31,8 @@ distrib_discrete(
   digits = 0,
   unit = "%",
   dec = NULL,
-  pal = NULL,
   col = "sienna2",
+  pal = NULL,
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -40,8 +40,8 @@ distrib_discrete(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  lang = "fr",
   caption = NULL,
+  lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
@@ -144,15 +144,15 @@ distrib_d(...)
   Decimal mark displayed on the graphic. Default depends on lang: ","
   for fr and nl ; "." for en.
 
-- pal:
-
-  Argument kept for compatibility with old versions.
-
 - col:
 
   Color of the bars. col must be a R color or an hexadecimal color code.
   Default is "sienna2". The color of NA category (in case of na.rm.var
   == FALSE) is always "grey".
+
+- pal:
+
+  Argument kept for compatibility with old versions.
 
 - dodge:
 
@@ -195,15 +195,15 @@ distrib_d(...)
   of the discrete variable (quali_var). To show no Y label, use ylab =
   "".
 
-- lang:
-
-  Language of the indications on the graphic. Possibilities are "fr"
-  (french), "nl" (dutch) and "en" (english). Default is "fr".
-
 - caption:
 
   Caption of the graphic. This caption goes under de default caption
   showing the result of the statistical test (if any).
+
+- lang:
+
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - theme:
 
@@ -255,7 +255,8 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> 2720 observations removed due to missing value on quali_var
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 2720 observation(s) removed due to missing quali_var
 
 # Results in graph form
 eusilc_dist_group_d$graph

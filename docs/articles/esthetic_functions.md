@@ -123,14 +123,14 @@ esth_graph(tab2,
 ## `make_surface()`
 
 [`make_surface()`](https://jgires.github.io/fonctionr/reference/make_surface.md)
-permet de créer la représentation de différentes valeurs déja calculées
-en tant que surfaces - sous la forme de carrés. Il s’agit d’un graphique
-potentiellement intéressant si l’on veut représenter la taille des
-logements en m², par exemple. La fonction est purement graphique ; elle
-s’applique sur un dataframe de plusieurs lignes comprenant les
-modalités/groupes à comparer (argument `var`) et la valeur pour chacun
-d’eux (`value`). La fonction est donc idéalement applicable au dataframe
-`tab` produit par
+permet de créer la représentation de différentes valeurs déjà calculées
+en tant que surfaces - sous la forme de rectangles. Il s’agit d’un
+graphique potentiellement intéressant si l’on veut représenter des
+surfaces, par exemple la taille des logements en m². La fonction est
+purement graphique ; elle s’applique sur un dataframe de plusieurs
+lignes comprenant les modalités/groupes à comparer (argument `var`) et
+la valeur pour chacun d’eux (`value`). La fonction est donc idéalement
+applicable au dataframe `tab` produit par
 [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
 Notre package `fonctionr` étant destiné à l’analyse inférentielle, les
 bornes supérieures et inférieures des intervalles de confiance peuvent
@@ -183,13 +183,16 @@ tidy](https://r4ds.had.co.nz/tidy-data.html)). Le réordonnancement des
 modalités fonctionne également avec des facettes : dans ce cas, les
 couleurs des carrés permettent de facilement repérer l’ordre différent
 par modalité de facette ; on peut indiquer dans `pal` n’importe quelle
-des palettes de couleur des packages `MetBrewer`, `MoMAColors` ou
-`PrettyCols`. L’argument `compare = TRUE` permet d’afficher la surface
-la plus petite en surimposition de chaque carré (par modalité de facette
-le cas échéant), pour facilement visualiser les inégalités entre les
-groupes. L’argument `position` permet de régler l’alignement des
-surfaces au centre ou en bas (`"mid"` ou `"bottom"`). L’argument `bg`
-(qui signifie *background*) permet de définir la couleur du fond.
+des palettes de couleur des packages `MetBrewer`ou `PrettyCols` , des
+palettes internes à fonctionr ou un vecteur de couleur de base R ou de
+codes hexadécimaux. Si l’utilisateur souhaite un graphique monochrome,
+il peut utiliser l’argument `col`. L’argument `compare = TRUE` permet
+d’afficher la surface la plus petite en surimposition de chaque carré
+(par modalité de facette le cas échéant), pour facilement visualiser les
+écarts entre les groupes. L’argument `position` permet de régler
+l’alignement des surfaces au centre ou en bas (`"mid"` ou `"bottom"`).
+L’argument `bg` (qui signifie *background*) permet de définir la couleur
+du fond.
 
 ``` r
 eusilc_mean_region <- mean_group(

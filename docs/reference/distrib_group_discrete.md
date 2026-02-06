@@ -319,8 +319,9 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> 2720 observations removed due to missing group
-#> 0 observations removed due to missing value on quali_var
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 2720 observation(s) removed due to missing group
+#> 0 observation(s) removed due to missing quali_var
 
 # Results in graph form
 eusilc_dist_d$graph
