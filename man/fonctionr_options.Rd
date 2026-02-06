@@ -5,32 +5,113 @@
 \title{fonctionr_options}
 \usage{
 fonctionr_options(
+  na.rm.group = NULL,
+  na.rm.facet = NULL,
+  na.prop = NULL,
+  na.vars = NULL,
+  na.rm.var = NULL,
+  probs = NULL,
   total = NULL,
   prop_method = NULL,
+  quantiles = NULL,
+  moustache_probs = NULL,
+  bw = NULL,
+  resolution = NULL,
+  height = NULL,
+  limits = NULL,
   reorder = NULL,
+  position = NULL,
   show_ci = NULL,
+  show_mid_point = NULL,
+  show_mid_line = NULL,
+  show_ci_errorbar = NULL,
+  show_ci_lines = NULL,
+  show_ci_area = NULL,
+  show_quant_lines = NULL,
+  show_moustache = NULL,
   show_n = NULL,
   show_value = NULL,
   show_labs = NULL,
+  total_name = NULL,
+  scale = NULL,
+  digits = NULL,
+  unit = NULL,
   dec = NULL,
-  pal = NULL,
   col = NULL,
+  pal = NULL,
+  direction = NULL,
+  desaturate = NULL,
+  lighten = NULL,
+  darken = NULL,
+  col_density = NULL,
+  col_moustache = NULL,
+  col_border = NULL,
+  alpha = NULL,
+  dodge = NULL,
   font = NULL,
-  coef_font = NULL,
+  wrap_width_y = NULL,
+  wrap_width_leg = NULL,
+  legend_ncol = NULL,
+  title = NULL,
+  subtitle = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  legend_lab = NULL,
   caption = NULL,
-  theme = NULL,
   lang = NULL,
+  theme = NULL,
+  coef_font = NULL,
   erase_all = FALSE
 )
 }
 \arguments{
+\item{na.rm.group}{na.rm.group}
+
+\item{na.rm.facet}{na.rm.facet}
+
+\item{na.prop}{na.prop}
+
+\item{na.vars}{na.vars}
+
+\item{na.rm.var}{na.rm.var}
+
+\item{probs}{probs}
+
 \item{total}{total}
 
 \item{prop_method}{prop_method}
 
+\item{quantiles}{quantiles}
+
+\item{moustache_probs}{moustache_probs}
+
+\item{bw}{bw}
+
+\item{resolution}{resolution}
+
+\item{height}{height}
+
+\item{limits}{limits}
+
 \item{reorder}{reorder}
 
+\item{position}{position}
+
 \item{show_ci}{show_ci}
+
+\item{show_mid_point}{show_mid_point}
+
+\item{show_mid_line}{show_mid_line}
+
+\item{show_ci_errorbar}{show_ci_errorbar}
+
+\item{show_ci_lines}{show_ci_lines}
+
+\item{show_ci_area}{show_ci_area}
+
+\item{show_quant_lines}{show_quant_lines}
+
+\item{show_moustache}{show_moustache}
 
 \item{show_n}{show_n}
 
@@ -38,21 +119,63 @@ fonctionr_options(
 
 \item{show_labs}{show_labs}
 
-\item{dec}{dec}
+\item{total_name}{total_name}
 
-\item{pal}{pal}
+\item{scale}{scale}
+
+\item{digits}{digits}
+
+\item{unit}{unit}
+
+\item{dec}{dec}
 
 \item{col}{col}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{pal}{pal}
 
-\item{coef_font}{A multiplier factor for font size}
+\item{direction}{direction}
+
+\item{desaturate}{desaturate}
+
+\item{lighten}{lighten}
+
+\item{darken}{darken}
+
+\item{col_density}{col_density}
+
+\item{col_moustache}{col_moustache}
+
+\item{col_border}{col_border}
+
+\item{alpha}{alpha}
+
+\item{dodge}{dodge}
+
+\item{font}{font}
+
+\item{wrap_width_y}{wrap_width_y}
+
+\item{wrap_width_leg}{wrap_width_leg}
+
+\item{legend_ncol}{legend_ncol}
+
+\item{title}{title}
+
+\item{subtitle}{subtitle}
+
+\item{xlab}{xlab}
+
+\item{ylab}{ylab}
+
+\item{legend_lab}{legend_lab}
 
 \item{caption}{caption}
 
+\item{lang}{lang}
+
 \item{theme}{theme}
 
-\item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
+\item{coef_font}{coef_font}
 
 \item{erase_all}{TRUE erases all the options. Default is FALSE.}
 }

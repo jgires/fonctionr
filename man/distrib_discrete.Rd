@@ -24,8 +24,8 @@ distrib_discrete(
   digits = 0,
   unit = "\%",
   dec = NULL,
-  pal = NULL,
   col = "sienna2",
+  pal = NULL,
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -33,8 +33,8 @@ distrib_discrete(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  lang = "fr",
   caption = NULL,
+  lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
   export_path = NULL
@@ -79,9 +79,9 @@ distrib_d(...)
 
 \item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Argument kept for compatibility with old versions.}
-
 \item{col}{Color of the bars. col must be a R color or an hexadecimal color code. Default is "sienna2". The color of NA category (in case of na.rm.var == FALSE) is always "grey".}
+
+\item{pal}{Argument kept for compatibility with old versions.}
 
 \item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.}
 
@@ -97,9 +97,9 @@ distrib_d(...)
 
 \item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. Default (ylab = NULL) displays the name of the discrete variable (quali_var). To show no Y label, use ylab = "".}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
-
 \item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the statistical test (if any).}
+
+\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
 
 \item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
 

@@ -1,3 +1,9 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
 # Manuel d'utilisation
 
 L’objectif de `fonctionr` est de faciliter l’analyse de données issues
@@ -10,7 +16,7 @@ Le package a également été construit pour pouvoir utiliser directement
 les résultats produits dans un rapport. Ainsi, `fonctionr` produit en
 une seule fonction : un tableau de résultats avec les indicateurs
 voulus, les effectifs et leurs intervalles de confiance ; un graphique
-prêt à être publié et le plus souvent un test statistique le plus
+prêt à être publié ; et, le plus souvent, un test statistique le plus
 approprié aux variables étudiées. Il est aussi possible de directement
 exporter ces trois résultats dans un fichier Excel.
 
@@ -27,21 +33,22 @@ La plupart des fonctions de `fonctionr` permettent, à partir de données
 issues d’un sondage (complexe mais aussi simple), de produire une liste
 qui contient la plupart du temps ces trois éléments :
 
-- Un graphique qui permet la visualisation des indicateurs calculés avec
-  leurs intervalles de confiance. Il s’agit d’un objet `ggplot2` qui
-  peut donc être modifié par la suite. Ce graphique est suffisamment
-  finalisé pour être directement utilisable dans une publication ;
+-   Un graphique qui permet la visualisation des indicateurs calculés
+    avec leurs intervalles de confiance. Il s’agit d’un objet `ggplot2`
+    qui peut donc être modifié par la suite. Ce graphique est
+    suffisamment finalisé pour être directement utilisable dans une
+    publication ;
 
-- Un ou plusieurs dataframe qui reprennent les chiffres sur base
-  desquels le graphique est construit. Ceux-ci reprennent généralement
-  le nom de l’indicateur, sa valeur, les bornes d’intervalle de
-  confiance, le nombre de personnes dans l’échantillon dans chaque
-  catégorie, l’estimation du nombre de personnes dans la population dans
-  chaque catégorie et les bornes de l’intervalle de confiance de cette
-  estimation ;
+-   Un ou plusieurs dataframe qui reprennent les chiffres sur base
+    desquels le graphique est construit. Ceux-ci reprennent généralement
+    le nom de l’indicateur, sa valeur, les bornes d’intervalle de
+    confiance, le nombre de personnes dans l’échantillon dans chaque
+    catégorie, l’estimation du nombre de personnes dans la population
+    dans chaque catégorie et les bornes de l’intervalle de confiance de
+    cette estimation ;
 
-- Les différents résultats d’un test statistique lorsqu’il y en a un qui
-  est pertinent.
+-   Les différents résultats d’un test statistique lorsqu’il y en a un
+    qui est pertinent.
 
 La plupart des fonctions permettent aussi d’exporter directement ces
 trois résultats dans un format Excel, dans l’idée de pouvoir facilement
@@ -261,15 +268,15 @@ Le graphique et le tableau contiennent aussi une modalité `Total` qui
 reprend l’estimation de la proportion pour l’ensemble de la population
 de référence. Dans le dataframe `tab` produit, on trouve :
 
-- l’estimation du nombre de personnes dans la population pour lesquelles
-  le critère de proportion est vérifié (`n_true_weighted`) accompagné de
-  ses bornes inférieure (`n_true_weighted_low`) et supérieure
-  (`n_true_weighted_upp`) de l’intervalle de confiance à un niveau de
-  confiance de 95% ;
-- le nombre total de personnes dans la population pour lesquelles les
-  données sont valides[²](#fn2) (`n_tot_weighted`) accompagné de ses
-  bornes inférieure (`n_tot_weighted_low`) et supérieure
-  (`n_tot_weighted_upp`) de l’intervalle de confiance.
+-   l’estimation du nombre de personnes dans la population pour
+    lesquelles le critère de proportion est vérifié (`n_true_weighted`)
+    accompagné de ses bornes inférieure (`n_true_weighted_low`) et
+    supérieure (`n_true_weighted_upp`) de l’intervalle de confiance à un
+    niveau de confiance de 95% ;
+-   le nombre total de personnes dans la population pour lesquelles les
+    données sont valides[²](#fn2) (`n_tot_weighted`) accompagné de ses
+    bornes inférieure (`n_tot_weighted_low`) et supérieure
+    (`n_tot_weighted_upp`) de l’intervalle de confiance.
 
 Le test statistique réalisé est celui du khi2 de Pearson avec
 l’ajustement de Rao & Scott. Ce test est réalisé avec comme hypothèse
@@ -337,11 +344,11 @@ compare la valeur centrale d’une variable quantitative selon les
 modalités d’une variable qualitative, que l’on peut considérer comme des
 groupes. Deux valeurs centrales sont possibles :
 
-- la moyenne, quand l’argument `type = "mean"` ou pour l’alias
-  [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  ;
-- la médiane, quand l’argument `type = "median"` ou pour l’alias
-  [`median_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
+-   la moyenne, quand l’argument `type = "mean"` ou pour l’alias
+    [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    ;
+-   la médiane, quand l’argument `type = "median"` ou pour l’alias
+    [`median_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
 
 L’argument `type` est prédéfini pour les fonctions “alias”. Il ne doit
 pas être utilisé par l’utilisateur s’il utilise les fonctions “alias”.
@@ -413,16 +420,17 @@ réalise des calculs de proportion ou de tendance centrale simultanément
 pour plusieurs variables différentes. La fonction permet de calculer
 trois résultats différents :
 
-- Le calcul de proportions quand l’argument `type = "prop"` ou pour
-  l’alias
-  [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  ;
-- Le calcul de moyennes quand l’argument `type = "mean"` ou pour l’alias
-  [`many_mean()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  ;
-- Le calcul de médianes quand l’argument `type = "median"` ou pour
-  l’alias
-  [`many_median()`](https://jgires.github.io/fonctionr/reference/many_val.md).
+-   Le calcul de proportions quand l’argument `type = "prop"` ou pour
+    l’alias
+    [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    ;
+-   Le calcul de moyennes quand l’argument `type = "mean"` ou pour
+    l’alias
+    [`many_mean()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    ;
+-   Le calcul de médianes quand l’argument `type = "median"` ou pour
+    l’alias
+    [`many_median()`](https://jgires.github.io/fonctionr/reference/many_val.md).
 
 L’argument `type` est prédéfini pour les fonctions “alias”. Il ne doit
 pas être utilisé par l’utilisateur s’il utilise les fonctions “alias”.
@@ -486,17 +494,17 @@ résultats sont alors différenciés selon les différentes modalités de
 cette variable (= les groupes). Ici aussi, aucun test statistique n’est
 effectué. Trois calculs sont possibles :
 
-- La comparaison de proportions quand l’argument `type = "prop"` ou pour
-  l’alias
-  [`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  ;
-- La comparaison de moyennes quand l’argument `type = "mean"` ou pour
-  l’alias
-  [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  ;
-- La comparaison de médianes quand l’argument `type = "median"` ou pour
-  l’alias
-  [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md).
+-   La comparaison de proportions quand l’argument `type = "prop"` ou
+    pour l’alias
+    [`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    ;
+-   La comparaison de moyennes quand l’argument `type = "mean"` ou pour
+    l’alias
+    [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    ;
+-   La comparaison de médianes quand l’argument `type = "median"` ou
+    pour l’alias
+    [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md).
 
 L’argument `type` est prédéfini pour les fonctions “alias”. Il ne doit
 pas être utilisé par l’utilisateur s’il utilise les fonctions “alias”.
@@ -723,7 +731,7 @@ obligatoires mais ayant une influence sur les résultats – et les
 arguments esthétiques – c’est-à-dire qui n’influencent que le graphique.
 
 | Catégorie d’argument | prop_group | many_val_group | many_val | central_group | distrib_group_c | distrib_c | distrib_group_d | distrib_d |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+|:-------|:-------|:-------|:-------|:-------|:-------|:-------|:-------|:-------|
 | Base de données | data | data | data | data | data | data | data | data |
 | Indispensable | group | group |  | group | group |  | group |  |
 | Indispensable | prop_exp |  |  |  |  |  |  |  |
@@ -869,47 +877,47 @@ variables qualitatives, expressions ou listes de variables. Les
 variables/colonnes sont toujours indiquées sans mentionner le dataframe
 et sans guillemet, à la manière du `tidyverse`.
 
-- `group` et `quali_var` sont des variables qualitatives qui indiquent
-  les groupes ou variables qualitative dont on veut calculer la
-  distribution. Les variables indiquées pour ces arguments sont
-  transformées en facteurs pour leur usage dans la fonction.
+-   `group` et `quali_var` sont des variables qualitatives qui indiquent
+    les groupes ou variables qualitative dont on veut calculer la
+    distribution. Les variables indiquées pour ces arguments sont
+    transformées en facteurs pour leur usage dans la fonction.
 
-- `prop_exp` et `quanti_exp` sont des expressions qui permettent de
-  calculer les proportions ou tendances centrales. Dans `fonctionr`,
-  tous les arguments pouvant contenir une expression terminent par
-  `_exp`. Ces arguments peuvent être des variables (une variable binaire
-  0-1 pour `prop_exp` et une variable numérique pour `quanti_exp`) ou
-  une expression qui produit une variable (binaire pour `prop_exp` et
-  quantitative pour `quanti_exp`). Ainsi, il n’est pas nécessaire de
-  préparer à l’avance les variables binaire ou la quantitative, elles
-  peuvent être calculées “à la volée”. Précisons que seuls les variables
-  de la base de données, les opérateurs et les valeurs numérique sont
-  autorisés dans les expressions ; les objets extérieurs (par exemple un
-  seuil contenu dans un vecteur stocké dans l’environnement global) ne
-  sont pas autorisés.
+-   `prop_exp` et `quanti_exp` sont des expressions qui permettent de
+    calculer les proportions ou tendances centrales. Dans `fonctionr`,
+    tous les arguments pouvant contenir une expression terminent par
+    `_exp`. Ces arguments peuvent être des variables (une variable
+    binaire 0-1 pour `prop_exp` et une variable numérique pour
+    `quanti_exp`) ou une expression qui produit une variable (binaire
+    pour `prop_exp` et quantitative pour `quanti_exp`). Ainsi, il n’est
+    pas nécessaire de préparer à l’avance les variables binaire ou la
+    quantitative, elles peuvent être calculées “à la volée”. Précisons
+    que seuls les variables de la base de données, les opérateurs et les
+    valeurs numérique sont autorisés dans les expressions ; les objets
+    extérieurs (par exemple un seuil contenu dans un vecteur stocké dans
+    l’environnement global) ne sont pas autorisés.
 
-- `list_vars` doit être un vecteur reprenant l’ensemble des variables
-  reprises dans les fonctions
-  [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  ainsi que leurs alias. Pour
-  [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et
-  [`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  les variables doivent être binaires (il aurait été trop compliqué
-  d’introduire ici des expressions) et pour
-  [`many_mean()`](https://jgires.github.io/fonctionr/reference/many_val.md),
-  [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  [`many_median()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et
-  [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  les variables doivent être numériques. L’argument `list_vars_lab`
-  permet d’indiquer le label pour les variables à l’aide d’un vecteur.
-  Bien qu’il ne s’agisse pas d’un argument indispensable, nous l’avons
-  placé juste après `list_vars` pour faciliter l’utilisation des
-  fonctions. Pour `list_vars_lab`, les guillemets doivent être utilisé
-  pour indiquer les labels des variables.
+-   `list_vars` doit être un vecteur reprenant l’ensemble des variables
+    reprises dans les fonctions
+    [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    ainsi que leurs alias. Pour
+    [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et
+    [`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    les variables doivent être binaires (il aurait été trop compliqué
+    d’introduire ici des expressions) et pour
+    [`many_mean()`](https://jgires.github.io/fonctionr/reference/many_val.md),
+    [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    [`many_median()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et
+    [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    les variables doivent être numériques. L’argument `list_vars_lab`
+    permet d’indiquer le label pour les variables à l’aide d’un vecteur.
+    Bien qu’il ne s’agisse pas d’un argument indispensable, nous l’avons
+    placé juste après `list_vars` pour faciliter l’utilisation des
+    fonctions. Pour `list_vars_lab`, les guillemets doivent être utilisé
+    pour indiquer les labels des variables.
 
 Dans l’exemple ci-dessous, on calcule selon le sexe la proportion des
 répondants qui travaillent et dont le salaire net annuel était inférieur
@@ -939,43 +947,44 @@ Les arguments clés sont des arguments qui ne sont pas indispensables
 mais qui influencent les résultats. On y retrouve plusieurs types
 d’arguments.
 
-- `group.fill` permet d’indiquer une variable de sous-groupes pour
-  différencier les résultats plus finement. Cet argument n’est que
-  disponible dans
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
-  Comme `group` et `quali_var`, la variable indiquée pour `group.fill`
-  est transformée en facteur pour son usage dans la fonction. Dans
-  l’exemple ci-dessous, on compare les revenus moyens par statut
-  socio-économique et sexe.
+-   `group.fill` permet d’indiquer une variable de sous-groupes pour
+    différencier les résultats plus finement. Cet argument n’est que
+    disponible dans
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
+    Comme `group` et `quali_var`, la variable indiquée pour `group.fill`
+    est transformée en facteur pour son usage dans la fonction. Dans
+    l’exemple ci-dessous, on compare les revenus moyens par statut
+    socio-économique et sexe.
 
-  ``` r
-  eusilc_income_status_sex <- mean_group(
-    eusilc,
-    group = pl030_rec,
-    group.fill = rb090,
-    quanti_exp = eqIncome/12,
-    weights = rb050,
-    title = "Mean mensual equivalent income according to status and sex",
-    subtitle = "Example with austrian SILC data from 'laeken' package",
-    unit = "€"
-  )
+    ``` r
+    eusilc_income_status_sex <- mean_group(
+      eusilc,
+      group = pl030_rec,
+      group.fill = rb090,
+      quanti_exp = eqIncome/12,
+      weights = rb050,
+      title = "Mean mensual equivalent income according to status and sex",
+      subtitle = "Example with austrian SILC data from 'laeken' package",
+      unit = "€"
+    )
 
-  eusilc_income_status_sex$graph
-  ```
+    eusilc_income_status_sex$graph
+    ```
 
-  ![](fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png)
+    ![](fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png)
 
-- `facet` permet d’indiquer une variable qualitative pour différencier
-  les résultats selon les différentes modalités de cette variable, dans
-  le graphique `ggplot2` et le dataframe de résultat `tab`. Dans le
-  graphique, elle produit des “facettes”, d’où le nom de l’argument.
-  Comme `group`, `group.fill` et `quali_var`, la variable indiquée pour
-  cet argument est transformée en facteur pour leur usage dans la
-  fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous,
-  on calcule la distribution des différents statuts socio-économiques
-  par région (indiquée comme variable de facettes) :
+-   `facet` permet d’indiquer une variable qualitative pour différencier
+    les résultats selon les différentes modalités de cette variable,
+    dans le graphique `ggplot2` et le dataframe de résultat `tab`. Dans
+    le graphique, elle produit des “facettes”, d’où le nom de
+    l’argument. Comme `group`, `group.fill` et `quali_var`, la variable
+    indiquée pour cet argument est transformée en facteur pour leur
+    usage dans la fonction. Par défaut, les facettes ne sont pas
+    produites. Ci-dessous, on calcule la distribution des différents
+    statuts socio-économiques par région (indiquée comme variable de
+    facettes) :
 
 ``` r
 # Computation, taking sample design into account
@@ -996,52 +1005,53 @@ eusilc_dist_d$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-44-1.png)
 
-- `filter_exp` est une expression qui permet de filtrer les données de
-  manière à produire les résultats sur une partie de l’échantillon.
-  Comme il s’agit d’une expression, il est possible de mettre en oeuvre
-  des conditions de filtres complexe et multiple, par exemple
-  sélectionner uniquement les personnes âgées de moins de 60 ans, dont
-  le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Si
-  une possibilité de filtrage est inclue dans les fonctions, c’est pour
-  que le filtrage des données soit réalisé après la définition du plan
-  de sondage, afin que le filtrage ne modifie pas celui-ci comme le
-  recommande Thomas Lumley, l’auteur de `survey`[⁴](#fn4). Ici aussi,
-  seules les variables de la base de données, les opérateurs et les
-  valeurs numérique sont autorisés dans les expressions.
+-   `filter_exp` est une expression qui permet de filtrer les données de
+    manière à produire les résultats sur une partie de l’échantillon.
+    Comme il s’agit d’une expression, il est possible de mettre en
+    oeuvre des conditions de filtres complexe et multiple, par exemple
+    sélectionner uniquement les personnes âgées de moins de 60 ans, dont
+    le revenu mensuel est inférieur à 3000€ et qui sont célibataires. Si
+    une possibilité de filtrage est inclue dans les fonctions, c’est
+    pour que le filtrage des données soit réalisé après la définition du
+    plan de sondage, afin que le filtrage ne modifie pas celui-ci comme
+    le recommande Thomas Lumley, l’auteur de `survey`[⁴](#fn4). Ici
+    aussi, seules les variables de la base de données, les opérateurs et
+    les valeurs numérique sont autorisés dans les expressions.
 
-- `total` est un argument qui permet de calculer l’indicateur ou la
-  distribution de la variable pour le total, et pas uniquement pour les
-  groupes. Cela permet de comparer non seulement les groupes entre-eux,
-  mais aussi à l’ensemble de la population. Cet argument n’est
-  disponible que pour
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md),
-  [`distrib_group_d()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
-  et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  et leurs alias. Par défaut le total s’affiche (`total = TRUE`). Il
-  s’agit d’un argument clé et pas uniquement d’un argument esthétique,
-  car la présence du total dans `tab` et dans l’export Excell dépend de
-  la valeur prise par cet argument.
+-   `total` est un argument qui permet de calculer l’indicateur ou la
+    distribution de la variable pour le total, et pas uniquement pour
+    les groupes. Cela permet de comparer non seulement les groupes
+    entre-eux, mais aussi à l’ensemble de la population. Cet argument
+    n’est disponible que pour
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md),
+    [`distrib_group_d()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
+    et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    et leurs alias. Par défaut le total s’affiche (`total = TRUE`). Il
+    s’agit d’un argument clé et pas uniquement d’un argument esthétique,
+    car la présence du total dans `tab` et dans l’export Excell dépend
+    de la valeur prise par cet argument.
 
-- `prop_method` est un argument qui permet de choisir le type de
-  correction pour l’estimation des intervalles de confiance d’une
-  proportion, notamment pour éviter d’avoir des bornes inférieures à 0
-  ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées
-  dans l’argument `method` de
-  [`svyciprop()`](https://rdrr.io/pkg/survey/man/svyciprop.html) du
-  package `survey`[⁵](#fn5). Par défaut, c’est la méthode `"beta"` qui
-  est utilisée. Précisons que cette correction ne s’applique qu’aux
-  intervalles de confiance des proportions et pas aux intervalles de
-  confiance des estimations du nombre de personnes dans la population,
-  qui se retrouvent dans `tab`.
+-   `prop_method` est un argument qui permet de choisir le type de
+    correction pour l’estimation des intervalles de confiance d’une
+    proportion, notamment pour éviter d’avoir des bornes inférieures à 0
+    ou supérieures à 1. Les valeurs peuvent prendre celles mentionnées
+    dans l’argument `method` de
+    [`svyciprop()`](https://rdrr.io/pkg/survey/man/svyciprop.html) du
+    package `survey`[⁵](#fn5). Par défaut, c’est la méthode `"beta"` qui
+    est utilisée. Précisons que cette correction ne s’applique qu’aux
+    intervalles de confiance des proportions et pas aux intervalles de
+    confiance des estimations du nombre de personnes dans la population,
+    qui se retrouvent dans `tab`.
 
-- `quantiles` est un argument qui permet de choisir, sous forme d’un
-  vecteur, les quantiles à calculer et à indiquer sur le graphique dans
-  [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
-  et
-  [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
-  Par défaut, ce sont des déciles qui sont calculés.
+-   `quantiles` est un argument qui permet de choisir, sous forme d’un
+    vecteur, les quantiles à calculer et à indiquer sur le graphique
+    dans
+    [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
+    et
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
+    Par défaut, ce sont des déciles qui sont calculés.
 
 #### Le traitement des `NA`
 
@@ -1050,18 +1060,18 @@ fonctions, car cette question est complexe. Nous avons décidé de laisser
 des possibilités différentes selon les variables dans lesquelles se
 trouvent les `NA` : groupes, variables d’intérêts, expressions, etc.
 
-- `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement la
-  manière dont les éventuels `NA` dans les variables `group`, `facet` et
-  dans `quali_var` sont traités. Si l’argument est `TRUE`, les `NA` sont
-  retirés dans les calculs. Si l’argument est `FALSE`, une modalité
-  spécifique est créée pour les `NA`. Dans ce cas, ils prennent toujours
-  la couleur gris clair sur le graphique, pour pointer leur spécificité.
-  Dans le cas où ils sont retirés, ils ne sont pas pris en compte pour
-  calculer le total, le cas échéant. Par défaut, l’argument prend la
-  valeur `FALSE`, c’est-à-dire que les `NA` sont supprimés des analyses.
-  Actuellement, `na.rm.group` influence le traitement des NA, tant pour
-  la variable `group` que la variable `group.fill`, si cette dernière
-  est présente.
+-   `na.rm.group`, `na.rm.facet`, `na.rm.var` indiquent respectivement
+    la manière dont les éventuels `NA` dans les variables `group`,
+    `facet` et dans `quali_var` sont traités. Si l’argument est `TRUE`,
+    les `NA` sont retirés dans les calculs. Si l’argument est `FALSE`,
+    une modalité spécifique est créée pour les `NA`. Dans ce cas, ils
+    prennent toujours la couleur gris clair sur le graphique, pour
+    pointer leur spécificité. Dans le cas où ils sont retirés, ils ne
+    sont pas pris en compte pour calculer le total, le cas échéant. Par
+    défaut, l’argument prend la valeur `FALSE`, c’est-à-dire que les
+    `NA` sont supprimés des analyses. Actuellement, `na.rm.group`
+    influence le traitement des NA, tant pour la variable `group` que la
+    variable `group.fill`, si cette dernière est présente.
 
 Dans l’exemple ci-dessous, on compare la distribution des statuts
 socio-professionnels entre régions, en y ajoutant une modalité `NA` pour
@@ -1092,35 +1102,36 @@ eusilc_dist_group_d$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png)
 
-- `na.prop` indique la manière dont les éventuels `NA` sont traités dans
-  les variables introduites dans `prop_exp`. Si l’argument prend la
-  valeur `"rm"`, tous les `NA` présents dans au moins une des variable
-  faisant partie de `prop_exp` sont exclus avant de procéder aux
-  calculs. De cette manière, la proportion est calculée uniquement sur
-  les observations “valides”. Dans ce cas, pour des raisons évidentes,
-  il n’est pas possible d’utiliser la fonction
-  [`is.na()`](https://rdrr.io/r/base/NA.html) dans `prop_exp` (on ne
-  peut pas calculer la proportion de personnes dont le statut
-  professionnel est `NA` si on a supprimé les `NA`). Si l’argument prend
-  la valeur `"include"`, les `NA` ne sont pas retirés avant de procéder
-  aux calculs et la proportion est calculée sur l’ensemble des
-  observations, `NA` compris. Cela peut être utile quand les `NA`
-  n’indiquent pas une valeur manquante mais une situation spécifique.
-  Par exemple, dans une variable mesurant les points obtenu par des
-  étudiants à un examen, le `NA` peut indiquer que l’étudiant était
-  absent ; on peut donc vouloir calculer la proportion d’étudiants ayant
-  au moins 12/20 en conservant les absents au dénominateur, ce qui est
-  possible avec `na.prop = "include"`. Par défaut, `na.prop` prend la
-  valeur `"rm"`. Précisons que pour
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  et ses alias
-  [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  et
-  [`median_group()`](https://jgires.github.io/fonctionr/reference/central_group.md),
-  il n’y a pas d’argument permettant de choisir le traitement des `NA`
-  dans `quanti_exp`. Les observations comprenant au moins un `NA` dans
-  une variable indiquée dans `quanti_exp` sont automatiquement exclues
-  des calculs, car il n’y a pas d’autre possibilité qui soit pertinente.
+-   `na.prop` indique la manière dont les éventuels `NA` sont traités
+    dans les variables introduites dans `prop_exp`. Si l’argument prend
+    la valeur `"rm"`, tous les `NA` présents dans au moins une des
+    variable faisant partie de `prop_exp` sont exclus avant de procéder
+    aux calculs. De cette manière, la proportion est calculée uniquement
+    sur les observations “valides”. Dans ce cas, pour des raisons
+    évidentes, il n’est pas possible d’utiliser la fonction
+    [`is.na()`](https://rdrr.io/r/base/NA.html) dans `prop_exp` (on ne
+    peut pas calculer la proportion de personnes dont le statut
+    professionnel est `NA` si on a supprimé les `NA`). Si l’argument
+    prend la valeur `"include"`, les `NA` ne sont pas retirés avant de
+    procéder aux calculs et la proportion est calculée sur l’ensemble
+    des observations, `NA` compris. Cela peut être utile quand les `NA`
+    n’indiquent pas une valeur manquante mais une situation spécifique.
+    Par exemple, dans une variable mesurant les points obtenu par des
+    étudiants à un examen, le `NA` peut indiquer que l’étudiant était
+    absent ; on peut donc vouloir calculer la proportion d’étudiants
+    ayant au moins 12/20 en conservant les absents au dénominateur, ce
+    qui est possible avec `na.prop = "include"`. Par défaut, `na.prop`
+    prend la valeur `"rm"`. Précisons que pour
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    et ses alias
+    [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    et
+    [`median_group()`](https://jgires.github.io/fonctionr/reference/central_group.md),
+    il n’y a pas d’argument permettant de choisir le traitement des `NA`
+    dans `quanti_exp`. Les observations comprenant au moins un `NA` dans
+    une variable indiquée dans `quanti_exp` sont automatiquement exclues
+    des calculs, car il n’y a pas d’autre possibilité qui soit
+    pertinente.
 
 Les deux graphiques ci-dessous comparent la part de travailleurs selon
 le sexe en excluant ou en incluant les `NA`. Les taux du second
@@ -1154,20 +1165,20 @@ eusilc_prop_NA_excl$graph | eusilc_prop_NA_incl$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-48-1.png)
 
-- `na.vars` indique la manière dont les `NA` doivent être traités dans
-  les différentes variables de
-  [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md).
-  Si l’argument prend la valeur `"rm"`, les `NA` sont exclus séparément
-  pour chaque variable. Il en résulte que l’échantillon ne sera pas
-  toujours le même pour chacune des variables calculées, mais on
-  conserve un maximum d’observations. Si l’argument prend la valeur
-  `"rm.all"`, les observations qui comprennent au moins un `NA` dans
-  n’importe quelle des variables de `list_vars` sont exclues. Cette
-  manière de procéder exclut plus d’observations mais permet d’avoir un
-  échantillon identique pour toutes les variables. Par défaut, `na.vars`
-  prend la valeur `"rm"`.
+-   `na.vars` indique la manière dont les `NA` doivent être traités dans
+    les différentes variables de
+    [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md).
+    Si l’argument prend la valeur `"rm"`, les `NA` sont exclus
+    séparément pour chaque variable. Il en résulte que l’échantillon ne
+    sera pas toujours le même pour chacune des variables calculées, mais
+    on conserve un maximum d’observations. Si l’argument prend la valeur
+    `"rm.all"`, les observations qui comprennent au moins un `NA` dans
+    n’importe quelle des variables de `list_vars` sont exclues. Cette
+    manière de procéder exclut plus d’observations mais permet d’avoir
+    un échantillon identique pour toutes les variables. Par défaut,
+    `na.vars` prend la valeur `"rm"`.
 
 ### Les arguments esthétiques
 
@@ -1180,31 +1191,32 @@ obligatoire.
 
 #### L’esthétique de base
 
-- `reorder` est un argument qui, en prenant la valeur `TRUE`, permet de
-  réordonner les catégories selon leur valeur décroissante. Si
-  `reorder = FALSE`, les catégories ne sont pas réordonnées et c’est
-  l’ordre des *levels* de la variable qui est utilisé si c’est un
-  facteur, ou l’ordre alphabétique si c’est une variable string. La
-  catégorie `NA` – quand elle existe (par exemple avec
-  `na.rm.group = FALSE`) – et la catégorie “Total” ne sont jamais
-  réordonnées et sont toujours positionnées dans le bas du graphique. En
-  cas de facettes, les catégories sont réordonnées sur base de chaque
-  catégorie médiane. Par exemple, si l’on utilise des facettes dans
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
-  la fonction identifie, pour chaque groupe, quelle est la proportion
-  médiane par groupe et puis elle va ordonner les groupes sur bases de
-  ces médianes. Par défaut, `reorder` prend la valeur de `FALSE`.
-  `reorder` n’est pas disponible dans
-  [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
-  et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  ainsi que ses alias
-  ([`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  et
-  [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)),
-  car il y a plusieurs proportions ou indicateurs et il est difficile de
-  choisir sur laquelle ou lequel réordonner.
+-   `reorder` est un argument qui, en prenant la valeur `TRUE`, permet
+    de réordonner les catégories selon leur valeur décroissante. Si
+    `reorder = FALSE`, les catégories ne sont pas réordonnées et c’est
+    l’ordre des *levels* de la variable qui est utilisé si c’est un
+    facteur, ou l’ordre alphabétique si c’est une variable string. La
+    catégorie `NA` – quand elle existe (par exemple avec
+    `na.rm.group = FALSE`) – et la catégorie “Total” ne sont jamais
+    réordonnées et sont toujours positionnées dans le bas du graphique.
+    En cas de facettes, les catégories sont réordonnées sur base de
+    chaque catégorie médiane. Par exemple, si l’on utilise des facettes
+    dans
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
+    la fonction identifie, pour chaque groupe, quelle est la proportion
+    médiane par groupe et puis elle va ordonner les groupes sur bases de
+    ces médianes. Par défaut, `reorder` prend la valeur de `FALSE`.
+    `reorder` n’est pas disponible dans
+    [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
+    et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    ainsi que ses alias
+    ([`many_prop_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    [`many_mean_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    et
+    [`many_median_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)),
+    car il y a plusieurs proportions ou indicateurs et il est difficile
+    de choisir sur laquelle ou lequel réordonner.
 
 Dans l’exemple ci-dessous, les revenus moyens des statuts
 socio-économiques sont réordonnés. Comme il y a des facettes, c’est le
@@ -1234,14 +1246,14 @@ eusilc_mean_reorder$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-50-1.png)
 
-- `position` est un argument qui ne se trouve uniquement dans
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  et qui peut prendre les valeurs de `"dodge"` et de `"stack"`. Avec
-  `"dodge"`, les barres ne sont pas empilées. Avec `"stack"`, les barres
-  sont empilées dans chaque groupe. Cette option peut avoir un intérêt
-  quand les variables ont vocation à être additionnées, par exemple avec
-  des revenus selon différentes sources qui peuvent former un revenu
-  total. `"dodge"` est la valeur par défaut.
+-   `position` est un argument qui ne se trouve uniquement dans
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    et qui peut prendre les valeurs de `"dodge"` et de `"stack"`. Avec
+    `"dodge"`, les barres ne sont pas empilées. Avec `"stack"`, les
+    barres sont empilées dans chaque groupe. Cette option peut avoir un
+    intérêt quand les variables ont vocation à être additionnées, par
+    exemple avec des revenus selon différentes sources qui peuvent
+    former un revenu total. `"dodge"` est la valeur par défaut.
 
 Dans l’exemple ci-dessous, il est pertinent d’empiler les barres
 indiquant les différents revenus pour visualiser le revenu total.
@@ -1279,15 +1291,15 @@ eusilc_many_mean_group_2a$graph | eusilc_many_mean_group_2b$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png)
 
-- `show_ci`, `show_n`, `show_value` et `show_lab` permettent de montrer
-  ou cacher différents éléments sur le graphique avec les valeurs `TRUE`
-  et `FALSE` :
+-   `show_ci`, `show_n`, `show_value` et `show_lab` permettent de
+    montrer ou cacher différents éléments sur le graphique avec les
+    valeurs `TRUE` et `FALSE` :
 
-  - l’intervalle de confiance (`show_ci`),
-  - le nombre de personnes dans l’échantillon (`show_n`),
-  - l’estimation de l’indicateur (`show_value`)
-  - les titres et sous-titres du graphiques, des axes et de la légende
-    (`show_lab`).
+    -   l’intervalle de confiance (`show_ci`),
+    -   le nombre de personnes dans l’échantillon (`show_n`),
+    -   l’estimation de l’indicateur (`show_value`)
+    -   les titres et sous-titres du graphiques, des axes et de la
+        légende (`show_lab`).
 
 Faute de représentation graphique adéquate, `show_ci` n’est pas un
 argument de la fonction
@@ -1303,11 +1315,11 @@ des raisons de lisibilité. Pour
 [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md) l’argument
 `show_n` indique les effectifs de l’échantillon pour chaque quantile.
 
-- `total_name` indique le nom qui doit être mentionné à côté du résultat
-  du total dans le graphique. Par défaut, quand `lang = "fr"` (voir
-  ci-dessous), il s’agit de “Total”, mais l’utilisateur peut indiquer
-  autre chose de plus spécifique, par exemple “Belgique”, “Population
-  active totale”, etc.
+-   `total_name` indique le nom qui doit être mentionné à côté du
+    résultat du total dans le graphique. Par défaut, quand `lang = "fr"`
+    (voir ci-dessous), il s’agit de “Total”, mais l’utilisateur peut
+    indiquer autre chose de plus spécifique, par exemple “Belgique”,
+    “Population active totale”, etc.
 
 Dans l’exemple ci-dessous, on ne montre plus les intervalles de
 confiances, les valeurs de l’indicateur et les labels des titres, par
@@ -1337,43 +1349,43 @@ eusilc_prop$graph
 Certains arguments sont spécifiques aux fonctions `distrib_continous()`
 et `distrib_group_continous()` :
 
-- `height` indique la hauteur des courbes de densité dans
-  [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
-  Une valeur plus élevée mènent à des courbes plus hautes qui peuvent
-  éventuellement se chevaucher. La valeur par défaut est 0.8.
+-   `height` indique la hauteur des courbes de densité dans
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
+    Une valeur plus élevée mènent à des courbes plus hautes qui peuvent
+    éventuellement se chevaucher. La valeur par défaut est 0.8.
 
-- `limits` indique les limites de l’axe des abscisses du graphique . Par
-  défaut, il n’y a pas de limites, ce qui revient à montrer sur le
-  graphique la totalité de la distribution. Cependant, cela peut poser
-  problème pour des distributions asymétriques avec quelques valeurs
-  extrêmes, par exemple pour les variables de revenu. `limits` permet de
-  zoomer sur la partie du graphique la plus intéressante qui reprend la
-  majorité des observations. Précisons qu’il ne s’agit pas d’un filtre,
-  mais d’un zoom : les déciles, valeurs centrales et moustaches sont
-  toujours calculées sur l’ensemble de la distribution. En cas
-  d’utilisation de zoom important, il est conseillé d’utiliser une
-  résolution plus élevée. A noter que lorsque `show_n = TRUE` pour
-  `distrib_continous()`, on n’indique pas les effectifs pour les
-  quantiles qui ne sont pas complètement représentés quand on utilise
-  l’argument `limits`.
+-   `limits` indique les limites de l’axe des abscisses du graphique .
+    Par défaut, il n’y a pas de limites, ce qui revient à montrer sur le
+    graphique la totalité de la distribution. Cependant, cela peut poser
+    problème pour des distributions asymétriques avec quelques valeurs
+    extrêmes, par exemple pour les variables de revenu. `limits` permet
+    de zoomer sur la partie du graphique la plus intéressante qui
+    reprend la majorité des observations. Précisons qu’il ne s’agit pas
+    d’un filtre, mais d’un zoom : les déciles, valeurs centrales et
+    moustaches sont toujours calculées sur l’ensemble de la
+    distribution. En cas d’utilisation de zoom important, il est
+    conseillé d’utiliser une résolution plus élevée. A noter que lorsque
+    `show_n = TRUE` pour `distrib_continous()`, on n’indique pas les
+    effectifs pour les quantiles qui ne sont pas complètement
+    représentés quand on utilise l’argument `limits`.
 
-- D’autres arguments de type `show_*` sont spécifiques à ces deux
-  fonctions. C’est le cas de `show_mid_line`, `show_ci_lines`,
-  `show_ci_area`, `show_quant_lines` qui se retrouvent dans les deux
-  fonctions de distribution continue et `show_mid_point`,
-  `show_ci_errorbar` et `show_moustache` qui sont spécifiques à
-  [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
+-   D’autres arguments de type `show_*` sont spécifiques à ces deux
+    fonctions. C’est le cas de `show_mid_line`, `show_ci_lines`,
+    `show_ci_area`, `show_quant_lines` qui se retrouvent dans les deux
+    fonctions de distribution continue et `show_mid_point`,
+    `show_ci_errorbar` et `show_moustache` qui sont spécifiques à
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md).
 
-  - `show_mid_point` et `show_mid_line` permettent de montrer la valeur
-    centrale, médiane ou moyenne, sous la forme d’un point ou d’une
-    ligne.
-  - `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent de
-    montrer l’intervalle de confiance de la valeur centrale sous la
-    forme d’une barre d’erreur, de lignes en pointillé, ou d’une aire
-    colorée.
-  - `show_quant_lines` permet de tracer des lignes pour les valeurs des
-    quantiles sur le graphique.
-  - `show_moustache` permet de montrer la boite à moustache.
+    -   `show_mid_point` et `show_mid_line` permettent de montrer la
+        valeur centrale, médiane ou moyenne, sous la forme d’un point ou
+        d’une ligne.
+    -   `show_ci_errorbar`, `show_ci_lines` et `show_ci_area` permettent
+        de montrer l’intervalle de confiance de la valeur centrale sous
+        la forme d’une barre d’erreur, de lignes en pointillé, ou d’une
+        aire colorée.
+    -   `show_quant_lines` permet de tracer des lignes pour les valeurs
+        des quantiles sur le graphique.
+    -   `show_moustache` permet de montrer la boite à moustache.
 
 Par défaut,
 [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
@@ -1441,61 +1453,62 @@ laissant aucun espace entre elles). La valeur par défaut est de `0.9`.
 
 Les couleurs des barres sont indiquées dans l’argument `pal`.
 
-- Dans les graphiques monochrome, `pal` peut prendre la valeur d’une
-  couleur de base de R ou d’un code couleur hexadécimal. C’est le cas
-  pour
-  [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md),
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il n’y a pas de `group.fill`.
+-   Dans les graphiques monochrome, `pal` peut prendre la valeur d’une
+    couleur de base de R ou d’un code couleur hexadécimal. C’est le cas
+    pour
+    [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md),
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il n’y a pas de `group.fill`.
 
-- Dans les graphiques avec une palette de couleurs différentes, `pal`
-  doit prendre le nom d’une palette des packages `MetBrewer`,
-  `MoMAColors` ou `PrettyCols` (sauf pour la distribution d’une variable
-  quantitative, voir ci-dessous). L’argument `direction` permet
-  d’inverser le sens de la palette, en remplaçant le `1`, par défaut,
-  par `-1` pour avoir le sens opposé. C’est le cas de
-  [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  et de
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il y a un `group.fill`.
+-   Dans les graphiques avec une palette de couleurs différentes, `pal`
+    doit prendre le nom d’une palette des packages `MetBrewer`,
+    `MoMAColors` ou `PrettyCols` (sauf pour la distribution d’une
+    variable quantitative, voir ci-dessous). L’argument `direction`
+    permet d’inverser le sens de la palette, en remplaçant le `1`, par
+    défaut, par `-1` pour avoir le sens opposé. C’est le cas de
+    [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    et de
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il y a un `group.fill`.
 
-- Dans
-  [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et ses alias, on peut indiquer dans `pal` soit une couleur unique,
-  soit une palette des packages `MetBrewer`, `MoMAColors` ou
-  `PrettyCols`. Cela permet de choisir de produire un graphique
-  monochrome, ou un graphique qui différencie chromatiquement chaque
-  variable.
+-   Dans
+    [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et ses alias, on peut indiquer dans `pal` soit une couleur unique,
+    soit une palette des packages `MetBrewer`, `MoMAColors` ou
+    `PrettyCols`. Cela permet de choisir de produire un graphique
+    monochrome, ou un graphique qui différencie chromatiquement chaque
+    variable.
 
-- Les couleurs des `NA` et des totaux, quand ils sont présents, ne sont
-  pas modifiables directement par l’utilisateur. La modalité `NA` est
-  toujours grise (`grey`). Le total est coloré de deux manière selon
-  qu’il existe un seul total (dans les graphiques monochromes comme
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il n’y a pas d’argument `group.fill`) ou qu’il existe des totaux
-  différents pour chaque modalité ou variable (dans les graphiques avec
-  palette de couleur, comme
-  [`distrib_group_d()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
-  de
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il y a un argument `group.fill`). Dans le premier cas, la
-  couleur est gris foncé (`grey40`). Dans le second cas, chaque total a
-  une bordure de la couleur de sa modalité ou variable et a une couleur
-  de remplissage identique mais plus claire.
+-   Les couleurs des `NA` et des totaux, quand ils sont présents, ne
+    sont pas modifiables directement par l’utilisateur. La modalité `NA`
+    est toujours grise (`grey`). Le total est coloré de deux manière
+    selon qu’il existe un seul total (dans les graphiques monochromes
+    comme
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il n’y a pas d’argument `group.fill`) ou qu’il existe des
+    totaux différents pour chaque modalité ou variable (dans les
+    graphiques avec palette de couleur, comme
+    [`distrib_group_d()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md),
+    de
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il y a un argument `group.fill`). Dans le premier cas, la
+    couleur est gris foncé (`grey40`). Dans le second cas, chaque total
+    a une bordure de la couleur de sa modalité ou variable et a une
+    couleur de remplissage identique mais plus claire.
 
-- Par défaut, des couleurs ou des palettes de couleurs différentes ont
-  été choisies pour chacune des fonctions, y compris les alias, pour
-  éviter une confusion entre graphiques différents.
+-   Par défaut, des couleurs ou des palettes de couleurs différentes ont
+    été choisies pour chacune des fonctions, y compris les alias, pour
+    éviter une confusion entre graphiques différents.
 
 Dans l’exemple ci-dessous, on compare deux graphiques issus de
 [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
@@ -1540,43 +1553,44 @@ eusilc_prop_sub_group$graph | eusilc_prop_no_sub_group$graph
 
 ![](fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png)
 
-- Dans
-  [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
-  et
-  [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md),
-  `pal` peut soit prendre la valeur d’une couleur, soit un vecteur
-  reprenant plusieurs couleurs. Dans le cas d’une seule couleur, les
-  graphiques seront monochrome, dans le cas de plusieurs couleurs, une
-  palette de couleur est créée en passant par les différentes couleurs
-  indiquées pour colorer les différents quantiles, la première couleur
-  indiquant la coloration des premiers et derniers quantiles, et la
-  dernière couleur indiquant la coloration du quantile central[⁶](#fn6).
-  Précisons que le vecteur de `pal` doit être un vecteur de couleur de R
-  ou de codes hexadécimaux, mais pas une des palettes des packages
-  `MetBrewer`, `MoMAColors` ou `PrettyCols` utilisées dans `pal` pour
-  les autres fonctions. Par défaut
-  [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
-  utilise un dégradé de bleu pour les quantiles et
-  [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md)
-  colorie les courbes de densité en gris, de manière à ne pas surcharger
-  le graphique avec les quantiles. Ces deux fonction ont aussi
-  l’argument `color` qui permet de définir la couleur de la ligne
-  supérieure de la courbe de densité. Par défaut cette ligne n’est pas
-  affichée.
+-   Dans
+    [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
+    et
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md),
+    `pal` peut soit prendre la valeur d’une couleur, soit un vecteur
+    reprenant plusieurs couleurs. Dans le cas d’une seule couleur, les
+    graphiques seront monochrome, dans le cas de plusieurs couleurs, une
+    palette de couleur est créée en passant par les différentes couleurs
+    indiquées pour colorer les différents quantiles, la première couleur
+    indiquant la coloration des premiers et derniers quantiles, et la
+    dernière couleur indiquant la coloration du quantile
+    central[⁶](#fn6). Précisons que le vecteur de `pal` doit être un
+    vecteur de couleur de R ou de codes hexadécimaux, mais pas une des
+    palettes des packages `MetBrewer`, `MoMAColors` ou `PrettyCols`
+    utilisées dans `pal` pour les autres fonctions. Par défaut
+    [`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
+    utilise un dégradé de bleu pour les quantiles et
+    [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md)
+    colorie les courbes de densité en gris, de manière à ne pas
+    surcharger le graphique avec les quantiles. Ces deux fonction ont
+    aussi l’argument `color` qui permet de définir la couleur de la
+    ligne supérieure de la courbe de densité. Par défaut cette ligne
+    n’est pas affichée.
 
-- [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md)
-  comprend aussi l’argument `pal_moustache` qui détermine les couleurs
-  de la moustache et `alpha` qui détermine la transparence de la couleur
-  de la densité. `pal_moustache` fonctionne comme `pal` et peut
-  comprendre une couleur unie ou un vecteur de couleur. Mais
-  logiquement, il n’est pas pertinent de représenter une moustache
-  monochrome. Comme pour pour `pal`, il n’est pas nécessaire de définir
-  chaque teinte de couleur individuellement, puisque la fonction produit
-  une palette de couleur comprenant tous les dégradés nécessaires.
-  `alpha` peut prendre une valeur allant de 0 (couleur totalement
-  transparente et donc invisible) à 1 (couleur sans transparence). Avoir
-  un certain degré de transparence est particulièrement utile si les
-  différentes courbes se superposent (quand `height` est élevé).
+-   [`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md)
+    comprend aussi l’argument `pal_moustache` qui détermine les couleurs
+    de la moustache et `alpha` qui détermine la transparence de la
+    couleur de la densité. `pal_moustache` fonctionne comme `pal` et
+    peut comprendre une couleur unie ou un vecteur de couleur. Mais
+    logiquement, il n’est pas pertinent de représenter une moustache
+    monochrome. Comme pour pour `pal`, il n’est pas nécessaire de
+    définir chaque teinte de couleur individuellement, puisque la
+    fonction produit une palette de couleur comprenant tous les dégradés
+    nécessaires. `alpha` peut prendre une valeur allant de 0 (couleur
+    totalement transparente et donc invisible) à 1 (couleur sans
+    transparence). Avoir un certain degré de transparence est
+    particulièrement utile si les différentes courbes se superposent
+    (quand `height` est élevé).
 
 Dans l’exemple ci-dessous, on utilise trois couleurs pour construire la
 palette qui va colorier l’aire de la densité et on trace la courbe de
@@ -1607,32 +1621,32 @@ L’esthétique des chiffres concernent la manière dont l’estimation de
 l’indicateur est affichée sur le graphique. Ainsi, ces arguments n’ont
 une utilité que si `show_value = TRUE`.
 
-- `scale` est un argument qui n’est utilisé que dans les graphique
-  exprimant des proportion. Il indique le dénominateur par lequel il
-  faut interpréter le chiffre. Par défaut, `scale = 100` pour
-  interpréter les chiffres mentionnés en pourcentage. On peut donner par
-  exemple une valeur de `1000` pour interpréter les chiffres en pour
-  mille ou une valeur de `1` pour interpréter les chiffres comme de
-  simple proportions.
+-   `scale` est un argument qui n’est utilisé que dans les graphique
+    exprimant des proportion. Il indique le dénominateur par lequel il
+    faut interpréter le chiffre. Par défaut, `scale = 100` pour
+    interpréter les chiffres mentionnés en pourcentage. On peut donner
+    par exemple une valeur de `1000` pour interpréter les chiffres en
+    pour mille ou une valeur de `1` pour interpréter les chiffres comme
+    de simple proportions.
 
-- `digits` indique le nombre de décimales qui doivent être affichées
-  pour les valeurs sur le graphique. Par défaut, `digit = 0`, ce qui
-  conduit à ne pas afficher de décimales.
+-   `digits` indique le nombre de décimales qui doivent être affichées
+    pour les valeurs sur le graphique. Par défaut, `digit = 0`, ce qui
+    conduit à ne pas afficher de décimales.
 
-- `unit` indique l’unité à indiquer sur le graphique. Pour
-  [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md),
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
-  [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et `many_prop_group(`), par défaut `unit = "%"`. Pour les autres
-  fonction, par défaut `unit = NULL`, c’est-à-dire une absence d’unité
-  indiquée sur le graphique. N’importe quel caractère ou chaîne de
-  caractère peut être utilisée : `"€"`, `"m²"`, etc.
+-   `unit` indique l’unité à indiquer sur le graphique. Pour
+    [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md),
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md),
+    [`many_prop()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et `many_prop_group(`), par défaut `unit = "%"`. Pour les autres
+    fonction, par défaut `unit = NULL`, c’est-à-dire une absence d’unité
+    indiquée sur le graphique. N’importe quel caractère ou chaîne de
+    caractère peut être utilisée : `"€"`, `"m²"`, etc.
 
-- `dec` indique le caractère qui doit être utilisé pour marquer la
-  décimale dans les chiffes. Cet argument n’est utile que quand `digits`
-  est supérieur à 0. Par défaut, `dec = ","`, parce que la virgule est
-  le caractère le plus utilisé pour marquer la décimale dans le monde
-  francophone.
+-   `dec` indique le caractère qui doit être utilisé pour marquer la
+    décimale dans les chiffes. Cet argument n’est utile que quand
+    `digits` est supérieur à 0. Par défaut, `dec = ","`, parce que la
+    virgule est le caractère le plus utilisé pour marquer la décimale
+    dans le monde francophone.
 
 Dans l’exemple ci-dessous, on compare la proportion de travailleurs par
 région, mais en l’exprimant en pour mille et non en pour cent, en
@@ -1663,45 +1677,45 @@ eusilc_prop$graph
 
 #### L’esthétique des lettres
 
-- `font` indique la police qui est utilisée pour l’ensemble du texte
-  dans le graphique. Plusieurs polices sont directement incluses dans
-  `fonctionr` afin qu’elles soient utilisables sur tous les systèmes.
-  Pour prendre connaissance des polices disponibles, voir
-  [`load_and_active_fonts()`](https://jgires.github.io/fonctionr/reference/load_and_active_fonts.md).
+-   `font` indique la police qui est utilisée pour l’ensemble du texte
+    dans le graphique. Plusieurs polices sont directement incluses dans
+    `fonctionr` afin qu’elles soient utilisables sur tous les systèmes.
+    Pour prendre connaissance des polices disponibles, voir
+    [`load_and_active_fonts()`](https://jgires.github.io/fonctionr/reference/load_and_active_fonts.md).
 
-- `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères
-  avant d’aller à la ligne, pour respectivement les différent labels de
-  l’axe des ordonnées et les différents labels de la légende. Ces
-  valeurs sont par défaut de 25 caractères. `wrap_width_leg` n’est
-  présent que pour les graphiques ayant une légende :
-  [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  et ses alias et
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il y a un argument `group.fill`). Précisons aussi que le `_y`
-  renvoie à l’axe des y tel qu’il est situé sur le graphique, après la
-  transformation
-  [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
-  qui a lieu dans les fonctions. Ainsi, il s’agit souvent des groupes,
-  de la variable qualitative pour
-  [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md)
-  ou de la liste des variables pour
-  [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
-  et `many_val_group(`) et leurs alias.
+-   `wrap_width_y` et `wrap_width_leg` indiquent le nombre de caractères
+    avant d’aller à la ligne, pour respectivement les différent labels
+    de l’axe des ordonnées et les différents labels de la légende. Ces
+    valeurs sont par défaut de 25 caractères. `wrap_width_leg` n’est
+    présent que pour les graphiques ayant une légende :
+    [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md),
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    et ses alias et
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il y a un argument `group.fill`). Précisons aussi que le `_y`
+    renvoie à l’axe des y tel qu’il est situé sur le graphique, après la
+    transformation
+    [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+    qui a lieu dans les fonctions. Ainsi, il s’agit souvent des groupes,
+    de la variable qualitative pour
+    [`distrib_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_discrete.md)
+    ou de la liste des variables pour
+    [`many_val()`](https://jgires.github.io/fonctionr/reference/many_val.md)
+    et `many_val_group(`) et leurs alias.
 
-- `legend_ncol` indique le nombre maximum de colonnes dans la légende.
-  Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans
-  la légende s’ajuste au nombre maximum de colonnes. Comme
-  `wrap_width_leg` , `legend_ncol` n’est présent que pour les graphiques
-  ayant une légende : `distrib_group_discrete(`) et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  et ses alias et
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il y a un argument `group.fill`.
+-   `legend_ncol` indique le nombre maximum de colonnes dans la légende.
+    Par défaut, il y a quatre colonnes maximum. Le nombre de lignes dans
+    la légende s’ajuste au nombre maximum de colonnes. Comme
+    `wrap_width_leg` , `legend_ncol` n’est présent que pour les
+    graphiques ayant une légende : `distrib_group_discrete(`) et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    et ses alias et
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il y a un argument `group.fill`.
 
 #### Les labels
 
@@ -1709,59 +1723,60 @@ Les arguments de label ne sont utilisés que si `show_lab = TRUE`, qui
 est la valeur par défaut. Si `show_lab = FALSE`, aucun des labels
 ci-dessous n’est indiqué.
 
-- `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption`
-  indiquent les textes à reprendre comme titre du graphique, sous-titre
-  du graphique, titre de l’axe des abscisses, titre de l’axe des
-  ordonnées, titre de la légende et de *caption* (la petite légende en
-  bas à droite du graphique). Précisons que `xlab` et `ylab` font
-  référence aux axes tels qu’ils sont situés sur le graphique,
-  c’est-à-dire après la transformation
-  [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
-  qui a lieu dans les fonctions. `legend_lab` n’est présent que pour les
-  graphiques ayant une légende :
-  [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
-  et
-  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
-  ainsi que ses alias et
-  [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
-  et
-  [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
-  quand il y a un argument `group.fill`. Le *caption* étant souvent déjà
-  utilisé pour indiquer la p valeur du test statistique, l’argument
-  `caption` ajoute un texte en dessous de la mention de la p valeur du
-  test statistique.
+-   `title`, `subtitle`, `xlab`, `ylab`, `legend_lab` et `caption`
+    indiquent les textes à reprendre comme titre du graphique,
+    sous-titre du graphique, titre de l’axe des abscisses, titre de
+    l’axe des ordonnées, titre de la légende et de *caption* (la petite
+    légende en bas à droite du graphique). Précisons que `xlab` et
+    `ylab` font référence aux axes tels qu’ils sont situés sur le
+    graphique, c’est-à-dire après la transformation
+    [`coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+    qui a lieu dans les fonctions. `legend_lab` n’est présent que pour
+    les graphiques ayant une légende :
+    [`distrib_group_discrete()`](https://jgires.github.io/fonctionr/reference/distrib_group_discrete.md)
+    et
+    [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+    ainsi que ses alias et
+    [`prop_group()`](https://jgires.github.io/fonctionr/reference/prop_group.md)
+    et
+    [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
+    quand il y a un argument `group.fill`. Le *caption* étant souvent
+    déjà utilisé pour indiquer la p valeur du test statistique,
+    l’argument `caption` ajoute un texte en dessous de la mention de la
+    p valeur du test statistique.
 
-- Dans le cas où les arguments de label ne sont pas renseignés par
-  l’utilisateur, il n’y a pas de titre, pas de sous-titre et pas de
-  *caption* (autre que la p valeur du test statistique). Par contre,
-  `xlab`, `ylab` et, pour les graphiques avec légende, `legend_lab`
-  indiquent par défaut les noms de la variable ou de l’expression qui
-  est, pour `xlab`, précédé d’une précision sur la nature du calcul :
-  “Moyenne : …”, “Distribution : …”
+-   Dans le cas où les arguments de label ne sont pas renseignés par
+    l’utilisateur, il n’y a pas de titre, pas de sous-titre et pas de
+    *caption* (autre que la p valeur du test statistique). Par contre,
+    `xlab`, `ylab` et, pour les graphiques avec légende, `legend_lab`
+    indiquent par défaut les noms de la variable ou de l’expression qui
+    est, pour `xlab`, précédé d’une précision sur la nature du calcul :
+    “Moyenne : …”, “Distribution : …”
 
-- Il est possible d’indiquer certains label et d’autres non, par exemple
-  si l’on souhaite un titre mais pas de sous-titre. Il suffit de ne
-  compléter que les arguments de labels que l’on souhaite voir écrits
-  sur le graphique. Cependant, pour `xlab`, `ylab` et `legend_lab`, le
-  label par défaut, basé sur le nom des variables, est alors écrit sur
-  le graphique. Si l’on souhaite avoir un label vide, il faut indiquer,
-  respectivement, `xlab = ""`, `ylab =""` ou `legend_lab = ""`.
-  L’utilisation de `xlab = NULL`, `ylab = NULL` ou `legend_lab = NULL`
-  conduira à l’écriture du label par défaut.
+-   Il est possible d’indiquer certains label et d’autres non, par
+    exemple si l’on souhaite un titre mais pas de sous-titre. Il suffit
+    de ne compléter que les arguments de labels que l’on souhaite voir
+    écrits sur le graphique. Cependant, pour `xlab`, `ylab` et
+    `legend_lab`, le label par défaut, basé sur le nom des variables,
+    est alors écrit sur le graphique. Si l’on souhaite avoir un label
+    vide, il faut indiquer, respectivement, `xlab = ""`, `ylab =""` ou
+    `legend_lab = ""`. L’utilisation de `xlab = NULL`, `ylab = NULL` ou
+    `legend_lab = NULL` conduira à l’écriture du label par défaut.
 
-- On peut aussi mentionner l’argument `lists_vars_lab` que l’on a déjà
-  expliqué plus haut et qui peut être aussi considéré comme un label.
+-   On peut aussi mentionner l’argument `lists_vars_lab` que l’on a déjà
+    expliqué plus haut et qui peut être aussi considéré comme un label.
 
-- L’argument `lang` permet de déterminer la langue des textes
-  automatiques. Trois valeurs sont possibles : `lang = "fr"` pour le
-  français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour
-  l’anglais. Par défaut, c’est le français qui est utilisé.
+-   L’argument `lang` permet de déterminer la langue des textes
+    automatiques. Trois valeurs sont possibles : `lang = "fr"` pour le
+    français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour
+    l’anglais. Par défaut, c’est le français qui est utilisé.
 
-- L’argument `theme`, qui est un argument d’esthétique graphique plutôt
-  que de label, permet de modifier le thème du graphique. Le thème de
-  base (`theme = NULL`) est celui qu’on retrouve dans tous les
-  graphiques dans ce document, mais le thème IWEPS (`theme = "IWEPS"`)
-  permet d’ajouter un axe gradué pour les ordonnées.
+-   L’argument `theme`, qui est un argument d’esthétique graphique
+    plutôt que de label, permet de modifier le thème du graphique. Le
+    thème de base (`theme = NULL`) est celui qu’on retrouve dans tous
+    les graphiques dans ce document, mais le thème IWEPS
+    (`theme = "IWEPS"`) permet d’ajouter un axe gradué pour les
+    ordonnées.
 
 Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a mis
 à la ligne les labels de l’ordonnée à partir de 10 caractères et ceux de
