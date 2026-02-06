@@ -1640,11 +1640,13 @@ eusilc_prop_sub_group$graph | eusilc_prop_no_sub_group$graph
 
 Dans les graphique de densité
 ([`distrib_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_continuous.md)
-et `distrib_group_continuous())`, pour éviter la confusion, ce sont
-d’autres arguments qui sont utilisés pour indiquer les couleurs.
+et
+[`distrib_group_continuous()`](https://jgires.github.io/fonctionr/reference/distrib_group_continuous.md)),
+pour éviter la confusion, ce sont d’autres arguments qui sont utilisés
+pour indiquer les couleurs.
 
 `col_density` colorie la densité (c’est-à-dire l’aire sous la courbe de
-densité. `col_density` peut soit prendre la valeur d’une couleur, soit
+densité). `col_density` peut soit prendre la valeur d’une couleur, soit
 un vecteur reprenant plusieurs couleurs, toujours des couleurs de base
 de R ou de codes couleur hexadécimaux. Dans le cas d’une seule couleur,
 les graphiques seront monochrome, dans le cas de plusieurs couleurs, une
