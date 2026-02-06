@@ -1,7 +1,14 @@
 # prop_group
 
-Function to compare proportions in different groups from complex survey
-data. It produces a table, a graphic and a statistical test.
+Function to compare a proportion among different groups based on complex
+survey data. It produces a list containing a table, including the
+confidence intervals of the indicators, a ready-to-be published ggplot
+graphic and a Chi-Square statistical test (using survey::svychisq).
+Exporting those results to an Excell file is possible. The confidence
+intervals and the statistical test are taking into account the complex
+survey design. In case of facets, the Chi-square test is computed on the
+total proportion between facets (and not within facets). In case of
+second group (group.fill), no Chi-square test is computed.
 
 ## Usage
 
@@ -29,7 +36,8 @@ prop_group(
   digits = 0,
   unit = "%",
   dec = NULL,
-  pal = NULL,
+  col = "deepskyblue3",
+  pal = "Coast",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -46,7 +54,8 @@ prop_group(
   legend_lab = NULL,
   caption = NULL,
   lang = "fr",
-  theme = NULL,
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 ```
@@ -64,7 +73,11 @@ prop_group(
 
 - prop_exp:
 
-  An expression that define the proportion to be computed.
+  An expression defining the proportion to be computed. Notice that if
+  na.prop is "rm" any is.na() is not allowed in this argument. The
+  removal of NA's is done before the computation of the proportion. Thus
+  any function that takes into account NA's (e.g. 'in') will not work as
+  designed in this argument, unless na.prop is set to "include".
 
 - group.fill:
 
@@ -72,11 +85,11 @@ prop_group(
 
 - facet:
 
-  A variable defining the faceting group.
+  A variable defining the faceting groups.
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -84,136 +97,165 @@ prop_group(
 
 - na.rm.group:
 
-  TRUE if you want to remove observations with NA on the group variable
-  or NA on the facet variable. FALSE if you want to create a group with
-  the NA value for the group variable and a facet with the NA value for
-  the facet variable. NA in the variables included in prop_exp are not
-  affected in this argument. All the observation with a NA in the
-  variables included in prop_exp are excluded.
+  TRUE if you want to remove observations with NA on the group and the
+  group.fill variables. FALSE if you want to create a group with the NA
+  values for the group variable and a group.fill with the NA values for
+  the group.fill variable. Default is TRUE.
 
 - na.rm.facet:
 
-  TRUE if you want to remove observations with NA on the group variable
-  or NA on the facet variable. FALSE if you want to create a group with
-  the NA value for the group variable and a facet with the NA value for
-  the facet variable. NA in the variables included in prop_exp are not
-  affected in this argument. All the observation with a NA in the
-  variables included in prop_exp are excluded.
+  TRUE if you want to remove observations with NA on the facet variable.
+  FALSE if you want to create a facet with the NA values for the facet
+  variable. Default is TRUE.
 
 - na.prop:
 
-  "rm" to remove the NA in the variables used in prop_exp before
-  computing the proportions, "include" to compute the proportions with
-  the NA's in the denominators. Default is "rm". When "rm" NA are not
-  allowed in prop_exp.
+  "rm" to remove observations with NA on one of the variables used in
+  prop_exp before computing the proportions, "include" to compute the
+  proportions with the NA's in the denominators. Default is "rm". If
+  na.prop is set to "rm" the function 'is.na()' is not allowed in
+  prop_exp.
 
 - total:
 
-  TRUE if you want to calculate a total, FALSE if you don't. The default
-  is TRUE
+  TRUE if you want to compute a total, FALSE if you don't. The default
+  is TRUE.
 
 - prop_method:
 
-  Type of proportion method to use. See svyciprop in survey package for
-  details. Default is the beta method.
+  Type of proportion method used to compute confidence intervals. See
+  survey::svyciprop() for details. Default is beta method.
 
 - reorder:
 
   TRUE if you want to reorder the groups according to the proportion. NA
   value, in case if na.rm.group = FALSE, is not included in the reorder.
+  In case of facets, the groups are reordered based on each median
+  group. Default is FALSE.
 
 - show_ci:
 
   TRUE if you want to show the error bars on the graphic. FALSE if you
-  do not want to show the error bars.
+  don't want to show the error bars. Default is TRUE.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of individuals in
-  the sample in each group. FALSE if you do not want to show this
-  number. Default is FALSE.
+  TRUE if you want to show on the graphic the number of observations in
+  the sample in each group. FALSE if you don't want to show this number.
+  Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the proportion in each group on the graphic.
-  FALSE if you do not want to show the proportion.
+  TRUE if you want to show the proportions in each group on the graphic.
+  FALSE if you don't want to show the proportion. Default is TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes and legend (in case of a group.fill)
+  labels. FALSE if you don't want to show any labels on axes and legend.
+  Default is TRUE.
 
 - total_name:
 
-  Name of the total shown on the graphic. Default is "Total".
+  Name of the total displayed on the graphic. Default is "Total" in
+  French and in English and "Totaal" in Dutch.
 
 - scale:
 
-  Denominator of the proportion. Default is 100 to interprets numbers as
+  Denominator of the proportions. Default is 100 to interpret numbers as
   percentages.
 
 - digits:
 
-  Numbers of digits showed on the values labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed in the graphic. Default is percent.
+  Unit displayed on the graphic. Default is percent.
 
 - dec:
 
-  Decimal mark shown on the graphic. Depends on lang: "," for fr and nl
-  ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: ","
+  for fr and nl ; "." for en.
+
+- col:
+
+  Color of the bars if there is no group.fill. col must be a R color or
+  an hexadecimal color code. Default is "deepskyblue3". The colors of
+  total and NA group (in case of na.rm.group == FALSE) are always
+  "grey40" and "grey". If there is a group.fill, col has no effect and
+  pal argument should be used instead.
 
 - pal:
 
-  If group.fill is empty, pal must be a vector containing a single color
-  to define the color of the bars. If a variable is specified in
-  group.fill, pal is the color palette used on the graph to
-  differentiate its different modalities. Palettes from fonctionr and
-  the MetBrewer and PrettyCols packages are available. The NA bar, if
-  na.rm.group = FALSE, and the total bar are always in gray.
+  Colors of the bars if there is a group.fill. pal must be vector of R
+  colors or hexadecimal colors or a palette from packages MetBrewer or
+  PrettyCols or a palette from fonctionr. Default is "Coast" from
+  PrettyCols. The color of NA group.fill (in case of na.rm.group ==
+  FALSE) and of the total are always "grey" and "grey40". If there is no
+  group.fill, pal has no effect and col argument should be used instead.
 
 - direction:
 
   Direction of the palette color. Default is 1. The opposite direction
-  is -1.
+  is -1. If there is no group.fill, this argument has no effect.
 
 - desaturate:
 
   Numeric specifying the amount of desaturation where 1 corresponds to
-  complete desaturation, 0 to no desaturation, and values in between to
-  partial desaturation.
+  complete desaturation (no colors, grey layers only), 0 to no
+  desaturation, and values in between to partial desaturation. Default
+  is 0. It affects only the palette (pal, if there is a second group)
+  and not the monocolor (col, if there is no second group). See
+  colorspace::desaturate for details. If desaturate and lighten/darken
+  arguments are used, lighten/darken is applied in a second time (i.e.
+  on the color transformed by desaturate).
 
 - lighten:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  darkening.
+  darkening. Value shoud be ranged between -1 (black) and 1 (white).
+  Default is 0. It doesn't affect the color of NAs (in case of
+  na.rm.group = FALSE). It affects only the palette (pal, if there is a
+  second group) and not the monocolor (col, if there is no second
+  group). See colorspace::lighten for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - darken:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  lightening.
+  lightening. Value shoud be ranged between -1 (white) and 1 (black).
+  Default is 0. It doesn't affect the color of NAs (in case of
+  na.rm.group = FALSE). It affects only the palette (pal, if there is a
+  second group) and not the monocolor (col, if there is no second
+  group). See colorspace::darken for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - dodge:
 
-  Width of the bar, between 0 and 1.
+  Width of the bars. Default is 0.9 to let a small space between bars. A
+  value of 1 leads to no space betweens bars. Values higher than 1 are
+  not advised because they cause an overlaping of the bars. dodge
+  doesn't affect the spaces between second groups (group.fill). There is
+  always no space between second groups.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line. Applies to the labels
-  of the groups. Default is 25.
+  Number of characters before going to the line for the labels of the
+  groups. Default is 25.
 
 - wrap_width_leg:
 
   Number of characters before going to the line for the labels of the
-  categories of group.fill. Default is 25.
+  group.fill. Default is 25.
 
 - legend_ncol:
 
@@ -231,41 +273,56 @@ prop_group(
 
   X label on the graphic. As coord_flip() is used in the graphic, xlab
   refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data.
+  to the x variable in the data. Default (xlab = NULL) displays
+  "Proportion :" (if lang == "fr"), "Proportion:" (if lang == "en" ) or
+  "Aandeel:" (if lang == "nl"), followed by the prop_exp argument. To
+  show no X label, use xlab = "".
 
 - ylab:
 
-  Y label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data.
+  Y label on the graphic. As coord_flip() is used in the graphic, ylab
+  refers to the y label on the graphic, after the coord_flip(), and not
+  to the y variable in the data. Default (ylab = NULL) displays the name
+  of the group variable. To show no Y label, use ylab = "".
 
 - legend_lab:
 
-  Legend (fill) label on the graphic. If legend_lab = NULL, legend label
-  on the graphic will be group.fill. To show no legend label, use
-  legend_lab = "".
+  Legend (fill) label on the graphic. Default (legend_lab = NULL)
+  displays the name of the group.fill variable. To show no legend label,
+  use legend_lab = "".
 
 - caption:
 
-  Caption of the graphic.
+  Caption of the graphic. This caption goes under de default caption
+  showing the result of the Chi-Square test. There is no way of not
+  showing the result of the chi-square test as a caption.
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
-  Path to export the results in an xlsx file. The file includes two
-  sheets : the table and the graphic.
+  Path to export the results in an xlsx file. The file includes three
+  (without group.fill) or two sheets (with a group.fill): the table, the
+  graphic and the Chi-Square statistical test result.
 
 ## Value
 
-A list that contains a table, a graphic and a statistical test
+A list that contains a table, a ggplot graphic and, in most cases, a
+Chi-square statistical test.
 
 ## Examples
 
@@ -294,10 +351,14 @@ weight = rb050,
 title = "% of ind. receiving unemployment benefits in their hh",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
+#> Warning: NAs introduced by coercion
+#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> Variable(s) detectee(s) dans l'expression : py090n
-#> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de l'expression
+#> 2720 observations removed due to missing group
+#> 0.0185539722442627
+#> Variable(s) detected in prop_exp: py090n
+#> 0 observations removed due to missing value(s) for the variable(s) in prop_exp
 
 # Results in graph form
 eusilc_prop$graph

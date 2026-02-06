@@ -24,33 +24,33 @@ fonctionr_options(
 )
 }
 \arguments{
-\item{total}{total}
+\item{total}{To write}
 
 \item{prop_method}{prop_method}
 
-\item{reorder}{reorder}
+\item{reorder}{To write}
 
-\item{show_ci}{show_ci}
+\item{show_ci}{To write}
 
-\item{show_n}{show_n}
+\item{show_n}{To write}
 
-\item{show_value}{show_value}
+\item{show_value}{To write}
 
-\item{show_labs}{show_labs}
+\item{show_labs}{To write}
 
-\item{dec}{dec}
+\item{dec}{To write}
 
-\item{pal}{pal}
+\item{pal}{To write}
 
-\item{col}{col}
+\item{col}{To write}
 
 \item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
 
 \item{coef_font}{A multiplier factor for font size}
 
-\item{caption}{caption}
+\item{caption}{To write}
 
-\item{theme}{theme}
+\item{theme}{To write}
 
 \item{lang}{The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".}
 

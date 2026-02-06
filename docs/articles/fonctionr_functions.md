@@ -784,8 +784,9 @@ arguments esthétiques – c’est-à-dire qui n’influencent que le graphique.
 | Esthétique: labels | ylab | ylab | ylab | ylab | ylab | ylab | ylab |  |
 | Esthétique: labels | legend_lab | legend_lab |  | legend_lab |  |  | legend_lab |  |
 | Esthétique: labels | caption | caption | caption | caption | caption | caption | caption | caption |
-| Esthétique: labels | lang |  |  | lang | lang |  | lang |  |
+| Esthétique: labels | lang | lang | lang | lang | lang | lang | lang | lang |
 | Esthétique: graphique | theme | theme | theme | theme | theme | theme | theme | theme |
+| Esthétique: graphique | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font | coef_font |
 
 ### Les arguments liés à la base de données utilisée
 
@@ -886,7 +887,16 @@ et sans guillemet, à la manière du `tidyverse`.
   de la base de données, les opérateurs et les valeurs numérique sont
   autorisés dans les expressions ; les objets extérieurs (par exemple un
   seuil contenu dans un vecteur stocké dans l’environnement global) ne
-  sont pas autorisés.
+  sont pas autorisés. Précisons aussi que par défaut les `NA` sont
+  retirés avant le calcul des variables de proportions. C’est pourquoi
+  l’utilisation de la fonction
+  [`is.na()`](https://rdrr.io/r/base/NA.html) n’est, par défaut, pas
+  autorisée dans l’argument `prop_exp`. D’autres fonctions, qui prennent
+  en compte les `NA`, par exemple la fonction `%in%`, ne fonctionnent
+  pas comme attendues, car ici les `NA` sont exclus des calculs a
+  priori. Il est possible de changer cette manière de procéder avec
+  l’argument `na.prop`.Plus de détails se trouvent dans le point
+  *Traitement des NA*.
 
 - `list_vars` doit être un vecteur reprenant l’ensemble des variables
   reprises dans les fonctions
@@ -1101,17 +1111,26 @@ eusilc_dist_group_d$graph
   il n’est pas possible d’utiliser la fonction
   [`is.na()`](https://rdrr.io/r/base/NA.html) dans `prop_exp` (on ne
   peut pas calculer la proportion de personnes dont le statut
-  professionnel est `NA` si on a supprimé les `NA`). Si l’argument prend
-  la valeur `"include"`, les `NA` ne sont pas retirés avant de procéder
-  aux calculs et la proportion est calculée sur l’ensemble des
-  observations, `NA` compris. Cela peut être utile quand les `NA`
-  n’indiquent pas une valeur manquante mais une situation spécifique.
-  Par exemple, dans une variable mesurant les points obtenu par des
-  étudiants à un examen, le `NA` peut indiquer que l’étudiant était
-  absent ; on peut donc vouloir calculer la proportion d’étudiants ayant
-  au moins 12/20 en conservant les absents au dénominateur, ce qui est
-  possible avec `na.prop = "include"`. Par défaut, `na.prop` prend la
-  valeur `"rm"`. Précisons que pour
+  professionnel est `NA` si on a supprimé les `NA`). Précisons que
+  l’exclusion des `NA` se fait avant le calcul de l’expression. Ainsi,
+  si des fonctions dont le comportement attendu est d’inclure les `NA`
+  sont indiquées dans l’argument `prop_exp`, par exemple `%in%`, elles
+  ne fonctionnerons pas comme prévu, car les `NA` seront exclus avant
+  que ces fonctions ne pourront les prendre en compte. Pour résumer,
+  quand `na.prop` prend la valeur `"rm"` (ce qui se fait par défaut),
+  toutes les observations pour lesquelles il y a au moins un `NA` pour
+  une variable reprise dans `prop_exp` sont exclues avant que
+  l’expression ne soit calculée. Par contre, si l’argument prend la
+  valeur `"include"`, les `NA` ne sont pas retirés avant de procéder aux
+  calculs et la proportion est calculée sur l’ensemble des observations,
+  `NA` compris. Cela peut être utile quand les `NA` n’indiquent pas une
+  valeur manquante mais une situation spécifique. Par exemple, dans une
+  variable mesurant les points obtenu par des étudiants à un examen, le
+  `NA` peut indiquer que l’étudiant était absent ; on peut donc vouloir
+  calculer la proportion d’étudiants ayant au moins 12/20 en conservant
+  les absents au dénominateur, ce qui est possible avec
+  `na.prop = "include"`. Par défaut, `na.prop` prend la valeur `"rm"`.
+  Précisons aussi que pour
   [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
   et ses alias
   [`mean_group()`](https://jgires.github.io/fonctionr/reference/central_group.md)
@@ -1756,6 +1775,14 @@ ci-dessous n’est indiqué.
   automatiques. Trois valeurs sont possibles : `lang = "fr"` pour le
   français, `lang = "nl"` pour le néerlandais et `lang = "en"` pour
   l’anglais. Par défaut, c’est le français qui est utilisé.
+
+- L’argument `coef_font` permet de modifier la taille de l’ensemble des
+  labels (titres, légendes, valeurs…) écrits sur le graphique. Cela peut
+  être utile quand le graphique doit être exporté dans une publication,
+  par exemple à l’aide d’un document quarto. Par défaut, il vaut 1. Une
+  valeur supérieure à 1 permet d’augmenter la taille de tous les textes
+  présents sur le graphique alors qu’une valeur inférieure à 1 permet de
+  la diminuer.
 
 - L’argument `theme`, qui est un argument d’esthétique graphique plutôt
   que de label, permet de modifier le thème du graphique. Le thème de

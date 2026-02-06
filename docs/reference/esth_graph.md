@@ -1,7 +1,7 @@
 # esth_graph
 
 Function to construct a graphic following the aestetics of the other
-function function of this package from a table
+functions of functionr from a table
 
 ## Usage
 
@@ -22,7 +22,8 @@ esth_graph(
   digits = 2,
   unit = "",
   dec = ",",
-  pal = "indianred4",
+  pal = NULL,
+  col = "indianred4",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -31,7 +32,8 @@ esth_graph(
   xlab = NULL,
   ylab = NULL,
   caption = NULL,
-  theme = NULL
+  theme = "fonctionr",
+  coef_font = 1
 )
 ```
 
@@ -39,11 +41,11 @@ esth_graph(
 
 - tab:
 
-  dataframe with the variables to be ploted.
+  dataframe with the indicators to be ploted.
 
 - var:
 
-  The variable in tab with the labels of the indicators to be ploted.
+  The variable in tab with the labels of the indicator to be ploted.
 
 - value:
 
@@ -51,15 +53,15 @@ esth_graph(
 
 - error_low:
 
-  The variable in tab that is the lower bound of the confidence
-  interval. If either error_low or error_upp is NULL error bars are not
-  shown on the graphic.
+  The variable in tab with the lower bound of the confidence interval.
+  If either error_low or error_upp is NULL error bars are not shown on
+  the graphic.
 
 - error_upp:
 
-  The variable in tab that is the upper bound of the confidence
-  interval. If either error_low or error_upp is NULL error bars are not
-  shown on the graphic.
+  The variable in tab with the upper bound of the confidence interval.
+  If either error_low or error_upp is NULL error bars are not shown on
+  the graphic.
 
 - facet:
 
@@ -68,43 +70,44 @@ esth_graph(
 
 - n_var:
 
-  The variable in tab containing the number of observation per for each
-  indicator. Default is NULL, not showing the number of observation on
-  the plot.
+  The variable in tab containing the number of observations for each
+  indicator ploted. Default (NULL) does not show the numbers of
+  observations on the plot.
 
 - pvalue:
 
-  The p-value to show in the caption. It can a numeric value or the
+  The p-value to show in the caption. It can be a numeric value or the
   pvalue object from a statsistical test.
 
 - reorder:
 
   TRUE if you want to reorder var according to value. FALSE if you do
-  not want to reorder. Default is FALSE.
+  not want to reorder. NA and total labels in var are not included in
+  the reorder. Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the values of value on the graphic. FALSE if
-  you do not want to show the proportion. Default is TRUE.
+  TRUE if you want to show the values on the graphic. FALSE if you do
+  not want to show them. Default is TRUE.
 
 - name_total:
 
   Name of the var label that may contain the total. When indicated, it
-  is displayed separately on the graph.
+  is displayed separately (bold name and value color is 'grey40') on the
+  graph.
 
 - scale:
 
-  Denominator of the proportion. Default is 100 to interprets numbers as
-  percentages.
+  Denominator of the indicator. Default is 1 to not modify indicators.
 
 - digits:
 
-  Numbers of digits showed on the values labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  The unit showd on the plot. Default is percent.
+  The unit displayed on the grphaic. Default is no unit.
 
 - dec:
 
@@ -112,21 +115,29 @@ esth_graph(
 
 - pal:
 
-  Colour of the bars.
+  For compatibility with old versions.
+
+- col:
+
+  Color of the bars. col must be a R color or an hexadecimal color code.
+  Default is "indianred4". The color of NA and total are always "grey"
+  and "grey40".
 
 - dodge:
 
-  Width of the bar, between 0 and 1.
+  Width of the bars. Default is 0.9 to let a small space between bars. A
+  value of 1 leads to no space betweens bars. Values higher than 1 are
+  not advised because they cause an overlaping of the bars.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line. Applies to the labels
-  var. Default is 25.
+  Number of characters before going to the line for the labels of var
+  Default is 25.
 
 - title:
 
@@ -154,7 +165,14 @@ esth_graph(
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 ## Value
 
@@ -165,7 +183,12 @@ A ggplot graphic.
 ``` r
 # Making fictional dataframe
 
-data_test<-data.frame(Indicators = c("Variable 1","Variable 2","Variable 3","Variable 4","Variable 5","Tot"),
+data_test<-data.frame(Indicators = c("Variable 1",
+                                     "Variable 2",
+                                     "Variable 3",
+                                     "Variable 4",
+                                     "Variable 5",
+                                     "Tot"),
                       Estimates = c(1.52,1.63,2.34,4.15,1.32,2.13),
                       IC_low = c(1.32,1.4,1.98,4,14.2,26),
                       IC_upp = c(1.73,1.81,22.4,47.44,1.45,2.34),
@@ -186,7 +209,7 @@ plot_test<-esth_graph(data_test,
            digits = 1,
            unit = "%",
            dec = ".",
-           pal = "green4",
+           col = "green4",
            dodge = 0.8,
            font = "Montserrat",
            wrap_width_y = 25,

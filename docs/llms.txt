@@ -290,6 +290,8 @@ Functions with a graphic purpose.
 
 Some useful functions.
 
+- [`fonctionr_options()`](https://jgires.github.io/fonctionr/reference/fonctionr_options.md)
+  : fonctionr_options
 - [`pivot_longer_survey()`](https://jgires.github.io/fonctionr/reference/pivot_longer_survey.md)
   : pivot_longer_survey
 - [`relab_cut()`](https://jgires.github.io/fonctionr/reference/relab_cut.md)

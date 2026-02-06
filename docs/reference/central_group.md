@@ -1,7 +1,17 @@
 # central_group
 
-Function to compare means or medians in different groups from complex
-survey data. It produces a table, a graphic and a statistical test.
+Function to compare means or medians among different groups based on
+complex survey data. It produces a list containing a table, including
+the confidence intervals of the indicators, a ready-to-be published
+ggplot graphic and a statistical test. In case of mean comparison, the
+statistical test is a Wald test (using survey::regTermTest). In case of
+median comparison the statistical test is a Kruskal Wallis test (using
+survey::svyranktest(test = "KruskalWallis")). Exporting the results to
+an Excell file is possible. The confidence intervals and the statistical
+test are taking into account the complex survey design. In case of
+facets, the statistical test is computed on the total means or medians
+between facets (and not within facets). In case of second group
+(group.fill), no statistical test is computed.
 
 ## Usage
 
@@ -15,11 +25,11 @@ central_group(
   facet = NULL,
   filter_exp = NULL,
   ...,
-  na.rm.group = T,
-  na.rm.facet = T,
+  na.rm.group = TRUE,
+  na.rm.facet = TRUE,
   total = TRUE,
-  reorder = F,
-  show_ci = T,
+  reorder = FALSE,
+  show_ci = TRUE,
   show_n = FALSE,
   show_value = TRUE,
   show_labs = TRUE,
@@ -27,7 +37,8 @@ central_group(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = NULL,
+  col = NULL,
+  pal = "Peppers",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -44,7 +55,8 @@ central_group(
   legend_lab = NULL,
   caption = NULL,
   lang = "fr",
-  theme = NULL,
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -66,8 +78,10 @@ mean_group(..., type = "mean")
 
 - quanti_exp:
 
-  An expression that define the variable from which the mean/median is
-  computed.
+  An expression defining the quantitative variable from which the
+  mean/median is computed. Notice that if any observations with NA in at
+  least one of the variable in quanti_exp are excluded for the
+  computation of the indicators.
 
 - type:
 
@@ -83,7 +97,7 @@ mean_group(..., type = "mean")
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -91,121 +105,149 @@ mean_group(..., type = "mean")
 
 - na.rm.group:
 
-  TRUE if you want to remove observations with NA on the group variable
-  or NA on the facet variable, if applicable. FALSE if you want to
-  create a group with the NA value for the group variable and a facet
-  with the NA value for the facet variable. NA in the variables included
-  in quanti_exp are not affected in this argument. All the observation
-  with a NA in the variables included in quanti_exp are always excluded.
-  Default is TRUE.
+  TRUE if you want to remove observations with NA on the group and the
+  group.fill variables. FALSE if you want to create a group with the NA
+  values for the group variable and a group.fill with the NA values for
+  the group.fill variable. Default is TRUE.
 
 - na.rm.facet:
 
-  TRUE if you want to remove observations with NA on the group variable
-  or NA on the facet variable. FALSE if you want to create a group with
-  the NA value for the group variable and a facet with the NA value for
-  the facet variable. NA in the variables included in prop_exp are not
-  affected in this argument. All the observation with a NA in the
-  variables included in prop_exp are excluded.
+  TRUE if you want to remove observations with NA on the facet variable.
+  FALSE if you want to create a facet with the NA values for the facet
+  variable. Default is TRUE.
 
 - total:
 
-  TRUE if you want to calculate a total, FALSE if you don't. The default
-  is TRUE
+  TRUE if you want to compute a total, FALSE if you don't. The default
+  is TRUE.
 
 - reorder:
 
   TRUE if you want to reorder the groups according to the mean/median.
   NA value, in case if na.rm.group = FALSE, is not included in the
-  reorder.
+  reorder. In case of facets, the groups are reordered based on each
+  median group. Default is FALSE.
 
 - show_ci:
 
   TRUE if you want to show the error bars on the graphic. FALSE if you
-  do not want to show the error bars. Default is TRUE.
+  don't want to show the error bars. Default is TRUE.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of individuals in
-  the sample in each group. FALSE if you do not want to show this
-  number. Default is FALSE.
+  TRUE if you want to show on the graphic the number of observations in
+  the sample in each group. FALSE if you don't want to show this number.
+  Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the mean/median of each group on the graphic.
-  FALSE if you do not want to show the mean/median. Default is TRUE.
+  TRUE if you want to show the mean/median in each group on the graphic.
+  FALSE if you don't want to show the mean/median. Default is TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes and legend (in case of a group.fill)
+  labels. FALSE if you don't want to show any labels on axes and legend.
+  Default is TRUE.
 
 - total_name:
 
-  Name of the total bar on the graphic. Default is Total.
+  Name of the total displayed on the graphic. Default is "Total" in
+  French and in English and "Totaal" in Dutch.
 
 - digits:
 
-  Numbers of digits showed on the value labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed on the graphic. Default is no unit.
+  Unit displayed on the graphic. Default is none.
 
 - dec:
 
-  Decimal mark shown on the graphic. Depends on lang: "," for fr and nl
-  ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: ","
+  for fr and nl ; "." for en.
+
+- col:
+
+  Color of the bars if there is no group.fill. col must be a R color or
+  an hexadecimal color code. Default color used depends on type :
+  "deeppink3" for mean and "mediumorchid3" for median. The colors of
+  total and NA group (in case of na.rm.group == FALSE) are always
+  "grey40" and "grey". If there is a group.fill, col has no effect and
+  pal argument should be used instead.
 
 - pal:
 
-  If group.fill is empty, pal must be a vector containing a single color
-  to define the color of the bars. If a variable is specified in
-  group.fill, pal is the color palette used on the graph to
-  differentiate its different modalities. Palettes from fonctionr and
-  the MetBrewer and PrettyCols packages are available. The NA bar, if
-  na.rm.group = FALSE, and the total bar are always in gray.
+  Colors of the bars if there is a group.fill. pal must be vector of R
+  colors or hexadecimal colors or a palette from packages MetBrewer or
+  PrettyCols or a palette from fonctionr. Default is "Peppers" from
+  PrettyCols. The color of NA group.fill (in case of na.rm.group ==
+  FALSE) andt of the total are always "grey" and "grey40". If there is
+  no group.fill, pal has no effect and col argument should be used
+  instead.
 
 - direction:
 
   Direction of the palette color. Default is 1. The opposite direction
-  is -1.
+  is -1. If there is no group.fill, this argument has no effect.
 
 - desaturate:
 
   Numeric specifying the amount of desaturation where 1 corresponds to
-  complete desaturation, 0 to no desaturation, and values in between to
-  partial desaturation.
+  complete desaturation (no colors, grey layers only), 0 to no
+  desaturation, and values in between to partial desaturation. Default
+  is 0. It affects only the palette (pal, if there is a second group)
+  and not the monocolor (col, if there is no second group). See
+  desaturate function from colorspace package for details. If desaturate
+  and lighten/darken arguments are used, lighten/darken is applied in a
+  second time (i.e. on the color transformed by desaturate).
 
 - lighten:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  darkening.
+  darkening. Value shoud be ranged between -1 (black) and 1 (white).
+  Default is 0. It doesn't affect the color of NAs (in case of
+  na.rm.group = FALSE). It affects only the palette (pal, if there is a
+  second group) and not the monocolor (col, if there is no second
+  group). See colorspace::lighten for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - darken:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  lightening.
+  lightening. Value shoud be ranged between -1 (white) and 1 (black).
+  Default is 0. It doesn't affect the color of NAs (in case of
+  na.rm.group = FALSE). It affects only the palette (pal, if there is a
+  second group) and not the monocolor (col, if there is no second
+  group). See colorspace::darken for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).#'
 
 - dodge:
 
-  Width of the bar, between 0 and 1.Default is 0.9.
+  Width of the bars. Default is 0.9 to let a small space between bars. A
+  value of 1 leads to no space betweens bars. Values higher than 1 are
+  not advised because they cause an overlaping of the bars. dodge
+  doesn't affect the spaces between second groups (group.fill). There is
+  always no space between second groups.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line in the labels of the
+  Number of characters before going to the line for the labels of the
   groups. Default is 25.
 
 - wrap_width_leg:
 
   Number of characters before going to the line for the labels of the
-  categories of group.fill. Default is 25.
+  group.fill. Default is 25.
 
 - legend_ncol:
 
@@ -222,17 +264,20 @@ mean_group(..., type = "mean")
 - xlab:
 
   X label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the X label on the graphic, after the coord_flip(), and not
-  to the x variable in the data. If xlab = NULL, X label on the graphic
-  will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To
+  refers to the x label on the graphic, after the coord_flip(), and not
+  to the x variable in the data. Default (xlab = NULL) displays, for
+  type = "mean", "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en"
+  ) or "Gemiddelde:" (if lang == "nl"), or, for type = "median",
+  "Médiane :" (if lang == "fr"), "Median:" (if lang == "en" ) or
+  "Mediaan:" (if lang == "nl"), followed by the quanti_exp argument. To
   show no X label, use xlab = "".
 
 - ylab:
 
   Y label on the graphic. As coord_flip() is used in the graphic, ylab
-  refers to the Y label on the graphic, after the coord_flip(), and not
-  to the y variable in the data. If ylab = NULL, Y label on the graphic
-  will be group. To show no Y label, use ylab = "".
+  refers to the y label on the graphic, after the coord_flip(), and not
+  to the y variable in the data. Default (ylab = NULL) displays the name
+  of the group variable. To show no Y label, use ylab = "".
 
 - legend_lab:
 
@@ -242,25 +287,36 @@ mean_group(..., type = "mean")
 
 - caption:
 
-  Caption of the graphic.
+  Caption of the graphic. This caption goes under de default caption
+  showing the result of the statistical test. There is no way of not
+  showing the result of the chi-square test as a caption.
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
   Path to export the results in an xlsx file. The file includes three
-  sheets : the table, the graphic and the statistical test.
+  (without group.fill) or two sheets (with a group.fill): the table, the
+  graphic and the statistical test result.
 
 ## Value
 
-A list that contains a table, a graphic and a statistical test
+A list that contains a table, a ggplot graphic and, in most cases, a
+statistical test.
 
 ## Examples
 
@@ -286,8 +342,9 @@ eusilc_mean <- mean_group(
   )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> 0 observations removed due to missing group
 #> Variable(s) detectee(s) dans quanti_exp : eqIncome
-#> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp
+#> 0 observations removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Results in graph form
 eusilc_mean$graph

@@ -21,6 +21,7 @@ make_surface(
   name_total = "Total",
   digits = 0,
   unit = NULL,
+  col = NULL,
   pal = "Kandinsky",
   direction = 1,
   desaturate = 0,
@@ -33,9 +34,10 @@ make_surface(
   font = "Roboto",
   wrap_width_lab = 20,
   title = NULL,
-  hjust.title = 0,
   subtitle = NULL,
-  caption = NULL
+  hjust.title = 0,
+  caption = NULL,
+  coef_font = 1
 )
 ```
 
@@ -47,7 +49,7 @@ make_surface(
 
 - var:
 
-  The variable in tab with the labels of the indicators to be ploted.
+  The variable in tab with the labels of the indicator to be ploted.
 
 - value:
 
@@ -56,14 +58,14 @@ make_surface(
 - error_low:
 
   The variable in tab that is the lower bound of the confidence
-  interval. If either error_low or error_upp is NULL error bars are not
-  shown on the graphic.
+  interval. If either error_low or error_upp is NULL error rectangles
+  are not shown on the graphic.
 
 - error_upp:
 
   The variable in tab that is the upper bound of the confidence
-  interval. If either error_low or error_upp is NULL error bars are not
-  shown on the graphic.
+  interval. If either error_low or error_upp is NULL error rectangles
+  are not shown on the graphic.
 
 - facet:
 
@@ -72,32 +74,32 @@ make_surface(
 
 - pvalue:
 
-  The p-value to show in the caption. It can a numeric value or the
+  The p-value to show in the caption. It can be a numeric value or the
   pvalue object from a statsistical test.
 
 - reorder:
 
-  TRUE if you want to reorder the values. NA value is not included in
-  the reorder.
+  TRUE if you want to reorder the values. NA label in var is not
+  included in the reorder.
 
 - compare:
 
-  TRUE to display a square representing the smallest value. When facets
-  are enabled, this is the smallest value per facet category.
+  TRUE to display a rectangle representing the smallest value. When
+  facets are enabled, this is the smallest value per facet category.
 
 - space:
 
-  The space between the squares. The unit is that of the indicator.
+  The space between the rectangles. The unit is that of the indicator.
 
 - position:
 
-  The position of the squares: "mid" for center alignment, "bottom" for
-  bottom alignment.
+  The position of the rectangles: "mid" for center alignment, "bottom"
+  for bottom alignment.
 
 - show_ci:
 
   TRUE if you want to show the CI on the graphic. The bounds of the
-  confidence intervals are displayed as dotted squares around the
+  confidence intervals are displayed as dotted rectangles around the
   result. FALSE if you do not want to show them. Default is TRUE.
 
 - name_total:
@@ -107,17 +109,27 @@ make_surface(
 
 - digits:
 
-  Numbers of digits showed on the values labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  The unit showd on the plot. Default is percent.
+  The unit showd on the plot. Default is none.
+
+- col:
+
+  Color of the rectangles if the user wants a monocolor graph. col must
+  be a R color or an hexadecimal color code. As pal has a priority over
+  col, if the user wants to use col, he must not use simultaneously the
+  pal argument (even pal = NULL).
 
 - pal:
 
-  Color palette used on the graphic. Palettes from fonctionr and the
-  MetBrewer and PrettyCols packages are available.
+  Colors of the rectangles if the user wants the rectangles to have
+  different colors. pal must be vector of R colors or hexadecimal colors
+  or a palette from packages MetBrewer or PrettyCols or a palette from
+  fonctionr. Default is "Kandinsky" from MetBrewer. pal has a priority
+  over col.
 
 - direction:
 
@@ -127,39 +139,57 @@ make_surface(
 - desaturate:
 
   Numeric specifying the amount of desaturation where 1 corresponds to
-  complete desaturation, 0 to no desaturation, and values in between to
-  partial desaturation.
+  complete desaturation (no colors, grey layers only), 0 to no
+  desaturation, and values in between to partial desaturation. Default
+  is 0. It affects only the palette (pal) and not the monocolor (col).
+  See colorspace::desaturate for details. If desaturate and
+  lighten/darken arguments are used, lighten/darken is applied in a
+  second time (i.e. on the color transformed by desaturate).
 
 - lighten:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  darkening.
+  darkening. Value shoud be ranged between -1 (black) and 1 (white).
+  Default is 0. It affects only the palette (pal) and not the monocolor
+  (col). See colorspace::lighten for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - darken:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  lightening.
+  lightening. Value shoud be ranged between -1 (white) and 1 (black).
+  Default is 0. It affects only the palette (pal) and not the monocolor
+  (col). See colorspace::darken for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - size_text:
 
-  Text size displayed in surfaces. Default is 3.88 (as in ggplot2).
+  Text size displayed in rectangles . Default is 3.88 (as in ggplot2).
 
 - bg:
 
-  Color of the background.
+  Color of the background. bg must be a R color or an hexadecimal color
+  code.
 
 - linewidth_ci:
 
-  linewidth of ci borders.
+  Line width of the dotted confidence intervals lines. It affects also
+  the lenghts of the dots and spaces bteween dots. Default is 0.5 to
+  have confidence lines two times thiner than the lines of the
+  indicators.
 
 - ratio:
 
-  Aspect ratio of the surfaces.
+  Ratio between the length and the width of the rectangles. 1 produces
+  squares ; greater than 1 produces vertical rectangles and smaller than
+  1 produces horizontal rectangles. Default is 3/2.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_lab:
 
@@ -170,17 +200,25 @@ make_surface(
 
   Title of the graphic.
 
-- hjust.title:
-
-  Horizontal alignment of title & subtitle.
-
 - subtitle:
 
   Subtitle of the graphic.
 
+- hjust.title:
+
+  Horizontal alignment of title & subtitle. It should take a numeric
+  value. Default (0) leads to left alignment, 1 leads to right alignment
+  and 0.5 leads to centered alignement.
+
 - caption:
 
   Caption of the graphic.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 ## Value
 
@@ -210,10 +248,14 @@ eusilc_mean <- mean_group(
   filter_exp = !pl030_rec %in% c("Student", "Fulfilling domestic tasks") & db040 == "Tyrol",
   weights = rb050
 )
+#> Warning: NAs introduced by coercion
+#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
+#> 13680 observations removed by filter_exp
+#> 296 observations removed due to missing group
 #> Variable(s) detectee(s) dans quanti_exp : py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n
-#> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp
+#> 0 observations removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Displaying results with make_surface()
 eusilc_mean$tab |>
@@ -228,5 +270,7 @@ eusilc_mean$tab |>
     title = "Equivalised income in household by socio-economic status",
     subtitle = "Example with austrian SILC data from 'laeken' package"
 )
+#> Warning: NAs introduced by coercion
+#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
 
 ```

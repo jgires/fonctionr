@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.22</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +60,7 @@
 <span>  name_total <span class="op">=</span> <span class="st">"Total"</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pal <span class="op">=</span> <span class="st">"Kandinsky"</span>,</span>
 <span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  desaturate <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -72,9 +73,10 @@
 <span>  font <span class="op">=</span> <span class="st">"Roboto"</span>,</span>
 <span>  wrap_width_lab <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  hjust.title <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  caption <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  hjust.title <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  caption <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  coef_font <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -87,7 +89,7 @@
 
 
 <dt id="arg-var">var<a class="anchor" aria-label="anchor" href="#arg-var"></a></dt>
-<dd><p>The variable in tab with the labels of the indicators to be ploted.</p></dd>
+<dd><p>The variable in tab with the labels of the indicator to be ploted.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -95,11 +97,11 @@
 
 
 <dt id="arg-error-low">error_low<a class="anchor" aria-label="anchor" href="#arg-error-low"></a></dt>
-<dd><p>The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.</p></dd>
+<dd><p>The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.</p></dd>
 
 
 <dt id="arg-error-upp">error_upp<a class="anchor" aria-label="anchor" href="#arg-error-upp"></a></dt>
-<dd><p>The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.</p></dd>
+<dd><p>The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.</p></dd>
 
 
 <dt id="arg-facet">facet<a class="anchor" aria-label="anchor" href="#arg-facet"></a></dt>
@@ -107,27 +109,27 @@
 
 
 <dt id="arg-pvalue">pvalue<a class="anchor" aria-label="anchor" href="#arg-pvalue"></a></dt>
-<dd><p>The p-value to show in the caption. It can a numeric value or the pvalue object from a statsistical test.</p></dd>
+<dd><p>The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.</p></dd>
 
 
 <dt id="arg-reorder">reorder<a class="anchor" aria-label="anchor" href="#arg-reorder"></a></dt>
-<dd><p>TRUE if you want to reorder the values. NA value is not included in the reorder.</p></dd>
+<dd><p>TRUE if you want to reorder the values. NA label in var is not included in the reorder.</p></dd>
 
 
 <dt id="arg-compare">compare<a class="anchor" aria-label="anchor" href="#arg-compare"></a></dt>
-<dd><p>TRUE to display a square representing the smallest value. When facets are enabled, this is the smallest value per facet category.</p></dd>
+<dd><p>TRUE to display a rectangle representing the smallest value. When facets are enabled, this is the smallest value per facet category.</p></dd>
 
 
 <dt id="arg-space">space<a class="anchor" aria-label="anchor" href="#arg-space"></a></dt>
-<dd><p>The space between the squares. The unit is that of the indicator.</p></dd>
+<dd><p>The space between the rectangles. The unit is that of the indicator.</p></dd>
 
 
 <dt id="arg-position">position<a class="anchor" aria-label="anchor" href="#arg-position"></a></dt>
-<dd><p>The position of the squares: "mid" for center alignment, "bottom" for bottom alignment.</p></dd>
+<dd><p>The position of the rectangles: "mid" for center alignment, "bottom" for bottom alignment.</p></dd>
 
 
 <dt id="arg-show-ci">show_ci<a class="anchor" aria-label="anchor" href="#arg-show-ci"></a></dt>
-<dd><p>TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted squares around the result. FALSE if you do not want to show them. Default is TRUE.</p></dd>
+<dd><p>TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted rectangles around the result. FALSE if you do not want to show them. Default is TRUE.</p></dd>
 
 
 <dt id="arg-name-total">name_total<a class="anchor" aria-label="anchor" href="#arg-name-total"></a></dt>
@@ -135,15 +137,19 @@
 
 
 <dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
-<dd><p>Numbers of digits showed on the values labels on the graphic. Default is 0.</p></dd>
+<dd><p>Number of decimal places displayed on the values labels on the graphic. Default is 0.</p></dd>
 
 
 <dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
-<dd><p>The unit showd on the plot. Default is percent.</p></dd>
+<dd><p>The unit showd on the plot. Default is none.</p></dd>
+
+
+<dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
+<dd><p>Color of the rectangles if the user wants a monocolor graph. col must be a R color or an hexadecimal color code. As pal has a priority over col, if the user wants to use col, he must not use simultaneously the pal argument (even pal = NULL).</p></dd>
 
 
 <dt id="arg-pal">pal<a class="anchor" aria-label="anchor" href="#arg-pal"></a></dt>
-<dd><p>Color palette used on the graphic. Palettes from fonctionr and the MetBrewer and PrettyCols packages are available.</p></dd>
+<dd><p>Colors of the rectangles if the user wants the rectangles to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Kandinsky" from MetBrewer. pal has a priority over col.</p></dd>
 
 
 <dt id="arg-direction">direction<a class="anchor" aria-label="anchor" href="#arg-direction"></a></dt>
@@ -151,35 +157,35 @@
 
 
 <dt id="arg-desaturate">desaturate<a class="anchor" aria-label="anchor" href="#arg-desaturate"></a></dt>
-<dd><p>Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.</p></dd>
+<dd><p>Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).</p></dd>
 
 
 <dt id="arg-lighten">lighten<a class="anchor" aria-label="anchor" href="#arg-lighten"></a></dt>
-<dd><p>Numeric specifying the amount of lightening. Negative numbers cause darkening.</p></dd>
+<dd><p>Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).</p></dd>
 
 
 <dt id="arg-darken">darken<a class="anchor" aria-label="anchor" href="#arg-darken"></a></dt>
-<dd><p>Numeric specifying the amount of lightening. Negative numbers cause lightening.</p></dd>
+<dd><p>Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).</p></dd>
 
 
 <dt id="arg-size-text">size_text<a class="anchor" aria-label="anchor" href="#arg-size-text"></a></dt>
-<dd><p>Text size displayed in surfaces. Default is 3.88 (as in ggplot2).</p></dd>
+<dd><p>Text size displayed in rectangles . Default is 3.88 (as in ggplot2).</p></dd>
 
 
 <dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
-<dd><p>Color of the background.</p></dd>
+<dd><p>Color of the background. bg must be a R color or an hexadecimal color code.</p></dd>
 
 
 <dt id="arg-linewidth-ci">linewidth_ci<a class="anchor" aria-label="anchor" href="#arg-linewidth-ci"></a></dt>
-<dd><p>linewidth of ci borders.</p></dd>
+<dd><p>Line width of the dotted confidence intervals lines. It affects also the lenghts of the dots and spaces bteween dots. Default is 0.5 to have confidence lines two times thiner than the lines of the indicators.</p></dd>
 
 
 <dt id="arg-ratio">ratio<a class="anchor" aria-label="anchor" href="#arg-ratio"></a></dt>
-<dd><p>Aspect ratio of the surfaces.</p></dd>
+<dd><p>Ratio between the length and the width of the rectangles. 1 produces squares ; greater than 1 produces vertical rectangles and smaller than 1 produces horizontal rectangles. Default is 3/2.</p></dd>
 
 
 <dt id="arg-font">font<a class="anchor" aria-label="anchor" href="#arg-font"></a></dt>
-<dd><p>Font used in the graphic. See load_and_active_fonts() for available fonts.</p></dd>
+<dd><p>Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".</p></dd>
 
 
 <dt id="arg-wrap-width-lab">wrap_width_lab<a class="anchor" aria-label="anchor" href="#arg-wrap-width-lab"></a></dt>
@@ -190,16 +196,20 @@
 <dd><p>Title of the graphic.</p></dd>
 
 
-<dt id="arg-hjust-title">hjust.title<a class="anchor" aria-label="anchor" href="#arg-hjust-title"></a></dt>
-<dd><p>Horizontal alignment of title &amp; subtitle.</p></dd>
-
-
 <dt id="arg-subtitle">subtitle<a class="anchor" aria-label="anchor" href="#arg-subtitle"></a></dt>
 <dd><p>Subtitle of the graphic.</p></dd>
 
 
+<dt id="arg-hjust-title">hjust.title<a class="anchor" aria-label="anchor" href="#arg-hjust-title"></a></dt>
+<dd><p>Horizontal alignment of title &amp; subtitle. It should take a numeric value. Default (0) leads to left alignment, 1 leads to right alignment and 0.5 leads to centered alignement.</p></dd>
+
+
 <dt id="arg-caption">caption<a class="anchor" aria-label="anchor" href="#arg-caption"></a></dt>
 <dd><p>Caption of the graphic.</p></dd>
+
+
+<dt id="arg-coef-font">coef_font<a class="anchor" aria-label="anchor" href="#arg-coef-font"></a></dt>
+<dd><p>A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -230,10 +240,14 @@
 <span class="r-in"><span>  filter_exp <span class="op">=</span> <span class="op">!</span><span class="va">pl030_rec</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Student"</span>, <span class="st">"Fulfilling domestic tasks"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">db040</span> <span class="op">==</span> <span class="st">"Tyrol"</span>,</span></span>
 <span class="r-in"><span>  weights <span class="op">=</span> <span class="va">rb050</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Parametres actifs dans fonctionr_options(): font, coef_font</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Input: data.frame</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling design -&gt; ids:  `1`, weights:  rb050</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 13680 observations removed by filter_exp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 296 observations removed due to missing group</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Variable(s) detectee(s) dans quanti_exp : py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 0 lignes supprimees avec valeur(s) manquante(s) pour le(s) variable(s) de quanti_exp</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 0 observations removed due to missing value(s) for the variable(s) in quanti_exp</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Displaying results with make_surface()</span></span></span>
 <span class="r-in"><span><span class="va">eusilc_mean</span><span class="op">$</span><span class="va">tab</span> <span class="op">|&gt;</span></span></span>
@@ -248,6 +262,8 @@
 <span class="r-in"><span>    title <span class="op">=</span> <span class="st">"Equivalised income in household by socio-economic status"</span>,</span></span>
 <span class="r-in"><span>    subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Parametres actifs dans fonctionr_options(): font, coef_font</span>
 <span class="r-plt img"><img src="make_surface-1.png" alt="" width="384" height="240"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

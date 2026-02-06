@@ -1,7 +1,11 @@
 # many_val
 
-Function to compute de proportions of a set of several binary variables.
-It can use complex survey data. It produces a table and a graphic.
+Function to compute the proportions of a set of several binary variables
+or means or medians of a set of quantitative variables, based on complex
+survey data. It produces a list containing a table, including the
+confidence intervals of the indicators and a ready-to-be published
+ggplot graphic. Exporting the results to an Excell file is possible. The
+confidence intervals are taking into account the complex survey design.
 
 ## Usage
 
@@ -26,6 +30,7 @@ many_val(
   digits = 0,
   unit = NULL,
   dec = NULL,
+  col = NULL,
   pal = "Egypt",
   direction = 1,
   desaturate = 0,
@@ -38,9 +43,10 @@ many_val(
   subtitle = NULL,
   xlab = NULL,
   ylab = NULL,
-  lang = "fr",
   caption = NULL,
-  theme = NULL,
+  lang = "fr",
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -60,17 +66,19 @@ many_mean(..., type = "mean")
 
 - list_vars:
 
-  A vector containing names of the dummy variables on which to compute
-  the proportions
+  A vector containing the names of the dummy/quantitative variables on
+  which to compute the proportions/means/medians.
 
 - type:
 
-  "mean" to compute means ; "median" to compute medians ; "prop" to
-  compute proportions.
+  "prop" to compute proportions ; "mean" to compute means ; "median" to
+  compute medians.
 
 - list_vars_lab:
 
-  Names of the variables
+  A vector containing the labels of the dummy/quantitative variables to
+  be displayed on the graphic and in the table of result. Default uses
+  the variable names in list_vars.
 
 - facet:
 
@@ -78,7 +86,7 @@ many_mean(..., type = "mean")
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -86,72 +94,83 @@ many_mean(..., type = "mean")
 
 - na.rm.facet:
 
-  TRUE if you want to remove observations with NA on the group variable
-  or NA on the facet variable. FALSE if you want to create a group with
-  the NA value for the group variable and a facet with the NA value for
-  the facet variable. NA in the variables included in prop_exp are not
-  affected in this argument. All the observation with a NA in the
-  variables included in prop_exp are excluded.
+  TRUE if you want to remove observations with NA on the facet variable.
+  FALSE if you want to create a facet with the NA values for the facet
+  variable. Default is TRUE.
 
 - na.vars:
 
-  The treatment of NA values in variables. "rm" removes NA only in each
-  individual variable, "rm.all" removes every individual that has at
-  least one NA in one variable.
+  The treatment of NA values in variables (list_vars). "rm" removes NA
+  seperately in each individual variable, "rm.all" removes every
+  individual that has at least one NA in one variable. Default is "rm".
 
 - prop_method:
 
-  Type of proportion method to use. See svyciprop in survey package for
-  details. Default is the beta method.
+  Type of proportion method used to compute confidence intervals. See
+  survey::svyciprop() for details. Default is beta method. This argument
+  is only used in case of type = "prop".
 
 - reorder:
 
-  TRUE if you want to reorder the variables according to the proportion.
+  TRUE if you want to reorder the variables according to the
+  proportions/means/medians. Default is FALSE.
 
 - show_ci:
 
   TRUE if you want to show the error bars on the graphic. FALSE if you
-  do not want to show the error bars.
+  don't want to show the error bars. Default is TRUE.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of individuals in
-  the sample in each group. FALSE if you do not want to show this
-  number. Default is FALSE.
+  TRUE if you want to show on the graphic the number of observations in
+  the sample for each variable. The number can varie if na.vars = "rm".
+  FALSE if you do not want to show this number. Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the proportion in each group on the graphic.
-  FALSE if you do not want to show the proportion.
+  TRUE if you want to show the proportions/means/median for each
+  variable on the graphic. FALSE if you do not want to show the
+  proportions/means/medians. Default is TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes labels. FALSE if you do not want to show
+  any labels on axes. Default is TRUE.
 
 - scale:
 
-  Denominator of the proportion. Default is 100 to interprets numbers as
-  percentages.
+  Denominator of the proportions. Default is 100 to interpret numbers as
+  percentages. This argument is only used in case of type = "prop".
 
 - digits:
 
-  Numbers of digits showed on the values labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed in the graphic. Default is percent.
+  Unit displayed on the graphic. Default is percent for type = "prop"
+  and no unit for type = "mean" or "median".
 
 - dec:
 
-  Decimal mark shown on the graphic. Depends on lang: "," for fr and nl
-  ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: ","
+  for fr and nl ; "." for en.
+
+- col:
+
+  Color of the bars if the user wants a monocolor graph. col must be a R
+  color or an hexadecimal color code. As pal has a priority over col, if
+  the user wants to use col, he must not use simultaneously the pal
+  argument (even pal = NULL).
 
 - pal:
 
-  Color palette used on the graphic. Palettes from fonctionr and the
-  MetBrewer and PrettyCols packages are available.
+  Colors of the bars if the user wants the bars to have different
+  colors. pal must be vector of R colors or hexadecimal colors or a
+  palette from packages MetBrewer or PrettyCols or a palette from
+  fonctionr. Default is "Egypt" from MetBrewer. pal has a priority over
+  col.
 
 - direction:
 
@@ -161,32 +180,46 @@ many_mean(..., type = "mean")
 - desaturate:
 
   Numeric specifying the amount of desaturation where 1 corresponds to
-  complete desaturation, 0 to no desaturation, and values in between to
-  partial desaturation.
+  complete desaturation (no colors, grey layers only), 0 to no
+  desaturation, and values in between to partial desaturation. Default
+  is 0. It affects only the palette (pal) and not the monocolor (col).
+  See colorspace::desaturate for details. If desaturate and
+  lighten/darken arguments are used, lighten/darken is applied in a
+  second time (i.e. on the color transformed by desaturate).
 
 - lighten:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  darkening.
+  darkening. Value shoud be ranged between -1 (black) and 1 (white).
+  Default is 0. It affects only the palette (pal) and not the monocolor
+  (col). See colorspace::lighten for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - darken:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  lightening.
+  lightening. Value shoud be ranged between -1 (white) and 1 (black).
+  Default is 0. It affects only the palette (pal) and not the monocolor
+  (col). See colorspace::darken for details. If both argument ligthen
+  and darken are used (not advised), darken is applied in a second time
+  (i.e. on the color transformed by lighten).
 
 - dodge:
 
-  Width of the bar, between 0 and 1.
+  Width of the bars. Default is 0.9 to let a small space between bars. A
+  value of 1 leads to no space betweens bars. Values higher than 1 are
+  not advised because they cause an overlaping of the bars.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line. Applies to the labels
-  of the groups. Default is 25.
+  Number of characters before going to the line for the labels of the
+  groups. Default is 25.
 
 - title:
 
@@ -200,35 +233,50 @@ many_mean(..., type = "mean")
 
   X label on the graphic. As coord_flip() is used in the graphic, xlab
   refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data.
+  to the x variable in the data. Default (xlab = NULL) displays, for
+  type = prop, "Proportion :" (if lang == "fr"), "Proportion:" (if lang
+  == "en" ) or "Aandeel:" (if lang == "nl"), or, for type = "mean",
+  "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en" ) or
+  "Gemiddelde:" (if lang == "nl"), or, for type = "median", "Médiane :"
+  (if lang == "fr"), "Median:" (if lang == "en" ) or "Mediaan:" (if lang
+  == "nl"), followed by the labels of the variables (list_vars_lab). To
+  show no X label, use xlab = "".
 
 - ylab:
 
-  Y label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data.
-
-- lang:
-
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Y label on the graphic. As coord_flip() is used in the graphic, ylab
+  refers to the y label on the graphic, after the coord_flip(), and not
+  to the y variable in the data. Default (ylab = NULL) displays no Y
+  label.
 
 - caption:
 
   Caption of the graphic.
 
+- lang:
+
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
+
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
   Path to export the results in an xlsx file. The file includes two
-  sheets : the table and the graphic.
+  sheets: the table and the graphic.
 
 ## Value
 
-A list that contains a table and a graphic
+A list that contains a table and a ggplot graphic.
 
 ## Examples
 
@@ -255,6 +303,8 @@ weight = rb050,
 title = "Proportion of workers and Autrian according to gender",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
+#> Warning: NAs introduced by coercion
+#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
 #> Variable(s) entrees : worker, austrian
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050

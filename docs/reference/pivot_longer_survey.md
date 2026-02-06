@@ -1,7 +1,7 @@
 # pivot_longer_survey
 
-Function to pivot from wide to long agregated data by group produced
-with srvyr::summarise
+Function to pivot, from wide to long, a dataframe produced produced by
+srvyr::summarise with group(s)
 
 ## Usage
 
@@ -13,15 +13,15 @@ pivot_longer_survey(data, n_groups)
 
 - data:
 
-  A dataframe with Agregated data to pivot
+  A dataframe produced produced by srvyr::summarise with group(s)
 
 - n_groups:
 
-  Number of groups by which data have been agregated
+  Number of groups by which data has been agregated
 
 ## Value
 
-A dataframe
+A pivoted dataframe
 
 ## Examples
 

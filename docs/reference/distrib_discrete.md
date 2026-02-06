@@ -1,7 +1,13 @@
 # distrib_discrete
 
-Function describe the distribution of a discrete variable from complex
-survey data. It produces a table and a graphic.
+Function to describe the distribution of a discrete variable from
+complex survey data. It produces a list containing a table, including
+the confidence intervals of the indicators, a ready-to-be published
+ggplot graphic and, if proportions for H0 are specified, a Chi-Square
+statistical test (using survey::svygofchisq). Exporting those results to
+an Excell file is possible. The confidence intervals and the statistical
+test are taking into account the complex survey design. In case of
+facets, no statistical test is (yet) computed.
 
 ## Usage
 
@@ -25,7 +31,8 @@ distrib_discrete(
   digits = 0,
   unit = "%",
   dec = NULL,
-  pal = "sienna2",
+  pal = NULL,
+  col = "sienna2",
   dodge = 0.9,
   font = "Roboto",
   wrap_width_y = 25,
@@ -35,7 +42,8 @@ distrib_discrete(
   ylab = NULL,
   lang = "fr",
   caption = NULL,
-  theme = NULL,
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -51,7 +59,7 @@ distrib_d(...)
 
 - quali_var:
 
-  The discrete variable that is described.
+  The discrete variable to be described.
 
 - facet:
 
@@ -59,7 +67,7 @@ distrib_d(...)
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -68,13 +76,13 @@ distrib_d(...)
 - na.rm.facet:
 
   TRUE if you want to remove observations with NA on the facet variable.
-  FALSE if you want to create a facet with the NA value for the facet
+  FALSE if you want to create a facet with the NA values for the facet
   variable. Default is TRUE.
 
 - na.rm.var:
 
   TRUE if you want to remove observations with NA on the discrete
-  variable. FALSE if you want to create a modality with the NA value for
+  variable. FALSE if you want to create a modality with NA values for
   the discrete variable. Default is TRUE.
 
 - probs:
@@ -85,36 +93,37 @@ distrib_d(...)
 
 - prop_method:
 
-  Type of proportion method to use to compute confidence intervals. See
-  svyciprop in survey package for details. Default is the beta method.
+  Type of proportion method used to compute confidence intervals. See
+  survey::svyciprop() for details. Default is beta method.
 
 - reorder:
 
-  TRUE if you want to reorder the categories according to their
-  proportion. NA value, in case if na.rm.group = FALSE, is not included
-  in the reorder. Default is FALSE.
+  TRUE if you want to reorder the groups according to the proportion. NA
+  value, in case if na.rm.var = FALSE, is not included in the reorder.
+  In case of facets, the categories are reordered based on each median
+  category Default is FALSE.
 
 - show_ci:
 
   TRUE if you want to show the error bars on the graphic. FALSE if you
-  do not want to show the error bars. Default is TRUE.
+  don't want to show the error bars. Default is TRUE.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of individuals in
-  the sample in each modality of quali_var. FALSE if you do not want to
-  show this number. Default is FALSE.
+  TRUE if you want to show on the graphic the number of observations in
+  the sample in each category. FALSE if you don't want to show this
+  number. Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the proportion of each category on the
-  graphic. FALSE if you do not want to show the proportion. Default is
+  TRUE if you want to show the proportions in each category on the
+  graphic. FALSE if you don't want to show the proportion. Default is
   TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes labels. FALSE if you do not want to show
+  any label on axes. Default is TRUE.
 
 - scale:
 
@@ -123,35 +132,42 @@ distrib_d(...)
 
 - digits:
 
-  Numbers of digits showed on the values labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed in the graphic. Default is percent.
+  Unit displayed on the graphic. Default is percent.
 
 - dec:
 
-  Decimal mark shown on the graphic. Depends on lang: "," for fr and nl
-  ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: ","
+  for fr and nl ; "." for en.
 
 - pal:
 
-  Colour of the bars. NA bar, in case if na.rm.group = FALSE, and total
-  bar are always in grey.
+  Argument kept for compatibility with old versions.
+
+- col:
+
+  Color of the bars. col must be a R color or an hexadecimal color code.
+  Default is "sienna2". The color of NA category (in case of na.rm.var
+  == FALSE) is always "grey".
 
 - dodge:
 
-  Width of the bar, between 0 and 1. Default is 0.9.
+  Width of the bars. Default is 0.9 to let a small space between bars. A
+  value of 1 leads to no space betweens bars. Values higher than 1 are
+  not advised because they cause an overlaping of the bars.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - wrap_width_y:
 
-  Number of characters before going to the line in the labels of the
+  Number of characters before going to the line for the labels of the
   categories. Default is 25.
 
 - title:
@@ -165,40 +181,51 @@ distrib_d(...)
 - xlab:
 
   X label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the X label on the graphic, after the coord_flip(), and not
-  to the x variable in the data. If xlab = NULL, X label on the graphic
-  will be "Distribution (total : 100 percent)". To show no X label, use
-  xlab = "".
+  refers to the x label on the graphic, after the coord_flip(), and not
+  to the x variable in the data. Default (xlab = NULL) displays
+  "Distribution (total : 100 pourcent)" (if lang == "fr"), "Distribution
+  (total: 100 percent)" (if lang == "en" ) or "Distributie (totaal : 100
+  procent)" (if lang == "nl"). To show no X label, use xlab = "".
 
 - ylab:
 
   Y label on the graphic. As coord_flip() is used in the graphic, ylab
   refers to the Y label on the graphic, after the coord_flip(), and not
-  to the Y variable in the data. If ylab = NULL, Y label on the graphic
-  will be quali_var. To show no Y label, use ylab = "".
+  to the Y variable in the data. Default (ylab = NULL) displays the name
+  of the discrete variable (quali_var). To show no Y label, use ylab =
+  "".
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - caption:
 
-  Caption in the graphic.
+  Caption of the graphic. This caption goes under de default caption
+  showing the result of the statistical test (if any).
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
-  Path to export the results in an xlsx file. The file includes three
-  sheets : the table, the graphic and the statistical test (if probs is
-  not NULL).
+  Path to export the results in an xlsx file. The file includes two or
+  three sheets : the table, the graphic and the statistical test (if
+  probs is not NULL).
 
 ## Value
 
-A list that contains a table, a graphic and a statistical test
+A list that contains a table, a ggplot graphic and, if probs is not
+NULL, a statistical test.
 
 ## Examples
 
@@ -228,6 +255,7 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> 2720 observations removed due to missing value on quali_var
 
 # Results in graph form
 eusilc_dist_group_d$graph

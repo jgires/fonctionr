@@ -7,9 +7,10 @@ theme_fonctionr
 ``` r
 theme_fonctionr(
   font = "Roboto",
-  theme = NULL,
+  theme = "fonctionr",
   display = "ggplot",
-  grid.lines = "x"
+  grid.lines = "x",
+  coef_font = 1
 )
 ```
 
@@ -22,8 +23,8 @@ theme_fonctionr(
 
 - theme:
 
-  The theme you want for the graphic. Available themes: the default
-  theme and “IWEPS”.
+  The optionnal theme you want for the graphic. Available theme:
+  “IWEPS”. Default is NULL
 
 - display:
 
@@ -33,3 +34,7 @@ theme_fonctionr(
 - grid.lines:
 
   Specify major grid lines : "x", "y" or "both". Default is "x".
+
+- coef_font:
+
+  A multiplier factor for font size.

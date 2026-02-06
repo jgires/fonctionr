@@ -13,13 +13,13 @@ Source:
 
 Gires J, Ghesquiere F (2026). *fonctionr: Easy Estimation and
 Vizualisation of Indicators from Data with Complex Design*. R package
-version 0.3.22, https://github.com/jgires/fonctionr/,
+version 0.4.0, https://github.com/jgires/fonctionr/,
 <https://jgires.github.io/fonctionr/>.
 
     @Manual{,
       title = {fonctionr: Easy Estimation and Vizualisation of Indicators from Data with Complex Design},
       author = {Joel Gires and Francois Ghesquiere},
       year = {2026},
-      note = {R package version 0.3.22, https://github.com/jgires/fonctionr/},
+      note = {R package version 0.4.0, https://github.com/jgires/fonctionr/},
       url = {https://jgires.github.io/fonctionr/},
     }

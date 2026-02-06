@@ -2,20 +2,20 @@
 #'
 #' Function to set global options for fonctionr
 #'
-#' @param total total
+#' @param total To write
 #' @param prop_method prop_method
-#' @param reorder reorder
-#' @param show_ci show_ci
-#' @param show_n show_n
-#' @param show_value show_value
-#' @param show_labs show_labs
-#' @param dec dec
-#' @param pal pal
-#' @param col col
+#' @param reorder To write
+#' @param show_ci To write
+#' @param show_n To write
+#' @param show_value To write
+#' @param show_labs To write
+#' @param dec To write
+#' @param pal To write
+#' @param col To write
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
 #' @param coef_font A multiplier factor for font size
-#' @param caption caption
-#' @param theme theme
+#' @param caption To write
+#' @param theme To write
 #' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
 #' @param erase_all TRUE erases all the options. Default is FALSE.
 #'

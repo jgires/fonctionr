@@ -54,6 +54,7 @@ reference:
   desc: >
     Some useful functions.
   contents:
+  - fonctionr_options
   - pivot_longer_survey
   - relab_cut
 

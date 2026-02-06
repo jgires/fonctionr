@@ -1,6 +1,17 @@
 # distrib_continuous
 
-Function to describe a continuous variable from complex survey data
+Function to describe the distribution of a continuous variable from
+complex survey data. It produces a list containing a density table
+(dens), a central value table (tab), a quantile table (quant) and a
+ready-to-be published ggplot graphic (graph). The density table contains
+x-y coordinates to draw a density curve. The central value table
+contains the median or the mean of the continuous variable, with its
+confidence interval, the sample size and the estimation of the total,
+with its confidence interval. The quantile table contains quantiles and
+their confidence intervals. The quantiles and the limits are used as
+thicks on the X axe of the graphic. Exporting those results to an Excell
+file is possible. The confidence intervals are taking into account the
+complex survey design.
 
 ## Usage
 
@@ -27,8 +38,10 @@ distrib_continuous(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = c("#00708C", "mediumturquoise"),
-  color = NA,
+  pal = NULL,
+  col_density = c("#00708C", "mediumturquoise"),
+  color = NULL,
+  col_border = NA,
   font = "Roboto",
   title = NULL,
   subtitle = NULL,
@@ -36,7 +49,8 @@ distrib_continuous(
   ylab = NULL,
   caption = NULL,
   lang = "fr",
-  theme = NULL,
+  theme = "fonctionr",
+  coef_font = 1,
   export_path = NULL
 )
 
@@ -52,20 +66,23 @@ distrib_c(...)
 
 - quanti_exp:
 
-  An expression that define the variable to be described.
+  An expression defining the quantitatie variable the variable to be
+  described. Notice that any observations with NA in at least one of the
+  variable in quanti_exp are excluded for the computation of the density
+  and of the indicators.
 
 - type:
 
-  "mean" to compute mean as the central value ; "median" to compute
-  median as the central value.
+  Type of central value : "mean" to compute mean as the central value ;
+  "median" to compute median as the central value.
 
 - facet:
 
-  A supprimer?
+  Not yet implemented.
 
 - filter_exp:
 
-  An expression that filters the data, preserving the design.
+  An expression filtering the data, preserving the design.
 
 - ...:
 
@@ -73,11 +90,11 @@ distrib_c(...)
 
 - na.rm.facet:
 
-  A supprimer?
+  Not yet implemented.
 
 - quantiles:
 
-  quantiles to be computed in the distribution. Default are deciles.
+  Quantiles computed. Default are deciles.
 
 - bw:
 
@@ -90,8 +107,9 @@ distrib_c(...)
 
 - limits:
 
-  Limits of the x axe of the graphic. Does not apply to the computation.
-  Default is NULL to show the entire distribution on the graphic.
+  Limits of the X axe of the graphic. Does not apply to the computation
+  of indicators (median/mean and quantiles). Default is NULL to show the
+  entire distribution on the graphic.
 
 - show_mid_line:
 
@@ -102,8 +120,8 @@ distrib_c(...)
 - show_ci_lines:
 
   TRUE if you want to show confidence interval of the mean or median
-  (depending on type) as lines on the graphic. FALSE if you do not want
-  to show it as lines. Default is TRUE.
+  (depending on type) as dotted lines on the graphic. FALSE if you do
+  not want to show it as lines. Default is TRUE.
 
 - show_ci_area:
 
@@ -119,28 +137,28 @@ distrib_c(...)
 - show_n:
 
   TRUE if you want to show on the graphic the number of individuals in
-  the sample in each quantile FALSE if you do not want to show the
+  the sample in each quantile. FALSE if you do not want to show the
   numbers. Default is FALSE.
 
 - show_value:
 
-  TRUE if you want to show the mean/median (depending on type) on the
-  graphic. FALSE if you do not want to show the mean/median. Default is
-  TRUE.
+  TRUE if you want to show the value of the mean/median (depending on
+  type) on the graphic. FALSE if you do not want to show the
+  mean/median. Default is TRUE.
 
 - show_labs:
 
-  TRUE if you want to show axes, titles and caption labels. FALSE if you
-  do not want to show any label on axes and titles. Default is TRUE.
+  TRUE if you want to show axes labels. FALSE if you do not want to show
+  any labels on axes. Default is TRUE.
 
 - digits:
 
-  Numbers of digits showed on the value labels on the graphic. Default
-  is 0.
+  Number of decimal places displayed on the values labels on the
+  graphic. Default is 0.
 
 - unit:
 
-  Unit showed on the graphic. Default is no unit.
+  Unit displayed on the graphic. Default is none.
 
 - dec:
 
@@ -149,17 +167,33 @@ distrib_c(...)
 
 - pal:
 
-  color of the density area. maybe one color or a vector with several
-  colors.
+  For compatibility with older versions.
+
+- col_density:
+
+  Color of the density area. It may be one color or a vector with
+  several colors. Colors should be R color or an hexadecimal color code.
+  In case of one color, the density is monocolor. In case of a vector,
+  the quantile areas are painted in continuous colors going from the
+  last color in the vector (center quantile) to the first color (first
+  and last quantiles). In case of an even quantile area numbers (e.g.
+  deciles, quartiles) the last color of the vector is only applied to
+  the highcenter quantile area to avoid two continuous quantile areas
+  having the same color.
 
 - color:
 
-  color of the density line.
+  Not currently used except for compatibility with old versions.
+
+- col_border:
+
+  Color of the density line. Color should be one R color or one
+  hexadecimal color code. Default (NULL) does not draw the density line.
 
 - font:
 
   Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  fonts. Default is "Roboto".
 
 - title:
 
@@ -174,15 +208,15 @@ distrib_c(...)
   X label on the graphic. As coord_flip() is used in the graphic, xlab
   refers to the X label on the graphic, after the coord_flip(), and not
   to the x variable in the data. If xlab = NULL, X label on the graphic
-  will be "Moyenne : " + quanti_exp or "Medianne : " + quanti_exp. To
-  show no X label, use xlab = "".
+  will be quanti_exp.
 
 - ylab:
 
   Y label on the graphic. As coord_flip() is used in the graphic, ylab
   refers to the Y label on the graphic, after the coord_flip(), and not
   to the y variable in the data. If ylab = NULL, Y label on the graphic
-  will be group. To show no Y label, use ylab = "".
+  will be "Densité" (if lang = "fr), "Density" (if lang = "en") or
+  "Densiteit (if lang = "nl").
 
 - caption:
 
@@ -190,22 +224,30 @@ distrib_c(...)
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  Language of the indications on the graphic. Possibilities are "fr"
+  (french), "nl" (dutch) and "en" (english). Default is "fr".
 
 - theme:
 
-  Theme of the graphic. IWEPS adds y axis lines and ticks.
+  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
+  lines and ticks. NULL uses the default grey ggplot2 theme.
+
+- coef_font:
+
+  A multiplier factor for font size of all fonts on the graphic. Default
+  is 1. Usefull when exporting the graphic for a publication (e.g. in a
+  Quarto document).
 
 - export_path:
 
-  Path to export the results in an xlsx file. The file includes three
-  sheets : the table, the graphic and the statistical test.
+  Path to export the results in an xlsx file. The file includes four
+  sheets: the central value table, the quantile table, the density table
+  and the graphic.
 
 ## Value
 
-A list that contains a table (tab), a graphic (garph) and a density
-table (dens) and a quantile table (quant)
+A list that contains a density table (dens), a central value table
+(tab), a quantile table (quant) and a ggplot graphic (graph).
 
 ## Examples
 
