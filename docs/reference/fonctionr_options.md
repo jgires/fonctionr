@@ -134,7 +134,7 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
 #> 2720 observations removed due to missing group
-#> 0.0222909450531006
+#> 0.0638389587402344
 #> Variable(s) detected in prop_exp: py090n
 #> 0 observations removed due to missing value(s) for the variable(s) in prop_exp
 

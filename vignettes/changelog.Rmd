@@ -30,6 +30,8 @@ Date : 2026-01-27
 
     -   Dans `distrib_continuous()` et `distrib_group_continuous()`, il y a plusieurs changements dans les arguments : `pal` devient `col_density` ; `pal_moustache` devient `col_moustache` ; `color` devient `col_border`. La raison de ce changement est lié à un impératif de cohérence entre les fonctions : l'argument `pal` est désormais réservé aux palettes de type qualitatif. Néanmoins pour des raisons de compatibilité, les anciens arguments demeurent dans la fonction, mais sont inactifs.
 
+-   Il n'est plus possible d'introduire des palettes issues du package [MoMAColors](https://github.com/BlakeRMills/MoMAColors), celui-ci n'étant pas sur CRAN.
+
 -   Introduction de l'argument `coef_font` pour multiplier la taille de toutes les polices de caractère dans les graphiques de toutes les fonctions.
 
 -   Un grand nombre de caractères spéciaux sont désormais utilisables dans le noms des groupes (du fait que `ggtext` a besoin d'un formatage en codes HTML, cela provoquait auparavant des bugs dans les graphiques).

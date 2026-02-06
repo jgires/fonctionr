@@ -28,6 +28,10 @@ Date : 2026-01-27
     des raisons de compatibilité, les anciens arguments demeurent dans
     la fonction, mais sont inactifs.
 
+- Il n’est plus possible d’introduire des palettes issues du package
+  [MoMAColors](https://github.com/BlakeRMills/MoMAColors), celui-ci
+  n’étant pas sur CRAN.
+
 - Introduction de l’argument `coef_font` pour multiplier la taille de
   toutes les polices de caractère dans les graphiques de toutes les
   fonctions.
