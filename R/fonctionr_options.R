@@ -2,21 +2,62 @@
 #'
 #' Function to set global options for fonctionr
 #'
-#' @param total To write
+#' @param na.rm.group na.rm.group
+#' @param na.rm.facet na.rm.facet
+#' @param na.prop na.prop
+#' @param na.vars na.vars
+#' @param na.rm.var na.rm.var
+#' @param probs probs
+#' @param total total
 #' @param prop_method prop_method
-#' @param reorder To write
-#' @param show_ci To write
-#' @param show_n To write
-#' @param show_value To write
-#' @param show_labs To write
-#' @param dec To write
-#' @param pal To write
-#' @param col To write
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param coef_font A multiplier factor for font size
-#' @param caption To write
-#' @param theme To write
-#' @param lang The language of the indications on the chart. Possibilities: "fr", "nl", "en". Default is "fr".
+#' @param quantiles quantiles
+#' @param moustache_probs moustache_probs
+#' @param bw bw
+#' @param resolution resolution
+#' @param height height
+#' @param limits limits
+#' @param reorder reorder
+#' @param position position
+#' @param show_ci show_ci
+#' @param show_mid_point show_mid_point
+#' @param show_mid_line show_mid_line
+#' @param show_ci_errorbar show_ci_errorbar
+#' @param show_ci_lines show_ci_lines
+#' @param show_ci_area show_ci_area
+#' @param show_quant_lines show_quant_lines
+#' @param show_moustache show_moustache
+#' @param show_n show_n
+#' @param show_value show_value
+#' @param show_labs show_labs
+#' @param total_name total_name
+#' @param scale scale
+#' @param digits digits
+#' @param unit unit
+#' @param dec dec
+#' @param col col
+#' @param pal pal
+#' @param direction direction
+#' @param desaturate desaturate
+#' @param lighten lighten
+#' @param darken darken
+#' @param col_density col_density
+#' @param col_moustache col_moustache
+#' @param col_border col_border
+#' @param alpha alpha
+#' @param dodge dodge
+#' @param font font
+#' @param wrap_width_y wrap_width_y
+#' @param wrap_width_leg wrap_width_leg
+#' @param legend_ncol legend_ncol
+#' @param title title
+#' @param subtitle subtitle
+#' @param xlab xlab
+#' @param ylab ylab
+#' @param legend_lab legend_lab
+#' @param caption caption
+#' @param lang lang
+#' @param theme theme
+#' @param coef_font coef_font
 #' @param erase_all TRUE erases all the options. Default is FALSE.
 #'
 #' @export
@@ -51,21 +92,62 @@
 #' # Results in graph form
 #' eusilc_prop$graph
 #'
-fonctionr_options <- function(total = NULL,
+fonctionr_options <- function(na.rm.group = NULL,
+                              na.rm.facet = NULL,
+                              na.prop = NULL,
+                              na.vars = NULL,
+                              na.rm.var = NULL,
+                              probs = NULL,
+                              total = NULL,
                               prop_method = NULL,
+                              quantiles = NULL,
+                              moustache_probs = NULL,
+                              bw = NULL,
+                              resolution = NULL,
+                              height = NULL,
+                              limits = NULL,
                               reorder = NULL,
+                              position = NULL,
                               show_ci = NULL,
+                              show_mid_point = NULL,
+                              show_mid_line = NULL,
+                              show_ci_errorbar = NULL,
+                              show_ci_lines = NULL,
+                              show_ci_area = NULL,
+                              show_quant_lines = NULL,
+                              show_moustache = NULL,
                               show_n = NULL,
                               show_value = NULL,
                               show_labs = NULL,
+                              total_name = NULL,
+                              scale = NULL,
+                              digits = NULL,
+                              unit = NULL,
                               dec = NULL,
-                              pal = NULL,
                               col = NULL,
+                              pal = NULL,
+                              direction = NULL,
+                              desaturate = NULL,
+                              lighten = NULL,
+                              darken = NULL,
+                              col_density = NULL,
+                              col_moustache = NULL,
+                              col_border = NULL,
+                              alpha = NULL,
+                              dodge = NULL,
                               font = NULL,
-                              coef_font = NULL,
+                              wrap_width_y = NULL,
+                              wrap_width_leg = NULL,
+                              legend_ncol = NULL,
+                              title = NULL,
+                              subtitle = NULL,
+                              xlab = NULL,
+                              ylab = NULL,
+                              legend_lab = NULL,
                               caption = NULL,
-                              theme = NULL,
                               lang = NULL,
+                              theme = NULL,
+                              coef_font = NULL,
                               erase_all = FALSE) {
 
   # On enregistre le call

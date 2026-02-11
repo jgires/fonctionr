@@ -345,10 +345,13 @@ title = "Average incomes according to gender",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
-#> Variable(s) entrees : py010n, py050n, py090n, py100n
+#> Warning: Active parameters in function r_options(): font, coef_font
+#> Variables used: py010n, py050n, py090n, py100n
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 0 observation(s) removed due to missing group
+#> With na.vars = 'rm', observations removed differ between variables
 
 # Results in graph form
 eusilc_many_mean_group$graph

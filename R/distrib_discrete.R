@@ -20,8 +20,8 @@
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
 #' @param unit Unit displayed on the graphic. Default is percent.
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
-#' @param pal Argument kept for compatibility with old versions.
 #' @param col Color of the bars. col must be a R color or an hexadecimal color code. Default is "sienna2". The color of NA category (in case of na.rm.var == FALSE) is always "grey".
+#' @param pal Argument kept for compatibility with old versions.
 #' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels of the categories. Default is 25.
@@ -92,8 +92,8 @@ distrib_discrete <- function(data,
                              digits = 0,
                              unit = "%",
                              dec = NULL,
-                             pal = NULL,
                              col = "sienna2",
+                             pal = NULL,
                              dodge = 0.9,
                              font ="Roboto",
                              wrap_width_y = 25,
@@ -101,8 +101,8 @@ distrib_discrete <- function(data,
                              subtitle = NULL,
                              xlab = NULL,
                              ylab = NULL,
-                             lang = "fr",
                              caption = NULL,
+                             lang = "fr",
                              theme = "fonctionr",
                              coef_font = 1,
                              export_path = NULL) {

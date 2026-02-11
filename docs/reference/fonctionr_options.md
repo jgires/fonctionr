@@ -6,88 +6,291 @@ Function to set global options for fonctionr
 
 ``` r
 fonctionr_options(
+  na.rm.group = NULL,
+  na.rm.facet = NULL,
+  na.prop = NULL,
+  na.vars = NULL,
+  na.rm.var = NULL,
+  probs = NULL,
   total = NULL,
   prop_method = NULL,
+  quantiles = NULL,
+  moustache_probs = NULL,
+  bw = NULL,
+  resolution = NULL,
+  height = NULL,
+  limits = NULL,
   reorder = NULL,
+  position = NULL,
   show_ci = NULL,
+  show_mid_point = NULL,
+  show_mid_line = NULL,
+  show_ci_errorbar = NULL,
+  show_ci_lines = NULL,
+  show_ci_area = NULL,
+  show_quant_lines = NULL,
+  show_moustache = NULL,
   show_n = NULL,
   show_value = NULL,
   show_labs = NULL,
+  total_name = NULL,
+  scale = NULL,
+  digits = NULL,
+  unit = NULL,
   dec = NULL,
-  pal = NULL,
   col = NULL,
+  pal = NULL,
+  direction = NULL,
+  desaturate = NULL,
+  lighten = NULL,
+  darken = NULL,
+  col_density = NULL,
+  col_moustache = NULL,
+  col_border = NULL,
+  alpha = NULL,
+  dodge = NULL,
   font = NULL,
-  coef_font = NULL,
+  wrap_width_y = NULL,
+  wrap_width_leg = NULL,
+  legend_ncol = NULL,
+  title = NULL,
+  subtitle = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  legend_lab = NULL,
   caption = NULL,
-  theme = NULL,
   lang = NULL,
+  theme = NULL,
+  coef_font = NULL,
   erase_all = FALSE
 )
 ```
 
 ## Arguments
 
+- na.rm.group:
+
+  na.rm.group
+
+- na.rm.facet:
+
+  na.rm.facet
+
+- na.prop:
+
+  na.prop
+
+- na.vars:
+
+  na.vars
+
+- na.rm.var:
+
+  na.rm.var
+
+- probs:
+
+  probs
+
 - total:
 
-  To write
+  total
 
 - prop_method:
 
   prop_method
 
+- quantiles:
+
+  quantiles
+
+- moustache_probs:
+
+  moustache_probs
+
+- bw:
+
+  bw
+
+- resolution:
+
+  resolution
+
+- height:
+
+  height
+
+- limits:
+
+  limits
+
 - reorder:
 
-  To write
+  reorder
+
+- position:
+
+  position
 
 - show_ci:
 
-  To write
+  show_ci
+
+- show_mid_point:
+
+  show_mid_point
+
+- show_mid_line:
+
+  show_mid_line
+
+- show_ci_errorbar:
+
+  show_ci_errorbar
+
+- show_ci_lines:
+
+  show_ci_lines
+
+- show_ci_area:
+
+  show_ci_area
+
+- show_quant_lines:
+
+  show_quant_lines
+
+- show_moustache:
+
+  show_moustache
 
 - show_n:
 
-  To write
+  show_n
 
 - show_value:
 
-  To write
+  show_value
 
 - show_labs:
 
-  To write
+  show_labs
+
+- total_name:
+
+  total_name
+
+- scale:
+
+  scale
+
+- digits:
+
+  digits
+
+- unit:
+
+  unit
 
 - dec:
 
-  To write
-
-- pal:
-
-  To write
+  dec
 
 - col:
 
-  To write
+  col
+
+- pal:
+
+  pal
+
+- direction:
+
+  direction
+
+- desaturate:
+
+  desaturate
+
+- lighten:
+
+  lighten
+
+- darken:
+
+  darken
+
+- col_density:
+
+  col_density
+
+- col_moustache:
+
+  col_moustache
+
+- col_border:
+
+  col_border
+
+- alpha:
+
+  alpha
+
+- dodge:
+
+  dodge
 
 - font:
 
-  Font used in the graphic. See load_and_active_fonts() for available
-  fonts.
+  font
 
-- coef_font:
+- wrap_width_y:
 
-  A multiplier factor for font size
+  wrap_width_y
+
+- wrap_width_leg:
+
+  wrap_width_leg
+
+- legend_ncol:
+
+  legend_ncol
+
+- title:
+
+  title
+
+- subtitle:
+
+  subtitle
+
+- xlab:
+
+  xlab
+
+- ylab:
+
+  ylab
+
+- legend_lab:
+
+  legend_lab
 
 - caption:
 
-  To write
-
-- theme:
-
-  To write
+  caption
 
 - lang:
 
-  The language of the indications on the chart. Possibilities: "fr",
-  "nl", "en". Default is "fr".
+  lang
+
+- theme:
+
+  theme
+
+- coef_font:
+
+  coef_font
 
 - erase_all:
 
@@ -130,13 +333,13 @@ title = "% of ind. receiving unemployment benefits in their hh",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
+#> Warning: Active parameters in function r_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
-#> 2720 observations removed due to missing group
-#> 0.0638389587402344
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 2720 observation(s) removed due to missing group
 #> Variable(s) detected in prop_exp: py090n
-#> 0 observations removed due to missing value(s) for the variable(s) in prop_exp
+#> 0 observation(s) removed due to missing value(s) for the variable(s) in prop_exp
 
 # Results in graph form
 eusilc_prop$graph

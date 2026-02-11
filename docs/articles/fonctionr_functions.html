@@ -74,10 +74,10 @@ descriptifs et d’analyses bivariées les plus courants.</p>
 directement les résultats produits dans un rapport. Ainsi,
 <code>fonctionr</code> produit en une seule fonction : un tableau de
 résultats avec les indicateurs voulus, les effectifs et leurs
-intervalles de confiance ; un graphique prêt à être publié et le plus
-souvent un test statistique le plus approprié aux variables étudiées. Il
-est aussi possible de directement exporter ces trois résultats dans un
-fichier Excel.</p>
+intervalles de confiance ; un graphique prêt à être publié ; et, le plus
+souvent, le test statistique le plus approprié aux variables étudiées.
+Il est aussi possible de directement exporter ces trois résultats dans
+un fichier Excel.</p>
 <p>Ce guide se structure de la manière suivante. Dans un premier temps
 on décrit les différentes fonctions, ce qu’elles produisent et dans
 quels cas elles peuvent être utilisées. Dans un deuxième temps, on
@@ -105,7 +105,10 @@ l’estimation du nombre de personnes dans la population dans chaque
 catégorie et les bornes de l’intervalle de confiance de cette estimation
 ;</p></li>
 <li><p>Les différents résultats d’un test statistique lorsqu’il y en a
-un qui est pertinent.</p></li>
+un qui est pertinent. Précisons déjà qu’en cas de facettes (plus de
+détails ci-dessous), le test est généralement réalisé en comparant les
+totaux les totaux entre facettes sans prendre en compte la distribution
+à l’intérieur de celles-ci.</p></li>
 </ul>
 <p>La plupart des fonctions permettent aussi d’exporter directement ces
 trois résultats dans un format Excel, dans l’idée de pouvoir facilement
@@ -496,10 +499,11 @@ dans la totalité de la population.</p>
 groupe<a class="anchor" aria-label="anchor" href="#many_val_group-calculer-plusieurs-indicateurs-par-groupe"></a>
 </h3>
 <p><code><a href="../reference/many_val_group.html">many_val_group()</a></code> fonctionne comme
-<code><a href="../reference/many_val.html">many_val()</a></code>, mais permet d’indiquer une variable qualitative
-de groupes : les résultats sont alors différenciés selon les différentes
-modalités de cette variable (= les groupes). Ici aussi, aucun test
-statistique n’est effectué. Trois calculs sont possibles :</p>
+<code><a href="../reference/many_val.html">many_val()</a></code>, mais permet de comparer les indicateurs selon
+des groupes (une variable qualitative) : les résultats sont alors
+différenciés selon les différentes modalités de cette variable (= les
+groupes). Ici aussi, aucun test statistique n’est effectué. Trois
+calculs sont possibles :</p>
 <ul>
 <li>La comparaison de proportions quand l’argument
 <code>type = "prop"</code> ou pour l’alias
@@ -566,7 +570,11 @@ graphiquement les petites droites reliant les points de densité. Une
 grande résolution implique cependant des calculs plus longs.</p>
 <p>L’exemple ci-dessous décrit la distribution de l’âge. L’objet produit
 est une liste qui comprend quatre éléments. On trouve <code>graph</code>
-et <code>tab</code>, comme dans les autres fonction.</p>
+et <code>tab</code>, comme dans les autres fonction. Les différentes
+couleurs et les marques sur l’axes des abscisses sont les quantiles (ici
+les déciles), ainsi que les valeurs maximales ou minimales – et auraient
+été remplacées par les limites du graphique en cas de zoom avec
+l’argument <code>limits</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span><span class="va">eusilc</span>, <span class="va">age</span>, type <span class="op">=</span> <span class="st">"mean"</span>, bw <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -687,6 +695,11 @@ mensuel.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Working full time 0.95             734. <span style="text-decoration: underline;">4</span>019.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Working full time 0.8             <span style="text-decoration: underline;">1</span>008. <span style="text-decoration: underline;">2</span>909.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Working full time 0.5             <span style="text-decoration: underline;">1</span>315. <span style="text-decoration: underline;">2</span>241.</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">distrib_income</span><span class="op">$</span><span class="va">test</span></span>
+<span><span class="co">#&gt; Wald test for pl030_rec</span></span>
+<span><span class="co">#&gt;  in svyglm(formula = fmla, design = data_W)</span></span>
+<span><span class="co">#&gt; F =  135.5979  on  6  and  12100  df: p= &lt; 2.22e-16</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -1708,14 +1721,14 @@ total_name
 total_name
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
 total_name
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
-</td>
-<td style="text-align:left;color: black !important;background-color: rgba(179, 235, 233, 255) !important;">
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: rgba(167, 227, 243, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
@@ -1835,7 +1848,29 @@ dec
 Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-pal
+col
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 pal
@@ -1850,13 +1885,13 @@ pal
 pal
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-pal
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 pal
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-pal
 </td>
 </tr>
 <tr>
@@ -1890,6 +1925,82 @@ direction
 Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+desaturate
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+desaturate
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+desaturate
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+desaturate
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+desaturate
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+lighten
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+lighten
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+lighten
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+lighten
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+lighten
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+darken
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+darken
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+darken
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+darken
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+darken
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
@@ -1898,7 +2009,32 @@ Esthétique: graphique
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-pal_moustache
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col_density
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col_density
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: graphique
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+</td>
+<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+col_moustache
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
@@ -1920,10 +2056,10 @@ Esthétique: graphique
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-color
+col_border
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
-color
+col_border
 </td>
 <td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
 </td>
@@ -2314,31 +2450,31 @@ theme
 </td>
 </tr>
 <tr>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
-Esthétique: graphique
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;font-weight: bold;color: black !important;background-color: white !important;">
+Esthétique: lettres
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
-<td style="text-align:left;color: black !important;background-color: rgba(193, 214, 224, 255) !important;">
+<td style="text-align:left;color: black !important;background-color: rgba(223, 206, 202, 255) !important;">
 coef_font
 </td>
 </tr>
@@ -2376,7 +2512,7 @@ en compte un même plan de sondage : en l’indiquant directement dans la
 fonction de <code>fonctionr</code>, en créant au préalable un objet
 <code>survey</code> et en créant au préalable un objet
 <code>srvyr</code>.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://r-survey.r-forge.r-project.org/survey/" class="external-link">survey</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://gdfe.co/srvyr/" class="external-link">srvyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -2412,9 +2548,9 @@ fonction de <code>fonctionr</code>, en créant au préalable un objet
 <span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  wrap_width_y <span class="op">=</span> <span class="fl">15</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_1</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_2</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_3</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-39-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-40-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-arguments-indispensables">Les arguments indispensables<a class="anchor" aria-label="anchor" href="#les-arguments-indispensables"></a>
@@ -2450,10 +2586,11 @@ calcul des variables de proportions. C’est pourquoi l’utilisation de la
 fonction <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na()</a></code> n’est, par défaut, pas autorisée dans
 l’argument <code>prop_exp</code>. D’autres fonctions, qui prennent en
 compte les <code>NA</code>, par exemple la fonction <code>%in%</code>,
-ne fonctionnent pas comme attendues, car ici les <code>NA</code> sont
+ne fonctionnent pas comme attendues, car, ici, les <code>NA</code> sont
 exclus des calculs a priori. Il est possible de changer cette manière de
-procéder avec l’argument <code>na.prop</code>.Plus de détails se
-trouvent dans le point <em>Traitement des NA</em>.</p></li>
+procéder avec l’argument <code>na.prop</code>. Des explications plus
+détaillées se trouvent dans le point <em>Traitement des
+NA</em>.</p></li>
 <li><p><code>list_vars</code> doit être un vecteur reprenant l’ensemble
 des variables reprises dans les fonctions <code><a href="../reference/many_val.html">many_val()</a></code> et
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que leurs alias. Pour
@@ -2463,17 +2600,18 @@ d’introduire ici des expressions) et pour <code><a href="../reference/many_val
 <code><a href="../reference/many_val_group.html">many_mean_group()</a></code>, <code><a href="../reference/many_val.html">many_median()</a></code> et
 <code><a href="../reference/many_val_group.html">many_median_group()</a></code>, les variables doivent être numériques.
 L’argument <code>list_vars_lab</code> permet d’indiquer le label pour
-les variables à l’aide d’un vecteur. Bien qu’il ne s’agisse pas d’un
-argument indispensable, nous l’avons placé juste après
-<code>list_vars</code> pour faciliter l’utilisation des fonctions. Pour
-<code>list_vars_lab</code>, les guillemets doivent être utilisé pour
-indiquer les labels des variables.</p></li>
+les variables à l’aide d’un vecteur, tels que l’utilisateurs souhaite
+qu’ils apparaissent sur le graphique et le tableau produits. Bien qu’il
+ne s’agisse pas d’un argument indispensable, nous l’avons placé juste
+après <code>list_vars</code> pour faciliter l’utilisation des fonctions.
+Pour <code>list_vars_lab</code>, les guillemets doivent être utilisé
+pour indiquer les labels des variables.</p></li>
 </ul>
 <p>Dans l’exemple ci-dessous, on calcule selon le sexe la proportion des
 répondants qui travaillent et dont le salaire net annuel était inférieur
 à 12000€. On peut ainsi introduire des expressions complexes dans les
 fonctions.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
@@ -2482,9 +2620,9 @@ fonctions.</p>
 <span>  title <span class="op">=</span> <span class="st">"% of the population that works and whose wage is less than 12000€ net"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="les-arguments-clés-pas-obligatoires-mais-influençant-les-résultats">Les arguments clés : pas obligatoires mais influençant les
@@ -2503,7 +2641,7 @@ n’est que disponible dans <code><a href="../reference/prop_group.html">prop_gr
 <code>group.fill</code> est transformée en facteur pour son usage dans
 la fonction. Dans l’exemple ci-dessous, on compare les revenus moyens
 par statut socio-économique et sexe.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_income_status_sex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
@@ -2516,7 +2654,7 @@ par statut socio-économique et sexe.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">eusilc_income_status_sex</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-43-1.png" class="r-plt" alt="" width="100%"></p>
 </li>
 <li><p><code>facet</code> permet d’indiquer une variable qualitative
 pour différencier les résultats selon les différentes modalités de cette
@@ -2525,11 +2663,15 @@ résultat <code>tab</code>. Dans le graphique, elle produit des
 “facettes”, d’où le nom de l’argument. Comme <code>group</code>,
 <code>group.fill</code> et <code>quali_var</code>, la variable indiquée
 pour cet argument est transformée en facteur pour leur usage dans la
-fonction. Par défaut, les facettes ne sont pas produites. Ci-dessous, on
-calcule la distribution des différents statuts socio-économiques par
-région (indiquée comme variable de facettes) :</p></li>
+fonction. Par défaut, les facettes ne sont pas produites. En cas de
+facettes, le test statistique est généralement réalisé en comparant les
+totaux les totaux entre facettes sans prendre en compte la distribution
+à l’intérieur de celles-ci (pour un détail, voir la documentation
+spécifique à chaque fonction). Ci-dessous, on calcule la distribution
+des différents statuts socio-économiques par région (indiquée comme
+variable de facettes) :</p></li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computation, taking sample design into account</span></span>
 <span><span class="va">eusilc_dist_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_discrete.html">distrib_d</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">eusilc</span>,</span>
@@ -2540,22 +2682,23 @@ région (indiquée comme variable de facettes) :</p></li>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-45-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li><p><code>filter_exp</code> est une expression qui permet de filtrer
 les données de manière à produire les résultats sur une partie de
 l’échantillon. Comme il s’agit d’une expression, il est possible de
-mettre en oeuvre des conditions de filtres complexe et multiple, par
-exemple sélectionner uniquement les personnes âgées de moins de 60 ans,
-dont le revenu mensuel est inférieur à 3000€ et qui sont célibataires.
-Si une possibilité de filtrage est inclue dans les fonctions, c’est pour
-que le filtrage des données soit réalisé après la définition du plan de
-sondage, afin que le filtrage ne modifie pas celui-ci comme le
-recommande Thomas Lumley, l’auteur de <code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri"&gt;https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Ici aussi, seules les
-variables de la base de données, les opérateurs et les valeurs numérique
-sont autorisés dans les expressions.</p></li>
+mettre en oeuvre des conditions de filtres complexes et multiples. Par
+exemple l’utilisateur peut sélectionner uniquement les personnes âgées
+de moins de 60 ans, dont le revenu mensuel est inférieur à 3000€ et qui
+sont célibataires. Si une possibilité de filtrage est incluse dans les
+fonctions, c’est pour que le filtrage des données soit réalisé après la
+définition du plan de sondage, afin que le filtrage ne modifie pas
+celui-ci comme le recommande Thomas Lumley, l’auteur de
+<code>survey</code><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/" class="external-link uri"&gt;https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>. Ici aussi, seules les variables de la base
+de données, les opérateurs et les valeurs numérique sont autorisés dans
+les expressions.</p></li>
 <li><p><code>total</code> est un argument qui permet de calculer
 l’indicateur ou la distribution de la variable pour le total, et pas
 uniquement pour les groupes. Cela permet de comparer non seulement les
@@ -2595,19 +2738,19 @@ variables d’intérêts, expressions, etc.</p>
 <li>
 <code>na.rm.group</code>, <code>na.rm.facet</code>,
 <code>na.rm.var</code> indiquent respectivement la manière dont les
-éventuels <code>NA</code> dans les variables <code>group</code>,
-<code>facet</code> et dans <code>quali_var</code> sont traités. Si
-l’argument est <code>TRUE</code>, les <code>NA</code> sont retirés dans
-les calculs. Si l’argument est <code>FALSE</code>, une modalité
-spécifique est créée pour les <code>NA</code>. Dans ce cas, ils prennent
-toujours la couleur gris clair sur le graphique, pour pointer leur
-spécificité. Dans le cas où ils sont retirés, ils ne sont pas pris en
-compte pour calculer le total, le cas échéant. Par défaut, l’argument
-prend la valeur <code>FALSE</code>, c’est-à-dire que les <code>NA</code>
-sont supprimés des analyses. Actuellement, <code>na.rm.group</code>
-influence le traitement des NA, tant pour la variable <code>group</code>
-que la variable <code>group.fill</code>, si cette dernière est
-présente.</li>
+éventuels <code>NA</code> dans les variables <code>group</code>, (et
+<code>group.fill</code>), <code>facet</code> et dans
+<code>quali_var</code> sont traités. Si l’argument est
+<code>TRUE</code>, les <code>NA</code> sont retirés dans les calculs. Si
+l’argument est <code>FALSE</code>, une modalité spécifique est créée
+pour les <code>NA</code>. Dans ce cas, ils prennent toujours la couleur
+gris clair sur le graphique, pour pointer leur spécificité. Dans le cas
+où ils sont retirés, ils ne sont pas pris en compte pour calculer le
+total, le cas échéant. Par défaut, l’argument prend la valeur
+<code>FALSE</code>, c’est-à-dire que les <code>NA</code> sont supprimés
+des analyses. Précisons que <code>na.rm.group</code> influence le
+traitement des NA, tant pour la variable <code>group</code> que la
+variable <code>group.fill</code>, si cette dernière est présente.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, on compare la distribution des statuts
 socio-professionnels entre régions, en y ajoutant une modalité
@@ -2617,7 +2760,7 @@ conserver que les personnes de plus de 11 ans et introduisant la
 variable sexe comme facette. Comme nous le verrons, la couleur des
 <code>NA</code> est toujours grise et ne dépend pas de la palette de
 couleur, de manière à les identifier spécifiquement.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -2629,9 +2772,9 @@ couleur, de manière à les identifier spécifiquement.</p>
 <span>  title <span class="op">=</span> <span class="st">"Distribution of socio-economic status according to region and gender"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-47-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>na.prop</code> indique la manière dont les éventuels
@@ -2648,7 +2791,7 @@ supprimé les <code>NA</code>). Précisons que l’exclusion des
 <code>NA</code> se fait avant le calcul de l’expression. Ainsi, si des
 fonctions dont le comportement attendu est d’inclure les <code>NA</code>
 sont indiquées dans l’argument <code>prop_exp</code>, par exemple
-<code>%in%</code>, elles ne fonctionnerons pas comme prévu, car les
+<code>%in%</code>, elles ne fonctionneront pas comme prévu, car les
 <code>NA</code> seront exclus avant que ces fonctions ne pourront les
 prendre en compte. Pour résumer, quand <code>na.prop</code> prend la
 valeur <code>"rm"</code> (ce qui se fait par défaut), toutes les
@@ -2665,9 +2808,11 @@ l’étudiant était absent ; on peut donc vouloir calculer la proportion
 d’étudiants ayant au moins 12/20 en conservant les absents au
 dénominateur, ce qui est possible avec <code>na.prop = "include"</code>.
 Par défaut, <code>na.prop</code> prend la valeur <code>"rm"</code>.
-Précisons aussi que pour <code><a href="../reference/central_group.html">central_group()</a></code> et ses alias
-<code><a href="../reference/central_group.html">mean_group()</a></code> et <code><a href="../reference/central_group.html">median_group()</a></code>, il n’y a pas
-d’argument permettant de choisir le traitement des <code>NA</code> dans
+Précisons aussi que pour <code>central_group(),</code> et ses alias
+<code><a href="../reference/central_group.html">mean_group()</a></code> et <code><a href="../reference/central_group.html">median_group()</a></code>, ainsi que
+<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>,il n’y a pas d’argument
+permettant de choisir le traitement des <code>NA</code> dans
 <code>quanti_exp</code>. Les observations comprenant au moins un
 <code>NA</code> dans une variable indiquée dans <code>quanti_exp</code>
 sont automatiquement exclues des calculs, car il n’y a pas d’autre
@@ -2678,7 +2823,7 @@ selon le sexe en excluant ou en incluant les <code>NA</code>. Les taux
 du second graphique sont plus faible, car dans celui-ci les personnes
 n’ayant pas de statut socio-professionnel (c’est-à-dire les enfants)
 sont comptabilisées dans le dénominateur.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
@@ -2696,9 +2841,9 @@ sont comptabilisées dans le dénominateur.</p>
 <span>  na.prop <span class="op">=</span> <span class="st">"include"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"% workers (NA included)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_NA_excl</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_NA_incl</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-48-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-49-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>na.vars</code> indique la manière dont les <code>NA</code>
@@ -2710,13 +2855,28 @@ pas toujours le même pour chacune des variables calculées, mais on
 conserve un maximum d’observations. Si l’argument prend la valeur
 <code>"rm.all"</code>, les observations qui comprennent au moins un
 <code>NA</code> dans n’importe quelle des variables de
-<code>list_vars</code> sont exclues. Cette manière de procéder exclut
-plus d’observations mais permet d’avoir un échantillon identique pour
-toutes les variables. Par défaut, <code>na.vars</code> prend la valeur
-<code>"rm"</code>.
+<code>list_vars</code> sont exclues pour l’ensemble des estimations.
+Cette manière de procéder exclut plus d’observations mais permet d’avoir
+un échantillon identique pour toutes les variables. Par défaut,
+<code>na.vars</code> prend la valeur <code>"rm"</code>.
 <!--# François : Je me demande s'il ne faut pas mettre un exemple sur na.vars ici, mais je n'en vois pas de bien à partir du jeu de données SILC Autriche -->
 </li>
 </ul>
+<p>Dans la version actuelle, des messages ont été introduit dans les
+fonction pour indiquer le nombre d’observation retirées des analyses. Il
+s’agit de comptages séquentiels. C’est-à-dire que chaque observation
+retirée n’est comptée qu’une fois, même si elle a plusieurs raisons
+d’être exclue. Par exemple, si l’utilisateur veut décrire la
+distribution de la catégorie professionnelle des personnes, les enfants
+peuvent être exclus parce que l’utilisateur utilise un filtre
+(<code>filter_exp</code>) pour ne conserver que les 18 ans et plus et
+que la variable profession prend la valeur <code>NA</code> pour ceux-ci.
+L’ordre selon lequel les différents filtres sont appliqués est le
+suivant et va du choix à la contrainte et du général au particulier : 1°
+<code>filter_exp</code>, 2° <code>facet</code>, 3° <code>group</code>,
+4° <code>group_fill</code>, 5° <code>prop_exp</code> /
+<code>quanti_exp</code> / <code>quali_var</code> /
+<code>list_vars</code>.</p>
 </div>
 </div>
 <div class="section level3">
@@ -2745,14 +2905,17 @@ graphique. En cas de facettes, les catégories sont réordonnées sur base
 de chaque catégorie médiane. Par exemple, si l’on utilise des facettes
 dans <code><a href="../reference/prop_group.html">prop_group()</a></code>, la fonction identifie, pour chaque
 groupe, quelle est la proportion médiane par groupe et puis elle va
-ordonner les groupes sur bases de ces médianes. Par défaut,
-<code>reorder</code> prend la valeur de <code>FALSE</code>.
-<code>reorder</code> n’est pas disponible dans
-<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code> et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>
-ainsi que ses alias (<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>,
-<code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et <code><a href="../reference/many_val_group.html">many_median_group()</a></code>), car
-il y a plusieurs proportions ou indicateurs et il est difficile de
-choisir sur laquelle ou lequel réordonner.</li>
+ordonner les groupes sur bases de ces médianes. Précisons que dans le
+cas de <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, les groupes sont
+réordonnés selon la fréquence de la première modalité de la variable
+qualitative. Par défaut, <code>reorder</code> prend la valeur de
+<code>FALSE</code>. <code>reorder</code> n’est pas disponible dans
+<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code>, car il n’y a rien à réordonner pour
+cette fonction, ni pour <code><a href="../reference/many_val_group.html">many_val_group()</a></code> ainsi que ses
+alias (<code><a href="../reference/many_val_group.html">many_prop_group()</a></code>, <code><a href="../reference/many_val_group.html">many_mean_group()</a></code> et
+<code><a href="../reference/many_val_group.html">many_median_group()</a></code>), car il y a plusieurs proportions ou
+indicateurs et il est difficile de choisir sur laquelle ou lequel
+réordonner.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, les revenus moyens des statuts
 socio-économiques sont réordonnés. Comme il y a des facettes, c’est le
@@ -2761,7 +2924,7 @@ l’ordre. Par exemple, la catégorie “Permanently disabled” se situe en
 troisième position, car sa valeur médiane (15199€) se situe entre le
 médian de la catégorie “Student” (15097€) et de la catégorie “Working
 part time” (16511€).</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/central_group.html">mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">pl030_rec</span>,</span>
@@ -2773,26 +2936,28 @@ part time” (16511€).</p>
 <span>  title <span class="op">=</span> <span class="st">"Mean of eq. income by status and nationality"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_mean_reorder</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-51-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <code>position</code> est un argument qui ne se trouve uniquement
 dans <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et qui peut prendre les valeurs de
-<code>"dodge"</code> et de <code>"stack"</code>. Avec
+<code>"dodge"</code>, <code>"stack"</code> et <code>"flip"</code>. Avec
 <code>"dodge"</code>, les barres ne sont pas empilées. Avec
 <code>"stack"</code>, les barres sont empilées dans chaque groupe. Cette
 option peut avoir un intérêt quand les variables ont vocation à être
 additionnées, par exemple avec des revenus selon différentes sources qui
-peuvent former un revenu total. <code>"dodge"</code> est la valeur par
-défaut.</li>
+peuvent former un revenu total. Dans ce cas, les intervalles de
+confiance ne sont pas indiqués sur le graphique. Avec
+<code>"flip"</code>, ce sont les variables qui sont indiquées sur l’axe
+Y (au lieu des groupes), et les groupes qui sont indiqués en légende (au
+lieu des variables). Dans ce cas, le total n’est pas calculé.
+<code>"dodge"</code> est la valeur par défaut.</li>
 </ul>
-<p>Dans l’exemple ci-dessous, il est pertinent d’empiler les barres
-indiquant les différents revenus pour visualiser le revenu total.
-Cependant, dans ce cas, on peut plus indiquer les intervalles de
-confiance sur le graphique.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<p>L’exemple ci-dessous compare les trois modalités de l’argument
+<code>position</code>.</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Exemple avec Stack </span></span>
 <span><span class="va">eusilc_many_mean_group_2a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -2814,10 +2979,22 @@ confiance sur le graphique.</p>
 <span>  position <span class="op">=</span> <span class="st">"dodge"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"position = 'dodge'"</span>,</span>
 <span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Exemple avec flip </span></span>
+<span><span class="va">eusilc_many_mean_group_2c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/many_val_group.html">many_mean_group</a></span><span class="op">(</span></span>
+<span>  <span class="va">eusilc</span>,</span>
+<span>  group <span class="op">=</span> <span class="va">rb090</span>,</span>
+<span>  list_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">py010n</span>, <span class="va">py050n</span>, <span class="va">py090n</span><span class="op">)</span>,</span>
+<span>  list_vars_lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"salaires"</span>, <span class="st">"revenus d'une activité indépendant"</span>, <span class="st">"allocation de chômage"</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"flip"</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"position = 'flip'"</span>,</span>
+<span>  legend_ncol <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2a</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2b</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="100%"></p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eusilc_many_mean_group_2a</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2b</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_many_mean_group_2c</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-53-1.png" class="r-plt" alt="" width="100%"></p>
 <ul>
 <li>
 <p><code>show_ci</code>, <code>show_n</code>,
@@ -2829,7 +3006,7 @@ ou cacher différents éléments sur le graphique avec les valeurs
 <li>le nombre de personnes dans l’échantillon
 (<code>show_n</code>),</li>
 <li>l’estimation de l’indicateur (<code>show_value</code>)</li>
-<li>les titres et sous-titres du graphiques, des axes et de la légende
+<li>les titres et sous-titres des axes et (le cas échéant) de la légende
 (<code>show_lab</code>).</li>
 </ul>
 </li>
@@ -2854,10 +3031,10 @@ l’utilisateur peut indiquer autre chose de plus spécifique, par exemple
 “Belgique”, “Population active totale”, etc.</li>
 </ul>
 <p>Dans l’exemple ci-dessous, on ne montre plus les intervalles de
-confiances, les valeurs de l’indicateur et les labels des titres, par
+confiance, les valeurs de l’indicateur et les labels des titres, par
 contre on montre le nombre de personnes dans l’échantillon et on a
 changé le nom du “Total”.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -2869,9 +3046,9 @@ changé le nom du “Total”.</p>
 <span>  show_lab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  total_name <span class="op">=</span> <span class="st">"Total Austria"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-55-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Certains arguments sont spécifiques aux fonctions
 <code>distrib_continous()</code> et
 <code>distrib_group_continous()</code> :</p>
@@ -2940,14 +3117,15 @@ la grande majorité des observations. <code>height</code> a été défini
 pour que les aires de densité se chevauchent. Pour que ce chevauchement
 soit esthétique, <code>alpha</code> a été réglé à <code>.3</code> pour
 des aires transparentes et une bordure a été ajoutée avec
-<code>color = black</code> – ces deux arguments seront détaillés plus
-bas. On a indiqué la médiane sous la forme d’une ligne. Ses intervalles
-de confiance sont indiqués par deux lignes en pointillées et une aire
-colorées. Les déciles sont indiqués par des lignes verticales grises et
-on a masqué la moustache. Notez que le revenu du travail mensuel est
-directement calculé dans l’expression en additionnant le salaire avec le
-revenu d’une activité indépendante avant de diviser le tout par 12.</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code>col_border = black</code> – ces deux arguments seront détaillés
+plus bas. On a indiqué la médiane sous la forme d’une ligne. Ses
+intervalles de confiance sont indiqués par deux lignes en pointillées et
+une aire colorées. Les déciles sont indiqués par des lignes verticales
+grises et on a masqué la moustache. Notez que le revenu du travail
+mensuel est directement calculé dans l’expression en additionnant le
+salaire avec le revenu d’une activité indépendante avant de diviser le
+tout par 12.</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_continuous.html">distrib_group_c</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  <span class="va">db040</span>,</span>
@@ -2965,13 +3143,13 @@ revenu d’une activité indépendante avant de diviser le tout par 12.</p>
 <span>  show_ci_area <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_quant_lines <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  show_moustache <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  color <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  pal <span class="op">=</span> <span class="st">"purple"</span>,</span>
+<span>  col_border <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  col_density <span class="op">=</span> <span class="st">"purple"</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">.4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_income_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-56-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-57-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-graphique">L’esthétique graphique<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-graphique"></a>
@@ -2979,32 +3157,51 @@ revenu d’une activité indépendante avant de diviser le tout par 12.</p>
 <p><code>dodge</code> indique l’épaisseur des barres et peut aller de
 <code>0</code> (barre invisible car d’épaisseur nulle) à <code>1</code>
 (barre se touchant car ne laissant aucun espace entre elles). La valeur
-par défaut est de <code>0.9</code>.</p>
-<p>Les couleurs des barres sont indiquées dans l’argument
-<code>pal</code>.</p>
-<ul>
-<li><p>Dans les graphiques monochrome, <code>pal</code> peut prendre la
-valeur d’une couleur de base de R ou d’un code couleur hexadécimal.
-C’est le cas pour <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>,
-<code><a href="../reference/prop_group.html">prop_group()</a></code> et <code><a href="../reference/central_group.html">central_group()</a></code> quand il n’y a
-pas de <code>group.fill</code>.</p></li>
-<li><p>Dans les graphiques avec une palette de couleurs différentes,
-<code>pal</code> doit prendre le nom d’une palette des packages
-<code>MetBrewer</code>, <code>MoMAColors</code> ou
-<code>PrettyCols</code> (sauf pour la distribution d’une variable
-quantitative, voir ci-dessous). L’argument <code>direction</code> permet
+par défaut est de <code>0.9</code>. Les valeurs supérieures à
+<code>1</code> sont à déconseiller car elles conduisent à un
+chevauchement des barres.</p>
+<div class="section level5">
+<h5 id="les-arguments-chromatiques">Les arguments chromatiques<a class="anchor" aria-label="anchor" href="#les-arguments-chromatiques"></a>
+</h5>
+<p>Les couleurs sont indiquées par plusieurs arguments. Nous aborderons
+successivement le cas des graphiques en barres et celui des graphiques
+de densité. En cas de graphiques en barres
+(<code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>, <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>,
+<code><a href="../reference/prop_group.html">prop_group()</a></code>, <code><a href="../reference/central_group.html">central_group()</a></code>,
+<code><a href="../reference/many_val.html">many_val()</a></code>, <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et leurs divers
+alias), ce sont les arguments <code>col</code> et <code>pal</code> qui
+sont utilisés.</p>
+<p>Dans les graphiques monochromes c’est l’argument <code>col</code> qui
+doit être rempli par la valeur d’une couleur de base de R ou d’un code
+couleur hexadécimal. C’est le cas pour <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code>,
+<code><a href="../reference/many_val.html">many_val()</a></code>, <code><a href="../reference/prop_group.html">prop_group()</a></code> et
+<code><a href="../reference/central_group.html">central_group()</a></code> quand il n’y a pas de
+<code>group.fill</code>.</p>
+<p>Dans les graphiques avec une palette de couleurs différentes, c’est
+l’argument <code>pal</code> qui doit être utilisé. C’est le cas de
+<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, <code><a href="../reference/many_val.html">many_val()</a></code>,
+<code><a href="../reference/many_val_group.html">many_val_group()</a></code>, et de <code><a href="../reference/prop_group.html">prop_group()</a></code> et
+<code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un <code>group.fill</code>.
+Précisons que <code><a href="../reference/many_val.html">many_val()</a></code> peut être monochrome (si
+<code>col</code> est utilisé) ou avoir une palette avec une couleur
+différente par variable (si <code>pal</code> est utilisé). Par défaut
+(ou si les deux arguments sont remplis par l’utilisateur), c’est
+<code>pal</code> qui a la priorité sur <code>col</code>. L’argument
+<code>pal</code> peut prendre le nom d’une palette des packages
+<code>MetBrewer</code>ou <code>PrettyCols</code> , ainsi que les
+palettes propres à fonctionr, qui sont celles de l’Observatoire de la
+Santé et du Social (voir l’article à ce sujet) ou qu’un vecteur de code
+couleur de base de R ou d’un code couleur hexadécimal. Ce denier vecteur
+doit avoir exactement autant de couleurs que nécessaires. Pour les
+couleurs de palettes, l’argument <code>direction</code> permet
 d’inverser le sens de la palette, en remplaçant le <code>1</code>, par
-défaut, par <code>-1</code> pour avoir le sens opposé. C’est le cas de
-<code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>, <code><a href="../reference/many_val_group.html">many_val_group()</a></code>, et
-de <code><a href="../reference/prop_group.html">prop_group()</a></code> et <code><a href="../reference/central_group.html">central_group()</a></code> quand il y
-a un <code>group.fill</code>.</p></li>
-<li><p>Dans <code><a href="../reference/many_val.html">many_val()</a></code> et ses alias, on peut indiquer dans
-<code>pal</code> soit une couleur unique, soit une palette des packages
-<code>MetBrewer</code>, <code>MoMAColors</code> ou
-<code>PrettyCols</code>. Cela permet de choisir de produire un graphique
-monochrome, ou un graphique qui différencie chromatiquement chaque
-variable.</p></li>
-<li><p>Les couleurs des <code>NA</code> et des totaux, quand ils sont
+défaut, par <code>-1</code> pour avoir le sens opposé. Les arguments
+<code>desaturate</code>, <code>lighten</code> et <code>darken</code>
+permettent respectivement de désaturer la palette (pour aller vers des
+niveaux de gris), de l’éclaircir ou de l’obscurcir. Pour plus
+d’information, l’utilisateur peut aller voir les fonctions homonymes du
+package <code>colorspace</code>.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Voir : &lt;a href="https://colorspace.r-forge.r-project.org/articles/manipulation_utilities.html#lighten-or-darken-colors" class="external-link uri"&gt;https://colorspace.r-forge.r-project.org/articles/manipulation_utilities.html#lighten-or-darken-colors&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a></p>
+<p>Les couleurs des <code>NA</code> et des totaux, quand ils sont
 présents, ne sont pas modifiables directement par l’utilisateur. La
 modalité <code>NA</code> est toujours grise (<code>grey</code>). Le
 total est coloré de deux manière selon qu’il existe un seul total (dans
@@ -3018,25 +3215,24 @@ couleur, comme <code><a href="../reference/distrib_group_discrete.html">distrib_
 <code>group.fill</code>). Dans le premier cas, la couleur est gris foncé
 (<code>grey40</code>). Dans le second cas, chaque total a une bordure de
 la couleur de sa modalité ou variable et a une couleur de remplissage
-identique mais plus claire.</p></li>
-<li><p>Par défaut, des couleurs ou des palettes de couleurs différentes
-ont été choisies pour chacune des fonctions, y compris les alias, pour
-éviter une confusion entre graphiques différents.</p></li>
-</ul>
+identique mais plus claire.</p>
+<p>Par défaut, des couleurs ou des palettes de couleurs différentes ont
+été choisies pour chacune des fonctions, y compris les alias, pour
+éviter une confusion entre graphiques différents.</p>
 <p>Dans l’exemple ci-dessous, on compare deux graphiques issus de
 <code><a href="../reference/prop_group.html">prop_group()</a></code> : l’un avec l’argument
 <code>group.fill</code>, et l’autre sans. On calcule la proportion de
 travailleurs à temps partiel selon la nationalité. Dans le premier
 graphique, on différencie les proportions selon le sexe;
-<code>pal</code> prend alors le nom d’une palette (ici
-<code>"Neon"</code> de <code>PrettyCols</code> a été indiquée). En
-outre, dans ce premier graphique, les barres sont plus fines
-(<code>dodge</code> prend une valeur de 0.7). Dans le deuxième, il n’y a
-pas de sous-groupes. <code>pal</code> n’a alors besoin que d’une unique
-couleur, et on a indiqué la couleur de base de R <code>"gold"</code>. On
-remarque aussi les deux manières différentes dont les totaux sont
-représentés.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code>pal</code> prend le nom d’une palette (ici <code>"Neon"</code> de
+<code>PrettyCols</code> a été indiquée). En outre, dans ce premier
+graphique, les barres sont plus fines (<code>dodge</code> prend une
+valeur de 0.7). Dans le deuxième, il n’y a pas de sous-groupes. Ce n’est
+alors pas <code>pal</code> qui est utilisé, mais <code>col</code> qui
+prend le nom d’une unique couleur : la couleur de base de R
+<code>"gold"</code>. On remarque aussi les deux manières différentes
+dont les totaux sont représentés.</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Avec sous-groupes</span></span>
 <span><span class="va">eusilc_prop_sub_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
@@ -3057,67 +3253,70 @@ représentés.</p>
 <span>  weights <span class="op">=</span> <span class="va">rb050</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"% of ind. working part time by nationality"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"(no sub-groups)"</span>,</span>
-<span>  pal <span class="op">=</span> <span class="st">"gold"</span></span>
+<span>  col <span class="op">=</span> <span class="st">"gold"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop_sub_group</span><span class="op">$</span><span class="va">graph</span> <span class="op">|</span> <span class="va">eusilc_prop_no_sub_group</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-58-1.png" class="r-plt" alt="" width="100%"></p>
-<ul>
-<li><p>Dans <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
-<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>, <code>pal</code> peut soit
-prendre la valeur d’une couleur, soit un vecteur reprenant plusieurs
-couleurs. Dans le cas d’une seule couleur, les graphiques seront
-monochrome, dans le cas de plusieurs couleurs, une palette de couleur
-est créée en passant par les différentes couleurs indiquées pour colorer
-les différents quantiles, la première couleur indiquant la coloration
-des premiers et derniers quantiles, et la dernière couleur indiquant la
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-59-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Dans les graphique de densité (<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> et
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code>), pour éviter la confusion, ce
+sont d’autres arguments qui sont utilisés pour indiquer les
+couleurs.</p>
+<p><code>col_density</code> colorie la densité (c’est-à-dire l’aire sous
+la courbe de densité). <code>col_density</code> peut soit prendre la
+valeur d’une couleur, soit un vecteur reprenant plusieurs couleurs,
+toujours des couleurs de base de R ou de codes couleur hexadécimaux.
+Dans le cas d’une seule couleur, les graphiques seront monochrome, dans
+le cas de plusieurs couleurs, une palette de couleur est créée en
+passant par les différentes couleurs indiquées pour colorer les
+différents quantiles, la première couleur indiquant la coloration des
+premiers et derniers quantiles, et la dernière couleur indiquant la
 coloration du quantile central<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;En cas d’un nombre pair de quantiles, par exemple pour
 des déciles ou des quartiles, les deux catégories centrales prennent des
 couleurs différentes : c’est celle du haut qui prend la couleur indiquée
-en dernière position du vecteur &lt;code&gt;pal&lt;/code&gt;.&lt;/p&gt;"><sup>6</sup></a>. Précisons que le vecteur de
-<code>pal</code> doit être un vecteur de couleur de R ou de codes
-hexadécimaux, mais pas une des palettes des packages
-<code>MetBrewer</code>, <code>MoMAColors</code> ou
-<code>PrettyCols</code> utilisées dans <code>pal</code> pour les autres
-fonctions. Par défaut <code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> utilise un
-dégradé de bleu pour les quantiles et
-<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> colorie les courbes de densité
-en gris, de manière à ne pas surcharger le graphique avec les quantiles.
-Ces deux fonction ont aussi l’argument <code>color</code> qui permet de
-définir la couleur de la ligne supérieure de la courbe de densité. Par
-défaut cette ligne n’est pas affichée.</p></li>
-<li><p><code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> comprend aussi l’argument
-<code>pal_moustache</code> qui détermine les couleurs de la moustache et
-<code>alpha</code> qui détermine la transparence de la couleur de la
-densité. <code>pal_moustache</code> fonctionne comme <code>pal</code> et
-peut comprendre une couleur unie ou un vecteur de couleur. Mais
-logiquement, il n’est pas pertinent de représenter une moustache
-monochrome. Comme pour pour <code>pal</code>, il n’est pas nécessaire de
-définir chaque teinte de couleur individuellement, puisque la fonction
-produit une palette de couleur comprenant tous les dégradés nécessaires.
-<code>alpha</code> peut prendre une valeur allant de 0 (couleur
-totalement transparente et donc invisible) à 1 (couleur sans
-transparence). Avoir un certain degré de transparence est
+en dernière position du vecteur &lt;code&gt;pal&lt;/code&gt;.&lt;/p&gt;"><sup>7</sup></a>. Par défaut
+<code><a href="../reference/distrib_continuous.html">distrib_continuous()</a></code> utilise un dégradé de bleu pour les
+quantiles et <code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> colorie les courbes
+de densité en gris, de manière à ne pas surcharger le graphique avec les
+quantiles.</p>
+<p><code>col_border</code> indique la couleur de la courbe de densité.
+<code>col_border</code> peut prendre la valeur d’une couleur de base de
+R ou d’un code couleur hexadécimal. Par défaut cet argument prend la
+valeur <code>NULL</code> pour que cette ligne ne soit pas affichée.</p>
+<p><code>col_moustache</code> est un argument spécifique à
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> qui détermine les couleurs de la
+moustache. Il doit aussi prendre la valeur d’une couleur, soit un
+vecteur reprenant plusieurs couleurs, toujours des couleurs de base de R
+ou de codes couleur hexadécimaux. Il est conseillé de mettre un vecteur
+pour colorer les différentes parties de la moustache de couleurs
+différentes. Si le vecteurs est plus court que le nombre de partie de la
+moustache, les couleurs intermédiaires sont automatiquement
+définies.</p>
+<p><code>alpha</code> est aussi un argument spécifique à
+<code><a href="../reference/distrib_group_continuous.html">distrib_group_continuous()</a></code> qui détermine la transparence de
+la couleur de la densité. <code>alpha</code> peut prendre une valeur
+allant de 0 (couleur totalement transparente et donc invisible) à 1
+(couleur sans transparence). Avoir un certain degré de transparence est
 particulièrement utile si les différentes courbes se superposent (quand
-<code>height</code> est élevé).</p></li>
-</ul>
+<code>height</code> est élevé).</p>
 <p>Dans l’exemple ci-dessous, on utilise trois couleurs pour construire
 la palette qui va colorier l’aire de la densité et on trace la courbe de
 densité en rouge.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_continuous.html">distrib_c</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  <span class="va">age</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"mean"</span>,</span>
 <span>  quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.05</span><span class="op">)</span>,</span>
 <span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span>,</span>
-<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span>  pal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"green3"</span>, <span class="st">"orange"</span><span class="op">)</span>,</span>
+<span>  col_border <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  col_density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"green3"</span>, <span class="st">"orange"</span><span class="op">)</span>,</span>
 <span>  show_n <span class="op">=</span> <span class="cn">T</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">distrib_age_2</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-60-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-61-1.png" class="r-plt" alt="" width="100%"></p>
+</div>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-chiffres">L’esthétique des chiffres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-chiffres"></a>
@@ -3147,16 +3346,17 @@ le graphique. N’importe quel caractère ou chaîne de caractère peut être
 utilisée : <code>"€"</code>, <code>"m²"</code>, etc.</p></li>
 <li><p><code>dec</code> indique le caractère qui doit être utilisé pour
 marquer la décimale dans les chiffes. Cet argument n’est utile que quand
-<code>digits</code> est supérieur à 0. Par défaut,
-<code>dec = ","</code>, parce que la virgule est le caractère le plus
-utilisé pour marquer la décimale dans le monde francophone.</p></li>
+<code>digits</code> est supérieur à 0. Par défaut, le caractère de la
+décimale dépend de l’argument <code>lang</code>. En français et en
+néerlandais, c’est la virgule qui est utilisée, alors que c’est le point
+qui est utilisé en anglais.</p></li>
 </ul>
 <p>Dans l’exemple ci-dessous, on compare la proportion de travailleurs
 par région, mais en l’exprimant en pour mille et non en pour cent, en
 adaptant l’unité (<code>"‰"</code>), en conservant un chiffre après la
 virgule et en utilisant le point comme caractère pour la décimale et non
 la virgule.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prop_group.html">prop_group</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -3169,54 +3369,47 @@ la virgule.</p>
 <span>  title <span class="op">=</span> <span class="st">"Proportion of workers by region, in ‰"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Example with austrian SILC data from 'laeken' package"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_prop</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-62-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-63-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="lesthétique-des-lettres">L’esthétique des lettres<a class="anchor" aria-label="anchor" href="#lesth%C3%A9tique-des-lettres"></a>
 </h4>
-<ul>
-<li><p><code>font</code> indique la police qui est utilisée pour
-l’ensemble du texte dans le graphique. Plusieurs polices sont
-directement incluses dans <code>fonctionr</code> afin qu’elles soient
-utilisables sur tous les systèmes. Pour prendre connaissance des polices
-disponibles, voir <code><a href="../reference/load_and_active_fonts.html">load_and_active_fonts()</a></code>.</p></li>
-<li><p><code>wrap_width_y</code> et <code>wrap_width_leg</code>
-indiquent le nombre de caractères avant d’aller à la ligne, pour
-respectivement les différent labels de l’axe des ordonnées et les
-différents labels de la légende. Ces valeurs sont par défaut de 25
-caractères. <code>wrap_width_leg</code> n’est présent que pour les
-graphiques ayant une légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>,
+<p><code>font</code> indique la police qui est utilisée pour l’ensemble
+du texte dans le graphique. Plusieurs polices sont directement incluses
+dans <code>fonctionr</code> afin qu’elles soient utilisables sur tous
+les systèmes. Pour prendre connaissance des polices disponibles, voir
+<code><a href="../reference/load_and_active_fonts.html">load_and_active_fonts()</a></code>.</p>
+<p><code>wrap_width_y</code> et <code>wrap_width_leg</code> indiquent le
+nombre de caractères avant d’aller à la ligne, pour respectivement les
+différent labels de l’axe des ordonnées et les différents labels de la
+légende. Ces valeurs sont par défaut de 25 caractères.
+<code>wrap_width_leg</code> n’est présent que pour les graphiques ayant
+une légende : <code><a href="../reference/distrib_group_discrete.html">distrib_group_discrete()</a></code>,
 <code><a href="../reference/many_val_group.html">many_val_group()</a></code> et ses alias et <code><a href="../reference/prop_group.html">prop_group()</a></code>
 et <code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un argument
 <code>group.fill</code>). Précisons aussi que le <code>_y</code> renvoie
-à l’axe des y tel qu’il est situé sur le graphique, après la
+à l’axe des Y tel qu’il est situé sur le graphique, après la
 transformation <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> qui a lieu dans les fonctions.
 Ainsi, il s’agit souvent des groupes, de la variable qualitative pour
 <code><a href="../reference/distrib_discrete.html">distrib_discrete()</a></code> ou de la liste des variables pour
 <code><a href="../reference/many_val.html">many_val()</a></code> et <code>many_val_group(</code>) et leurs
-alias.</p></li>
-<li><p><code>legend_ncol</code> indique le nombre maximum de colonnes
-dans la légende. Par défaut, il y a quatre colonnes maximum. Le nombre
-de lignes dans la légende s’ajuste au nombre maximum de colonnes. Comme
+alias.</p>
+<p><code>legend_ncol</code> indique le nombre maximum de colonnes dans
+la légende. Par défaut, il y a quatre colonnes maximum. Le nombre de
+lignes dans la légende s’ajuste au nombre maximum de colonnes. Comme
 <code>wrap_width_leg</code> , <code>legend_ncol</code> n’est présent que
 pour les graphiques ayant une légende :
 <code>distrib_group_discrete(</code>) et <code><a href="../reference/many_val_group.html">many_val_group()</a></code>
 et ses alias et <code><a href="../reference/prop_group.html">prop_group()</a></code> et
 <code><a href="../reference/central_group.html">central_group()</a></code> quand il y a un argument
-<code>group.fill</code>.</p></li>
-</ul>
+<code>group.fill</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="les-labels">Les labels<a class="anchor" aria-label="anchor" href="#les-labels"></a>
 </h4>
-<p>Les arguments de label ne sont utilisés que si
-<code>show_lab = TRUE</code>, qui est la valeur par défaut. Si
-<code>show_lab = FALSE</code>, aucun des labels ci-dessous n’est
-indiqué.</p>
-<ul>
-<li><p><code>title</code>, <code>subtitle</code>, <code>xlab</code>,
+<p><code>title</code>, <code>subtitle</code>, <code>xlab</code>,
 <code>ylab</code>, <code>legend_lab</code> et <code>caption</code>
 indiquent les textes à reprendre comme titre du graphique, sous-titre du
 graphique, titre de l’axe des abscisses, titre de l’axe des ordonnées,
@@ -3232,16 +3425,20 @@ légende : <code><a href="../reference/distrib_group_discrete.html">distrib_grou
 un argument <code>group.fill</code>. Le <em>caption</em> étant souvent
 déjà utilisé pour indiquer la p valeur du test statistique, l’argument
 <code>caption</code> ajoute un texte en dessous de la mention de la p
-valeur du test statistique.</p></li>
-<li><p>Dans le cas où les arguments de label ne sont pas renseignés par
+valeur du test statistique, qui elle est toujours indiquée quand un test
+statistique est réalisé.</p>
+<p>Dans le cas où les arguments de label ne sont pas renseignés par
 l’utilisateur, il n’y a pas de titre, pas de sous-titre et pas de
 <em>caption</em> (autre que la p valeur du test statistique). Par
 contre, <code>xlab</code>, <code>ylab</code> et, pour les graphiques
 avec légende, <code>legend_lab</code> indiquent par défaut les noms de
 la variable ou de l’expression qui est, pour <code>xlab</code>, précédé
 d’une précision sur la nature du calcul : “Moyenne : …”, “Distribution :
-…”</p></li>
-<li><p>Il est possible d’indiquer certains label et d’autres non, par
+…”. Les arguments de label de titres des axes X et Y et de légende ne
+sont utilisés que si <code>show_lab = TRUE</code>, qui est la valeur par
+défaut. Si <code>show_lab = FALSE</code>, aucun titre d’axe ou de
+légende n’est indiqué.</p>
+<p>Il est possible d’indiquer certains label et d’autres non, par
 exemple si l’on souhaite un titre mais pas de sous-titre. Il suffit de
 ne compléter que les arguments de labels que l’on souhaite voir écrits
 sur le graphique. Cependant, pour <code>xlab</code>, <code>ylab</code>
@@ -3251,29 +3448,28 @@ label vide, il faut indiquer, respectivement, <code>xlab = ""</code>,
 <code>ylab =""</code> ou <code>legend_lab = ""</code>. L’utilisation de
 <code>xlab = NULL</code>, <code>ylab = NULL</code> ou
 <code>legend_lab = NULL</code> conduira à l’écriture du label par
-défaut.</p></li>
-<li><p>On peut aussi mentionner l’argument <code>lists_vars_lab</code>
-que l’on a déjà expliqué plus haut et qui peut être aussi considéré
-comme un label.</p></li>
-<li><p>L’argument <code>lang</code> permet de déterminer la langue des
+défaut.</p>
+<p>On peut aussi mentionner l’argument <code>lists_vars_lab</code> que
+l’on a déjà expliqué plus haut et qui peut être aussi considéré comme un
+label.</p>
+<p>L’argument <code>lang</code> permet de déterminer la langue des
 textes automatiques. Trois valeurs sont possibles :
 <code>lang = "fr"</code> pour le français, <code>lang = "nl"</code> pour
 le néerlandais et <code>lang = "en"</code> pour l’anglais. Par défaut,
-c’est le français qui est utilisé.</p></li>
-<li><p>L’argument <code>coef_font</code> permet de modifier la taille de
+c’est le français qui est utilisé.</p>
+<p>L’argument <code>theme</code>, qui est un argument d’esthétique
+graphique plutôt que de label, permet de modifier le thème du graphique.
+Le thème de base (<code>theme = NULL</code>) est celui qu’on retrouve
+dans tous les graphiques dans ce document, mais le thème IWEPS
+(<code>theme = "IWEPS"</code>) permet d’ajouter un axe gradué pour les
+ordonnées.</p>
+<p>L’argument <code>coef_font</code> permet de modifier la taille de
 l’ensemble des labels (titres, légendes, valeurs…) écrits sur le
 graphique. Cela peut être utile quand le graphique doit être exporté
 dans une publication, par exemple à l’aide d’un document quarto. Par
 défaut, il vaut 1. Une valeur supérieure à 1 permet d’augmenter la
 taille de tous les textes présents sur le graphique alors qu’une valeur
-inférieure à 1 permet de la diminuer.</p></li>
-<li><p>L’argument <code>theme</code>, qui est un argument d’esthétique
-graphique plutôt que de label, permet de modifier le thème du graphique.
-Le thème de base (<code>theme = NULL</code>) est celui qu’on retrouve
-dans tous les graphiques dans ce document, mais le thème IWEPS
-(<code>theme = "IWEPS"</code>) permet d’ajouter un axe gradué pour les
-ordonnées.</p></li>
-</ul>
+inférieure à 1 permet de la diminuer.</p>
 <p>Dans l’exemple ci-dessous, on a changé la police (Montserrat), on a
 mis à la ligne les labels de l’ordonnée à partir de 10 caractères et
 ceux de la légende à partir de 15 caractères et on a limité à trois
@@ -3283,7 +3479,7 @@ le label par défaut pour le titre de l’axe des abscisses et en n’ayant
 pas de titre pour l’axe des ordonnées. La langue des textes automatiques
 est le néerlandais et l’on a tracé l’axe des ordonnées
 (<code>theme = "IWEPS"</code>).</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/distrib_group_discrete.html">distrib_group_d</a></span><span class="op">(</span></span>
 <span>  <span class="va">eusilc</span>,</span>
 <span>  group <span class="op">=</span> <span class="va">db040</span>,</span>
@@ -3301,9 +3497,9 @@ est le néerlandais et l’on a tracé l’axe des ordonnées
 <span>  lang <span class="op">=</span> <span class="st">"nl"</span>,</span>
 <span>  theme <span class="op">=</span> <span class="st">"IWEPS"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eusilc_dist_group_d</span><span class="op">$</span><span class="va">graph</span></span></code></pre></div>
-<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-64-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="fonctionr_functions_files/figure-html/unnamed-chunk-65-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 </div>
 </div>

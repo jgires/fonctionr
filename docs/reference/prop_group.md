@@ -352,13 +352,13 @@ title = "% of ind. receiving unemployment benefits in their hh",
 subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
+#> Warning: Active parameters in function r_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
-#> 2720 observations removed due to missing group
-#> 0.0729129314422607
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 2720 observation(s) removed due to missing group
 #> Variable(s) detected in prop_exp: py090n
-#> 0 observations removed due to missing value(s) for the variable(s) in prop_exp
+#> 0 observation(s) removed due to missing value(s) for the variable(s) in prop_exp
 
 # Results in graph form
 eusilc_prop$graph

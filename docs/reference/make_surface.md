@@ -249,13 +249,14 @@ eusilc_mean <- mean_group(
   weights = rb050
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Parametres actifs dans fonctionr_options(): font, coef_font
+#> Warning: Active parameters in function r_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
-#> 13680 observations removed by filter_exp
-#> 296 observations removed due to missing group
-#> Variable(s) detectee(s) dans quanti_exp : py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n
-#> 0 observations removed due to missing value(s) for the variable(s) in quanti_exp
+#> Numbers of observation(s) removed by each filter (one after the other): 
+#> 13680 observation(s) removed by filter_exp
+#> 296 observation(s) removed due to missing group
+#> Variable(s) detected in quanti_exp: py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n
+#> 0 observation(s) removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Displaying results with make_surface()
 eusilc_mean$tab |>
