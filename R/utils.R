@@ -525,7 +525,9 @@ official_pal <- function(inst,
                  "OBSS_highlight3",
                  "OBSS_old",
                  "IBSA",
-                 "ULB")
+                 "ULB",
+                 "IEFH",
+                 "IEFH_div_bi")
 
   if(list_pal_names == F){
 
@@ -577,6 +579,7 @@ official_pal <- function(inst,
     # Palettes d'autres institutions
     if(inst == "IBSA"){pal_cols <- c("#D95A49", "#F0D0C8", "#562821", "#9A9A9A")}
     if(inst == "ULB"){pal_cols <- c("#0a5296", "#a7b9dd")}
+    if(inst == "IEFH"){pal_cols <- c("#9d4b95", "#c73a5d", "#cf6430", "#eec128", "#00867f", "#2b407f")}
 
     # On cree la palette si "pal_cols" existe (= palette simple)
     if(exists("pal_cols")){
@@ -586,6 +589,11 @@ official_pal <- function(inst,
 
     # Palettes composees de 2 palettes
     # Palettes divergentes sans point central
+    if(inst == "IEFH_div_bi"){
+      pal_cols1 <- c("#008671", "#85C4BF")
+      pal_cols2 <- c("#C28EBD", "#9d4b95")
+      }
+
     if(inst == "OBSS_div_bi1"){
       pal_cols1 <- c("#A457B5", "#E06B7D", "#F59C4F")
       pal_cols2 <- c("#33B8B4", "#3F7FBF", "#434E73")
@@ -627,7 +635,7 @@ official_pal <- function(inst,
     if(exists("pal_cols1")){
 
       # Pour divergent, si n == 2 ou 3, alors on selectionne en partant de la fin pour la 2e palette (coherent car divergent)
-      if(stringr::str_detect(inst, "OBSS_div_bi")){
+      if(stringr::str_detect(inst, "_div_bi")){
         if(n %in% 2:3){pal_cols2 <- rev(pal_cols2)}
       }
       # Pour highlight, on selectionne en partant de la fin pour la 2e palette dans certaines situation (coherent car opposition)
@@ -641,7 +649,7 @@ official_pal <- function(inst,
       pal_fct2 <- grDevices::colorRampPalette(pal_cols2)
 
       # pb si n est impair dans les palettes divergentes => asymetrie comme solution (la 1ere couleur prend le dessus)
-      if(stringr::str_detect(inst, "OBSS_div_bi")){
+      if(stringr::str_detect(inst, "_div_bi")){
         if (n %% 2 == 0) {
           np1 <- n/2
         } else {
