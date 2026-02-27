@@ -9,7 +9,7 @@
 #' @param error_upp The variable in tab with the upper bound of the confidence interval. If either error_low or error_upp is NULL error bars are not shown on the graphic.
 #' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
 #' @param n_var The variable in tab containing the number of observations for each indicator ploted. Default (NULL) does not show the numbers of observations on the plot.
-#' @param pvalue The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.
+#' @param pvalue The p-value to show in the caption. It can be a numeric value or the pvalue object from a statistical test.
 #' @param reorder TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. NA and total labels in var are not included in the reorder. Default is FALSE.
 #' @param show_value TRUE if you want to show the values on the graphic. FALSE if you do not want to show them. Default is TRUE.
 #' @param name_total Name of the var label that may contain the total. When indicated, it is displayed separately (bold name and value color is 'grey40') on the graph.

@@ -7,7 +7,7 @@
 #' @param error_low The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.
 #' @param error_upp The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.
 #' @param facet A variable in tab defining the faceting group, if applicable. Default is NULL.
-#' @param pvalue The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.
+#' @param pvalue The p-value to show in the caption. It can be a numeric value or the pvalue object from a statistical test.
 #' @param reorder TRUE if you want to reorder the values. NA label in var is not included in the reorder.
 #' @param compare TRUE to display a rectangle representing the smallest value. When facets are enabled, this is the smallest value per facet category.
 #' @param space The space between the rectangles. The unit is that of the indicator.

@@ -290,7 +290,11 @@ prop_group <- function(data,
     if(is.null(dec)){
       dec <- ","
     }
-    lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
+    if(!quo_is_null(quo_facet)){
+      lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance (totaux) : ")
+    } else {
+      lang_khi2 <- paste0("Khi2 d'ind","\u00e9","pendance : ")
+    }
     lang_khi2_error <- paste0("Khi2 d'ind","\u00e9","pendance : conditions non remplies")
     lang_prop <- "Proportion : "
   }
@@ -301,7 +305,11 @@ prop_group <- function(data,
     if(is.null(dec)){
       dec <- ","
     }
-    lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
+    if(!quo_is_null(quo_facet)){
+      lang_khi2 <- "Chi-kwadraat van onafhankelijkheid (totalen): "
+    } else {
+      lang_khi2 <- "Chi-kwadraat van onafhankelijkheid: "
+    }
     lang_khi2_error <- "Chi-kwadraat van onafhankelijkheid: voorwaarden niet vervuld"
     lang_prop <- "Aandeel: "
   }
@@ -312,7 +320,11 @@ prop_group <- function(data,
     if(is.null(dec)){
       dec <- "."
     }
-    lang_khi2 <- "Chi-square of independence: "
+    if(!quo_is_null(quo_facet)){
+      lang_khi2 <- "Chi-square of independence (totals): "
+    } else {
+      lang_khi2 <- "Chi-square of independence: "
+    }
     lang_khi2_error <- "Chi-square of independence: conditions not met"
     lang_prop <- "Proportion: "
   }

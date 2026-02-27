@@ -264,8 +264,13 @@ central_group <- function(data,
     if(is.null(dec)){
       dec <- ","
     }
-    lang_anova <- "Test de Wald : "
-    lang_kruskal <- "Kruskal Wallis : "
+    if(!quo_is_null(quo_facet)){
+      lang_anova <- "Test de Wald (totaux) : "
+      lang_kruskal <- "Kruskal Wallis (totaux) : "
+    } else {
+      lang_anova <- "Test de Wald : "
+      lang_kruskal <- "Kruskal Wallis : "
+    }
     lang_mean <- "Moyenne : "
     lang_median <- paste0("M","\u00e9","diane : ")
   }
@@ -276,8 +281,13 @@ central_group <- function(data,
     if(is.null(dec)){
       dec <- ","
     }
-    lang_anova <- "Wald-test: "
-    lang_kruskal <- "Kruskal Wallis: "
+    if(!quo_is_null(quo_facet)){
+      lang_anova <- "Wald-test (totalen): "
+      lang_kruskal <- "Kruskal Wallis (totalen): "
+    } else {
+      lang_anova <- "Wald-test: "
+      lang_kruskal <- "Kruskal Wallis: "
+    }
     lang_mean <- "Gemiddelde: "
     lang_median <- "Mediaan: "
   }
@@ -288,8 +298,13 @@ central_group <- function(data,
     if(is.null(dec)){
       dec <- "."
     }
-    lang_anova <- "Wald test: "
-    lang_kruskal <- "Kruskal Wallis: "
+    if(!quo_is_null(quo_facet)){
+      lang_anova <- "Wald-test (totals): "
+      lang_kruskal <- "Kruskal Wallis (totals): "
+    } else {
+      lang_anova <- "Wald test: "
+      lang_kruskal <- "Kruskal Wallis: "
+    }
     lang_mean <- "Mean: "
     lang_median <- "Median: "
   }
