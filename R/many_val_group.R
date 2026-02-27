@@ -386,7 +386,7 @@ many_val_group = function(data,
     message(paste0(before[[1]] - after[[1]]), " observation(s) removed due to missing in at least one of the variables")
   }
   else{
-    message("With na.vars = 'rm', observations removed differ between variables")
+    warning("With na.vars = 'rm', observations removed differ between variables")
   }
 
 

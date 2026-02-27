@@ -260,7 +260,7 @@ distrib_group_continuous <- function(data,
 
   # On empeche une hauteur de plus de 1 si palette multicolore (ca deconne si chevauchement)
   if(height > 1 & length(col_density) > 1){
-    message("A height greater than 1 is not possible when col_density is a vector. The height is redefined to .8.")
+    warning("A height greater than 1 is not possible when col_density is a vector. The height is redefined to .8.")
     height <- .8
   }
 
@@ -755,7 +755,7 @@ distrib_group_continuous <- function(data,
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    message("A color specified in col_density does not exist: the default color palette is used")
+    warning("A color specified in col_density does not exist: the default color palette is used")
     col_density <- "#e0dfe0"
   }
 
@@ -773,11 +773,9 @@ distrib_group_continuous <- function(data,
   # Palette pour les moustaches, selon le nombre de proportions dans moustache_probs
   if (show_moustache == T) {
 
-    if(all(isColor(col_moustache)) == TRUE){
-      # Si condition remplie on ne fait rien => on garde la palette
-    } else {
-      # Sinon on met la couleur par defaut
-      message("A color specified in col_moustache does not exist: the default color palette is used")
+    if(all(isColor(col_moustache)) != TRUE|length(moustache_probs) > 1 & length(col_moustache) == 1){
+      # Si condition non remplie : on met la couleur par defaut
+      warning("Unknown color in col_moustache or not enough modalities: the default palette is used")
       col_moustache <- c("#EB9BA0", "#FAD7B1")
     }
 

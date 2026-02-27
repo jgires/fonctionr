@@ -426,7 +426,7 @@ prop_group <- function(data,
                                        {{ prop_exp }},
                                        0)
       )
-    message("With na.prop = 'include', NAs in prop_exp variables are not removed but included in the denominator")
+    warning("With na.prop = 'include', NAs in prop_exp variables are not removed but included in the denominator")
   }
 
   # On enregistre les labels originaux pour si total = T

@@ -198,7 +198,7 @@ make_surface <- function(tab,
 
   # Check des arguments necessaires
   if((show_ci == T) & (quo_is_null(quo_low) | quo_is_null(quo_up))){
-    message(paste0("Vous n'avez pas indiqu", "\u00e9", " les variables avec les IC : ceux-ci sont desactiv", "\u00e9", "s"))
+    warning("You did not specify the variables with the CI: these are disabled.")
     show_ci <- FALSE
   }
 

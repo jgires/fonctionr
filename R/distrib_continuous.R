@@ -476,7 +476,7 @@ distrib_continuous <- function(data,
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    message("A color specified in col_density does not exist: the default color palette is used")
+    warning("A color specified in col_density does not exist: the default color palette is used")
     col_density <- c("#00708C", "mediumturquoise")
   }
 
