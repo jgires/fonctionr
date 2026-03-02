@@ -462,41 +462,14 @@ distrib_discrete <- function(data,
         caption) else stringr::str_wrap(caption, width = 100)
       )
 
-  # Ajouter les axes au besoin
-  if(show_labs == TRUE){
-    # X ---
-    if(any(is.null(xlab), xlab != "")){
-      graph <- graph +
-        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (a voir si c'est adapte dans tous les cas)
-             y = ifelse(is.null(xlab),
-                        lang_distrib,
-                        xlab))
-    }
-    if(all(!is.null(xlab), xlab == "")){
-      graph <- graph +
-        labs(#x = NULL, # Pour cette fonction, x est vide dans tous les cas (a voir si c'est adapte dans tous les cas)
-             y = NULL)
-    }
-
-    # Y ---
-    if(any(is.null(ylab), ylab != "")){
-      if(!is.null(ylab)){
-        graph <- graph +
-          labs(x = ylab)
-      }
-    }
-    if(all(!is.null(ylab), ylab == "")){
-      graph <- graph +
-        labs(x = NULL)
-    }
-  }
-
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
-    graph <- graph +
-      labs(x = NULL,
-           y = NULL)
-    }
+  # Ajouter les axes
+  graph <- fonctionr_ggplot_labs(
+    graph = graph,
+    xlab = xlab,
+    lang_note_axis_x = lang_distrib,
+    ylab = ylab,
+    show_labs = show_labs
+  )
 
   # Ajouter les IC si show_ci == T
   if (show_ci == T) {

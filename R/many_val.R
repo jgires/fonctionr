@@ -543,42 +543,15 @@ many_val = function(data,
     coord_flip()
 
   # Ajouter les axes
-  if(show_labs == TRUE){
-      # X ---
-      if(any(is.null(xlab), xlab != "")){
-        graph <- graph +
-          labs(y = ifelse(is.null(xlab),
-                          paste0(type_ggplot, paste(vec_list_vars, collapse = ", ")),
-                          xlab))
-      }
-      if(all(!is.null(xlab), xlab == "")){
-        graph <- graph +
-          labs(y = NULL)
-      }
-
-      # Y ---
-      if(any(is.null(ylab), ylab != "")){
-        if(!is.null(ylab)){
-          graph <- graph +
-            labs(x = ylab)
-        }
-        if(is.null(ylab)){
-          graph <- graph +
-            labs(x = NULL) # Il y avait "Indicateurs", mais c'est moche et inutile => possibilite de mettre ce qu'on veut
-        }
-      }
-      if(all(!is.null(ylab), ylab == "")){
-        graph <- graph +
-          labs(x = NULL)
-      }
-  }
-
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
-    graph <- graph +
-      labs(x = NULL,
-           y = NULL)
-  }
+  graph <- fonctionr_ggplot_labs(
+    graph = graph,
+    type = "many_val",
+    xlab = xlab,
+    lang_note_axis_x = type_ggplot,
+    x_exp = paste(vec_list_vars, collapse = ", "),
+    ylab = ylab,
+    show_labs = show_labs
+  )
 
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {

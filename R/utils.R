@@ -862,6 +862,166 @@ fonctionr_font_size <- function(type = "normal") {
 }
 
 
+#' fonctionr_ggplot_labs
+#'
+#' Internal function to define axis labels
+#'
+#' @param graph
+#' @param type
+#' @param position
+#' @param group
+#' @param xlab
+#' @param lang_note_axis_x
+#' @param x_exp
+#' @param ylab
+#' @param lang_note_axis_y
+#' @param legend_lab
+#' @param wrap_width_leg
+#' @param show_labs
+#'
+#' @noRd
+#'
+
+fonctionr_ggplot_labs <- function(graph,
+                                  type = "default",
+                                  position = "default",
+                                  group = NULL,
+                                  xlab,
+                                  lang_note_axis_x = NULL,
+                                  x_exp = NULL,
+                                  ylab,
+                                  lang_note_axis_y = NULL,
+                                  legend_lab = NULL,
+                                  wrap_width_leg = NULL,
+                                  show_labs) {
+
+  # Montrer les noms des axes si show_labs == TRUE
+  if(show_labs == TRUE){
+
+    # Pour toutes les fonctions sauf distrib_continuous() et distrib_group_continuous()
+    if(!type %in% c("distrib_continuous", "distrib_group_continuous")){
+      # X ---
+      # Cas ou il faut ecrire un nom pour l'axe x (expression ou defini par l'utilisateur)
+      if(any(is.null(xlab), xlab != "")){
+        graph <- graph +
+          labs(y = ifelse(is.null(xlab),
+                          paste0(lang_note_axis_x, x_exp),
+                          xlab))
+
+      # Tous les autres cas => il ne faut pas de nom pour l'axe x
+      } else {
+        graph <- graph +
+          labs(y = NULL)
+      }
+
+      # Y ---
+      # Cas ou il faut ecrire un nom pour l'axe y
+      if(any(is.null(ylab), ylab != "")){
+        # Si le nom de l'axe y est defini par l'utilisateur
+        if(!is.null(ylab)){
+          graph <- graph +
+            labs(x = ylab)
+        }
+
+        # FONCTIONS SPECIFIQUES -----
+
+        # Pour many_val : pas de nom en y car ce sont differents indicateurs
+        if(is.null(ylab) & type == "many_val"){
+          graph <- graph +
+            labs(x = NULL)
+        }
+        # Pour many_val_group
+        # Avec position == "flip" => pas de nom en y car ce sont differents indicateurs
+        if(is.null(ylab) & type == "many_val_group" & position == "flip"){
+          graph <- graph +
+            labs(x = NULL)
+        }
+        # ggplot affiche la condition ecrite pour l'axe x => on veut la variable de groupe
+        if(is.null(ylab) & type == "many_val_group" & (position != "flip")){
+          graph <- graph +
+            labs(x = group)
+        }
+        # FIN FONCTIONS SPECIFIQUES -----
+
+      # Tous les autres cas => il ne faut pas de nom pour l'axe y
+      } else {
+        graph <- graph +
+          labs(x = NULL)
+      }
+
+      # LEGEND ---
+      # Cas ou la legende est definie par l'utilisateur
+      if(all(!is.null(legend_lab), legend_lab != "")){
+        graph <- graph +
+          labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
+      }
+      # Cas ou l'utilisateur ne veut pas de legende
+      if(all(!is.null(legend_lab), legend_lab == "")){
+        graph <- graph +
+          labs(fill = NULL)
+      }
+
+    # /!\ Pour distrib_continuous() et distrib_group_continuous() => x et y inverses car pas de coord_flip()
+    } else {
+      # X ---
+      if(any(is.null(xlab), xlab != "")){
+        graph <- graph +
+          labs(x = ifelse(is.null(xlab),
+                          paste0(x_exp),
+                          xlab))
+      } else {
+        graph <- graph +
+          labs(x = NULL)
+      }
+
+      # Y ---
+      if(any(is.null(ylab), ylab != "")){
+        if(!is.null(ylab)){
+          graph <- graph +
+            labs(y = ylab)
+        }
+        if(is.null(ylab)){
+          graph <- graph +
+            # Le group ou "densite" selon qu'il y a un groupe ou non
+            labs(y = if(type == "distrib_group_continuous") group else lang_note_axis_y)
+        }
+      } else {
+        graph <- graph +
+          labs(y = NULL)
+      }
+    }
+  }
+
+  # Masquer les axes si show_labs == FALSE
+  if(show_labs == FALSE & type == "default"){
+    graph <- graph +
+      labs(x = NULL,
+           y = NULL,
+           fill = NULL)
+  }
+  if(show_labs == FALSE & type %in% c("many_val", "many_val_group", "distrib_continuous", "distrib_group_continuous")){
+    graph <- graph +
+      labs(x = NULL,
+           y = NULL)
+  }
+
+  # Partie specifique pour la legende de many_val_group
+  if(type == "many_val_group"){
+    # LEGEND ---
+    if(all(!is.null(legend_lab), legend_lab != "")){
+      graph <- graph +
+        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
+    } else {
+      graph <- graph +
+        labs(fill = NULL)
+    }
+  }
+
+  return(graph)
+
+}
+
+
 #' create_palette
 #'
 #' @param pal Value of argument "pal" from the original function

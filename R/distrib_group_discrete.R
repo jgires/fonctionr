@@ -692,49 +692,16 @@ distrib_group_discrete <- function(data,
   }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
-    # X ---
-    if(any(is.null(xlab), xlab != "")){
-      graph <- graph +
-        labs(y = ifelse(is.null(xlab),
-                        paste0(lang_distribution, deparse(substitute(quali_var))),
-                        xlab))
-    }
-    if(all(!is.null(xlab), xlab == "")){
-      graph <- graph +
-        labs(y = NULL)
-    }
-
-    # Y ---
-    if(any(is.null(ylab), ylab != "")){
-      if(!is.null(ylab)){
-        graph <- graph +
-          labs(x = ylab)
-      }
-    }
-    if(all(!is.null(ylab), ylab == "")){
-      graph <- graph +
-        labs(x = NULL)
-    }
-
-    # LEGEND ---
-    if(all(!is.null(legend_lab), legend_lab != "")){
-      graph <- graph +
-        labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
-    }
-    if(all(!is.null(legend_lab), legend_lab == "")){
-      graph <- graph +
-        labs(fill = NULL)
-    }
-  }
-
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
-    graph <- graph +
-      labs(x = NULL,
-           y = NULL,
-           fill = NULL)
-  }
+  graph <- fonctionr_ggplot_labs(
+    graph = graph,
+    xlab = xlab,
+    lang_note_axis_x = lang_distribution,
+    x_exp = deparse(substitute(quali_var)),
+    ylab = ylab,
+    legend_lab = legend_lab,
+    wrap_width_leg = wrap_width_leg,
+    show_labs = show_labs
+  )
 
   # Creation des facets si facet
   if (!quo_is_null(quo_facet)) {

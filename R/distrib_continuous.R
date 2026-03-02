@@ -682,42 +682,15 @@ distrib_continuous <- function(data,
   }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
-    # X ---
-    if(any(is.null(xlab), xlab != "")){
-      graph <- graph +
-        labs(x = ifelse(is.null(xlab),
-                        paste0(deparse(substitute(quanti_exp))),
-                        xlab))
-    }
-    if(all(!is.null(xlab), xlab == "")){
-      graph <- graph +
-        labs(x = NULL)
-    }
-
-    # Y ---
-    if(any(is.null(ylab), ylab != "")){
-      if(!is.null(ylab)){
-        graph <- graph +
-          labs(y = ylab)
-      }
-      if(is.null(ylab)){
-        graph <- graph +
-          labs(y = lang_dens)
-      }
-    }
-    if(all(!is.null(ylab), ylab == "")){
-      graph <- graph +
-        labs(y = NULL)
-    }
-  }
-
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
-    graph <- graph +
-      labs(x = NULL,
-           y = NULL)
-  }
+  graph <- fonctionr_ggplot_labs(
+    graph = graph,
+    type = "distrib_continuous",
+    xlab = xlab,
+    x_exp = deparse(substitute(quanti_exp)),
+    ylab = ylab,
+    lang_note_axis_y = lang_dens,
+    show_labs = show_labs
+  )
 
 
   # 6. RESULTATS --------------------

@@ -732,61 +732,75 @@ many_val_group = function(data,
 }
 
   # Ajouter les axes
-  if(show_labs == TRUE){
-    # X ---
-    if(any(is.null(xlab), xlab != "")){
-      graph <- graph +
-        labs(y = ifelse(is.null(xlab),
-                        paste0(type_ggplot, paste(vec_list_vars, collapse = ", ")),
-                        xlab))
-    }
-    if(all(!is.null(xlab), xlab == "")){
-      graph <- graph +
-        labs(y = NULL)
-    }
+  graph <- fonctionr_ggplot_labs(
+    graph = graph,
+    type = "many_val_group",
+    position = position,
+    group = deparse(substitute(group)),
+    xlab = xlab,
+    lang_note_axis_x = type_ggplot,
+    x_exp = paste(vec_list_vars, collapse = ", "),
+    ylab = ylab,
+    legend_lab = legend_lab,
+    wrap_width_leg = wrap_width_leg,
+    show_labs = show_labs
+  )
 
-    # Y ---
-    if(any(is.null(ylab), ylab != "")){
-      if(!is.null(ylab)){
-        graph <- graph +
-          labs(x = ylab)
-      }
-      # ici bricolage car ggplot affiche la condition ecrite pour l'axe x => on remet le nom de la variable
-      if(is.null(ylab) & position == "flip"){
-        graph <- graph +
-          labs(x = NULL)
-      }
-      if(is.null(ylab) & (position != "flip")){
-        graph <- graph +
-          labs(x = deparse(substitute(group)))
-      }
-    }
-    if(all(!is.null(ylab), ylab == "")){
-      graph <- graph +
-        labs(x = NULL)
-    }
-  }
-
-  # Masquer les axes si show_labs == FALSE
-  if(show_labs == FALSE){
-    graph <- graph +
-      labs(x = NULL,
-           y = NULL)
-  }
-
-  # LEGEND ---
-  if(all(!is.null(legend_lab), legend_lab != "")){
-    graph <- graph +
-      labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
-  }
-  if(all(!is.null(legend_lab), legend_lab == "")){
-    graph <- graph +
-      labs(fill = NULL)
-  }
-  if(is.null(legend_lab)){
-    graph <- graph +
-      labs(fill = NULL)
-  }
+  # if(show_labs == TRUE){
+  #   # X ---
+  #   if(any(is.null(xlab), xlab != "")){
+  #     graph <- graph +
+  #       labs(y = ifelse(is.null(xlab),
+  #                       paste0(type_ggplot, paste(vec_list_vars, collapse = ", ")),
+  #                       xlab))
+  #   }
+  #   if(all(!is.null(xlab), xlab == "")){
+  #     graph <- graph +
+  #       labs(y = NULL)
+  #   }
+  #
+  #   # Y ---
+  #   if(any(is.null(ylab), ylab != "")){
+  #     if(!is.null(ylab)){
+  #       graph <- graph +
+  #         labs(x = ylab)
+  #     }
+  #     # ici bricolage car ggplot affiche la condition ecrite pour l'axe x => on remet le nom de la variable
+  #     if(is.null(ylab) & position == "flip"){
+  #       graph <- graph +
+  #         labs(x = NULL)
+  #     }
+  #     if(is.null(ylab) & (position != "flip")){
+  #       graph <- graph +
+  #         labs(x = deparse(substitute(group)))
+  #     }
+  #   }
+  #   if(all(!is.null(ylab), ylab == "")){
+  #     graph <- graph +
+  #       labs(x = NULL)
+  #   }
+  # }
+  #
+  # # Masquer les axes si show_labs == FALSE
+  # if(show_labs == FALSE){
+  #   graph <- graph +
+  #     labs(x = NULL,
+  #          y = NULL)
+  # }
+  #
+  # # LEGEND ---
+  # if(all(!is.null(legend_lab), legend_lab != "")){
+  #   graph <- graph +
+  #     labs(fill = stringr::str_wrap(legend_lab, wrap_width_leg))
+  # }
+  # if(all(!is.null(legend_lab), legend_lab == "")){
+  #   graph <- graph +
+  #     labs(fill = NULL)
+  # }
+  # if(is.null(legend_lab)){
+  #   graph <- graph +
+  #     labs(fill = NULL)
+  # }
 
   # Ajouter les facets au besoin + scale_y si facet
   if (!quo_is_null(quo_facet)) {

@@ -52,7 +52,7 @@ make_surface(
 
 \item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
 
-\item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.}
+\item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statistical test.}
 
 \item{reorder}{TRUE if you want to reorder the values. NA label in var is not included in the reorder.}
 

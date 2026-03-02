@@ -49,7 +49,7 @@ esth_graph(
 
 \item{n_var}{The variable in tab containing the number of observations for each indicator ploted. Default (NULL) does not show the numbers of observations on the plot.}
 
-\item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statsistical test.}
+\item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statistical test.}
 
 \item{reorder}{TRUE if you want to reorder var according to value. FALSE if you do not want to reorder. NA and total labels in var are not included in the reorder. Default is FALSE.}
 
