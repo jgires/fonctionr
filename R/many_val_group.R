@@ -52,6 +52,7 @@
 #' @import srvyr
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom foreach %dopar% %do%
 #' @export
 #'
 #' @examples
@@ -414,14 +415,22 @@ many_val_group = function(data,
   data_W <- data_W |>
     group_by({{ group }}, .add = TRUE)
 
-  tab <- tibble()
+  # On detecte le nombre de cores et on active la parallelisation
+  # UNIQUEMENT si replicate weights, car le gain est negatif autrement
+  replicate <- any(class(data_W) %in% c("svyrep.design"))
+  if(replicate){fonctionr_cores_detect()}
+  `%fonctionr_do%` = ifelse(replicate, `%dopar%`, `%do%`)
 
-  # Si total et position pas egale a flip (car pas de total dans ce cas => changer par la suite ?)
+  # Si total et position != "flip" (car pas de total dans ce cas => changer par la suite ?)
   if(total == TRUE) {
 
     # On calcule les proportions par groupe
-    if(type == "prop"){
-      for(i in vec_list_vars) {
+    if (type == "prop") {
+      tab <- foreach::foreach(
+        i = vec_list_vars,
+        .combine = "rbind",
+        .packages = "srvyr"
+      ) %fonctionr_do% {
         tab_i <- data_W |>
           cascade(
             list_col = i,
@@ -431,13 +440,16 @@ many_val_group = function(data,
             n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             .fill = total_name # Le total
           )
-
-        tab <- rbind(tab, tab_i)
       }
     }
+
     # On calcule les moyennes/medianes par groupe
     if(type == "median" | type == "mean"){
-      for(i in vec_list_vars) {
+      tab <- foreach::foreach(
+        i = vec_list_vars,
+        .combine = "rbind",
+        .packages = "srvyr"
+      ) %fonctionr_do% {
         tab_i <- data_W |>
           cascade(
             list_col = i,
@@ -448,8 +460,6 @@ many_val_group = function(data,
             n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             .fill = total_name # Le total
           )
-
-        tab <- rbind(tab, tab_i)
       }
     }
 
@@ -466,7 +476,11 @@ many_val_group = function(data,
 
     # On calcule les proportions par groupe
     if(type == "prop"){
-      for(i in vec_list_vars) {
+      tab <- foreach::foreach(
+        i = vec_list_vars,
+        .combine = "rbind",
+        .packages = "srvyr"
+      ) %fonctionr_do% {
         tab_i <- data_W |>
           summarise(
             list_col = i,
@@ -475,13 +489,15 @@ many_val_group = function(data,
             n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
             n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
           )
-
-        tab <- rbind(tab, tab_i)
       }
     }
     # On calcule les moyennes/medianes par groupe
     if(type == "median" | type == "mean"){
-      for(i in vec_list_vars) {
+      tab <- foreach::foreach(
+        i = vec_list_vars,
+        .combine = "rbind",
+        .packages = "srvyr"
+      ) %fonctionr_do% {
         tab_i <- data_W |>
           summarise(
             list_col = i,
@@ -491,10 +507,13 @@ many_val_group = function(data,
             n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             )
-
-        tab <- rbind(tab, tab_i)
       }
     }
+  }
+
+  # On arrete la parallelisation
+  if(replicate){
+    doParallel::stopImplicitCluster()
   }
 
   if(position == "stack") {

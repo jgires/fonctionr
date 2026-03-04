@@ -38,10 +38,7 @@ convert_to_srvyr <- function(data, ...) {
   }
 
   # On determine si replicates ou non (pour message plus bas)
-  replicates <- FALSE
-  if(any(class(data) %in% c("svyrep.design"))){
-    replicates <- TRUE
-  }
+  replicates <- ifelse(any(class(data) %in% c("svyrep.design")), TRUE, FALSE)
 
   # message("Variables du design :", " cluster : ", paste(names(data_W$cluster), collapse = " "), " | strata : ",  paste(names(data_W$strata), collapse = " "), " | weights : ",  paste(names(data_W$allprob), collapse = " "))
 
@@ -1144,5 +1141,29 @@ count_NA_deleted <- function(x,
 
   count <- sum(is.na(x))
   message(count, " observation(s) removed due to missing ", type)
+
+}
+
+
+#' fonctionr_cores_detect
+#'
+#' Internal function to detect cores number of the CPU
+#'
+#' @noRd
+#'
+
+fonctionr_cores_detect <- function() {
+
+  # On detecte le nombre de cores du CPU
+  n.cores <- parallel::detectCores()
+
+  # On parallelise a n-1 core ssi 3 cores ou plus, sinon 1 core
+  if(n.cores >= 3) {
+    cores <- n.cores - 1
+  } else {
+    cores <- 1
+  }
+  # On cree un cluster avec le nombre de cores definis ci-dessus
+  doParallel::registerDoParallel(cores)
 
 }

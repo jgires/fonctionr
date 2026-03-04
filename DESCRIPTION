@@ -31,7 +31,9 @@ Imports:
     grDevices,
     ggnewscale,
     colorspace,
-    ggtext
+    ggtext,
+    doParallel,
+    foreach
 Suggests:
     knitr,
     laeken,
