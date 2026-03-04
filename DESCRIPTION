@@ -15,9 +15,6 @@ Imports:
     dplyr,
     forcats,
     ggplot2,
-    MetBrewer,
-    PrettyCols,
-    openxlsx,
     rlang,
     scales,
     srvyr,
@@ -25,12 +22,12 @@ Imports:
     survey,
     tidyr,
     tibble,
+    openxlsx,
     broom,
     showtext,
     sysfonts,
     grDevices,
     ggnewscale,
-    colorspace,
     ggtext,
     doParallel,
     foreach
@@ -38,6 +35,9 @@ Suggests:
     knitr,
     laeken,
     rmarkdown,
-    patchwork
+    patchwork,
+    MetBrewer,
+    PrettyCols,
+    colorspace
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
