@@ -1166,4 +1166,6 @@ fonctionr_cores_detect <- function() {
   # On cree un cluster avec le nombre de cores definis ci-dessus
   doParallel::registerDoParallel(cores)
 
+  message("Parallel computing enabled with ", cores, " cores")
+
 }

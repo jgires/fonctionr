@@ -45,6 +45,7 @@
 #' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
 #' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.
+#' @param parallel TRUE to enable parallel computing.
 #'
 #' @return A list that contains a table and a graphic
 #' @import rlang
@@ -127,7 +128,8 @@ many_val_group = function(data,
                           lang = "fr",
                           theme = "fonctionr",
                           coef_font = 1,
-                          export_path = NULL){
+                          export_path = NULL,
+                          parallel = NULL){
 
   # Les arguments par defaut
   formals.args <- formals()
@@ -204,7 +206,8 @@ many_val_group = function(data,
       show_ci = show_ci,
       show_n = show_n,
       show_value = show_value,
-      show_labs = show_labs
+      show_labs = show_labs,
+      parallel = parallel
     ),
     type = "logical"
   )
@@ -236,6 +239,11 @@ many_val_group = function(data,
     total <- FALSE
     warning("The 'flip' position does not allow a total: it is therefore disabled")
   }
+
+  # Si l'argument oarallel non defini par l'utilisateur => parallelisation s'active automatiquement avec des replicate weights
+  if(is.null(parallel)) parallel <- ifelse(any(class(data) %in% c("svyrep.design")), TRUE, FALSE)
+  # Par contre, dans tous les cas desactive si le nombre de core est de 3 ou moins
+  if(parallel::detectCores() >= 3) parallel <- FALSE
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -415,11 +423,9 @@ many_val_group = function(data,
   data_W <- data_W |>
     group_by({{ group }}, .add = TRUE)
 
-  # On detecte le nombre de cores et on active la parallelisation
-  # UNIQUEMENT si replicate weights, car le gain est negatif autrement
-  replicate <- any(class(data_W) %in% c("svyrep.design"))
-  if(replicate){fonctionr_cores_detect()}
-  `%fonctionr_do%` = ifelse(replicate, `%dopar%`, `%do%`)
+  # SSI parallel == TRUE : on detecte le nombre de cores et on active la parallelisation
+  if(parallel) fonctionr_cores_detect()
+  `%fonctionr_do%` = ifelse(parallel, `%dopar%`, `%do%`)
 
   # Si total et position != "flip" (car pas de total dans ce cas => changer par la suite ?)
   if(total == TRUE) {
@@ -512,9 +518,7 @@ many_val_group = function(data,
   }
 
   # On arrete la parallelisation
-  if(replicate){
-    doParallel::stopImplicitCluster()
-  }
+  if(parallel) doParallel::stopImplicitCluster()
 
   if(position == "stack") {
     # Procedure pour indiquer quelles valeurs afficher dans les cellules

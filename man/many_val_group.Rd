@@ -50,7 +50,8 @@ many_val_group(
   lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
-  export_path = NULL
+  export_path = NULL,
+  parallel = NULL
 )
 
 many_prop_group(..., type = "prop")
@@ -145,6 +146,8 @@ many_mean_group(..., type = "mean")
 \item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
+
+\item{parallel}{TRUE to enable parallel computing.}
 }
 \value{
 A list that contains a table and a graphic
