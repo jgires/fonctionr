@@ -93,7 +93,7 @@ make_surface <- function(tab,
                          digits = 0,
                          unit = NULL,
                          col = NULL,
-                         pal = "Kandinsky",
+                         pal = "OBSS_Autumn",
                          direction = 1,
                          desaturate = 0,
                          lighten = 0,
@@ -232,7 +232,7 @@ make_surface <- function(tab,
     tab <- tab |>
       group_by({{ var}}) |>
       mutate(
-        the_medians = median({{ value }}, na.rm = TRUE) # On calcule la mediane par groupe (entre les facettes) => utilise pour la palette
+        the_medians = stats::median({{ value }}, na.rm = TRUE) # On calcule la mediane par groupe (entre les facettes) => utilise pour la palette
         ) |>
       # Il est necessaire de trier le tableau, puisque le petit algorithme que j'ai ecrit pour creer les positions des geom_tile pour le ggplot s'execute dans l'ordre du tableau !
       # On ordonne par valeur => ordre different par facette, c'est voulu !

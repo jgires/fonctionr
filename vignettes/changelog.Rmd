@@ -326,11 +326,18 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer `NA` et pas seulement "".**
+-   **(Joël) Passer autant de packages que possible de \`Imports\` à \`Suggests\`. Pour les détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}. Un bon résumé de l'import de packages ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri}\
+    *=\> Notamment broom, utilisé pour reformater les résultats des tests stats pour l'export excel. L'usage du package doit être déplacé dans la fonction interne `export_excel()` pour pouvoir changer son statut en \`Suggests\`.***
 
--   **(François) Ajouter toutes les options dans `fonctionr_options()`, sauf les arguments avec données ou variables.**
+-   **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer `NA` et pas seulement "".\
+    *=\> Une fonction unique de labellisation des axes x et y a déjà été crée pour faciliter cet ajout.***
 
--   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.**
+-   **(François) Ajouter toutes les options dans `fonctionr_options()`, sauf les arguments avec données ou variables.\
+    =\> Ajouter parallel.**
+
+-   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.\
+    =\> Ajouter l'explication de `fonctionr_options()`.\
+    =\> Modifier l'explication des palettes par défaut.**
 
 -   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
     *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
@@ -340,9 +347,6 @@ Date : 2024-02-14
 -   BUG : si une variable de design == le nom d'un objet externe, ça fonctionne =\> APPROFONDIR ET REGLER CA ?
 
 -   Rendre l'usage non interactif (= la programmation via d'autres fonctions) possible =\> gros travail, usage de `rlang` à la place de `substitute()`.
-
--   Passer le code de chaque fonction en revue pour cleaner / harmoniser / simplifier.\
-    *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 -   Mettre des conditions pour réaliser les tests (n min, distribution, variances égales...).
 
@@ -360,9 +364,6 @@ Date : 2024-02-14
 -   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
 
 -   **(François + Joël) Ajouter hauteur des densités proportionnelle aux effectifs pondérés.**
-
--   **(Joël) La moustache peut ne prendre qu'une couleur =\> pas cohérent\
-    =\> Ajouter un check**
 
 -   Il y a un warning de la fonction `density()` qui dit que `Selecting bandwidth not using 'weights'`. La doc de density() dit : "automatic bandwidth selection will not take the weights into account and hence may be suboptimal."\
     =\> Voir si c'est un problème ?
@@ -399,6 +400,7 @@ Date : 2024-02-14
 
 #### many_val_group
 
+-   **(Joël & François) Nouveau message qui apparait : multiple parameters ndf etc. =\> C'est quoi ? Régler.**
 -   Le `NA` apparait en premier lorsque `position = "flip"` =\> Corriger, il doit apparaître en dernier.
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
@@ -428,12 +430,9 @@ Date : 2024-02-14
 
 #### En général
 
--   Réécrire le code du test pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
--   Voir si on peut créer une fonction commune à toutes les fonctions du package pour créer le ggplot =\> ce serait une large simplification. Pour l'instant, il y a déjà un thème commun `theme_fonctionr`.
+-   Réécrire le code du test stat pour avoir la formule originale =\> possible avec `eval()`, voir code de `central_group()`.
 -   Créer une fonction de check des inputs indispensables (car redondance entre les 4 fonctions)\
     *=\> Pour l'instant c'est fait "en dur" : difficultés de créer une fonction du fait de l'usage du tidyverse : il faut sans doute utiliser les fonctions de `rlang`.*
--   L'import des packages peut être optimisé : il n'est pas utile d'importer des packages extérieurs [entiers]{.underline} dans le NAMESPACE, cela augmente le risque de collisions de noms de fonctions =\> un bon résumé ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri} et pour plus de détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}.\
-    *=\> A faire : importer seulement les fonctions utiles (mutate, select, etc.).*
 -   Revoir la solution apportée dans `theme_fonctionr()` au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext aura été mis à jour. Voir : <https://github.com/jgires/fonctionr/commit/0461f452405628d1aaf692a0266f3a281c2b67d6>.
 
 #### distrib_group_d
@@ -450,7 +449,7 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 <https://notstatschat.rbind.io/2021/07/22/subsets-and-subpopulations-in-survey-inference/>
 
-*=\> De ce fait, j'ai inclus une option de filtre (filter_exp) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK ! [A FAIRE : expliquer dans la doc !]{.underline}*
+*=\> De ce fait, j'ai inclus une option de filtre (filter_exp) dans les fonctions (qui filtre après la déclaration du design), qui évite de filtrer l'objet avant en dégradant le design. =\> Vérifier que c'est bien OK !*
 
 ### Fonctions à créer
 

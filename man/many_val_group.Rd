@@ -31,7 +31,7 @@ many_val_group(
   digits = 0,
   unit = NULL,
   dec = NULL,
-  pal = "Egypt",
+  pal = "OBSS_alt3",
   direction = 1,
   desaturate = 0,
   lighten = 0,

@@ -28,7 +28,7 @@ many_val(
   unit = NULL,
   dec = NULL,
   col = NULL,
-  pal = "Egypt",
+  pal = "OBSS_alt3",
   direction = 1,
   desaturate = 0,
   lighten = 0,

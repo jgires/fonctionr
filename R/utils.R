@@ -127,8 +127,6 @@ load_and_active_fonts <- function(){
 #' @param bivariate A logical vector. TRUE if results are bivariate.
 #' @param dens A string vector indicating the type of density result to be exported. Possible values: "uni", "group" or "none" (not a density calculation).
 #'
-#' @import openxlsx
-#'
 #' @noRd
 #'
 export_excel <- function(tab_excel,
@@ -142,6 +140,9 @@ export_excel <- function(tab_excel,
                          fgFill,
                          bivariate = NULL,
                          dens = "none") {
+
+  # Check pour voir si le package est installe, etant en 'Suggests'
+  rlang::check_installed("openxlsx")
 
   # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
   print(graph)
@@ -159,53 +160,53 @@ export_excel <- function(tab_excel,
 
   # Formatage du fichier Excel dans lequel on exporte les resultats
 
-  wb <- createWorkbook() # On cree l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
-  addWorksheet(wb, name_tab) # On ajoute une feuille pour les resultats / indices centraux (densite)
+  wb <- openxlsx::createWorkbook() # On cree l'objet dans lequel on va formater toutes les infos en vue d'un export en fichier Excel
+  openxlsx::addWorksheet(wb, name_tab) # On ajoute une feuille pour les resultats / indices centraux (densite)
   if(dens != "none"){ # Si densite
-    addWorksheet(wb, "Quantiles") # On ajoute une feuille pour les quantiles
-    addWorksheet(wb, "Densite") # On ajoute une feuille pour la densite
+    openxlsx::addWorksheet(wb, "Quantiles") # On ajoute une feuille pour les quantiles
+    openxlsx::addWorksheet(wb, "Densite") # On ajoute une feuille pour la densite
   }
-  addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
-  addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le resultat du test stat
+  openxlsx::addWorksheet(wb, "Graphique") # On ajoute une feuille pour le graphique
+  openxlsx::addWorksheet(wb, "Test statistique") # On ajoute une feuille pour le resultat du test stat
 
   # On ecrit les donnees
-  writeData(wb, name_tab, tab_excel, keepNA = TRUE, na.string = "NA") # On ecrit les resultats en gardant les NA
+  openxlsx::writeData(wb, name_tab, tab_excel, keepNA = TRUE, na.string = "NA") # On ecrit les resultats en gardant les NA
   if(dens != "none"){ # Si densite
-    writeData(wb, "Quantiles", quantiles, keepNA = TRUE, na.string = "NA") # On ecrit les quantiles en gardant les NA
-    writeData(wb, "Densite", density, keepNA = TRUE, na.string = "NA") # On ecrit la densite en gardant les NA
+    openxlsx::writeData(wb, "Quantiles", quantiles, keepNA = TRUE, na.string = "NA") # On ecrit les quantiles en gardant les NA
+    openxlsx::writeData(wb, "Densite", density, keepNA = TRUE, na.string = "NA") # On ecrit la densite en gardant les NA
   }
-  insertPlot(wb,"Graphique", dpi = 90, width = 12, height = 7)
-  writeData(wb, "Test statistique", test_stat_excel) # On ecrit le resultat du test stat
+  openxlsx::insertPlot(wb,"Graphique", dpi = 90, width = 12, height = 7)
+  openxlsx::writeData(wb, "Test statistique", test_stat_excel) # On ecrit le resultat du test stat
 
- # On definit les styles
-  setColWidths(wb, name_tab, widths = 20, cols = 1:ncol(tab_excel))
+  # On definit les styles
+  openxlsx::setColWidths(wb, name_tab, widths = 20, cols = 1:ncol(tab_excel))
   if(dens != "none"){ # Si densite
-    setColWidths(wb, "Quantiles", widths = 20, cols = 1:ncol(quantiles))
-    setColWidths(wb, "Densite", widths = 20, cols = 1:ncol(density))
+    openxlsx::setColWidths(wb, "Quantiles", widths = 20, cols = 1:ncol(quantiles))
+    openxlsx::setColWidths(wb, "Densite", widths = 20, cols = 1:ncol(density))
   }
-  hs <- createStyle(fontColour = "#ffffff", fgFill = fgFill,  # Style de la premiere ligne
+  hs <- openxlsx::createStyle(fontColour = "#ffffff", fgFill = fgFill,  # Style de la premiere ligne
                     halign = "center", textDecoration = "Bold",
                     fontName = "Arial Narrow")
-  firstC <- createStyle (halign = "left", textDecoration = "Bold", # Style de la premiere colonne
+  firstC <- openxlsx::createStyle (halign = "left", textDecoration = "Bold", # Style de la premiere colonne
                          fontName = "Arial Narrow")
-  body <- createStyle (halign = "center", # Style des cellules du tableau
+  body <- openxlsx::createStyle (halign = "center", # Style des cellules du tableau
                        fontName = "Arial Narrow")
-  percent <- createStyle(numFmt = "percentage")
+  percent <- openxlsx::createStyle(numFmt = "percentage")
 
   # On applique le style a la premiere ligne
-  addStyle(wb, name_tab, hs, cols = 1:ncol(tab_excel), rows = 1)
+  openxlsx::addStyle(wb, name_tab, hs, cols = 1:ncol(tab_excel), rows = 1)
   if(dens != "none"){
-    addStyle(wb, "Quantiles", hs, cols = 1:ncol(quantiles), rows = 1)
-    addStyle(wb, "Densite", hs, cols = 1:ncol(density), rows = 1)
+    openxlsx::addStyle(wb, "Quantiles", hs, cols = 1:ncol(quantiles), rows = 1)
+    openxlsx::addStyle(wb, "Densite", hs, cols = 1:ncol(density), rows = 1)
   }
 
   # On applique le style aux reste des lignes a partir de la 2e colonne (car la 1ere est en gras)
   # SAUF pour la densite univariee ou la 1ere col n'est pas en gras (et donc on fait 2-sub_dens qui est = 1)
-  addStyle(wb, name_tab, body, cols = (2-sub_dens):ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+  openxlsx::addStyle(wb, name_tab, body, cols = (2-sub_dens):ncol(tab_excel), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
   if(dens != "none"){
     # Pour les quantiles 3-sub_dens car il y au moins la 1ere colonne en gras (et les 2 premieres lorsque dens par groupe)
-    addStyle(wb, "Quantiles", body, cols = (3-sub_dens):ncol(quantiles), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
-    addStyle(wb, "Densite", body, cols = (2-sub_dens):ncol(density), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, "Quantiles", body, cols = (3-sub_dens):ncol(quantiles), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, "Densite", body, cols = (2-sub_dens):ncol(density), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
   }
 
   # On suit une logique d'elements additifs pour plus ou moins de colonnes pour la mise en forme
@@ -223,34 +224,34 @@ export_excel <- function(tab_excel,
   # On applique le style aux premieres colonnes (sans la premiere ligne)
   # if statement car pas de 1ere colonne en gras pour densite univariee
   if(dens == "group" | dens == "none"){
-    addStyle(wb, name_tab, firstC, cols = 1:(1+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, name_tab, firstC, cols = 1:(1+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
   }
   # Particulier a densite
   if(dens != "none"){
-    addStyle(wb, "Quantiles", firstC, cols = 1:(1+facet_add+(1-sub_dens)), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, "Quantiles", firstC, cols = 1:(1+facet_add+(1-sub_dens)), rows = 2:(nrow(quantiles)+1), gridExpand = TRUE, stack = TRUE)
     # if statement car pas de 1ere colonne en gras pour densite univariee
     if(dens == "group"){
-      addStyle(wb, "Densite", firstC, cols = 1:(1+facet_add), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
+      openxlsx::addStyle(wb, "Densite", firstC, cols = 1:(1+facet_add), rows = 2:(nrow(density)+1), gridExpand = TRUE, stack = TRUE)
     }
   }
   # On applique le style de pourcentage aux proportions
   if (percent_fm == TRUE) {
-    addStyle(wb, name_tab, percent, cols = (2+facet_add+bivar_add):(4+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, name_tab, percent, cols = (2+facet_add+bivar_add):(4+facet_add+bivar_add), rows = 2:(nrow(tab_excel)+1), gridExpand = TRUE, stack = TRUE)
   }
 
   # Styles pour le test stat (a part pour lisibilite)
-  setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
-  hs2 <- createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la premiere ligne
+  openxlsx::setColWidths(wb, "Test statistique", widths = 20, cols = 1:ncol(test_stat_excel)) # Largeur des colonnes
+  hs2 <- openxlsx::createStyle(fontColour = "#ffffff", fgFill = "grey15",  # Style de la premiere ligne
                      halign = "center", textDecoration = "Bold",
                      fontName = "Arial Narrow")
-  body2 <- createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
+  body2 <- openxlsx::createStyle (fontName = "Arial Narrow") # Style des cellules du tableau
 
-  addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style a la premiere ligne
-  addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style a la premiere colonne (sans la premiere ligne)
-  addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
+  openxlsx::addStyle(wb, "Test statistique", hs2, cols = 1:ncol(test_stat_excel), rows = 1) # On applique le style a la premiere ligne
+  openxlsx::addStyle(wb, "Test statistique", firstC, cols = 1, rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style a la premiere colonne (sans la premiere ligne)
+  openxlsx::addStyle(wb, "Test statistique", body2, cols = 2:ncol(test_stat_excel), rows = 2:(nrow(test_stat_excel)+1), gridExpand = TRUE, stack = TRUE) # On applique le style aux reste des cellules
 
   # On sauvegarde le fichier excel
-  saveWorkbook(wb, export_path, overwrite = TRUE)
+  openxlsx::saveWorkbook(wb, export_path, overwrite = TRUE)
 
 }
 
@@ -586,11 +587,6 @@ official_pal <- function(inst,
 
     # Palettes composees de 2 palettes
     # Palettes divergentes sans point central
-    if(inst == "IEFH_div_bi"){
-      pal_cols1 <- c("#008671", "#85C4BF")
-      pal_cols2 <- c("#C28EBD", "#9d4b95")
-      }
-
     if(inst == "OBSS_div_bi1"){
       pal_cols1 <- c("#A457B5", "#E06B7D", "#F59C4F")
       pal_cols2 <- c("#33B8B4", "#3F7FBF", "#434E73")
@@ -606,6 +602,10 @@ official_pal <- function(inst,
     if(inst == "OBSS_div_bi4"){
       pal_cols1 <- c("#564A9E", "#637FDB", "#92C6EB")
       pal_cols2 <- c("#F7D89E", "#F08960", "#C73A54")
+    }
+    if(inst == "IEFH_div_bi"){
+      pal_cols1 <- c("#008671", "#85C4BF")
+      pal_cols2 <- c("#C28EBD", "#9d4b95")
     }
     # Palettes avec emphase
     if(inst == "OBSS_highlight1"){
@@ -660,15 +660,12 @@ official_pal <- function(inst,
     }
 
     # Pour alterer la palette (desaturer, eclaircir, foncer)
-    if(desaturate != 0){
-      palette <- colorspace::desaturate(palette, desaturate)
-    }
-    if(lighten != 0){
-      palette <- colorspace::lighten(palette, lighten)
-    }
-    if(darken != 0){
-      palette <- colorspace::darken(palette, darken)
-    }
+    palette <- fonctionr_alter_cols(
+      cols = palette,
+      desaturate = desaturate,
+      lighten = lighten,
+      darken = darken
+      )
 
     # Inversion de la palette si demande
     if(direction == -1){
@@ -710,6 +707,45 @@ official_pal <- function(inst,
     return(pal_names)
 
   }
+}
+
+
+#' fonctionr_alter_cols
+#'
+#' Internal function to alter colors
+#'
+#' @param cols Color(s) to alter
+#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
+#'
+#' @noRd
+#'
+
+fonctionr_alter_cols <- function(cols,
+                                 desaturate,
+                                 lighten,
+                                 darken) {
+
+  # Check pour voir si le package est installe, etant en 'Suggests'
+  if(any(c(desaturate, lighten, darken) != 0)){
+    rlang::check_installed("colorspace")
+
+    # Pour alterer la palette (desaturer, eclaircir, foncer)
+    # NOTE : dans le if pour eviter de tester les conditions si aucune alteration
+    if(desaturate != 0){
+      cols <- colorspace::desaturate(cols, desaturate)
+    }
+    if(lighten != 0){
+      cols <- colorspace::lighten(cols, lighten)
+    }
+    if(darken != 0){
+      cols <- colorspace::darken(cols, darken)
+    }
+
+  }
+
+  return(cols)
 }
 
 
@@ -1044,21 +1080,13 @@ create_palette <- function(pal,
                                direction2 = direction,
                                name_function2 = name_function){
 
-    if(name_function2 == "prop_group"){
-      palette_created <- as.character(PrettyCols::prettycols(palette = "Coast", n = levels_palette2, type = "continuous", direction = direction2))
-    }
-    if(name_function2 == "central_group"){
-      palette_created <- as.character(PrettyCols::prettycols(palette = "Peppers", n = levels_palette2, type = "continuous", direction = direction2))
-    }
-    if(name_function2 == "make_surface"){
-      palette_created <- as.character(MetBrewer::met.brewer(name = "Kandinsky", n = levels_palette2, type = "continuous", direction = direction2))
-    }
-    if(name_function2 %in% c("many_val_group", "many_val")){
-      palette_created <- as.character(MetBrewer::met.brewer(name = "Egypt", n = levels_palette2, type = "continuous", direction = direction2))
-    }
-    if(name_function2 == "distrib_group_discrete"){
-      palette_created <- as.character(MetBrewer::met.brewer(name = "Hokusai1", n = levels_palette2, type = "continuous", direction = direction2))
-    }
+    if(name_function2 == "prop_group") fonctionr_pal = "OBSS_Relax"
+    if(name_function2 == "central_group") fonctionr_pal = "OBSS_Spring"
+    if(name_function2 == "make_surface") fonctionr_pal = "OBSS_Autumn"
+    if(name_function2 %in% c("many_val_group", "many_val")) fonctionr_pal = "OBSS_alt3"
+    if(name_function2 == "distrib_group_discrete") fonctionr_pal = "OBSS"
+
+    palette_created <- as.character(official_pal(inst = fonctionr_pal, n = levels_palette2, direction = direction2))
 
     return(palette_created)
   }
@@ -1069,11 +1097,29 @@ create_palette <- function(pal,
 
       # On cree la palette avec le package MetBrewer
       # NOTE : on utilise all() dans la condition car si pal est NULL, la condition donne logical(0)
-      if(pal %in% names(MetBrewer::MetPalettes)){
+      if (pal %in% c(
+        "Archambault", "Austria", "Benedictus", "Cassatt1", "Cassatt2", "Cross", "Degas", "Demuth", "Derain", "Egypt",
+        "Gauguin", "Greek", "Hiroshige", "Hokusai1", "Hokusai2", "Hokusai3", "Homer1", "Homer2", "Ingres", "Isfahan1",
+        "Isfahan2", "Java", "Johnson", "Juarez", "Kandinsky", "Klimt", "Lakota", "Manet", "Monet", "Moreau",
+        "Morgenstern", "Nattier", "Navajo", "NewKingdom", "Nizami", "OKeeffe1", "OKeeffe2", "Paquin", "Peru1", "Peru2",
+        "Pillement", "Pissaro", "Redon", "Renoir", "Signac", "Tam", "Tara", "Thomas", "Tiepolo", "Troy",
+        "Tsimshian", "VanGogh1", "VanGogh2", "VanGogh3", "Veronese", "Wissing")
+        ){
+        # Check pour voir si le package est installe, etant en 'Suggests'
+        rlang::check_installed("MetBrewer")
         palette <- as.character(MetBrewer::met.brewer(name = pal, n = levels_palette, type = "continuous", direction = direction))
 
       # On cree la palette avecle package PrettyCols
-      } else if(pal %in% names(PrettyCols::PrettyColsPalettes)){
+      } else if(pal %in% c(
+        "Blues", "Purples", "Tangerines", "Greens", "Pinks", "Roses", "Teals",
+        "Yellows", "Reds", "Greys", "Aubergines", "Browns", "PurpleGreens", "PinkGreens",
+        "TangerineBlues", "PurpleTangerines", "PurplePinks", "TealGreens", "PurpleYellows", "RedBlues", "Bold",
+        "Dark", "Light", "Beach", "Fun", "Sea", "Bright", "Relax",
+        "Lucent", "Lively", "Joyful", "Coast", "Ocean", "Peppers", "Disco",
+        "Prism", "Neon", "Oasis", "Celestial", "Aurora", "Spring", "Summer",
+        "Autumn", "Winter", "Rainbow", "Velvet")
+        ){
+        rlang::check_installed("PrettyCols")
         palette <- as.character(PrettyCols::prettycols(palette = pal, n = levels_palette, type = "continuous", direction = direction))
 
       # On cree la palette avec la fonction interne official_pal()
@@ -1111,16 +1157,13 @@ create_palette <- function(pal,
     palette <- palette_function()
   }
 
-  # Pour modifier la palette (desaturer, eclaircir, foncer)
-  if(desaturate != 0){
-    palette <- colorspace::desaturate(palette, desaturate)
-  }
-  if(lighten != 0){
-    palette <- colorspace::lighten(palette, lighten)
-  }
-  if(darken != 0){
-    palette <- colorspace::darken(palette, darken)
-  }
+  # Pour alterer la palette (desaturer, eclaircir, foncer)
+  palette <- fonctionr_alter_cols(
+    cols = palette,
+    desaturate = desaturate,
+    lighten = lighten,
+    darken = darken
+  )
 
   return(palette)
 }

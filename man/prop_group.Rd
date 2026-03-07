@@ -28,7 +28,7 @@ prop_group(
   unit = "\%",
   dec = NULL,
   col = "deepskyblue3",
-  pal = "Coast",
+  pal = "OBSS_Relax",
   direction = 1,
   desaturate = 0,
   lighten = 0,

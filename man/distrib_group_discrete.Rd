@@ -26,7 +26,7 @@ distrib_group_discrete(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = "Hokusai1",
+  pal = "OBSS",
   direction = 1,
   desaturate = 0,
   lighten = 0,

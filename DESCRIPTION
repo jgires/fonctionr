@@ -1,43 +1,52 @@
-Package: fonctionr
 Type: Package
-Title: Easy Estimation and Vizualisation of Indicators from Data with Complex Design
+Package: fonctionr
+Title: Easy Estimation and Vizualisation of Indicators from Data with
+    Complex Design
 Version: 0.4.1
-Authors@R: 
-    c(person("Joel", "Gires", email = "joel.gires@vivalis.brussels", role = c("aut", "cre", "cph")),
-    person("Francois", "Ghesquiere", email = "f.ghesquiere@iweps.be", role = "aut"))
-Description: Many functions to easily vizualise and estimate indicators such as proportions, means, medians and continuous/discrete distributions from complex survey data. The package also estimates confidence intervals for all indicators, compares different groups and computes different statistical tests.
+Authors@R: c(
+    person("Joel", "Gires", , "joel.gires@vivalis.brussels", role = c("aut", "cre", "cph")),
+    person("Francois", "Ghesquiere", , "f.ghesquiere@iweps.be", role = "aut")
+  )
+Description: Many functions to easily vizualise and estimate indicators
+    such as proportions, means, medians and continuous/discrete
+    distributions from complex survey data. The package also estimates
+    confidence intervals for all indicators, compares different groups and
+    computes different statistical tests.
 License: GPL-3
-URL: https://jgires.github.io/fonctionr/, https://github.com/jgires/fonctionr/
-Encoding: UTF-8
-LazyData: true
-Depends: R (>= 4.1.0)
+URL: https://jgires.github.io/fonctionr/,
+    https://github.com/jgires/fonctionr/
+Depends: 
+    R (>= 4.1.0)
 Imports: 
+    broom,
+    doParallel,
     dplyr,
     forcats,
+    foreach,
+    ggnewscale,
     ggplot2,
-    MetBrewer,
-    PrettyCols,
+    ggtext,
+    grDevices,
     rlang,
     scales,
+    showtext,
     srvyr,
     stringr,
     survey,
-    tidyr,
-    tibble,
-    openxlsx,
-    broom,
-    showtext,
     sysfonts,
-    grDevices,
-    colorspace,
-    ggnewscale,
-    ggtext,
-    doParallel,
-    foreach
+    tibble,
+    tidyr
 Suggests:
+    colorspace,
     knitr,
     laeken,
-    rmarkdown,
-    patchwork
+    MetBrewer,
+    openxlsx,
+    patchwork,
+    PrettyCols,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
 RoxygenNote: 7.3.3
-VignetteBuilder: knitr

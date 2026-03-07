@@ -2,23 +2,23 @@
 
 globalVariables(unique(c(
   # central_group:
-  "indice", "indice_low", "indice_upp", "median", "n_sample",
+  "indice", "indice_low", "indice_upp", "n_sample",
+  # distrib_continuous:
+  "coord_max", "coord_x", "indice", "indice_low", "indice_upp", "quantFct", "segment", "y",
   # distrib_discrete:
-  "median", "n_sample", "n_weighted_low", "n_weighted_upp", "prop", "prop_low", "prop_upp", "group",
+  "n_sample", "prop", "prop_low", "prop_upp",
+  # distrib_group_continuous:
+  ".", "indice", "indice_low", "indice_upp", "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "xbegin", "xend", "y", "y_ridges",
   # distrib_group_discrete:
-  "prop",
+  "n_sample", "prop",
+  # make_surface:
+  "incr_unit", "indice_sqrt", "row_coef", "row_num", "the_medians", "xmax", "xmean", "xmin",
   # many_val:
-  "list_col", "median", "n_sample", "prop", "prop_low", "prop_upp",
+  "indice", "indice_low", "indice_upp", "list_col", "n_sample",
   # many_val_group:
-  "list_col", "n_sample", "prop", "prop_low", "prop_upp", "longest", "show_value_stack",
+  "indice", "indice_low", "indice_upp", "list_col", "longest", "n_sample", "show_value_stack",
   # pivot_longer_survey:
   "type",
   # prop_group:
-  "median", "n_sample", "prop", "prop_low", "prop_upp", "fonctionr_express_bin",
-  # distrib_continuous:
-  "coord_x", "coord_max", "quantFct", "segment", "x", "y",
-  # distrib_group_continuous:
-  "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "x", "xbegin", "xend", "y", "y_ridges", ".",
-  # make_surface:
-  "indice_sqrt", "xmean", "incr_unit", "row_coef", "row_num", "the_medians", "xmax", "xmin"
+  "fonctionr_express_bin", "n_sample", "prop", "prop_low", "prop_upp"
 )))

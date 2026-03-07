@@ -21,7 +21,7 @@ make_surface(
   digits = 0,
   unit = NULL,
   col = NULL,
-  pal = "Kandinsky",
+  pal = "OBSS_Autumn",
   direction = 1,
   desaturate = 0,
   lighten = 0,

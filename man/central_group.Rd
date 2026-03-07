@@ -28,7 +28,7 @@ central_group(
   unit = "",
   dec = NULL,
   col = NULL,
-  pal = "Peppers",
+  pal = "OBSS_Spring",
   direction = 1,
   desaturate = 0,
   lighten = 0,

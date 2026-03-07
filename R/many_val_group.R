@@ -109,7 +109,7 @@ many_val_group = function(data,
                           digits = 0,
                           unit = NULL,
                           dec = NULL,
-                          pal = "Egypt",
+                          pal = "OBSS_alt3",
                           direction = 1,
                           desaturate = 0,
                           lighten = 0,
@@ -243,7 +243,7 @@ many_val_group = function(data,
   # Si l'argument oarallel non defini par l'utilisateur => parallelisation s'active automatiquement avec des replicate weights
   if(is.null(parallel)) parallel <- ifelse(any(class(data) %in% c("svyrep.design")), TRUE, FALSE)
   # Par contre, dans tous les cas desactive si le nombre de core est de 3 ou moins
-  if(parallel::detectCores() >= 3) parallel <- FALSE
+  if(parallel::detectCores() <= 3) parallel <- FALSE
 
   # Petite fonction utile
   `%ni%` <- Negate(`%in%`)
@@ -586,7 +586,7 @@ many_val_group = function(data,
     # /!\ NOTE : on met unique() car avec facet il y a les modalites en double !
     levels_palette = nlevels(tab[[column_fill]]),
     direction = -1*direction,
-    name_function = "make_surface",
+    name_function = "many_val_group",
     desaturate = desaturate,
     lighten = lighten,
     darken = darken

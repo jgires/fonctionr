@@ -609,7 +609,7 @@ distrib_group_continuous <- function(data,
   # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer a quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
   if (show_moustache == T) {
     boxplot_df <- boxplot_df |>
-      pivot_longer(
+      tidyr::pivot_longer(
         cols = !c(group, level),
         names_to = "probs",
         values_to = "quantile",
@@ -722,7 +722,7 @@ distrib_group_continuous <- function(data,
   central_CI <- central |>
     filter(!is.na(central)) |>
     select(-level, -y, -quantFct, -segment, -y_ridges) |>
-    pivot_wider(
+    tidyr::pivot_wider(
       names_from = "central",
       values_from = "x"
       )

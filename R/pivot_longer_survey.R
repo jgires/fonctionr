@@ -7,7 +7,6 @@
 #'
 #' @return A pivoted dataframe
 #' @import dplyr
-#' @import tidyr
 #' @export
 #'
 #' @examples
@@ -53,7 +52,7 @@ pivot_longer_survey <- function(data,
     bind_cols(data |> ungroup() |> select(all_of(1:n_groups))) |> # Je remets le nom du groupe
     relocate((last_col()-(n_groups-1)):last_col()) |> # Je la positionne en premiere place
     # Je pivote avec names_sep = "_"
-    pivot_longer(-all_of(1:n_groups), names_to = c("type",".value"), names_sep = "_") |>
+    tidyr::pivot_longer(-all_of(1:n_groups), names_to = c("type",".value"), names_sep = "_") |>
     mutate(type = stringr::str_replace_all(type, "lWPtZR9Wf2g9RSp", "_")) |> # Je remets le "_" dans ce qui etait au depart les noms des colonnes
     left_join(n_numbers) # J'ajoute les effectifs
 
