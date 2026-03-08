@@ -326,8 +326,9 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) Passer autant de packages que possible de \`Imports\` à \`Suggests\`. Pour les détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}. Un bon résumé de l'import de packages ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri}\
-    *=\> Notamment broom, utilisé pour reformater les résultats des tests stats pour l'export excel. L'usage du package doit être déplacé dans la fonction interne `export_excel()` pour pouvoir changer son statut en \`Suggests\`.***
+-   **(Joël) Réécrire export_excel() =\> la fonction est un peu bordélique et le nom des arguments pas clairs.**
+
+-   **(Joël) Passer autant de packages que possible de \`Imports\` à \`Suggests\`. Pour les détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}. Un bon résumé de l'import de packages ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri}**
 
 -   **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer `NA` et pas seulement "".\
     *=\> Une fonction unique de labellisation des axes x et y a déjà été crée pour faciliter cet ajout.***
@@ -336,8 +337,9 @@ Date : 2024-02-14
     =\> Ajouter parallel.**
 
 -   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.\
-    =\> Ajouter l'explication de `fonctionr_options()`.\
-    =\> Modifier l'explication des palettes par défaut.**
+    =\> Documenter la fonction `fonctionr_options()` + explication dans le manuel.\
+    =\> Changer la doc pour les palettes par défaut.\
+    =\> Ajouter l'explication des arguments pour les fonctions `fonctionr_ggplot_labs()` et `export_excel()`.**
 
 -   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
     *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***

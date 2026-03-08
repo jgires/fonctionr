@@ -116,10 +116,14 @@ load_and_active_fonts <- function(){
 #' Internal function to export results of fonctionr's functions into an excel file.
 #'
 #' @param tab_excel A dataframe with the results calculated by fonctionr's functions.
+#' @param fonction
+#' @param type
 #' @param graph ggplot object showing results of fonctionr's functions.
-#' @param test_stat_excel A dataframe with results of a statistical test on the data.
+#' @param test.stat Results of a statistical test on the data.
+#' @param test_probs
 #' @param quantiles A dataframe with quantiles for density functions.
 #' @param density A dataframe with density coordinates for density functions.
+#' @param group.fill_null
 #' @param facet_null A logical vector. TRUE if no facet.
 #' @param export_path Path to export the results in an xlsx file.
 #' @param percent_fm A logical vector. TRUE if results are percentages.
@@ -130,22 +134,100 @@ load_and_active_fonts <- function(){
 #' @noRd
 #'
 export_excel <- function(tab_excel,
+                         fonction,
+                         type = NULL,
                          graph,
-                         test_stat_excel,
+                         test.stat,
+                         test_probs = NULL,
                          quantiles = NULL,
                          density = NULL,
-                         facet_null = NULL,
+                         group.fill_null,
+                         facet_null,
                          export_path,
-                         percent_fm = NULL,
+                         percent_fm,
                          fgFill,
-                         bivariate = NULL,
+                         bivariate,
                          dens = "none") {
 
-  # Check pour voir si le package est installe, etant en 'Suggests'
-  rlang::check_installed("openxlsx")
+  # Check pour voir si les packages sont installes, etant en 'Suggests'
+  rlang::check_installed(c("openxlsx", "broom"))
 
   # Pour etre integre au fichier excel, le graphique doit etre affiche => https://ycphs.github.io/openxlsx/reference/insertPlot.html
   print(graph)
+
+  # Fonction pour transformer les resultats du test stat en dataframe
+  tidy_test.stat <- function(test.stat){
+    test_stat_excel <- test.stat |>
+      broom::tidy() |>
+      t() |>
+      as.data.frame()
+    test_stat_excel$names <- rownames(test_stat_excel)
+    test_stat_excel <- test_stat_excel[, c(2,1)]
+    names(test_stat_excel)[1] <- "Parameter"
+    names(test_stat_excel)[2] <- "Value"
+
+    return(test_stat_excel)
+  }
+  # Fonction pour creer un data.frame a la main en cas de test non realise
+  empty_test.stat <- function(){
+    df <- data.frame(Parameter = c("none"),
+                     Value = "Test non realise",
+                     row.names = NULL)
+    return(df)
+  }
+
+  # On execute la bonne operation selon la fonction
+  if(fonction %in% c("prop_group")){
+    if(group.fill_null) {
+      if(all(test.stat != "Conditions non remplies")){
+        test_stat_excel <- tidy_test.stat(test.stat)
+      } else {
+        test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                      Value = test.stat,
+                                      row.names = NULL)
+      }
+    } else {
+      test_stat_excel <- empty_test.stat()
+    }
+  }
+  if(fonction %in% c("central_group", "distrib_group_continuous")){
+    if(group.fill_null) {
+      if(type == "median"){
+        test_stat_excel <- tidy_test.stat(test.stat)
+      }
+      # broom::tidy() ne fonctionne pas sur regTermTest => je le fais a la main
+      if(type == "mean") {
+        test_stat_excel <- data.frame(Parameter = c("df", "ddf", "statistic", "p.value", "method"),
+                                      Value = c(test.stat$df, test.stat$ddf, test.stat$Ftest, test.stat$p, "Wald test"),
+                                      row.names = NULL)
+      }
+    } else {
+      test_stat_excel <- empty_test.stat()
+    }
+  }
+  if(fonction %in% c("distrib_group_discrete")){
+    if(facet_null) {
+      if(all(test.stat != "Conditions non remplies")){
+        test_stat_excel <- tidy_test.stat(test.stat)
+      } else {
+        test_stat_excel <- data.frame(Parameter = c("test.error"),
+                                      Value = test.stat,
+                                      row.names = NULL)
+      }
+    } else {
+      test_stat_excel <- empty_test.stat()
+    }
+  }
+  if(fonction %in% c("distrib_discrete")){
+    if(test_probs & facet_null) {
+      test_stat_excel <- tidy_test.stat(test.stat)
+    } else {
+      test_stat_excel <- empty_test.stat()
+    }
+  }
+  if(fonction %in% c("many_val", "many_val_group", "distrib_continuous")){
+    test_stat_excel <- empty_test.stat()
+  }
 
   # Le nom du feuillet avec tab_excel varie selon que c'est la densite ou non
   # sub_dens = astuce pour la mise en gras ou non de la premiere colonne (voir apres)

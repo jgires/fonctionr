@@ -718,19 +718,14 @@ distrib_continuous <- function(data,
   res$graph <- graph
 
   if (!is.null(export_path)) {
-    # L'export en excel
-
-    # Pour many_prop, test pas encore implemente => on cree un data.frame a la main
-    test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                  Value = "Test pas encore implemente dans distrib_continuous",
-                                  row.names = NULL)
-
     # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
+                 fonction = "distrib_continuous",
                  graph = graph,
-                 test_stat_excel = test_stat_excel,
+                 test.stat = NULL,
                  quantiles = res$quant,
                  density = res$dens,
+                 group.fill_null = TRUE,
                  facet_null = TRUE,
                  export_path = export_path,
                  percent_fm = FALSE,

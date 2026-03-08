@@ -753,37 +753,12 @@ distrib_group_discrete <- function(data,
   }
 
   if (!is.null(export_path)) {
-    # L'export en excel
-
-    # On transforme le test stat en dataframe
-    if (quo_is_null(quo_facet)) { # Pour l'instant, test uniquement si pas de facet
-      if(all(test.stat != "Conditions non remplies")){
-      test_stat_excel <- test.stat |>
-        broom::tidy() |>
-        t() |>
-        as.data.frame()
-      test_stat_excel$names <- rownames(test_stat_excel)
-      test_stat_excel <- test_stat_excel[, c(2,1)]
-      names(test_stat_excel)[1] <- "Parameter"
-      names(test_stat_excel)[2] <- "Value"
-      }
-      if(all(test.stat == "Conditions non remplies")){
-          test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                        Value = test.stat,
-                                        row.names = NULL)
-      }
-    }
-    # Pour faceting, test pas encore implemente => on cree un data.frame a la main
-    if (!quo_is_null(quo_facet)) {
-      test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implemente avec le faceting",
-                                    row.names = NULL)
-    }
-
     # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
+                 fonction = "distrib_group_discrete",
                  graph = graph,
-                 test_stat_excel = test_stat_excel,
+                 test.stat = test.stat,
+                 group.fill_null = TRUE,
                  facet_null = quo_is_null(quo_facet),
                  export_path = export_path,
                  percent_fm = TRUE,

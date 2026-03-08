@@ -1057,39 +1057,21 @@ distrib_group_continuous <- function(data,
   res$test <- test.stat
 
   if (!is.null(export_path)) {
-    # L'export en excel
-
-    # On transforme le test stat en dataframe
-    if (type == "median") {
-      test_stat_excel <- test.stat |>
-        broom::tidy() |>
-        t() |>
-        as.data.frame()
-      test_stat_excel$names <- rownames(test_stat_excel)
-      test_stat_excel <- test_stat_excel[, c(2,1)]
-      names(test_stat_excel)[1] <- "Parameter"
-      names(test_stat_excel)[2] <- "Value"
-    }
-    # broom::tidy() ne fonctionne pas sur regTermTest => je le fais a la main
-    if (type == "mean") {
-      test_stat_excel <- data.frame(Parameter = c("df", "ddf", "statistic", "p.value", "method"),
-                                    Value = c(test.stat$df, test.stat$ddf, test.stat$Ftest, test.stat$p, "Wald test"),
-                                    row.names = NULL)
-    }
-
     # J'exporte les resultats en Excel
     export_excel(tab_excel = res$tab,
+                 fonction = "distrib_group_continuous",
+                 type = type,
                  graph = graph,
-                 test_stat_excel = test_stat_excel,
+                 test.stat = test.stat,
                  quantiles = res$quant,
                  density = res$dens,
+                 group.fill_null = TRUE,
                  facet_null = TRUE,
                  export_path = export_path,
                  percent_fm = FALSE,
                  fgFill = "#CC5258",
                  bivariate = FALSE,
                  dens = "group")
-
   }
 
   return(res)

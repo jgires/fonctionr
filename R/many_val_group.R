@@ -949,17 +949,12 @@ many_val_group = function(data,
   res$graph <- graph
 
   if (!is.null(export_path)) {
-    # L'export en excel
-
-    # Pour many_val_group, test pas encore implemente => on cree un data.frame a la main
-    test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implemente dans many_val_group",
-                                    row.names = NULL)
-
     # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
+                 fonction = "many_val_group",
                  graph = graph,
-                 test_stat_excel = test_stat_excel,
+                 test.stat = NULL,
+                 group.fill_null = TRUE,
                  facet_null = quo_is_null(quo_facet),
                  export_path = export_path,
                  percent_fm = ifelse(type == "prop", TRUE, FALSE),

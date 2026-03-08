@@ -910,38 +910,13 @@ central_group <- function(data,
   }
 
   if (!is.null(export_path)) {
-    # L'export en excel
-
-    # On transforme le test stat en dataframe
-    if (quo_is_null(quo_group.fill)) {
-      if (type == "median") {
-        test_stat_excel <- test.stat |>
-          broom::tidy() |>
-          t() |>
-          as.data.frame()
-        test_stat_excel$names <- rownames(test_stat_excel)
-        test_stat_excel <- test_stat_excel[, c(2,1)]
-        names(test_stat_excel)[1] <- "Parameter"
-        names(test_stat_excel)[2] <- "Value"
-      }
-      # broom::tidy() ne fonctionne pas sur regTermTest => je le fais a la main
-      if (type == "mean") {
-        test_stat_excel <- data.frame(Parameter = c("df", "ddf", "statistic", "p.value", "method"),
-                                      Value = c(test.stat$df, test.stat$ddf, test.stat$Ftest, test.stat$p, "Wald test"),
-                                      row.names = NULL)
-      }
-    }
-    # Si group.fill, test pas encore implemente => on cree un data.frame a la main
-    if (!quo_is_null(quo_group.fill)) {
-      test_stat_excel <- data.frame(Parameter = c("test.error"),
-                                    Value = "Test pas encore implemente avec group.fill",
-                                    row.names = NULL)
-    }
-
     # J'exporte les resultats en Excel
     export_excel(tab_excel = tab,
+                 fonction = "central_group",
+                 type = type,
                  graph = graph,
-                 test_stat_excel = test_stat_excel,
+                 test.stat = test.stat,
+                 group.fill_null = quo_is_null(quo_group.fill),
                  facet_null = quo_is_null(quo_facet),
                  export_path = export_path,
                  percent_fm = FALSE,
