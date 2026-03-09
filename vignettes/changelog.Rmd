@@ -337,12 +337,9 @@ Date : 2024-02-14
     =\> Ajouter parallel.**
 
 -   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.\
-    =\> Documenter la fonction `fonctionr_options()` + explication dans le manuel.\
+    =\> Documenter la fonction `fonctionr_options()` (+ explication dans le manuel).\
     =\> Changer la doc pour les palettes par défaut.\
-    =\> Ajouter l'explication des arguments pour les fonctions `fonctionr_ggplot_labs()` et `export_excel()`.**
-
--   **(François) Vérifier les messages à l'utilisateur : voir quoi garder, corriger, traduire, indiquer les accents (é, è...), ajouter des guillemets pour les arguments dans les checks, mieux écrire les résultats des tests stat (on ne sait pas quelle est l'hypothèse nulle).\
-    *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
+    =\> (Joël) Ajouter l'explication des arguments pour les fonctions `fonctionr_ggplot_labs()` et `export_excel()`.**
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 
@@ -405,7 +402,6 @@ Date : 2024-02-14
 
 #### many_val_group
 
--   **(Joël & François) Nouveau message qui apparait : multiple parameters ndf etc. =\> C'est quoi ? Régler.**
 -   Le `NA` apparait en premier lorsque `position = "flip"` =\> Corriger, il doit apparaître en dernier.
 -   Améliorer l'alignement des effectifs avec `show_n = T` lorsque `position == "stack"`
 -   Redondance du code avec total pour le `geom_text()` ?
@@ -464,4 +460,3 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 -   Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)
 :::
-

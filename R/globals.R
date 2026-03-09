@@ -11,6 +11,8 @@ globalVariables(unique(c(
   ".", "indice", "indice_low", "indice_upp", "level", "moustache_prob", "position", "probs", "quantFct", "quantile", "segment", "xbegin", "xend", "y", "y_ridges",
   # distrib_group_discrete:
   "n_sample", "prop",
+  # fonctionr_filter:
+  "fonctionr_rows_to_keep", "quanti_exp_flattened",
   # make_surface:
   "incr_unit", "indice_sqrt", "row_coef", "row_num", "the_medians", "xmax", "xmean", "xmin",
   # many_val:
