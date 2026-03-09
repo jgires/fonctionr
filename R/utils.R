@@ -1305,7 +1305,7 @@ fonctionr_cores_detect <- function() {
 
 fonctionr_filter <- function(data,
                              fonction,
-                             filter_exp,
+                             filter,
                              na.rm.facet,
                              facet,
                              na.rm.group,
@@ -1326,11 +1326,11 @@ fonctionr_filter <- function(data,
     mutate(fonctionr_rows_to_keep = TRUE)
 
   # On filtre si une expression de filtrage est indiquee
-  if(!quo_is_null(enquo(filter_exp))){
+  if(!quo_is_null(enquo(filter))){
     data <- data |>
       mutate(
-        fonctionr_rows_to_keep = {{ filter_exp }},
-        # Quand un resultat du mutate sur filter_exp donne NA, alors il doit etre exclu (car filter les exclut de base => on doit correspondre)
+        fonctionr_rows_to_keep = {{ filter }},
+        # Quand un resultat du mutate sur filter donne NA, alors il doit etre exclu (car filter les exclut de base => on doit correspondre)
         fonctionr_rows_to_keep = ifelse(is.na(fonctionr_rows_to_keep), FALSE, fonctionr_rows_to_keep)
         )
 
