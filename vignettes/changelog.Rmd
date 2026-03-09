@@ -358,10 +358,13 @@ Date : 2024-02-14
 
 #### **distrib_c**
 
+-   **(Joël) Sélectionner uniquement les variables nécessaires pour minimiser la RAM utilisée (désactivé car bug ?)**
 -   Ajouter le test stat univarié avec comme H0 mu dans la population. Apparemment la fonction n'est pas pré-programmée dans `survey`, il faut la faire soi-même.
 -   Ajouter la possibilité de facets.
 
 #### **distrib_group_c**
+
+-   **(Joël) Sélectionner uniquement les variables nécessaires pour minimiser la RAM utilisée (désactivé car bug ?)**
 
 -   **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile ici car le `NA` a été tranformé en level. Réfléchir à la meilleure solution et revoir éventuellement la fonction.**
 
@@ -461,3 +464,4 @@ Il semble qu'il faille filtrer après la déclaration du design. Si on ne le fai
 
 -   Tableau croisé avec résidus ou couleur par proportion (proportions par c, l, ou total)
 :::
+

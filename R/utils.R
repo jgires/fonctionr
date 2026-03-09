@@ -1294,3 +1294,138 @@ fonctionr_cores_detect <- function() {
   message("Parallel computing enabled with ", cores, " cores")
 
 }
+
+
+#' fonctionr_filter
+#'
+#' Internal function to filter rows
+#'
+#' @noRd
+#'
+
+fonctionr_filter <- function(data,
+                             fonction,
+                             filter_exp,
+                             na.rm.facet,
+                             facet,
+                             na.rm.group,
+                             group,
+                             group.fill,
+                             na.rm.var,
+                             quali_var,
+                             na.prop,
+                             na.vars,
+                             vec_list_vars
+                             ) {
+
+  message("Numbers of observation(s) removed by each filter (one after the other): ")
+
+  # Nombre de lignes initiales avant tout filtre
+  n_before <- nrow(data)
+  data <- data |>
+    mutate(fonctionr_rows_to_keep = TRUE)
+
+  # On filtre si une expression de filtrage est indiquee
+  if(!quo_is_null(enquo(filter_exp))){
+    data <- data |>
+      mutate(
+        fonctionr_rows_to_keep = {{ filter_exp }},
+        # Quand un resultat du mutate sur filter_exp donne NA, alors il doit etre exclu (car filter les exclut de base => on doit correspondre)
+        fonctionr_rows_to_keep = ifelse(is.na(fonctionr_rows_to_keep), FALSE, fonctionr_rows_to_keep)
+        )
+
+    n_after <- sum(data$variables$fonctionr_rows_to_keep)
+    message(n_before - n_after, " observation(s) removed by filter_exp")
+    n_before <- n_after
+  }
+  # On filtre facet
+  if(na.rm.facet == T) {
+    if(!quo_is_null(enquo(facet))){
+      data <- data |>
+        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ facet }}), FALSE))
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing facet")
+      n_before <- n_after
+    }
+  }
+  if(na.rm.group == T) {
+    # On filtre group
+    if(!quo_is_null(enquo(group))){
+      data <- data |>
+        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group }}), FALSE))
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing group")
+      n_before <- n_after
+    }
+    # On filtre group.fill
+    if(!quo_is_null(enquo(group.fill))){
+      data <- data |>
+        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group.fill }}), FALSE))
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing group.fill")
+      n_before <- n_after
+    }
+  }
+  if(fonction %in% c("distrib_group_discrete", "distrib_discrete")){
+    if(na.rm.var == T) {
+      data <- data |>
+        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ quali_var }}), FALSE))
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing quali_var")
+      n_before <- n_after
+    }
+  }
+  if(fonction == "prop_group"){
+    if(na.prop == "rm"){
+      data <- data |>
+        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na(fonctionr_express_bin), FALSE))
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing value(s) for the variable(s) in prop_exp")
+      n_before <- n_after
+    }
+  }
+  if(fonction %in% c("central_group", "distrib_continuous", "distrib_group_continuous")){
+    data <- data |>
+      mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na(quanti_exp_flattened), FALSE))
+
+    n_after <- sum(data$variables$fonctionr_rows_to_keep)
+    message(n_before - n_after, " observation(s) removed due to missing value(s) for the variable(s) in quanti_exp")
+    n_before <- n_after
+  }
+  if(fonction %in% c("many_val_group", "many_val")){
+    # On supprime les NA sur la/les variable(s) entrees si na.vars == "rm.all" => de cette facon les effectifs sont les memes pour tous les indicateurs.
+    if(na.vars == "rm.all"){
+
+      for (var in vec_list_vars) {
+        data <- data |>
+          mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na(.data[[var]]), FALSE))
+      }
+
+      n_after <- sum(data$variables$fonctionr_rows_to_keep)
+      message(n_before - n_after, " observation(s) removed due to missing value(s) in at least one of the variables")
+      n_before <- n_after
+    } else {
+      warning("With na.vars = 'rm', observations removed differ between variables")
+    }
+  }
+
+  # Si tout a ete filtre => pas de sens pour la suite
+  if(all(data$variables$fonctionr_rows_to_keep == FALSE)){
+    stop("All observations have been removed: nothing left to be analyzed!")
+  }
+  # On filtre SSI au moins 1 ligne doit etre supprimee
+  if(any(data$variables$fonctionr_rows_to_keep == FALSE)){
+    data <- data |>
+      filter(fonctionr_rows_to_keep == TRUE)
+  }
+  data <- data |>
+    select(-fonctionr_rows_to_keep)
+
+  return(data)
+
+}

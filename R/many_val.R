@@ -288,61 +288,17 @@ many_val = function(data,
   data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
 
-  message("Numbers of observation(s) removed by each filter (one after the other): ")
-
-  # On filtre si filter est non NULL
-  if(!quo_is_null(quo_filter)){
-
-    # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
-
-    data_W <- data_W |>
-      filter({{ filter_exp }})
-
-    # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
-
-  }
-
-
-  # On supprime les NA sur facet sifacet non-NULL et na.rm.facet = T
-  if (na.rm.facet == T) {
-    if(!quo_is_null(quo_facet)){
-
-      # message avec le nombre d'exclus pour facet
-      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
-                       type = "facet")
-
-      data_W <- data_W |>
-        filter(!is.na({{ facet }}))
-
-    }
-  }
-
-  # On supprime les NA sur la/les variable(s) entrees si na.vars == "rm.all" => de cette facon les effectifs sont les memes pour tous les indicateurs.
-  if(na.vars == "rm.all"){
-    # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
-    # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-    for (var in vec_list_vars) {
-      data_W <- data_W |>
-        filter(!is.na(.data[[var]]))
-    }
-    # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observation(s) removed due to missing in at least one of the variables")
-  }
-  else{
-    warning("With na.vars = 'rm', observations removed differ between variables")
-  }
-
+  # On filtre via fonction interne
+  data_W <- fonctionr_filter(
+    data = data_W,
+    fonction = "many_val",
+    filter = {{ filter_exp }},
+    na.rm.facet = na.rm.facet,
+    facet = {{ facet }},
+    na.rm.group = FALSE,
+    na.vars = na.vars,
+    vec_list_vars = vec_list_vars
+  )
 
   # On convertit la variable de facet en facteur si facet non-NULL
   if (!quo_is_null(quo_facet)) {

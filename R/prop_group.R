@@ -268,10 +268,11 @@ prop_group <- function(data,
   # NOTE : on le fait a ce moment du script car on a besoin d'avoir un objet srvyr pour faire le mutate a l'etape d'apres !
   data_W <- convert_to_srvyr(data, ...)
 
+  # On calcule une variable binaire (+ NA) pour l'expression => utilise pour le check, le filtre et le test stat
   # Test que prop_exp est OK : uniquement des valeurs 0-1 / T-F ou NA
   data_W <- data_W |>
-    mutate(fonctionr_test_prop_exp = {{ prop_exp }})
-  if (!all(data_W$variables[["fonctionr_test_prop_exp"]] %in% c(0,1,NA))) stop(paste("prop_exp must be an expression that produces TRUE-FALSE or be a binary variable (0-1/TRUE-FALSE)"), call. = FALSE)
+    mutate(fonctionr_express_bin = {{ prop_exp }})
+  if (!all(data_W$variables[["fonctionr_express_bin"]] %in% c(0,1,NA))) stop(paste("prop_exp must be an expression that produces TRUE-FALSE or be a binary variable (0-1/TRUE-FALSE)"), call. = FALSE)
 
   if(na.prop == "rm"){
     # Si na.prop == "rm", l'expression ne peut pas contenir la fonction is.na() => il est utile de calculer la proportion de NA, mais vu qu'on supprime les NA dans la suite (voir plus loin), ca ne marche pas !
@@ -332,102 +333,42 @@ prop_group <- function(data,
 
   # 2. PROCESSING DES DONNEES --------------------
 
+  # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_prop_exp cree au debut
+  message("Variable(s) detected in prop_exp: ", paste(vec_prop_exp, collapse = ", "))
+
   # On ne garde que les colonnes entrees en input
   data_W <- data_W |>
-    select(all_of(unname(vars_input_char)))
-  message("Numbers of observation(s) removed by each filter (one after the other): ")
+    select(all_of(unname(vars_input_char)), fonctionr_express_bin)
 
-  # On filtre si filter est non NULL
-  if(!quo_is_null(quo_filter)){
-
-    # On calcule les effectifs avant filtre
-    before <- nrow(data_W$variables)
-
-    data_W <- data_W |>
-      filter({{ filter_exp }})
-
-    # On calcule les effectifs apres filtre
-    after <- nrow(data_W$variables)
-
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before - after), " observation(s) removed by filter_exp")
-
-  }
-
-  # On supprime les NA sur facet sifacet non-NULL et na.rm.facet = T
-  if (na.rm.facet == T) {
-    if(!quo_is_null(quo_facet)){
-
-      # message avec le nombre d'exclus pour facet
-      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
-                       type = "facet")
-
-      data_W <- data_W |>
-        filter(!is.na({{ facet }}))
-
-    }
-  }
-
-  # On supprime les NA sur group + group.fill si na.rm.group = T
-  if (na.rm.group == T) {
-
-    # message avec le nombre d'exclus pour group
-    count_NA_deleted(data_W$variables[[deparse(substitute(group))]],
-                     type = "group")
-
-    data_W <- data_W |>
-      filter(!is.na({{ group }}))
-
-
-    if(!quo_is_null(quo_group.fill)){
-
-      # message avec le nombre d'exclus pour group.fill
-      count_NA_deleted(data_W$variables[[deparse(substitute(group.fill))]],
-                       type = "group.fill")
-
-      data_W <- data_W |>
-        filter(!is.na({{ group.fill }}))
-
-    }
-  }
-
-
-  # On supprime les NA sur la/les variable(s) de l'expression si na.prop == "rm" => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) de l'expression sont non missing (et pas tout le groupe : ca on s'en fout)
-  if(na.prop == "rm"){
-    # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_prop_exp cree au debut
-    message("Variable(s) detected in prop_exp: ", paste(vec_prop_exp, collapse = ", "))
-    # On calcule les effectifs avant filtre
-    before <- nrow(data_W$variables)
-    # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-    for (var in vec_prop_exp) {
-      data_W <- data_W |>
-        filter(!is.na(.data[[var]]))
-    }
-    # On calcule les effectifs apres filtre
-    after <- nrow(data_W$variables)
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before - after), " observation(s) removed due to missing value(s) for the variable(s) in prop_exp")
-
-    # On convertit la variable de groupe en facteur si pas facteur
-    # On cree egalement une variable binaire liee a la proportion pour le khi2
-    data_W <- data_W |>
-      mutate(
-        "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
-        fonctionr_express_bin = {{ prop_exp }}
-      )
-  }
+  # On filtre via fonction interne
+  data_W <- fonctionr_filter(
+    data = data_W,
+    fonction = "prop_group",
+    filter = {{ filter_exp }},
+    na.rm.facet = na.rm.facet,
+    facet = {{ facet }},
+    na.rm.group = na.rm.group,
+    group = {{ group }},
+    group.fill = {{ group.fill }},
+    na.prop = na.prop
+  )
 
   # Si na.prop == "include", alors on transforme les NA en 0, pour inclure tout l'echantillon au denominateur
   if(na.prop == "include"){
     data_W <- data_W |>
       mutate(
-        "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
         fonctionr_express_bin = ifelse(!is.na({{ prop_exp }}),
                                        {{ prop_exp }},
                                        0)
       )
     warning("With na.prop = 'include', NAs in prop_exp variables are not removed but included in the denominator")
   }
+
+  # On convertit la variable de groupe en facteur si pas facteur
+  data_W <- data_W |>
+    mutate(
+      "{{ group }}" := droplevels(as.factor({{ group }})) # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test khi2)
+    )
 
   # On enregistre les labels originaux pour si total = T
   levels_origin_group <- levels(data_W$variables[[deparse(substitute(group))]])

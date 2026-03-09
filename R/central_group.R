@@ -315,89 +315,37 @@ central_group <- function(data,
   # On convertit d'abord en objet srvyr
   data_W <- convert_to_srvyr(data, ...)
 
+  # On affiche les variables entrees dans l'expression via message (pour verification) => presentes dans vec_quanti_exp cree au debut
+  message("Variable(s) detected in quanti_exp: ", paste(vec_quanti_exp, collapse = ", "))
+
   # On ne garde que les colonnes entrees en input
   data_W <- data_W |>
     select(all_of(unname(vars_input_char)))
-  message("Numbers of observation(s) removed by each filter (one after the other): ")
 
-  # On filtre si filter est non NULL
-  if(!quo_is_null(quo_filter)){
+  # On recalcule quanti_exp dans une variable unique si c'est une expression a la base (apres le select ci-dessus pour ne pas l'effacer)
+  # => necessaire pour les tests stat ci-dessous
+  # => permet de supprimer les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
+  data_W <- data_W |>
+    mutate(
+      quanti_exp_flattened = {{ quanti_exp }}
+    )
 
-    # On calcule les effectifs avant filtre
-    before <- data_W |>
-      summarise(n=unweighted(n()))
-
-    data_W <- data_W |>
-      filter({{ filter_exp }})
-
-    # On calcule les effectifs apres filtre
-    after <- data_W |>
-      summarise(n=unweighted(n()))
-    # On affiche le nombre de lignes supprimees (pour verification)
-    message(paste0(before[[1]] - after[[1]]), " observation(s) removed by filter_exp")
-
-  }
-
-  # On supprime les NA sur facet sifacet non-NULL et na.rm.facet = T
-  if (na.rm.facet == T) {
-    if(!quo_is_null(quo_facet)){
-
-      # message avec le nombre d'exclus pour facet
-      count_NA_deleted(data_W$variables[[deparse(substitute(facet))]],
-                       type = "facet")
-
-      data_W <- data_W |>
-        filter(!is.na({{ facet }}))
-
-    }
-  }
-
-
-  # On supprime les NA sur group + group.fill si na.rm.group = T
-  if (na.rm.group == T) {
-
-    # message avec le nombre d'exclus pour group
-    count_NA_deleted(data_W$variables[[deparse(substitute(group))]],
-                     type = "group")
-
-    data_W <- data_W |>
-      filter(!is.na({{ group }}))
-
-
-    if(!quo_is_null(quo_group.fill)){
-
-      # message avec le nombre d'exclus pour group.fill
-      count_NA_deleted(data_W$variables[[deparse(substitute(group.fill))]],
-                       type = "group.fill")
-
-      data_W <- data_W |>
-        filter(!is.na({{ group.fill }}))
-
-    }
-  }
-
-  # On supprime les NA sur la/les variable(s) quanti dans tous les cas, sinon ambigu => de cette facon les n par groupe sont toujours les effectifs pour lesquels la/les variable(s) quanti sont non missing (et pas tout le groupe : ca on s'en fout)
-  # On les affiche via message (pour verification)
-  message("Variable(s) detected in quanti_exp: ", paste(vec_quanti_exp, collapse = ", "))
-  # On calcule les effectifs avant filtre
-  before <- data_W |>
-    summarise(n=unweighted(n()))
-  # On filtre via boucle => solution trouvee ici : https://dplyr.tidyverse.org/articles/programming.html#loop-over-multiple-variables
-  for (var in vec_quanti_exp) {
-    data_W <- data_W |>
-      filter(!is.na(.data[[var]]))
-  }
-  # On calcule les effectifs apres filtre
-  after <- data_W |>
-    summarise(n=unweighted(n()))
-  # On affiche le nombre de lignes supprimees (pour verification)
-  message(paste0(before[[1]] - after[[1]]), " observation(s) removed due to missing value(s) for the variable(s) in quanti_exp")
+  # On filtre via fonction interne
+    data_W <- fonctionr_filter(
+    data = data_W,
+    fonction = "central_group",
+    filter = {{ filter_exp }},
+    na.rm.facet = na.rm.facet,
+    facet = {{ facet }},
+    na.rm.group = na.rm.group,
+    group = {{ group }},
+    group.fill = {{ group.fill }}
+  )
 
   # On convertit la variable de groupe en facteur si pas facteur
   data_W <- data_W |>
     mutate(
       "{{ group }}" := droplevels(as.factor({{ group }})), # droplevels pour eviter qu'un level soit encode alors qu'il n'a pas d'effectifs (pb pour le test stat potentiel)
-      quanti_exp_flattened = {{ quanti_exp }} # On recalcule quanti_exp dans une variable unique si c'est une expression a la base => necessaire pour les tests stat ci-dessous
       )
 
   # On enregistre les labels originaux pour si total = T
