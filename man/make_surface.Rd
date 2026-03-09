@@ -129,6 +129,7 @@ eusilc_mean <- mean_group(
   eusilc,
   group = pl030_rec,
   quanti_exp = py010n + py050n + py090n + py100n + py110n + py120n + py130n + py140n,
+  filter_exp = !pl030_rec \%in\% c("Student", "Fulfilling domestic tasks") & db040 == "Tyrol",
   weights = rb050
 )
 

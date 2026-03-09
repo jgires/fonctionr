@@ -143,7 +143,8 @@ central_group <- function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -334,7 +335,7 @@ central_group <- function(data,
     data_W <- fonctionr_filter(
     data = data_W,
     fonction = "central_group",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
@@ -526,7 +527,7 @@ central_group <- function(data,
     } else {
       # Warning uniquement si une couleur fausse a ete entree
       if(!is.null(col) & all(isColor(col)) == FALSE){
-        warning("color is invalid: default color is used")
+        warning("color is invalid: default color is used", call. = FALSE)
       }
       if(type == "mean"){
         col <- "deeppink3"

@@ -1211,7 +1211,7 @@ create_palette <- function(pal,
       # Si la couleur/palette n'est pas valide => defaut
       } else {
         palette <- palette_function()
-        warning("The specified palette does not exist: the default palette is used")
+        warning("The specified palette does not exist: the default palette is used", call. = FALSE)
       }
     # Si pal est de longueur > 1 avec uniquement des couleurs valides
     } else if(length(pal) > 1 & all(isColor(pal))){
@@ -1226,12 +1226,12 @@ create_palette <- function(pal,
       # S'il n'y a PAS le bon nombre de couleurs => defaut
       if(length(pal) != levels_palette){
         palette <- palette_function()
-        warning("The specified palette does not contain the correct number of colors: the default palette is used.")
+        warning("The specified palette does not contain the correct number of colors: the default palette is used.", call. = FALSE)
       }
     # Si aucun de ces cas => defaut
     } else {
       palette <- palette_function()
-      warning("The specified palette is invalid: the default palette is used")
+      warning("The specified palette is invalid: the default palette is used", call. = FALSE)
     }
   }
   # Si pal est NULL => defaut
@@ -1300,12 +1300,15 @@ fonctionr_cores_detect <- function() {
 #'
 #' Internal function to filter rows
 #'
+#' @import rlang
+#' @import srvyr
+#'
 #' @noRd
 #'
 
 fonctionr_filter <- function(data,
                              fonction,
-                             filter,
+                             filter_exp,
                              na.rm.facet,
                              facet,
                              na.rm.group,
@@ -1326,11 +1329,11 @@ fonctionr_filter <- function(data,
     mutate(fonctionr_rows_to_keep = TRUE)
 
   # On filtre si une expression de filtrage est indiquee
-  if(!quo_is_null(enquo(filter))){
+  if(!quo_is_null(enquo(filter_exp))){
     data <- data |>
       mutate(
-        fonctionr_rows_to_keep = {{ filter }},
-        # Quand un resultat du mutate sur filter donne NA, alors il doit etre exclu (car filter les exclut de base => on doit correspondre)
+        fonctionr_rows_to_keep = {{ filter_exp }},
+        # Quand un resultat du mutate sur filter_exp donne NA, alors il doit etre exclu (car filter les exclut de base => on doit correspondre)
         fonctionr_rows_to_keep = ifelse(is.na(fonctionr_rows_to_keep), FALSE, fonctionr_rows_to_keep)
         )
 
@@ -1410,7 +1413,7 @@ fonctionr_filter <- function(data,
       message(n_before - n_after, " observation(s) removed due to missing value(s) in at least one of the variables")
       n_before <- n_after
     } else {
-      warning("With na.vars = 'rm', observations removed differ between variables")
+      warning("With na.vars = 'rm', observations removed differ between variables", call. = FALSE)
     }
   }
 

@@ -160,7 +160,8 @@ distrib_group_continuous <- function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -260,7 +261,7 @@ distrib_group_continuous <- function(data,
 
   # On empeche une hauteur de plus de 1 si palette multicolore (ca deconne si chevauchement)
   if(height > 1 & length(col_density) > 1){
-    warning("A height greater than 1 is not possible when col_density is a vector. The height is redefined to .8.")
+    warning("A height greater than 1 is not possible when col_density is a vector. The height is redefined to .8.", call. = FALSE)
     height <- .8
   }
 
@@ -346,7 +347,7 @@ distrib_group_continuous <- function(data,
   data_W <- fonctionr_filter(
     data = data_W,
     fonction = "distrib_group_continuous",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
@@ -721,7 +722,7 @@ distrib_group_continuous <- function(data,
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    warning("A color specified in col_density does not exist: the default color palette is used")
+    warning("A color specified in col_density does not exist: the default color palette is used", call. = FALSE)
     col_density <- "#e0dfe0"
   }
 
@@ -741,7 +742,7 @@ distrib_group_continuous <- function(data,
 
     if(all(isColor(col_moustache)) != TRUE|length(moustache_probs) > 1 & length(col_moustache) == 1){
       # Si condition non remplie : on met la couleur par defaut
-      warning("Unknown color in col_moustache or not enough modalities: the default palette is used")
+      warning("Unknown color in col_moustache or not enough modalities: the default palette is used", call. = FALSE)
       col_moustache <- c("#EB9BA0", "#FAD7B1")
     }
 

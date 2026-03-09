@@ -151,7 +151,8 @@ many_val_group = function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -237,7 +238,7 @@ many_val_group = function(data,
 
   if(total == TRUE & position == "flip"){
     total <- FALSE
-    warning("The 'flip' position does not allow a total: it is therefore disabled")
+    warning("The 'flip' position does not allow a total: it is therefore disabled", call. = FALSE)
   }
 
   # Si l'argument oarallel non defini par l'utilisateur => parallelisation s'active automatiquement avec des replicate weights
@@ -335,7 +336,7 @@ many_val_group = function(data,
   data_W <- fonctionr_filter(
     data = data_W,
     fonction = "many_val_group",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
@@ -495,7 +496,7 @@ many_val_group = function(data,
     # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      warning("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used")
+      warning("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used", call. = FALSE)
 
       # On cree un facteur avec l'ordre tel qu'il est entre par l'utilisateur (pour ggplot)
       tab$list_col <- factor(tab$list_col, levels = rev(vec_list_vars))

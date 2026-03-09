@@ -128,7 +128,8 @@ esth_graph <- function(tab,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -225,7 +226,7 @@ esth_graph <- function(tab,
   # Si col est NULL ou n'est pas valide => on met la couleur par defaut
   } else {
     if(!is.null(col) & (all(isColor(col)) == FALSE)){ # Warning uniquement si une couleur fausse a ete entree
-      warning("col is not valid: default color is used")
+      warning("col is not valid: default color is used", call. = FALSE)
     }
     col <- "indianred4" # Alors col == "indianred4"
     palette <- c(rep(col, nlevels(tab[[deparse(substitute(var))]]) - 1), "grey40")

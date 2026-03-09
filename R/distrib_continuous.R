@@ -127,7 +127,8 @@ distrib_continuous <- function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -284,7 +285,7 @@ distrib_continuous <- function(data,
   data_W <- fonctionr_filter(
     data = data_W,
     fonction = "distrib_continuous",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = FALSE
@@ -446,7 +447,7 @@ distrib_continuous <- function(data,
     # Si condition remplie on ne fait rien => on garde la palette
   } else {
     # Sinon on met la couleur par defaut
-    warning("A color specified in col_density does not exist: the default color palette is used")
+    warning("A color specified in col_density does not exist: the default color palette is used", call. = FALSE)
     col_density <- c("#00708C", "mediumturquoise")
   }
 

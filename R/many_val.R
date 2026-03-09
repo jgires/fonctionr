@@ -136,7 +136,8 @@ many_val = function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -292,7 +293,7 @@ many_val = function(data,
   data_W <- fonctionr_filter(
     data = data_W,
     fonction = "many_val",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = FALSE,
@@ -357,7 +358,7 @@ many_val = function(data,
     # verifier que list_vars a une meme longueur que list_vars_lab
     # si non, message avec erreur...
     if (length(vec_list_vars) != length(list_vars_lab)) {
-      warning("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used")
+      warning("The number of labels is not equal to the number of variables: labels (list_vars_lab) are not used", call. = FALSE)
 
     # si oui, on remplace dans tab$list_col le nom des variables par les labels definis par l'utilisateur dans list_vars_lab
     } else {
@@ -415,7 +416,7 @@ many_val = function(data,
     # Si col est pas valide => on met la couleur par defaut
     } else {
       if(all(isColor(col)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
-        warning("color is invalid: default color is used")
+        warning("color is invalid: default color is used", call. = FALSE)
       }
       col <- "indianred4" # Alors col == "indianred4"
       palette <- rep(col, nlevels(tab[["list_col"]]))

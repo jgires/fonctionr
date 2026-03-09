@@ -59,6 +59,7 @@
 #'   eusilc,
 #'   group = pl030_rec,
 #'   quanti_exp = py010n + py050n + py090n + py100n + py110n + py120n + py130n + py140n,
+#'   filter_exp = !pl030_rec %in% c("Student", "Fulfilling domestic tasks") & db040 == "Tyrol",
 #'   weights = rb050
 #' )
 #'
@@ -129,7 +130,8 @@ make_surface <- function(tab,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -197,7 +199,7 @@ make_surface <- function(tab,
 
   # Check des arguments necessaires
   if((show_ci == T) & (quo_is_null(quo_low) | quo_is_null(quo_up))){
-    warning("You did not specify the variables with the CI: these are disabled.")
+    warning("You did not specify the variables with the CI: these are disabled.", call. = FALSE)
     show_ci <- FALSE
   }
 
@@ -357,7 +359,7 @@ make_surface <- function(tab,
       # Si col est pas valide => on met la couleur par defaut
     } else {
       if(all(isColor(col)) == FALSE){ # Warning uniquement si une couleur fausse a ete entree
-        warning("col n'est pas valide : la couleur par defaut est utilisee")
+        warning("col n'est pas valide : la couleur par defaut est utilisee", call. = FALSE)
       }
       col <- "indianred4" # Alors col == "indianred4"
       palette <- rep(col, length(unique(tab[[deparse(substitute(var))]])))

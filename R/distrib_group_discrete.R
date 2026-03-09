@@ -144,7 +144,8 @@ distrib_group_discrete <- function(data,
       paste(
         names(list_opt_fonctionr$fonctionr.options),
         collapse = ", "
-      )
+      ),
+      call. = FALSE
     )
 
     # On cree des objets avec les valeurs definies dans la liste pour toutes ces options (= on remplace les arguments par defaut de la fonction)
@@ -303,7 +304,7 @@ distrib_group_discrete <- function(data,
   data_W <- fonctionr_filter(
     data = data_W,
     fonction = "distrib_group_discrete",
-    filter = {{ filter_exp }},
+    filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
