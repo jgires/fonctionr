@@ -296,7 +296,6 @@ many_val = function(data,
     filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
-    na.rm.group = FALSE,
     na.vars = na.vars,
     vec_list_vars = vec_list_vars
   )

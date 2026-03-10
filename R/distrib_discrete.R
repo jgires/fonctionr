@@ -268,7 +268,6 @@ distrib_discrete <- function(data,
     filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
     facet = {{ facet }},
-    na.rm.group = FALSE,
     na.rm.var = na.rm.var,
     quali_var = {{ quali_var }}
   )

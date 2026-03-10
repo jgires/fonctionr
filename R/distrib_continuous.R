@@ -287,8 +287,7 @@ distrib_continuous <- function(data,
     fonction = "distrib_continuous",
     filter_exp = {{ filter_exp }},
     na.rm.facet = na.rm.facet,
-    facet = {{ facet }},
-    na.rm.group = FALSE
+    facet = {{ facet }}
   )
 
   # On convertit la variable de facet en facteur si facet non-NULL

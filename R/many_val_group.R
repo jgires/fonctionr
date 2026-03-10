@@ -341,7 +341,6 @@ many_val_group = function(data,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
     group = {{ group }},
-    group.fill = NULL,
     na.vars = na.vars,
     vec_list_vars = vec_list_vars
   )

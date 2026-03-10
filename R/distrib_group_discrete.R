@@ -309,7 +309,6 @@ distrib_group_discrete <- function(data,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
     group = {{ group }},
-    group.fill = NULL,
     na.rm.var = na.rm.var,
     quali_var = {{ quali_var }}
   )

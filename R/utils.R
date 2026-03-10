@@ -1352,26 +1352,31 @@ fonctionr_filter <- function(data,
       n_before <- n_after
     }
   }
-  if(na.rm.group == T) {
-    # On filtre group
-    if(!quo_is_null(enquo(group))){
-      data <- data |>
-        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group }}), FALSE))
 
-      n_after <- sum(data$variables$fonctionr_rows_to_keep)
-      message(n_before - n_after, " observation(s) removed due to missing group")
-      n_before <- n_after
-    }
-    # On filtre group.fill
-    if(!quo_is_null(enquo(group.fill))){
-      data <- data |>
-        mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group.fill }}), FALSE))
+  # On filtre group # uniquement pour les fonctions ci-dessous (avec un groupe)
+  if(fonction %in% c("central_group", "prop_group","distrib_group_discrete","distrib_group_continuous","many_val_group")){
+    if(na.rm.group == T) {
+        data <- data |>
+          mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group }}), FALSE))
 
-      n_after <- sum(data$variables$fonctionr_rows_to_keep)
-      message(n_before - n_after, " observation(s) removed due to missing group.fill")
-      n_before <- n_after
-    }
+        n_after <- sum(data$variables$fonctionr_rows_to_keep)
+        message(n_before - n_after, " observation(s) removed due to missing group")
+        n_before <- n_after
+      }
+      # On filtre group.fill # uniquement pour les fonctions ci-dessous (avec un sous-groupe possible)
+      if(fonction %in% c("central_group", "prop_group")){
+        if(!quo_is_null(enquo(group.fill))){
+          data <- data |>
+            mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group.fill }}), FALSE))
+
+          n_after <- sum(data$variables$fonctionr_rows_to_keep)
+          message(n_before - n_after, " observation(s) removed due to missing group.fill")
+          n_before <- n_after
+        }
+      }
   }
+
+  #filtre quali_var
   if(fonction %in% c("distrib_group_discrete", "distrib_discrete")){
     if(na.rm.var == T) {
       data <- data |>
@@ -1426,6 +1431,7 @@ fonctionr_filter <- function(data,
     data <- data |>
       filter(fonctionr_rows_to_keep == TRUE)
   }
+  # on supprime la variable de filtre car on n'en a plus besoin
   data <- data |>
     select(-fonctionr_rows_to_keep)
 

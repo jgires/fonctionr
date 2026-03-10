@@ -352,7 +352,6 @@ distrib_group_continuous <- function(data,
     facet = {{ facet }},
     na.rm.group = na.rm.group,
     group = {{ group }},
-    group.fill = NULL
   )
 
   # On convertit la variable de groupe en facteur si pas facteur
