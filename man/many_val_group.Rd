@@ -147,7 +147,7 @@ many_mean_group(..., type = "mean")
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
 
-\item{parallel}{TRUE to enable parallel computing.}
+\item{parallel}{TRUE to enable parallel computing. Automatically TRUE if replicated weights are used, otherwise FALSE. The parameters entered by the user take precedence over the automatic default value.}
 }
 \value{
 A list that contains a table and a graphic

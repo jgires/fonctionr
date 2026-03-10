@@ -18,6 +18,16 @@ knitr::opts_chunk$set(
 library(fonctionr)
 ```
 
+## fonctionr 0.5.0
+
+Date : 2026-03-10
+
+-   Changement dans la manière de filtrer les données, permettant un gain de rapidité de \~30% dans la plupart des fonctions lors de l'usage de poids répliqués.
+
+-   La fonction `many_val_group()` peut désormais être parallélisée, permettant un gain de rapidité de \~30% avec des poids répliqués lorsque les calculs sont nombreux. Le gain est plus petit - voire négatif - lorsque les calculs sont peu importants. C'est la raison pour laquelle l'option est désactivée par défaut si l'estimation de la variance d'échantillonnage n'est pas réalisée à l'aide de poids répliqués.
+
+-   Changement des palettes par défaut des différentes fonctions, car MetBrewer et PrettyCols sont désormais définis comme des packages optionnels (ils ne sont pas automatiquement installés avec fonctionr, sauf si `dependencies = TRUE` est indiqué lors de l'installation).
+
 ## fonctionr 0.4.0
 
 Date : 2026-01-27
@@ -326,9 +336,11 @@ Date : 2024-02-14
 
 #### En général
 
--   **(Joël) Réécrire export_excel() =\> la fonction est un peu bordélique et le nom des arguments pas clairs.**
+-   **(Joël) Réécrire `export_excel()` =\> la fonction est un peu bordélique et le nom des arguments pas clairs.**
 
--   **(Joël) Passer autant de packages que possible de \`Imports\` à \`Suggests\`. Pour les détails : [https://r-pkgs.org/dependencies-in-practice.html](#0){.uri}. Un bon résumé de l'import de packages ici : [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#0){.uri}**
+-   **(Joël) Harmoniser les fonctions internes\
+    =\> `fonctionr_ggplot_labs()` utilise `type` pour désigner la fonction dans laquelle on se trouve, vs `fonction` pour `export_excel()` et `fonctionr_filter()` : future source de confusion pour maintenir le package.\
+    =\> Certaines conditions sont implicites, d'autres explicites -\> faire le même travail que François a fait sur `fonctionr_filter()`**
 
 -   **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer `NA` et pas seulement "".\
     *=\> Une fonction unique de labellisation des axes x et y a déjà été crée pour faciliter cet ajout.***
@@ -338,8 +350,7 @@ Date : 2024-02-14
 
 -   **(François) Revoir la doc de chaque fonction et le manuel par rapport aux changements. Voir ici pour savoir les différentes options possibles dans la doc : [https://r-pkgs.org/man.html](#0){.uri}.\
     =\> Documenter la fonction `fonctionr_options()` (+ explication dans le manuel).\
-    =\> Changer la doc pour les palettes par défaut.\
-    =\> (Joël) Ajouter l'explication des arguments pour les fonctions `fonctionr_ggplot_labs()` et `export_excel()`.**
+    =\> Changer la doc pour les palettes par défaut.**
 
 -   **(François) Créer un tableau joli en output (avec `flextable`).**
 

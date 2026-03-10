@@ -45,7 +45,7 @@
 #' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
 #' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.
-#' @param parallel TRUE to enable parallel computing.
+#' @param parallel TRUE to enable parallel computing. Automatically TRUE if replicated weights are used, otherwise FALSE. The parameters entered by the user take precedence over the automatic default value.
 #'
 #' @return A list that contains a table and a graphic
 #' @import rlang

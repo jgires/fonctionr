@@ -116,14 +116,14 @@ load_and_active_fonts <- function(){
 #' Internal function to export results of fonctionr's functions into an excel file.
 #'
 #' @param tab_excel A dataframe with the results calculated by fonctionr's functions.
-#' @param fonction
-#' @param type
+#' @param fonction fonctionr's functions in which we are - necessary for formatting the Excel table
+#' @param type 'type' argument for quantitative variables (median or mean) - necessary for formatting the Excel table
 #' @param graph ggplot object showing results of fonctionr's functions.
 #' @param test.stat Results of a statistical test on the data.
-#' @param test_probs
+#' @param test_probs 'probs' argument from distrib_discrete() - necessary for formatting the Excel table
 #' @param quantiles A dataframe with quantiles for density functions.
 #' @param density A dataframe with density coordinates for density functions.
-#' @param group.fill_null
+#' @param group.fill_null A logical vector. TRUE if no group.fill.
 #' @param facet_null A logical vector. TRUE if no facet.
 #' @param export_path Path to export the results in an xlsx file.
 #' @param percent_fm A logical vector. TRUE if results are percentages.
@@ -981,18 +981,18 @@ fonctionr_font_size <- function(type = "normal") {
 #'
 #' Internal function to define axis labels
 #'
-#' @param graph
-#' @param type
-#' @param position
-#' @param group
-#' @param xlab
-#' @param lang_note_axis_x
-#' @param x_exp
-#' @param ylab
-#' @param lang_note_axis_y
-#' @param legend_lab
-#' @param wrap_width_leg
-#' @param show_labs
+#' @param graph The ggplot graph on which the axes must be defined
+#' @param type fonctionr's functions in which we are (for specific rules)
+#' @param position The position for many_val_group() : "flip" or not
+#' @param group The group name
+#' @param xlab X label on the graphic
+#' @param lang_note_axis_x The annotation to be indicated before the X-axis label
+#' @param x_exp The original expression used to calculate the X-axis
+#' @param ylab Y label on the graphic
+#' @param lang_note_axis_y The annotation to be indicated before the Y-axis label
+#' @param legend_lab Legend (fill) label on the graphic
+#' @param wrap_width_leg Number of characters before going to the line for the labels the legend
+#' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes
 #'
 #' @noRd
 #'
@@ -1299,6 +1299,20 @@ fonctionr_cores_detect <- function() {
 #' fonctionr_filter
 #'
 #' Internal function to filter rows
+#'
+#' @param data,
+#' @param fonction,
+#' @param filter_exp,
+#' @param na.rm.facet,
+#' @param facet,
+#' @param na.rm.group,
+#' @param group,
+#' @param group.fill,
+#' @param na.rm.var,
+#' @param quali_var,
+#' @param na.prop,
+#' @param na.vars,
+#' @param vec_list_vars
 #'
 #' @import rlang
 #' @import srvyr
