@@ -33,7 +33,7 @@ distrib_group_discrete(
   digits = 0,
   unit = "",
   dec = NULL,
-  pal = "Hokusai1",
+  pal = "OBSS",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -79,7 +79,10 @@ distrib_group_d(...)
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 
@@ -167,8 +170,8 @@ distrib_group_d(...)
 
   Colors of the bars. pal must be vector of R colors or hexadecimal
   colors or a palette from packages MetBrewer or PrettyCols or a palette
-  from fonctionr. Default is "Hokusai1" from MetBrewer. The color of NA
-  category (in case of na.rm.var == FALSE) is always "grey".
+  from fonctionr. The color of NA category (in case of na.rm.var ==
+  FALSE) is always "grey".
 
 - direction:
 
@@ -225,7 +228,7 @@ distrib_group_d(...)
 
 - legend_ncol:
 
-  Number of colomns in the legend. Default is 4.
+  Number of columns in the legend. Default is 4.
 
 - title:
 

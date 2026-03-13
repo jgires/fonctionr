@@ -34,7 +34,7 @@ many_val_group(
   digits = 0,
   unit = NULL,
   dec = NULL,
-  pal = "Egypt",
+  pal = "OBSS_alt3",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -53,7 +53,8 @@ many_val_group(
   lang = "fr",
   theme = "fonctionr",
   coef_font = 1,
-  export_path = NULL
+  export_path = NULL,
+  parallel = NULL
 )
 
 many_prop_group(..., type = "prop")
@@ -96,7 +97,10 @@ many_mean_group(..., type = "mean")
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 
@@ -196,7 +200,7 @@ many_mean_group(..., type = "mean")
 
   Colors of the bars. pal must be vector of R colors or hexadecimal
   colors or a palette from packages MetBrewer or PrettyCols or a palette
-  from fonctionr. Default is "Egypt" from MetBrewer.
+  from fonctionr.
 
 - direction:
 
@@ -256,7 +260,7 @@ many_mean_group(..., type = "mean")
 
 - legend_ncol:
 
-  Number maximum of colomn in the legend. Default is 4.
+  Number maximum of columns in the legend. Default is 4.
 
 - title:
 
@@ -315,6 +319,11 @@ many_mean_group(..., type = "mean")
   Path to export the results in an xlsx file. The file includes two
   sheets: the table and the graphic.
 
+- parallel:
+
+  TRUE to enable parallel computing. Default is TRUE if replicated
+  weights are used, otherwise default is FALSE.
+
 ## Value
 
 A list that contains a table and a graphic
@@ -351,7 +360,12 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 0 observation(s) removed due to missing group
-#> With na.vars = 'rm', observations removed differ between variables
+#> Warning: With na.vars = 'rm', observations removed differ between variables
+#> 
+#> Attaching package: 'srvyr'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
 
 # Results in graph form
 eusilc_many_mean_group$graph

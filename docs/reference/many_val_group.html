@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fonctionr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,7 @@
     <li><a class="dropdown-item" href="../articles/complex_design.html">Sondages avec design complexe</a></li>
     <li><a class="dropdown-item" href="../articles/Obss_colors.html">Couleurs pour l'Observatoire de la Santé et du Social</a></li>
   </ul></li>
-<li class="nav-item"><a class="nav-link" href="../articles/changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/NEWS.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/jgires/fonctionr"><span class="fa fa-github fa-lg"></span> github</a></li>
       </ul></div>
 
@@ -68,7 +68,7 @@
 <span>  digits <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dec <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pal <span class="op">=</span> <span class="st">"Egypt"</span>,</span>
+<span>  pal <span class="op">=</span> <span class="st">"OBSS_alt3"</span>,</span>
 <span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  desaturate <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  lighten <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -87,7 +87,8 @@
 <span>  lang <span class="op">=</span> <span class="st">"fr"</span>,</span>
 <span>  theme <span class="op">=</span> <span class="st">"fonctionr"</span>,</span>
 <span>  coef_font <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  export_path <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  export_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">many_prop_group</span><span class="op">(</span><span class="va">...</span>, type <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span>
@@ -126,7 +127,7 @@
 
 
 <dt id="arg-filter-exp">filter_exp<a class="anchor" aria-label="anchor" href="#arg-filter-exp"></a></dt>
-<dd><p>An expression filtering the data, preserving the design.</p></dd>
+<dd><p>An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -194,7 +195,7 @@
 
 
 <dt id="arg-pal">pal<a class="anchor" aria-label="anchor" href="#arg-pal"></a></dt>
-<dd><p>Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer.</p></dd>
+<dd><p>Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr.</p></dd>
 
 
 <dt id="arg-direction">direction<a class="anchor" aria-label="anchor" href="#arg-direction"></a></dt>
@@ -230,7 +231,7 @@
 
 
 <dt id="arg-legend-ncol">legend_ncol<a class="anchor" aria-label="anchor" href="#arg-legend-ncol"></a></dt>
-<dd><p>Number maximum of colomn in the legend. Default is 4.</p></dd>
+<dd><p>Number maximum of columns in the legend. Default is 4.</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
@@ -272,6 +273,10 @@
 <dt id="arg-export-path">export_path<a class="anchor" aria-label="anchor" href="#arg-export-path"></a></dt>
 <dd><p>Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.</p></dd>
 
+
+<dt id="arg-parallel">parallel<a class="anchor" aria-label="anchor" href="#arg-parallel"></a></dt>
+<dd><p>TRUE to enable parallel computing. Default is TRUE if replicated weights are used, otherwise default is FALSE.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -309,7 +314,12 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling design -&gt; ids:  db030, strata:  db040, weights:  rb050</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Numbers of observation(s) removed by each filter (one after the other): </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 0 observation(s) removed due to missing group</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> With na.vars = 'rm', observations removed differ between variables</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>With na.vars = 'rm', observations removed differ between variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'srvyr'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:stats':</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Results in graph form</span></span></span>
 <span class="r-in"><span><span class="va">eusilc_many_mean_group</span><span class="op">$</span><span class="va">graph</span></span></span>

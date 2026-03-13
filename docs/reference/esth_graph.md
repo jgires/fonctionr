@@ -77,7 +77,7 @@ esth_graph(
 - pvalue:
 
   The p-value to show in the caption. It can be a numeric value or the
-  pvalue object from a statsistical test.
+  pvalue object from a statistical test.
 
 - reorder:
 

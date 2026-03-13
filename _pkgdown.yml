@@ -18,7 +18,7 @@ navbar:
     - text: Couleurs pour l'Observatoire de la Santé et du Social
       href: articles/Obss_colors.html
   - text: Changelog
-    href: articles/changelog.html
+    href: articles/NEWS.html
   right:
     - icon: fa-github fa-lg
       text: "github"

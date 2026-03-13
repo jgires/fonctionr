@@ -31,7 +31,7 @@ many_val(
   unit = NULL,
   dec = NULL,
   col = NULL,
-  pal = "Egypt",
+  pal = "OBSS_alt3",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -86,7 +86,10 @@ many_mean(..., type = "mean")
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 
@@ -169,8 +172,7 @@ many_mean(..., type = "mean")
   Colors of the bars if the user wants the bars to have different
   colors. pal must be vector of R colors or hexadecimal colors or a
   palette from packages MetBrewer or PrettyCols or a palette from
-  fonctionr. Default is "Egypt" from MetBrewer. pal has a priority over
-  col.
+  fonctionr. pal has a priority over col.
 
 - direction:
 
@@ -310,7 +312,7 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 0 observation(s) removed due to missing facet
-#> With na.vars = 'rm', observations removed differ between variables
+#> Warning: With na.vars = 'rm', observations removed differ between variables
 
 # Results in graph form
 eusilc_many_prop$graph

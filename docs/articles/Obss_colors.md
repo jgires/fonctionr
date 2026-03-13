@@ -64,7 +64,7 @@ official_pal(list_pal_names = T)
 #> [25] "OBSS_div_mid2"   "OBSS_div_mid3"   "OBSS_div_mid4"   "OBSS_div_bi1"   
 #> [29] "OBSS_div_bi2"    "OBSS_div_bi3"    "OBSS_div_bi4"    "OBSS_highlight1"
 #> [33] "OBSS_highlight2" "OBSS_highlight3" "OBSS_old"        "IBSA"           
-#> [37] "ULB"
+#> [37] "ULB"             "IEFH"            "IEFH_div_bi"
 ```
 
 ## Les palettes

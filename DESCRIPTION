@@ -39,6 +39,7 @@ Suggests:
     broom,
     colorspace,
     knitr,
+    kableExtra,
     laeken,
     MetBrewer,
     openxlsx,

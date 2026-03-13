@@ -144,7 +144,7 @@ eusilc_mean_region$tab |>
     position = "bottom",
     wrap_width_lab = 15,
     unit = "€",
-    pal = "Lively",
+    pal = "OBSS",
     title = "Equivalised income in household by socio-economic status",
     subtitle = "Example with austrian SILC data from 'laeken' package"
   )

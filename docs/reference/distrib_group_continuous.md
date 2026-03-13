@@ -102,7 +102,10 @@ distrib_group_c(...)
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 
@@ -358,9 +361,9 @@ eusilc_dist_g_c <- distrib_group_c(
 )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> Variable(s) detected in quanti_exp: eqIncome
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 2720 observation(s) removed due to missing group
-#> Variable(s) detected in quanti_exp: eqIncome
 #> 0 observation(s) removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Results in graph form

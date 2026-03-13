@@ -336,9 +336,9 @@ subtitle = "Example with austrian SILC data from 'laeken' package"
 #> Warning: Active parameters in function r_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
+#> Variable(s) detected in prop_exp: py090n
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 2720 observation(s) removed due to missing group
-#> Variable(s) detected in prop_exp: py090n
 #> 0 observation(s) removed due to missing value(s) for the variable(s) in prop_exp
 
 # Results in graph form

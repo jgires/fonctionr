@@ -22,7 +22,7 @@ make_surface(
   digits = 0,
   unit = NULL,
   col = NULL,
-  pal = "Kandinsky",
+  pal = "OBSS_Autumn",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -75,7 +75,7 @@ make_surface(
 - pvalue:
 
   The p-value to show in the caption. It can be a numeric value or the
-  pvalue object from a statsistical test.
+  pvalue object from a statistical test.
 
 - reorder:
 
@@ -252,10 +252,10 @@ eusilc_mean <- mean_group(
 #> Warning: Active parameters in function r_options(): font, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
+#> Variable(s) detected in quanti_exp: py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 13680 observation(s) removed by filter_exp
 #> 296 observation(s) removed due to missing group
-#> Variable(s) detected in quanti_exp: py010n, py050n, py090n, py100n, py110n, py120n, py130n, py140n
 #> 0 observation(s) removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Displaying results with make_surface()

@@ -31,11 +31,6 @@ data(eusilc, package = "laeken")
 
 # Loading srvyr
 library(srvyr)
-#> 
-#> Attaching package: 'srvyr'
-#> The following object is masked from 'package:stats':
-#> 
-#>     filter
 
 # Making srvyr object
 eusilc_srvyr <- as_survey_design(eusilc, ids = db030, strata = db040, weights = rb050)

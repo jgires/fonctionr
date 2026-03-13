@@ -67,7 +67,10 @@ distrib_d(...)
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 

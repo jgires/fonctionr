@@ -38,7 +38,7 @@ central_group(
   unit = "",
   dec = NULL,
   col = NULL,
-  pal = "Peppers",
+  pal = "OBSS_Spring",
   direction = 1,
   desaturate = 0,
   lighten = 0,
@@ -97,7 +97,10 @@ mean_group(..., type = "mean")
 
 - filter_exp:
 
-  An expression filtering the data, preserving the design.
+  An expression filtering the data, preserving the design. Notice that
+  filter_exp works as srvyr::filter() : it excludes observations for
+  which filter_exp results into NA. It is often the case when NA is
+  present on one of the filter variables.
 
 - ...:
 
@@ -182,11 +185,10 @@ mean_group(..., type = "mean")
 
   Colors of the bars if there is a group.fill. pal must be vector of R
   colors or hexadecimal colors or a palette from packages MetBrewer or
-  PrettyCols or a palette from fonctionr. Default is "Peppers" from
-  PrettyCols. The color of NA group.fill (in case of na.rm.group ==
-  FALSE) andt of the total are always "grey" and "grey40". If there is
-  no group.fill, pal has no effect and col argument should be used
-  instead.
+  PrettyCols or a palette from fonctionr. The color of NA group.fill (in
+  case of na.rm.group == FALSE) andt of the total are always "grey" and
+  "grey40". If there is no group.fill, pal has no effect and col
+  argument should be used instead.
 
 - direction:
 
@@ -251,7 +253,7 @@ mean_group(..., type = "mean")
 
 - legend_ncol:
 
-  Number of colomns in the legend. Default is 4.
+  Number of columns in the legend. Default is 4.
 
 - title:
 
@@ -342,9 +344,9 @@ eusilc_mean <- mean_group(
   )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
+#> Variable(s) detected in quanti_exp: eqIncome
 #> Numbers of observation(s) removed by each filter (one after the other): 
 #> 0 observation(s) removed due to missing group
-#> Variable(s) detected in quanti_exp: eqIncome
 #> 0 observation(s) removed due to missing value(s) for the variable(s) in quanti_exp
 
 # Results in graph form

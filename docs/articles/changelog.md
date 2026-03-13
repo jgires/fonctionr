@@ -1,5 +1,27 @@
 # Changelog
 
+## fonctionr 0.5.0
+
+Date : 2026-03-10
+
+- Changement dans la manière de filtrer les données, permettant un gain
+  de rapidité de ~30% dans la plupart des fonctions lors de l’usage de
+  poids répliqués.
+
+- La fonction
+  [`many_val_group()`](https://jgires.github.io/fonctionr/reference/many_val_group.md)
+  peut désormais être parallélisée, permettant un gain de rapidité de
+  ~30% avec des poids répliqués lorsque les calculs sont nombreux. Le
+  gain est plus petit - voire négatif - lorsque les calculs sont peu
+  importants. C’est la raison pour laquelle l’option est désactivée par
+  défaut si l’estimation de la variance d’échantillonnage n’est pas
+  réalisée à l’aide de poids répliqués.
+
+- Changement des palettes par défaut des différentes fonctions, car
+  MetBrewer et PrettyCols sont désormais définis comme des packages
+  optionnels (ils ne sont pas automatiquement installés avec fonctionr,
+  sauf si `dependencies = TRUE` est indiqué lors de l’installation).
+
 ## fonctionr 0.4.0
 
 Date : 2026-01-27
@@ -514,28 +536,34 @@ Date : 2024-02-14
 
 #### En général
 
-- **(Joël) pour les test stat de prop_group et central_group, modifier
-  le caption quand il y a des facets pour indiquer que le test se fait
-  bien sur le total et ne pas faire le test quand il y a des facets et
-  que total = FALSE.**
+- **(Joël) Réécrire `export_excel()` =\> la fonction est un peu
+  bordélique et le nom des arguments pas clairs.**
+
+- **(Joël) Harmoniser les fonctions internes  
+  =\> `fonctionr_ggplot_labs()` utilise `type` pour désigner la fonction
+  dans laquelle on se trouve, vs `fonction` pour `export_excel()` et
+  `fonctionr_filter()` : future source de confusion pour maintenir le
+  package.  
+  =\> Certaines conditions sont implicites, d’autres explicites -\>
+  faire le même travail que François a fait sur `fonctionr_filter()`**
 
 - **(Joël) Ajouter que pour supprimer xlab ou ylab, on puisse entrer
-  `NA` et pas seulement ““.**
+  `NA` et pas seulement ““.  
+  *=\> Une fonction unique de labellisation des axes x et y a déjà été
+  crée pour faciliter cet ajout.***
 
 - **(François) Ajouter toutes les options dans
   [`fonctionr_options()`](https://jgires.github.io/fonctionr/reference/fonctionr_options.md),
-  sauf les arguments avec données ou variables.**
+  sauf les arguments avec données ou variables.  
+  =\> Ajouter parallel.**
 
 - **(François) Revoir la doc de chaque fonction et le manuel par rapport
   aux changements. Voir ici pour savoir les différentes options
-  possibles dans la doc : [https://r-pkgs.org/man.html](#id_0).**
-
-- **(François) Vérifier les messages à l’utilisateur : voir quoi garder,
-  corriger, traduire, indiquer les accents (é, è…), ajouter des
-  guillemets pour les arguments dans les checks, mieux écrire les
-  résultats des tests stat (on ne sait pas quelle est l’hypothèse
-  nulle).  
-  *=\> Traduire ces messages selon la langue ? Ou tout en anglais ?***
+  possibles dans la doc : [https://r-pkgs.org/man.html](#id_0).  
+  =\> Documenter la fonction
+  [`fonctionr_options()`](https://jgires.github.io/fonctionr/reference/fonctionr_options.md)
+  (+ explication dans le manuel).  
+  =\> Changer la doc pour les palettes par défaut.**
 
 - **(François) Créer un tableau joli en output (avec `flextable`).**
 
@@ -545,10 +573,6 @@ Date : 2024-02-14
 - Rendre l’usage non interactif (= la programmation via d’autres
   fonctions) possible =\> gros travail, usage de `rlang` à la place de
   [`substitute()`](https://rdrr.io/r/base/substitute.html).
-
-- Passer le code de chaque fonction en revue pour cleaner / harmoniser /
-  simplifier.  
-  *=\> En cours : il faut encore checker le code du graphique ggplot.*
 
 - Mettre des conditions pour réaliser les tests (n min, distribution,
   variances égales…).
@@ -560,6 +584,8 @@ Date : 2024-02-14
 
 #### **distrib_c**
 
+- **(Joël) Sélectionner uniquement les variables nécessaires pour
+  minimiser la RAM utilisée (désactivé car bug ?)**
 - Ajouter le test stat univarié avec comme H0 mu dans la population.
   Apparemment la fonction n’est pas pré-programmée dans `survey`, il
   faut la faire soi-même.
@@ -567,16 +593,15 @@ Date : 2024-02-14
 
 #### **distrib_group_c**
 
+- **(Joël) Sélectionner uniquement les variables nécessaires pour
+  minimiser la RAM utilisée (désactivé car bug ?)**
+
 - **(Joël) Introduire la mise en forme avec ggtext =\> plus difficile
   ici car le `NA` a été tranformé en level. Réfléchir à la meilleure
   solution et revoir éventuellement la fonction.**
 
 - **(François + Joël) Ajouter hauteur des densités proportionnelle aux
   effectifs pondérés.**
-
-- **(Joël) La moustache peut ne prendre qu’une couleur =\> pas
-  cohérent  
-  =\> Ajouter un check**
 
 - Il y a un warning de la fonction
   [`density()`](https://rdrr.io/r/stats/density.html) qui dit que
@@ -672,26 +697,15 @@ Date : 2024-02-14
 
 #### En général
 
-- Réécrire le code du test pour avoir la formule originale =\> possible
-  avec [`eval()`](https://rdrr.io/r/base/eval.html), voir code de
+- Réécrire le code du test stat pour avoir la formule originale =\>
+  possible avec [`eval()`](https://rdrr.io/r/base/eval.html), voir code
+  de
   [`central_group()`](https://jgires.github.io/fonctionr/reference/central_group.md).
-- Voir si on peut créer une fonction commune à toutes les fonctions du
-  package pour créer le ggplot =\> ce serait une large simplification.
-  Pour l’instant, il y a déjà un thème commun `theme_fonctionr`.
 - Créer une fonction de check des inputs indispensables (car redondance
   entre les 4 fonctions)  
   *=\> Pour l’instant c’est fait “en dur” : difficultés de créer une
   fonction du fait de l’usage du tidyverse : il faut sans doute utiliser
   les fonctions de `rlang`.*
-- L’import des packages peut être optimisé : il n’est pas utile
-  d’importer des packages extérieurs *entiers* dans le NAMESPACE, cela
-  augmente le risque de collisions de noms de fonctions =\> un bon
-  résumé ici :
-  [https://mdneuzerling.com/post/what-ive-learnt-about-making-an-r-package/](#id_0)
-  et pour plus de détails :
-  [https://r-pkgs.org/dependencies-in-practice.html](#id_0).  
-  *=\> A faire : importer seulement les fonctions utiles (mutate,
-  select, etc.).*
 - Revoir la solution apportée dans
   [`theme_fonctionr()`](https://jgires.github.io/fonctionr/reference/theme_fonctionr.md)
   au bug de compatibilité entre `ggtext` et `ggplot 4.0` lorsque ggtext
@@ -718,7 +732,7 @@ potentiellement la distribution d’échantillonnage. Voir :
 *=\> De ce fait, j’ai inclus une option de filtre (filter_exp) dans les
 fonctions (qui filtre après la déclaration du design), qui évite de
 filtrer l’objet avant en dégradant le design. =\> Vérifier que c’est
-bien OK ! *A FAIRE : expliquer dans la doc !**
+bien OK !*
 
 ### Fonctions à créer
 
