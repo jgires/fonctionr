@@ -1300,19 +1300,19 @@ fonctionr_cores_detect <- function() {
 #'
 #' Internal function to filter rows
 #'
-#' @param data,
-#' @param fonction,
-#' @param filter_exp,
-#' @param na.rm.facet,
-#' @param facet,
-#' @param na.rm.group,
-#' @param group,
-#' @param group.fill,
-#' @param na.rm.var,
-#' @param quali_var,
-#' @param na.prop,
-#' @param na.vars,
-#' @param vec_list_vars
+#' @param data data in the original function
+#' @param fonction type of original function. Used to identify which filter on NA applies: groups, quali_var, quanti_exp...
+#' @param filter_exp filter expression in the original function
+#' @param na.rm.facet na.rm.facet in the original function, used to identify whether the NA facet should be excluded.
+#' @param facet facet variable in the original function
+#' @param na.rm.group na.rm.group in the original function, used to identify whether the NA group and group.fill should be excluded.
+#' @param group group variable in the original function
+#' @param group.fill group.fill variable in the original function
+#' @param na.rm.var na.rm.var in the original function, used to identify whether the NA modality in quali_var should be excluded.
+#' @param quali_var categorial variable, quali_var, in the original function
+#' @param na.prop na.prop in the original function, used to identify whether the NAs in prop_exp should be excluded.
+#' @param na.vars na.rm.var in the original function, used to identify whether the obervations with at least one NA in an interest variables should be excluded.
+#' @param vec_list_vars list_vars in the original function
 #'
 #' @import rlang
 #' @import srvyr

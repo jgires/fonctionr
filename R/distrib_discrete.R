@@ -5,7 +5,7 @@
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param quali_var The discrete variable to be described.
 #' @param facet A variable defining the faceting group.
-#' @param filter_exp An expression filtering the data, preserving the design.
+#' @param filter_exp An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
 #' @param na.rm.var TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with NA values for the discrete variable. Default is TRUE.

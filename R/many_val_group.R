@@ -8,7 +8,7 @@
 #' @param type "prop" to compute proportions by group ; "mean" to compute means by group ; "median" to compute medians by group.
 #' @param list_vars_lab A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.
 #' @param facet A variable defining the faceting group.
-#' @param filter_exp An expression filtering the data, preserving the design.
+#' @param filter_exp An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.
 #' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
@@ -25,7 +25,7 @@
 #' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
 #' @param unit Unit displayed on the graphic. Default is percent for type = "prop" and no unit for type = "mean" or "median".
 #' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
-#' @param pal Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer.
+#' @param pal Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr.
 #' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
 #' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
@@ -34,7 +34,7 @@
 #' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
 #' @param wrap_width_y Number of characters before going to the line for the labels on de Y axe (groups if position = 'dodge' or 'stack', variables if position = 'flip'). Default is 25.
 #' @param wrap_width_leg Number of characters before going to the line for the labels the legend (variables if position = 'dodge' or 'stack', groups if position = 'flip'). Default is 25.
-#' @param legend_ncol Number maximum of colomn in the legend. Default is 4.
+#' @param legend_ncol Number maximum of columns in the legend. Default is 4.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
 #' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Proportion :" (if lang = "fr"), "Proportion:" (if lang = "en") or "Aandeel:" folowed by the names of the variables (list_vars). To show no X label, use xlab = "".
@@ -45,7 +45,7 @@
 #' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
 #' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.
-#' @param parallel TRUE to enable parallel computing. Automatically TRUE if replicated weights are used, otherwise FALSE. The parameters entered by the user take precedence over the automatic default value.
+#' @param parallel TRUE to enable parallel computing. Default is TRUE if replicated weights are used, otherwise default is FALSE.
 #'
 #' @return A list that contains a table and a graphic
 #' @import rlang

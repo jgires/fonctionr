@@ -67,7 +67,7 @@ mean_group(..., type = "mean")
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
@@ -97,7 +97,7 @@ mean_group(..., type = "mean")
 
 \item{col}{Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default color used depends on type : "deeppink3" for mean and "mediumorchid3" for median. The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.}
 
-\item{pal}{Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Peppers" from PrettyCols. The color of NA group.fill (in case of na.rm.group == FALSE) andt of the total are always "grey" and "grey40". If there is no group.fill, pal has no effect and col argument should be used instead.}
+\item{pal}{Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of NA group.fill (in case of na.rm.group == FALSE) andt of the total are always "grey" and "grey40". If there is no group.fill, pal has no effect and col argument should be used instead.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1. If there is no group.fill, this argument has no effect.}
 
@@ -115,7 +115,7 @@ mean_group(..., type = "mean")
 
 \item{wrap_width_leg}{Number of characters before going to the line for the labels of the group.fill. Default is 25.}
 
-\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
+\item{legend_ncol}{Number of columns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 

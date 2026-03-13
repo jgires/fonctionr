@@ -73,7 +73,7 @@ many_mean_group(..., type = "mean")
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
@@ -107,7 +107,7 @@ many_mean_group(..., type = "mean")
 
 \item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Egypt" from MetBrewer.}
+\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr.}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
@@ -125,7 +125,7 @@ many_mean_group(..., type = "mean")
 
 \item{wrap_width_leg}{Number of characters before going to the line for the labels the legend (variables if position = 'dodge' or 'stack', groups if position = 'flip'). Default is 25.}
 
-\item{legend_ncol}{Number maximum of colomn in the legend. Default is 4.}
+\item{legend_ncol}{Number maximum of columns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 
@@ -147,7 +147,7 @@ many_mean_group(..., type = "mean")
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
 
-\item{parallel}{TRUE to enable parallel computing. Automatically TRUE if replicated weights are used, otherwise FALSE. The parameters entered by the user take precedence over the automatic default value.}
+\item{parallel}{TRUE to enable parallel computing. Default is TRUE if replicated weights are used, otherwise default is FALSE.}
 }
 \value{
 A list that contains a table and a graphic

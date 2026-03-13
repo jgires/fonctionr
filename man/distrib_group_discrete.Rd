@@ -59,7 +59,7 @@ distrib_group_d(...)
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
 
 \item{...}{All options possible in as_survey_design in srvyr package.}
 
@@ -91,7 +91,7 @@ distrib_group_d(...)
 
 \item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
 
-\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Hokusai1" from MetBrewer. The color of NA category (in case of na.rm.var == FALSE) is always "grey".}
+\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of NA category (in case of na.rm.var == FALSE) is always "grey".}
 
 \item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
 
@@ -109,7 +109,7 @@ distrib_group_d(...)
 
 \item{wrap_width_leg}{Number of characters before going to the line for the labels of quali_var. Default is 25.}
 
-\item{legend_ncol}{Number of colomns in the legend. Default is 4.}
+\item{legend_ncol}{Number of columns in the legend. Default is 4.}
 
 \item{title}{Title of the graphic.}
 

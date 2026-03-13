@@ -9,7 +9,7 @@
 #' @param quanti_exp An expression defining the quantitatie variable the variable to be described and compared between groups. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the densities and of the indicators.
 #' @param type Type of central value : "mean" to compute mean as the central value by group ; "median" to compute median as the central value by group.
 #' @param facet Not yet implemented.
-#' @param filter_exp An expression filtering the data, preserving the design.
+#' @param filter_exp An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.
 #' @param ... All options possible in as_survey_design in srvyr package.
 #' @param na.rm.group TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.
 #' @param na.rm.facet Not yet implemented.
