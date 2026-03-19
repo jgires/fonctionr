@@ -13,7 +13,7 @@ esth_graph(
   facet = NULL,
   n_var = NULL,
   pvalue = NULL,
-  reorder = F,
+  reorder = FALSE,
   show_value = TRUE,
   name_total = NULL,
   scale = 1,

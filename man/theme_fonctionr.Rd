@@ -23,6 +23,9 @@ theme_fonctionr(
 
 \item{coef_font}{A multiplier factor for font size.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 theme_fonctionr
 }

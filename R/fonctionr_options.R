@@ -60,6 +60,7 @@
 #' @param coef_font coef_font
 #' @param erase_all TRUE erases all the options. Default is FALSE.
 #'
+#' @return No return value, called for side effects
 #' @export
 #'
 #' @examples

@@ -11,9 +11,9 @@ official_pal(
   desaturate = 0,
   lighten = 0,
   darken = 0,
-  show_pal = F,
+  show_pal = FALSE,
   font = "Gotham Narrow",
-  list_pal_names = F
+  list_pal_names = FALSE
 )
 }
 \arguments{

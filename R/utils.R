@@ -77,6 +77,7 @@ convert_to_srvyr <- function(data, ...) {
 #' Function to load and activate fonctionr's built-in fonts.
 #' Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".
 #'
+#' @return No return value, called for side effects
 #' @export
 #'
 #' @examples
@@ -839,6 +840,7 @@ fonctionr_alter_cols <- function(cols,
 #' @param grid.lines Specify major grid lines : "x", "y" or "both". Default is "x".
 #' @param coef_font A multiplier factor for font size.
 #'
+#' @return No return value, called for side effects
 #' @import ggplot2
 #' @export
 #'

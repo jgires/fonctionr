@@ -6,6 +6,9 @@
 \usage{
 load_and_active_fonts()
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Function to load and activate fonctionr's built-in fonts.
 Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".

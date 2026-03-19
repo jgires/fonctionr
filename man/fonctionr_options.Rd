@@ -179,6 +179,9 @@ fonctionr_options(
 
 \item{erase_all}{TRUE erases all the options. Default is FALSE.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Function to set global options for fonctionr
 }
