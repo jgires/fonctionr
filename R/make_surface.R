@@ -84,8 +84,8 @@ make_surface <- function(tab,
                          error_upp = NULL,
                          facet = NULL,
                          pvalue = NULL,
-                         reorder = F,
-                         compare = F,
+                         reorder = FALSE,
+                         compare = FALSE,
                          space = NULL,
                          position = "mid",
                          show_ci = TRUE,
@@ -198,7 +198,7 @@ make_surface <- function(tab,
   quo_up <- enquo(error_upp)
 
   # Check des arguments necessaires
-  if((show_ci == T) & (quo_is_null(quo_low) | quo_is_null(quo_up))){
+  if((show_ci == TRUE) & (quo_is_null(quo_low) | quo_is_null(quo_up))){
     warning("You did not specify the variables with the CI: these are disabled.", call. = FALSE)
     show_ci <- FALSE
   }
@@ -255,7 +255,7 @@ make_surface <- function(tab,
   }
 
   # Si CI pas affiches (ou affiches mais variables pas indiquees)
-  if (show_ci == F | (show_ci == T & (quo_is_null(quo_low) | quo_is_null(quo_up)))) {
+  if (show_ci == FALSE | (show_ci == T & (quo_is_null(quo_low) | quo_is_null(quo_up)))) {
     tab <- tab |>
       mutate(
         indice_sqrt = sqrt({{ value }}) # La valeur a la racine carree (car la valeur en surface = racine carree X racine carree)
@@ -263,7 +263,7 @@ make_surface <- function(tab,
   }
 
   # Si CI affiches ET variables indiquees
-  if (show_ci == T & !quo_is_null(quo_low) & !quo_is_null(quo_up)) {
+  if (show_ci == TRUE & !quo_is_null(quo_low) & !quo_is_null(quo_up)) {
     tab <- tab |>
       mutate(
         indice_sqrt = sqrt({{ error_upp }}) # Si les CI sont actives, la base du calcul des coordonnees = l'intervalle de confiance superieur, car il dessine les plus grandes surfaces
@@ -275,7 +275,7 @@ make_surface <- function(tab,
 
   # On calcule un espace par defaut, si rien n'est indique
   if (is.null(space)) {
-    space <- .15 * min(tab$indice_sqrt, na.rm = T)
+    space <- .15 * min(tab$indice_sqrt, na.rm = TRUE)
   }
 
   # S'il y a des facets
@@ -393,8 +393,8 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom" & show_ci == T) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
-        } else if (position == "bottom" & show_ci == F) indice_sqrt / 2,
+        } else if (position == "bottom" & show_ci == TRUE) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+        } else if (position == "bottom" & show_ci == FALSE) indice_sqrt / 2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
@@ -403,14 +403,14 @@ make_surface <- function(tab,
     )
 
   # Comparaison avec la surface minimale
-  if (compare == T) {
+  if (compare == TRUE) {
     graph <- graph +
       geom_tile(
         aes(
           x = if (position == "mid") {
             xmean
-          } else if (position == "bottom" & show_ci == T) { xmin + (compare/2) + (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
-          } else if (position == "bottom" & show_ci == F) xmin + (compare/2),
+          } else if (position == "bottom" & show_ci == TRUE) { xmin + (compare/2) + (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+          } else if (position == "bottom" & show_ci == FALSE) xmin + (compare/2),
           y = if (position == "mid") {
             0
           } else if (position == "bottom") compare / 2,
@@ -429,8 +429,8 @@ make_surface <- function(tab,
         x = xmean,
         y = if (position == "mid") {
           0
-        } else if (position == "bottom" & show_ci == T) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
-        } else if (position == "bottom" & show_ci == F) indice_sqrt / 2,
+        } else if (position == "bottom" & show_ci == TRUE) { indice_sqrt / 2 - (sqrt({{ error_upp }}) - sqrt({{ value }}))/2
+        } else if (position == "bottom" & show_ci == FALSE) indice_sqrt / 2,
         width = sqrt({{ value }}),
         height = sqrt({{ value }})
       ),
@@ -468,7 +468,7 @@ make_surface <- function(tab,
     graph <- graph +
       labs(
         caption = paste0(
-          "H0 : ", scales::pvalue(pvalue, add_p = T),
+          "H0 : ", scales::pvalue(pvalue, add_p = TRUE),
           caption
         )
       )
@@ -528,7 +528,7 @@ make_surface <- function(tab,
     )
 
   # Les IC si show_ci = T
-  if (show_ci == T) {
+  if (show_ci == TRUE) {
     graph <- graph +
       geom_tile(
         aes(

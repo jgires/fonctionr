@@ -94,13 +94,13 @@ many_val_group = function(data,
                           facet = NULL,
                           filter_exp = NULL,
                           ...,
-                          na.rm.group = T,
-                          na.rm.facet = T,
+                          na.rm.group = TRUE,
+                          na.rm.facet = TRUE,
                           na.vars = "rm",
                           total = TRUE,
                           prop_method = "beta",
                           position = "dodge",
-                          show_ci = T,
+                          show_ci = TRUE,
                           show_n = FALSE,
                           show_value = TRUE,
                           show_labs = TRUE,
@@ -196,7 +196,7 @@ many_val_group = function(data,
   check_arg(
     arg = list(
       list_vars_lab = list_vars_lab),
-    short = F,
+    short = FALSE,
     type = "character"
   )
   check_arg(
@@ -386,9 +386,9 @@ many_val_group = function(data,
         tab_i <- data_W |>
           cascade(
             list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+            indice = survey_mean(.data[[i]], na.rm = TRUE, proportion = TRUE, prop_method = prop_method, vartype = "ci"),
             n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = TRUE, vartype = "ci"),
             n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             .fill = total_name # Le total
           )
@@ -406,8 +406,8 @@ many_val_group = function(data,
           cascade(
             list_col = i,
             indice = if (type == "median") {
-              survey_median(.data[[i]], na.rm = T, vartype = "ci")
-            } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+              survey_median(.data[[i]], na.rm = TRUE, vartype = "ci")
+            } else if (type == "mean") survey_mean(.data[[i]], na.rm = TRUE, vartype = "ci"),
             n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             .fill = total_name # Le total
@@ -436,9 +436,9 @@ many_val_group = function(data,
         tab_i <- data_W |>
           summarise(
             list_col = i,
-            indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+            indice = survey_mean(.data[[i]], na.rm = TRUE, proportion = TRUE, prop_method = prop_method, vartype = "ci"),
             n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = T, vartype = "ci"),
+            n_true_weighted = survey_total(.data[[i]] == 1, na.rm = TRUE, vartype = "ci"),
             n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci"), # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
           )
       }
@@ -454,8 +454,8 @@ many_val_group = function(data,
           summarise(
             list_col = i,
             indice = if (type == "median") {
-              survey_median(.data[[i]], na.rm = T, vartype = "ci")
-            } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+              survey_median(.data[[i]], na.rm = TRUE, vartype = "ci")
+            } else if (type == "mean") survey_mean(.data[[i]], na.rm = TRUE, vartype = "ci"),
             n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
             )
@@ -556,7 +556,7 @@ many_val_group = function(data,
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
-  if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
+  if ((na.rm.group == FALSE & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == TRUE)  {
     levels <- levels[!is.na(levels)]
   }
   # Pour enlever le level "Total" si total == F
@@ -634,7 +634,7 @@ many_val_group = function(data,
     ) +
     coord_flip()
 
-  # Autre design pour la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = TRUE)
   if (total == TRUE) {
   graph <- graph +
     # annotate("rect", xmin = .5, xmax = 1.5, ymin = -Inf, ymax = Inf, fill = "black", alpha = 0.05) +
@@ -689,7 +689,7 @@ many_val_group = function(data,
             family = font
           ),
           size = coef_font * fonctionr_font_size(type = "little"),
-          vjust = if (position == "dodge") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+          vjust = if (position == "dodge") ifelse(show_ci == TRUE, -0.25, 0.5) else 0.4,
           hjust = if (position == "dodge") "left" else "center",
           color = "grey10",
           fontface = "bold",
@@ -794,7 +794,7 @@ many_val_group = function(data,
   }
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T & position != "stack") {
+  if (show_ci == TRUE & position != "stack") {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low, ymax = indice_upp),
                     width = dodge * 0.05,
@@ -836,7 +836,7 @@ many_val_group = function(data,
           },
           family = font),
         size = coef_font * fonctionr_font_size(type = "little"),
-        vjust = if (position == "dodge"|position == "flip") ifelse(show_ci == T, -0.25, 0.5) else 0.4,
+        vjust = if (position == "dodge"|position == "flip") ifelse(show_ci == TRUE, -0.25, 0.5) else 0.4,
         hjust = if (position == "dodge"|position == "flip") "left" else "center",
         color = if (position == "dodge"|position == "flip") "black" else "white",
         alpha = 0.9,

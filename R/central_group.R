@@ -374,13 +374,13 @@ central_group <- function(data,
 
     # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
     # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
-    if(na.rm.group == F){
+    if(na.rm.group == FALSE){
       data_W <- data_W |>
         # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
         mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
         )
     }
-    if (na.rm.facet == F) {
+    if (na.rm.facet == FALSE) {
       # idem sur la variable de facet si non-NULL
       if(!quo_is_null(quo_facet)){
         data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
@@ -418,21 +418,21 @@ central_group <- function(data,
     }
     # /!\ NOTE : ca fonctionne mais j'ai peur d'utiliser eval => solution precedente choisie, qui a tout de meme le pb de ne pas garder la formule dans le call
     # if(type == "median"){
-    #   if(na.rm.group == T){
+    #   if(na.rm.group == TRUE){
     #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W, test = "KruskalWallis")))
     #   }
-    #   if(na.rm.group == F){
+    #   if(na.rm.group == FALSE){
     #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W_NA, test = "KruskalWallis")))
     #   }
     # }
 
     # Ici je remets les NA pour les groupes / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
-    if(na.rm.group == F){
+    if(na.rm.group == FALSE){
       data_W <- data_W |>
         mutate("{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA"))
         )
     }
-    if (na.rm.facet == F) {
+    if (na.rm.facet == FALSE) {
       # idem sur la variable de facet si non-NULL
       if(!quo_is_null(quo_facet)){
         data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
@@ -467,8 +467,8 @@ central_group <- function(data,
     tab <- data_W |>
       summarise( # pas cascade si total == F
         indice = if (type == "median") {
-          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+          survey_median({{ quanti_exp }}, na.rm = TRUE, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = TRUE, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
       ) |>
@@ -479,8 +479,8 @@ central_group <- function(data,
     tab <- data_W |>
       summarise(
         indice = if (type == "median") {
-          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+          survey_median({{ quanti_exp }}, na.rm = TRUE, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = TRUE, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
       ) |>
@@ -499,8 +499,8 @@ central_group <- function(data,
     tab_tot <- data_W |>
       summarise(
         indice = if (type == "median") {
-          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+          survey_median({{ quanti_exp }}, na.rm = TRUE, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = TRUE, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
       ) |>
@@ -559,7 +559,7 @@ central_group <- function(data,
   max_ggplot <- max(tab$indice, na.rm = TRUE)
 
   # On cree un vecteur pour ordonner les levels de group selon mean, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
-  if (reorder == T) {
+  if (reorder == TRUE) {
     levels <- c(
       total_name,
       NA,
@@ -578,7 +578,7 @@ central_group <- function(data,
   }
 
   # On cree un vecteur pour ordonner les levels de group pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
-  if (reorder == F) {
+  if (reorder == FALSE) {
     levels <- c(
       total_name,
       NA,
@@ -596,7 +596,7 @@ central_group <- function(data,
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
-  if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
+  if ((na.rm.group == FALSE & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == TRUE)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -665,7 +665,7 @@ central_group <- function(data,
     ) +
     coord_flip()
 
-  # Autre design pour la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = TRUE)
   if(total == TRUE) {
     if(!quo_is_null(quo_group.fill)) {
       graph <- graph +
@@ -699,7 +699,7 @@ central_group <- function(data,
                            unit),
             family = font),
           size = coef_font * fonctionr_font_size(type = "normal"),
-          vjust = ifelse(show_ci == T,
+          vjust = ifelse(show_ci == TRUE,
                          -0.5,
                          0.5),
           hjust = 0,
@@ -724,7 +724,7 @@ central_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            lang_anova, scales::pvalue(test.stat$p[1], add_p = T),
+            lang_anova, scales::pvalue(test.stat$p[1], add_p = TRUE),
             caption
           )
         )
@@ -733,7 +733,7 @@ central_group <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            lang_kruskal, scales::pvalue(test.stat$p.value[1], add_p = T),
+            lang_kruskal, scales::pvalue(test.stat$p.value[1], add_p = TRUE),
             caption
           )
         )
@@ -781,7 +781,7 @@ central_group <- function(data,
   }
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T) {
+  if (show_ci == TRUE) {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low,
                         ymax = indice_upp),
@@ -806,7 +806,7 @@ central_group <- function(data,
                          unit),
           family = font),
         size = coef_font * fonctionr_font_size(type = "normal"),
-        vjust = ifelse(show_ci == T,
+        vjust = ifelse(show_ci == TRUE,
                        -0.5,
                        0.5),
         hjust = 0,

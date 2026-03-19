@@ -85,11 +85,11 @@ many_val = function(data,
                     facet = NULL,
                     filter_exp = NULL,
                     ...,
-                    na.rm.facet = T,
+                    na.rm.facet = TRUE,
                     na.vars = "rm",
                     prop_method = "beta",
                     reorder = FALSE,
-                    show_ci = T,
+                    show_ci = TRUE,
                     show_n = FALSE,
                     show_value = TRUE,
                     show_labs = TRUE,
@@ -178,7 +178,7 @@ many_val = function(data,
   )
   check_arg(
     arg = list(list_vars_lab = list_vars_lab),
-    short = F,
+    short = FALSE,
     type = "character"
   )
   check_arg(
@@ -323,9 +323,9 @@ many_val = function(data,
       tab_i <- data_W |>
         summarise(
           list_col = i,
-          indice = survey_mean(.data[[i]], na.rm = T, proportion = T, prop_method = prop_method, vartype = "ci"),
+          indice = survey_mean(.data[[i]], na.rm = TRUE, proportion = TRUE, prop_method = prop_method, vartype = "ci"),
           n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
-          n_true_weighted = survey_total(.data[[i]], na.rm = T, vartype = "ci"),
+          n_true_weighted = survey_total(.data[[i]], na.rm = TRUE, vartype = "ci"),
           n_tot_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
         )
 
@@ -339,8 +339,8 @@ many_val = function(data,
         summarise(
           list_col = i,
           indice = if (type == "median") {
-            survey_median(.data[[i]], na.rm = T, vartype = "ci")
-          } else if (type == "mean") survey_mean(.data[[i]], na.rm = T, vartype = "ci"),
+            survey_median(.data[[i]], na.rm = TRUE, vartype = "ci")
+          } else if (type == "mean") survey_mean(.data[[i]], na.rm = TRUE, vartype = "ci"),
           n_sample = unweighted(sum(!is.na(.data[[i]]))), # Ici on calcule les effectifs non NA (sum(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
           n_weighted = survey_total(!is.na(.data[[i]]), vartype = "ci") # Ici on calcule les effectifs non NA (survey_total(!is.na(x))) car les NA ne sont pas supprimes au prealable des variables de vec_list_vars si na.vars = "rm"
         )
@@ -377,8 +377,8 @@ many_val = function(data,
 
   # 4. CREATION DU GRAPHIQUE --------------------
 
-  # Si reorder = T, on cree un vecteur pour ordonner les levels
-  if (reorder == T) {
+  # Si reorder = TRUE, on cree un vecteur pour ordonner les levels
+  if (reorder == TRUE) {
     levels <- levels(reorder(
       tab[["list_col"]],
       tab[["indice"]],
@@ -387,8 +387,8 @@ many_val = function(data,
     ))
   }
 
-  # Si reorder = F, l'ordre = celui rentre en input
-  if (reorder == F) {
+  # Si reorder = FALSE, l'ordre = celui rentre en input
+  if (reorder == FALSE) {
     if (length(vec_list_vars) == length(list_vars_lab)) {
       levels <- rev(list_vars_lab)
     } else {
@@ -532,7 +532,7 @@ many_val = function(data,
   }
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T) {
+  if (show_ci == TRUE) {
     graph <- graph +
       geom_errorbar(aes(ymin = indice_low, ymax = indice_upp),
                     width = dodge * 0.05,
@@ -556,7 +556,7 @@ many_val = function(data,
                          unit),
           family = font),
         size = coef_font * fonctionr_font_size(type = "normal"),
-        vjust = ifelse(show_ci == T,
+        vjust = ifelse(show_ci == TRUE,
                        -0.5,
                        0.5),
         hjust = 0,

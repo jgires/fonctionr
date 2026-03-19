@@ -309,8 +309,8 @@ distrib_continuous <- function(data,
   tab <- data_W |>
     summarise(
       indice = if (type == "median") {
-        survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-      } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+        survey_median({{ quanti_exp }}, na.rm = TRUE, vartype = "ci")
+      } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = TRUE, vartype = "ci"),
       n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
       n_weighted = survey_total(vartype = "ci")
     ) |>
@@ -327,9 +327,9 @@ distrib_continuous <- function(data,
     n = resolution,
     adjust = bw,
     # Pour faire taire le warning qui dit que la somme des poids != 1
-    subdensity = T,
+    subdensity = TRUE,
     # Pour faire taire le warning qui dit que bw ne prend pas en compte les poids
-    warnWbw = F,
+    warnWbw = FALSE,
     weights = if (is.null(var_weights)) {
       NULL
     # On introduit la variable de ponderation identifiee dans var_weights mais transformee pour que la somme = 1
@@ -343,8 +343,8 @@ distrib_continuous <- function(data,
   estQuant_W <- as.data.frame(svyquantile(~quanti_exp_flattened,
     design = data_W,
     quantiles = unique(quantiles),
-    ci = T,
-    na.rm = T
+    ci = TRUE,
+    na.rm = TRUE
   )[[1]]) |>
     tibble::rownames_to_column(var = "probs")
 
@@ -389,16 +389,16 @@ distrib_continuous <- function(data,
     # Les effectifs par quantile
     quantile_n <- data_W |>
       mutate(quantFct = cut({{ quanti_exp }},
-        include.lowest = T,
-        right = F,
+        include.lowest = TRUE,
+        right = FALSE,
         breaks = c(-Inf, estQuant_W$quantile, Inf)
       )) |>
       group_by(quantFct) |>
       summarise(n = unweighted(n()))
 
     # On joint les coordonnees x du debut des classes de quantile aux effectifs par quantile
-    vec_bord_inf_quant <- c(min(data_W$variables[["quanti_exp_flattened"]], na.rm = T), estQuant_W$quantile)
-    vec_bord_sup_quant <- c(estQuant_W$quantile, max(data_W$variables[["quanti_exp_flattened"]], na.rm = T))
+    vec_bord_inf_quant <- c(min(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE), estQuant_W$quantile)
+    vec_bord_sup_quant <- c(estQuant_W$quantile, max(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE))
     quantile_n$coord_x <- vec_bord_inf_quant
     quantile_n$coord_max <- vec_bord_sup_quant
 
@@ -406,7 +406,7 @@ distrib_continuous <- function(data,
     if(!is.null(limits)){
       quantile_n <- quantile_n |>
         filter(coord_x > limits[1]) # Les premieres classes si elles sont coupees
-      if(max(data_W$variables[["quanti_exp_flattened"]], na.rm = T) > limits[2])
+      if(max(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE) > limits[2])
         quantile_n <- quantile_n |>
           filter(coord_max < limits[2]) # Et les dernieres si elles sont coupees
     }
@@ -463,8 +463,8 @@ distrib_continuous <- function(data,
 
   # Les limites de la variable quanti si non indiquee par l'utilisateur => pour ggplot
   if(is.null(limits)){
-    lim_min <- min(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
-    lim_max <- max(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
+    lim_min <- min(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE)
+    lim_max <- max(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE)
     limits <- c(lim_min, lim_max)
   }
 
@@ -538,7 +538,7 @@ distrib_continuous <- function(data,
     )
 
   # Ajouter les segments des quantiles
-  if (show_quant_lines == T) {
+  if (show_quant_lines == TRUE) {
     graph <- graph +
       geom_segment(
         data = quant_seg,
@@ -551,7 +551,7 @@ distrib_continuous <- function(data,
   }
 
   # Ajouter l'aire des CI
-  if (show_ci_area == T) {
+  if (show_ci_area == TRUE) {
     graph <- graph +
       geom_ribbon(
         data = central,
@@ -582,7 +582,7 @@ distrib_continuous <- function(data,
   }
 
   # Ajouter les limites des IC
-  if (show_ci_lines == T) {
+  if (show_ci_lines == TRUE) {
     # graph <- graph +
     #   geom_errorbarh(
     #     data = tab,
@@ -608,7 +608,7 @@ distrib_continuous <- function(data,
   }
 
   # Ajouter la ligne de la tendance centrale
-  if (show_mid_line == T) {
+  if (show_mid_line == TRUE) {
     graph <- graph +
       geom_segment(
         data = central[central$central == "indice" & !is.na(central$central), ],
@@ -623,7 +623,7 @@ distrib_continuous <- function(data,
   }
 
   # # Ajouter le point de la tendance centrale
-  # if (show_mid_point == T) {
+  # if (show_mid_point == TRUE) {
   #   graph <- graph +
   #     geom_point(
   #       data = tab,
@@ -632,7 +632,7 @@ distrib_continuous <- function(data,
   #     )
   # }
 
-  if (show_value == T) {
+  if (show_value == TRUE) {
     graph <- graph  +
       geom_text(
         data = central[central$central == "indice" & !is.na(central$central), ],

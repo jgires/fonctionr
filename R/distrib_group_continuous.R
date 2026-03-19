@@ -371,13 +371,13 @@ distrib_group_continuous <- function(data,
 
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
-  if(na.rm.group == F){
+  if(na.rm.group == FALSE){
     data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ group }}" := droplevels(forcats::fct_na_value_to_level({{ group }}, "NA"))
       )
   }
-  if (na.rm.facet == F) {
+  if (na.rm.facet == FALSE) {
     # idem sur la variable de facet si non-NULL
     if(!quo_is_null(quo_facet)){
       data_W <- data_W |> # On enleve sequentiellement les NA de group puis facet
@@ -415,10 +415,10 @@ distrib_group_continuous <- function(data,
   }
   # /!\ NOTE : ca fonctionne mais j'ai peur d'utiliser eval => solution precedente choisie, qui a tout de meme le pb de ne pas garder la formule dans le call
   # if(type == "median"){
-  #   if(na.rm.group == T){
+  #   if(na.rm.group == TRUE){
   #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W, test = "KruskalWallis")))
   #   }
-  #   if(na.rm.group == F){
+  #   if(na.rm.group == FALSE){
   #     eval(substitute(test.stat <- svyranktest(quanti_exp ~ group, design = data_W_NA, test = "KruskalWallis")))
   #   }
   # }
@@ -442,8 +442,8 @@ distrib_group_continuous <- function(data,
     tab <- data_W |>
       summarise(
         indice = if (type == "median") {
-          survey_median({{ quanti_exp }}, na.rm = T, vartype = "ci")
-        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = T, vartype = "ci"),
+          survey_median({{ quanti_exp }}, na.rm = TRUE, vartype = "ci")
+        } else if (type == "mean") survey_mean({{ quanti_exp }}, na.rm = TRUE, vartype = "ci"),
         n_sample = unweighted(n()), # On peut faire n(), car les NA ont ete supprimes partout dans l'expression (precedemment dans la boucle) => plus de NA
         n_weighted = survey_total(vartype = "ci")
       ) |>
@@ -451,7 +451,7 @@ distrib_group_continuous <- function(data,
   }
 
   # On calcul un nouvel ordre dans order si on veut reordonner les groupes selon la valeur calculee
-  if (reorder == T) {
+  if (reorder == TRUE) {
     tab_order <- tab |>
       arrange(desc(indice)) |>
       mutate(order = row_number()) |>
@@ -483,7 +483,7 @@ distrib_group_continuous <- function(data,
       n = resolution,
       adjust = bw,
       # Pour faire taire le warning qui dit que la somme des poids != 1
-      subdensity = T,
+      subdensity = TRUE,
       # Pour faire taire le warning qui dit que bw ne prend pas en compte les poids
       warnWbw = F,
       weights = if (is.null(var_weights)) {
@@ -499,7 +499,7 @@ distrib_group_continuous <- function(data,
     estQuant_W_group <- as.data.frame(svyquantile(~quanti_exp_flattened,
       design = data_W_group,
       quantiles = unique(quantiles),
-      ci = T,
+      ci = TRUE,
       na.rm = T
     )[[1]]) |>
       tibble::rownames_to_column(var = "probs") |> # On cree une colonne qui contient le quantile
@@ -549,7 +549,7 @@ distrib_group_continuous <- function(data,
     estQuant_W <- rbind(estQuant_W, estQuant_W_group)
 
     # On fait les calculs necessaires pour creer les boites a show_moustaches
-    if (show_moustache == T) {
+    if (show_moustache == TRUE) {
 
       # On calcule les quantiles a partir des proportions indiquees dans moustache_probs
       moustache_quant <- c(0 + ((1-unique(moustache_probs))/2), 1 - ((1-unique(moustache_probs))/2))
@@ -573,7 +573,7 @@ distrib_group_continuous <- function(data,
 
   # On restructure boxplot_df pour ggplot
   # Le but est de calculer xbegin & xend par proportion + par groupe, pour indiquer a quelles valeurs de x commencent et finissent chaque "moustache" pour geom_rect
-  if (show_moustache == T) {
+  if (show_moustache == TRUE) {
     boxplot_df <- boxplot_df |>
       tidyr::pivot_longer(
         cols = !c(group, level),
@@ -593,7 +593,7 @@ distrib_group_continuous <- function(data,
           "begin"
         )
       )
-    if (reorder == T) {
+    if (reorder == TRUE) {
       boxplot_df <- boxplot_df |>
         left_join(tab_order, by = "group") |>
         mutate(level = order)
@@ -612,8 +612,8 @@ distrib_group_continuous <- function(data,
 
   }
 
-  # Si reorder = T, on definit un nouveau level a partir de order (calcule plus haut)
-  if (reorder == T) {
+  # Si reorder = TRUE, on definit un nouveau level a partir de order (calcule plus haut)
+  if (reorder == TRUE) {
     df_dens <- df_dens |>
       left_join(tab_order, by = "group") |>
       mutate(level = order)
@@ -693,7 +693,7 @@ distrib_group_continuous <- function(data,
       values_from = "x"
       )
 
-  if (reorder == T) {
+  if (reorder == TRUE) {
     central_CI <- select(central_CI, -order)
     central <- central |>
       select(-order) |>
@@ -737,7 +737,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Palette pour les moustaches, selon le nombre de proportions dans moustache_probs
-  if (show_moustache == T) {
+  if (show_moustache == TRUE) {
 
     if(all(isColor(col_moustache)) != TRUE|length(moustache_probs) > 1 & length(col_moustache) == 1){
       # Si condition non remplie : on met la couleur par defaut
@@ -750,8 +750,8 @@ distrib_group_continuous <- function(data,
 
   # Les limites de la variable quanti si non indiquee par l'utilisateur => pour ggplot
   if(is.null(limits)){
-    lim_min <- min(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
-    lim_max <- max(data_W$variables[["quanti_exp_flattened"]], na.rm = T)
+    lim_min <- min(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE)
+    lim_max <- max(data_W$variables[["quanti_exp_flattened"]], na.rm = TRUE)
     limits <- c(lim_min, lim_max)
   }
 
@@ -847,7 +847,7 @@ distrib_group_continuous <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          lang_anova, scales::pvalue(test.stat$p[1], add_p = T),
+          lang_anova, scales::pvalue(test.stat$p[1], add_p = TRUE),
           caption
         )
       )
@@ -856,14 +856,14 @@ distrib_group_continuous <- function(data,
     graph <- graph +
       labs(
         caption = paste0(
-          lang_kruskal, scales::pvalue(test.stat$p.value[1], add_p = T),
+          lang_kruskal, scales::pvalue(test.stat$p.value[1], add_p = TRUE),
           caption
         )
       )
   }
 
   # Ajouter l'aire des CI
-  if (show_ci_area == T) {
+  if (show_ci_area == TRUE) {
     graph <- graph +
       geom_ribbon(
         data = central,
@@ -877,7 +877,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les segments des quantiles
-  if (show_quant_lines == T) {
+  if (show_quant_lines == TRUE) {
     graph <- graph +
       geom_segment(
         data = quant_seg,
@@ -890,7 +890,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter la ligne de la tendance centrale
-  if (show_mid_line == T) {
+  if (show_mid_line == TRUE) {
     graph <- graph +
       geom_segment(
         data = central[(central$central == "indice") & !is.na(central$central), ],
@@ -904,7 +904,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les limites des IC (segment)
-  if (show_ci_lines == T) {
+  if (show_ci_lines == TRUE) {
     graph <- graph +
       geom_segment(
         data = central[(central$central == "indice_low" | central$central == "indice_upp") & !is.na(central$central), ],
@@ -919,7 +919,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les moustaches
-  if (show_moustache == T) {
+  if (show_moustache == TRUE) {
     graph <- graph +
       ggnewscale::new_scale_fill() + # Ici je suis oblige de reinitialiser une nouvelle palette avec le package ggnewscale => je vois pas d'autre moyen facile
       geom_rect(
@@ -937,7 +937,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter les limites des IC (errorbar)
-  if (show_ci_errorbar == T) {
+  if (show_ci_errorbar == TRUE) {
     graph <- graph +
       geom_errorbarh(
         data = tab,
@@ -952,7 +952,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Ajouter le point de la tendance centrale
-  if (show_mid_point == T) {
+  if (show_mid_point == TRUE) {
     graph <- graph +
       geom_point(
         data = tab,
@@ -962,7 +962,7 @@ distrib_group_continuous <- function(data,
   }
 
   # Afficher la valeur de la tendance centrale
-  if (show_value == T) {
+  if (show_value == TRUE) {
     graph<-graph  +
       geom_text(
         data = tab,
@@ -1017,7 +1017,7 @@ distrib_group_continuous <- function(data,
   res$tab <- tab[, !names(tab) %in% c("level")]
   res$quant <- estQuant_W[, c("group", "probs", "quantile", "ci.2.5", "ci.97.5")]
   res$graph <- graph
-  if (show_moustache == T) {
+  if (show_moustache == TRUE) {
     res$moustache <- boxplot_df[, !names(boxplot_df) %in% c("level")]
   }
   res$test <- test.stat

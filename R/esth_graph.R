@@ -88,7 +88,7 @@ esth_graph <- function(tab,
                        facet = NULL,
                        n_var = NULL,
                        pvalue = NULL,
-                       reorder = F,
+                       reorder = FALSE,
                        show_value = TRUE,
                        name_total = NULL,
                        scale = 1,
@@ -240,7 +240,7 @@ esth_graph <- function(tab,
   max_ggplot <- max(tab[[deparse(substitute(value))]])
 
   # Si reorder == T
-  if (reorder == T) {
+  if (reorder == TRUE) {
     if (!is.null(name_total))  {
       # On cree un vecteur pour ordonner les levels de var selon value, en mettant Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
@@ -275,7 +275,7 @@ esth_graph <- function(tab,
   }
 
   # Si reorder == F
-  if (reorder == F) {
+  if (reorder == FALSE) {
     if (!is.null(name_total))  {
       # On cree un vecteur pour ordonner les levels de var pour mettre Total et NA en premier (= en dernier sur le graphique ggplot)
       levels <- c(
@@ -421,7 +421,7 @@ esth_graph <- function(tab,
     graph <- graph +
       labs(
         caption = paste0(
-          "H0 : ", scales::pvalue(pvalue, add_p = T),
+          "H0 : ", scales::pvalue(pvalue, add_p = TRUE),
           caption
         )
       )

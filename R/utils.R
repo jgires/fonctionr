@@ -352,11 +352,11 @@ export_excel <- function(tab_excel,
 # Solution trouvee ici pour les messages : https://stackoverflow.com/questions/77432872/how-paste-be-used-as-a-message-with-r-stopifnot
 
 check_arg <- function(arg,
-                      short = T,
+                      short = TRUE,
                       type) {
   for(check_i in seq_along(arg)){
     if(!is.null(arg[[check_i]])){
-      if(short == T){
+      if(short == TRUE){
         if (!length(arg[[check_i]]) == 1) stop(paste("Argument", names(arg)[[check_i]], "does not have the correct length (max 1)"), call. = FALSE)
       }
       if(all(!is.na(arg[[check_i]]))){
@@ -563,9 +563,9 @@ official_pal <- function(inst,
                          desaturate = 0,
                          lighten = 0,
                          darken = 0,
-                         show_pal = F,
+                         show_pal = FALSE,
                          font = "Gotham Narrow",
-                         list_pal_names = F
+                         list_pal_names = FALSE
                          ){
 
   # Liste des palettes
@@ -609,7 +609,7 @@ official_pal <- function(inst,
                  "IEFH",
                  "IEFH_div_bi")
 
-  if(list_pal_names == F){
+  if(list_pal_names == FALSE){
 
     # Checks de verification
     if(!inst %in% pal_names){
@@ -755,12 +755,12 @@ official_pal <- function(inst,
     }
 
     # On retourne les codes hex
-    if(show_pal == F){
+    if(show_pal == FALSE){
       return(palette)
     }
 
     # On affiche graphiquement la palette
-    if(show_pal == T){
+    if(show_pal == TRUE){
 
       # On rend dispo les fonts
       load_and_active_fonts()
@@ -784,7 +784,7 @@ official_pal <- function(inst,
   }
 
   # Si les noms des palettes sont demandes
-  if(list_pal_names == T){
+  if(list_pal_names == TRUE){
 
     return(pal_names)
 
@@ -1205,7 +1205,7 @@ create_palette <- function(pal,
         palette <- as.character(PrettyCols::prettycols(palette = pal, n = levels_palette, type = "continuous", direction = direction))
 
       # On cree la palette avec la fonction interne official_pal()
-      } else if(pal %in% official_pal(list_pal_names = T)){
+      } else if(pal %in% official_pal(list_pal_names = TRUE)){
         palette <- as.character(official_pal(inst = pal, n = levels_palette, direction = direction))
 
       # Si la couleur/palette n'est pas valide => defaut
@@ -1356,7 +1356,7 @@ fonctionr_filter <- function(data,
     n_before <- n_after
   }
   # On filtre facet
-  if(na.rm.facet == T) {
+  if(na.rm.facet == TRUE) {
     if(!quo_is_null(enquo(facet))){
       data <- data |>
         mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ facet }}), FALSE))
@@ -1369,7 +1369,7 @@ fonctionr_filter <- function(data,
 
   # On filtre group # uniquement pour les fonctions ci-dessous (avec un groupe)
   if(fonction %in% c("central_group", "prop_group","distrib_group_discrete","distrib_group_continuous","many_val_group")){
-    if(na.rm.group == T) {
+    if(na.rm.group == TRUE) {
         data <- data |>
           mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ group }}), FALSE))
 
@@ -1392,7 +1392,7 @@ fonctionr_filter <- function(data,
 
   #filtre quali_var
   if(fonction %in% c("distrib_group_discrete", "distrib_discrete")){
-    if(na.rm.var == T) {
+    if(na.rm.var == TRUE) {
       data <- data |>
         mutate(fonctionr_rows_to_keep = ifelse(fonctionr_rows_to_keep, !is.na({{ quali_var }}), FALSE))
 

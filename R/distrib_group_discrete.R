@@ -89,12 +89,12 @@ distrib_group_discrete <- function(data,
                                    facet = NULL,
                                    filter_exp = NULL,
                                    ...,
-                                   na.rm.group = T,
-                                   na.rm.facet = T,
-                                   na.rm.var = T,
+                                   na.rm.group = TRUE,
+                                   na.rm.facet = TRUE,
+                                   na.rm.var = TRUE,
                                    total = TRUE,
                                    prop_method = "beta",
-                                   reorder = F,
+                                   reorder = FALSE,
                                    show_n = FALSE,
                                    show_value = TRUE,
                                    show_labs = TRUE,
@@ -338,7 +338,7 @@ distrib_group_discrete <- function(data,
 
   # Ici je remplace les NA pour les groupes / facet par une valeur "NA"
   # L'idee est de recoder les NA des 2 variables group et facet en level "NA", pour que le test stat s'applique aussi aux NA
-  if (na.rm.group == F) {
+  if (na.rm.group == FALSE) {
     data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate(
@@ -346,14 +346,14 @@ distrib_group_discrete <- function(data,
       )
   }
   # idem sur quali_var
-  if (na.rm.var == F) {
+  if (na.rm.var == FALSE) {
     data_W <- data_W |>
       mutate(
         "{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA"))
       )
   }
   # idem sur la variable de facet si non-NULL
-  if (na.rm.facet == F) {
+  if (na.rm.facet == FALSE) {
     if (!quo_is_null(quo_facet)) {
       data_W <- data_W |>
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
@@ -379,21 +379,21 @@ distrib_group_discrete <- function(data,
   }
 
   # Ici je remets les NA pour les groupes / quali_var / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
-  if (na.rm.group == F) {
+  if (na.rm.group == FALSE) {
     data_W <- data_W |>
       mutate(
         "{{ group }}" := droplevels(forcats::fct_na_level_to_value({{ group }}, "NA")),
       )
   }
   # idem sur quali_var
-  if (na.rm.var == F) {
+  if (na.rm.var == FALSE) {
     data_W <- data_W |>
       mutate(
         "{{ quali_var }}" := droplevels(forcats::fct_na_level_to_value({{ quali_var }}, "NA"))
       )
   }
   # idem sur la variable de facet si non-NULL
-  if (na.rm.facet == F) {
+  if (na.rm.facet == FALSE) {
     if (!quo_is_null(quo_facet)) {
       data_W <- data_W |>
         mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA")))
@@ -416,7 +416,7 @@ distrib_group_discrete <- function(data,
   if(total == FALSE) {
     tab <- data_W |>
       summarise(
-        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        prop = survey_prop(proportion = TRUE, prop_method = prop_method, vartype = c("ci")),
         n_sample = unweighted(n()),
         n_weighted = survey_total(vartype = c("ci"))
       ) |>
@@ -425,7 +425,7 @@ distrib_group_discrete <- function(data,
   if(total == TRUE) {
     tab <- data_W |>
       summarise(
-        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        prop = survey_prop(proportion = TRUE, prop_method = prop_method, vartype = c("ci")),
         n_sample = unweighted(n()),
         n_weighted = survey_total(vartype = c("ci"))
       ) |>
@@ -443,7 +443,7 @@ distrib_group_discrete <- function(data,
 
     tab_tot <- data_W |>
       summarise(
-        prop = survey_prop(proportion = T, prop_method = prop_method, vartype = c("ci")),
+        prop = survey_prop(proportion = TRUE, prop_method = prop_method, vartype = c("ci")),
         n_sample = unweighted(n()),
         n_weighted = survey_total(vartype = c("ci"))
       ) |>
@@ -472,7 +472,7 @@ distrib_group_discrete <- function(data,
   )
 
   # On cree un vecteur pour ordonner les levels de group pour mettre NA en premier (= en dernier sur le graphique ggplot)
-  if (reorder == F) {
+  if (reorder == FALSE) {
     levels <- c(
       total_name,
       NA,
@@ -486,7 +486,7 @@ distrib_group_discrete <- function(data,
     )
   }
 
-  if (reorder == T) {
+  if (reorder == TRUE) {
     tab_for_reorder <- tab |>
       filter({{ quali_var }} == levels_origin_quali_var[1])
 
@@ -509,7 +509,7 @@ distrib_group_discrete <- function(data,
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour le groupe, meme si na.rm.group.group = F !
   # On les supprime donc ssi na.rm.group = F et pas de missing sur la variable de groupe **OU** na.rm.group = T
-  if ((na.rm.group == F & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == T)  {
+  if ((na.rm.group == FALSE & sum(is.na(tab[[deparse(substitute(group))]])) == 0) | na.rm.group == TRUE)  {
     levels <- levels[!is.na(levels)]
   }
   # Pour enlever le level "Total" si total == F
@@ -562,7 +562,7 @@ distrib_group_discrete <- function(data,
     ) +
     coord_flip()
 
-  # Autre design pour la barre du total (si total = T)
+  # Autre design pour la barre du total (si total = TRUE)
   if(total == TRUE) {
     graph <- graph +
       geom_bar(
@@ -625,7 +625,7 @@ distrib_group_discrete <- function(data,
       graph <- graph +
         labs(
           caption = paste0(
-            lang_khi2, scales::pvalue(test.stat$p.value, add_p = T),
+            lang_khi2, scales::pvalue(test.stat$p.value, add_p = TRUE),
             caption
           )
         )

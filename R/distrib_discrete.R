@@ -288,12 +288,12 @@ distrib_discrete <- function(data,
   # 3. TEST STATISTIQUE --------------------
 
   # Je recode les NA des 2 variables quali_var et facet en level "NA", pour que le test stat s'applique aussi aux NA
-  if (na.rm.var == F) {
+  if (na.rm.var == FALSE) {
     data_W <- data_W |>
       # Idee : fct_na_value_to_level() pour ajouter un level NA encapsule dans un droplevels() pour le retirer s'il n'existe pas de NA
       mutate("{{ quali_var }}" := droplevels(forcats::fct_na_value_to_level({{ quali_var }}, "NA")))
   }
-  if (na.rm.facet == T) {
+  if (na.rm.facet == TRUE) {
     if (!quo_is_null(quo_facet)) {
       data_W <- data_W |> # On enleve sequentiellement les NA de quali_var puis facet
         mutate("{{ facet }}" := droplevels(forcats::fct_na_value_to_level({{ facet }}, "NA")))
@@ -310,11 +310,11 @@ distrib_discrete <- function(data,
   }
 
   # Ici je remets les NA pour quali_var / facet => Le fait d'avoir les NA en missing reel est pratique pour construire le graphique ggplot !
-  if (na.rm.var == F) {
+  if (na.rm.var == FALSE) {
     data_W <- data_W |>
       mutate("{{ quali_var }}" := droplevels(forcats::fct_na_level_to_value({{ quali_var }}, "NA")))
   }
-  if (na.rm.facet == T) {
+  if (na.rm.facet == TRUE) {
     if (!quo_is_null(quo_facet)) {
       data_W <- data_W |>
         mutate("{{ facet }}" := droplevels(forcats::fct_na_level_to_value({{ facet }}, "NA")))
@@ -335,7 +335,7 @@ distrib_discrete <- function(data,
     }
   tab <- data_W |>
     summarize(
-      prop = survey_prop(vartype = "ci", proportion = T, prop_method = prop_method),
+      prop = survey_prop(vartype = "ci", proportion = TRUE, prop_method = prop_method),
       n_sample = unweighted(n()),
       n_weighted = survey_total(vartype = "ci")
     ) |>
@@ -368,7 +368,7 @@ distrib_discrete <- function(data,
     )
   }
 
-  if (reorder == F) {
+  if (reorder == FALSE) {
     # On cree un vecteur pour ordonner les levels de quali_var pour mettre NA en premier (= en dernier sur le graphique ggplot)
     levels <- c(
       NA,
@@ -382,7 +382,7 @@ distrib_discrete <- function(data,
 
   # Dans le vecteur qui ordonne les levels, on a mis un NA => Or parfois pas de missing pour quali_var, meme si na.rm.var = F !
   # On les supprime donc ssi na.rm.var = F et pas de missing sur la variable quali_var **OU** na.rm.var = T
-  if ((na.rm.var == F & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm.var == T)  {
+  if ((na.rm.var == FALSE & sum(is.na(tab[[deparse(substitute(quali_var))]])) == 0) | na.rm.var == TRUE)  {
     levels <- levels[!is.na(levels)]
   }
 
@@ -426,7 +426,7 @@ distrib_discrete <- function(data,
       title = title,
       subtitle = subtitle,
       caption = if (!is.null(probs) & quo_is_null(quo_facet)) paste0(
-        lang_khi2_ad, scales::pvalue(test.stat$p.value, add_p = T),
+        lang_khi2_ad, scales::pvalue(test.stat$p.value, add_p = TRUE),
         caption) else stringr::str_wrap(caption, width = 100)
       )
 
@@ -440,7 +440,7 @@ distrib_discrete <- function(data,
   )
 
   # Ajouter les IC si show_ci == T
-  if (show_ci == T) {
+  if (show_ci == TRUE) {
     graph <- graph +
       geom_errorbar(aes(ymin = prop_low,
                         ymax = prop_upp),
@@ -465,7 +465,7 @@ distrib_discrete <- function(data,
                          unit),
           family = font),
         size = coef_font * fonctionr_font_size(type = "normal"),
-        vjust = ifelse(show_ci == T,
+        vjust = ifelse(show_ci == TRUE,
                        -0.5,
                        0.5),
         hjust = 0,
