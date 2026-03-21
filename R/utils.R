@@ -75,15 +75,15 @@ convert_to_srvyr <- function(data, ...) {
 #' load_and_active_fonts
 #'
 #' Function to load and activate fonctionr's built-in fonts.
-#' Available fonts, included in the package itself, are "Roboto", "Montserrat", "Gotham Narrow", "Helvetica Neue", "League Gothic" and "Amatic". Default is "Roboto".
+#' Available fonts, included in the package itself, are `"Roboto"`, `"Montserrat"`, `"Gotham Narrow"`, and `"Euclid Circular A"`. Default is `"Roboto"`.
 #'
-#' @return No return value, called for side effects
+#' @return No return value, called for side effects.
 #' @export
 #'
 #' @examples
 #' # Loading of fonts from fonctionr. You can now use it in fonctionr !
 #' load_and_active_fonts()
-#'
+
 load_and_active_fonts <- function(){
 
   # On ajoute les polices contenues dans le package et on les active
@@ -534,19 +534,19 @@ relabel_ggtext <- function(x, wrap_width, total_name = NULL){
 
 #' official_pal
 #'
-#' Function to produce color palettes from different institutions
+#' A function that allows you to create the palettes of fonctionr.
 #'
 #' @param inst Name of the palette.
 #' @param n Number of colors.
-#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1.
-#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.
+#' @param direction Direction of the palette color. Default is `1`. The opposite direction is `-1`.
+#' @param desaturate Numeric specifying the amount of desaturation where `1` corresponds to complete desaturation, `0` to no desaturation, and values in between to partial desaturation.
 #' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening.
 #' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening.
-#' @param show_pal TRUE to display a graph representing the specified color palette.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param list_pal_names TRUE to generate a vector with palette names.
+#' @param show_pal `TRUE` to display a graph representing the specified color palette.
+#' @param font Font used in the graphic. See `load_and_active_fonts()` for available fonts.
+#' @param list_pal_names `TRUE` to generate a vector with palette names.
 #'
-#' @return A vector containing hexadecimals color codes
+#' @return A vector containing hexadecimals color codes.
 #' @export
 #'
 #' @examples
@@ -556,7 +556,6 @@ relabel_ggtext <- function(x, wrap_width, total_name = NULL){
 #' official_pal("OBSS_div_bi3", 8, show_pal = TRUE)
 #' official_pal("IBSA", 4, show_pal = TRUE)
 #' official_pal("ULB", 6, show_pal = TRUE)
-#'
 
 official_pal <- function(inst,
                          n,
@@ -834,16 +833,18 @@ fonctionr_alter_cols <- function(cols,
 
 #' theme_fonctionr
 #'
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts.
-#' @param theme The optionnal theme you want for the graphic. Available theme: “IWEPS”. Default is NULL
-#' @param display The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.
-#' @param grid.lines Specify major grid lines : "x", "y" or "both". Default is "x".
+#' A ggplot theme that is ready to use. It is used by most other functions, but can also be applied to an external ggplot object.
+#'
+#' @param font Font used in the graphic. See `load_and_active_fonts()` for available fonts.
+#' @param theme The optionnal theme you want for the graphic. Available themes: `"fonctionr"` and `“IWEPS”`. Default is `NULL`.
+#' @param display The way `theme_fonctionr()` works on the axis texts: like ggplot2 or ggtext.
+#' @param grid.lines Specify major grid lines : `"x"`, `"y"` or `"both"`. Default is `"x"`.
 #' @param coef_font A multiplier factor for font size.
 #'
-#' @return No return value, called for side effects
+#' @return No return value, called for side effects.
 #' @import ggplot2
 #' @export
-#'
+
 theme_fonctionr <- function(font = "Roboto",
                             theme = "fonctionr",
                             display = "ggplot",

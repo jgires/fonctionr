@@ -3,15 +3,20 @@
 Function to compare means or medians among different groups based on
 complex survey data. It produces a list containing a table, including
 the confidence intervals of the indicators, a ready-to-be published
-ggplot graphic and a statistical test. In case of mean comparison, the
-statistical test is a Wald test (using survey::regTermTest). In case of
-median comparison the statistical test is a Kruskal Wallis test (using
-survey::svyranktest(test = "KruskalWallis")). Exporting the results to
-an Excell file is possible. The confidence intervals and the statistical
-test are taking into account the complex survey design. In case of
-facets, the statistical test is computed on the total means or medians
-between facets (and not within facets). In case of second group
-(group.fill), no statistical test is computed.
+ggplot graphic and a statistical test.
+
+In case of mean comparison, the statistical test is a Wald test (using
+[`survey::regTermTest()`](https://rdrr.io/pkg/survey/man/regTermTest.html)).
+In case of median comparison the statistical test is a Kruskal Wallis
+test (using
+[`survey::svyranktest()`](https://rdrr.io/pkg/survey/man/svyranktest.html)).
+The confidence intervals and the statistical test are taking into
+account the complex survey design. In case of facets, the statistical
+test is computed on the total means or medians between facets (and not
+within facets). In case of second group (`group.fill`), no statistical
+test is computed.
+
+Exporting the results to an Excell file is possible.
 
 ## Usage
 
@@ -79,13 +84,14 @@ mean_group(..., type = "mean")
 - quanti_exp:
 
   An expression defining the quantitative variable from which the
-  mean/median is computed. Notice that if any observations with NA in at
-  least one of the variable in quanti_exp are excluded for the
+  mean/median is computed. Notice that if any observations with `NA` in
+  at least one of the variable in `quanti_exp` are excluded for the
   computation of the indicators.
 
 - type:
 
-  "mean" to compute mean by group ; "median" to compute median by group.
+  `"mean"` to compute mean by group ; `"median"` to compute median by
+  group.
 
 - group.fill:
 
@@ -98,162 +104,171 @@ mean_group(..., type = "mean")
 - filter_exp:
 
   An expression filtering the data, preserving the design. Notice that
-  filter_exp works as srvyr::filter() : it excludes observations for
-  which filter_exp results into NA. It is often the case when NA is
-  present on one of the filter variables.
+  `filter_exp` works as
+  [`srvyr::filter()`](http://gdfe.co/srvyr/reference/dplyr_single.md):
+  it excludes observations for which `filter_exp` results into `NA`. It
+  is often the case when `NA` is present on one of the filter variables.
 
 - ...:
 
-  All options possible in as_survey_design in srvyr package.
+  All options possible in
+  [`srvyr::as_survey_design()`](http://gdfe.co/srvyr/reference/as_survey_design.md).
 
 - na.rm.group:
 
-  TRUE if you want to remove observations with NA on the group and the
-  group.fill variables. FALSE if you want to create a group with the NA
-  values for the group variable and a group.fill with the NA values for
-  the group.fill variable. Default is TRUE.
+  `TRUE` if you want to remove observations with `NA` on the group and
+  the `group.fill` variables. `FALSE` if you want to create a group with
+  the `NA` values for the group variable and a `group.fill` with the
+  `NA` values for the `group.fill` variable. Default is `TRUE`.
 
 - na.rm.facet:
 
-  TRUE if you want to remove observations with NA on the facet variable.
-  FALSE if you want to create a facet with the NA values for the facet
-  variable. Default is TRUE.
+  `TRUE` if you want to remove observations with `NA` on the facet
+  variable. `FALSE` if you want to create a facet with the `NA` values
+  for the facet variable. Default is `TRUE`.
 
 - total:
 
-  TRUE if you want to compute a total, FALSE if you don't. The default
-  is TRUE.
+  `TRUE` if you want to compute a total, `FALSE` if you don't. The
+  default is `TRUE`.
 
 - reorder:
 
-  TRUE if you want to reorder the groups according to the mean/median.
-  NA value, in case if na.rm.group = FALSE, is not included in the
-  reorder. In case of facets, the groups are reordered based on each
-  median group. Default is FALSE.
+  `TRUE` if you want to reorder the groups according to the mean/median.
+  `NA` value, if `na.rm.group = FALSE`, is not included in the reorder.
+  In case of facets, the groups are reordered based on each median
+  group. Default is `FALSE`.
 
 - show_ci:
 
-  TRUE if you want to show the error bars on the graphic. FALSE if you
-  don't want to show the error bars. Default is TRUE.
+  `TRUE` if you want to show the error bars on the graphic. `FALSE` if
+  you don't want to show the error bars. Default is `TRUE`.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of observations in
-  the sample in each group. FALSE if you don't want to show this number.
-  Default is FALSE.
+  `TRUE` if you want to show on the graphic the number of observations
+  in the sample in each group. `FALSE` if you don't want to show this
+  number. Default is `FALSE`.
 
 - show_value:
 
-  TRUE if you want to show the mean/median in each group on the graphic.
-  FALSE if you don't want to show the mean/median. Default is TRUE.
+  `TRUE` if you want to show the mean/median in each group on the
+  graphic. `FALSE` if you don't want to show the mean/median. Default is
+  `TRUE`.
 
 - show_labs:
 
-  TRUE if you want to show axes and legend (in case of a group.fill)
-  labels. FALSE if you don't want to show any labels on axes and legend.
-  Default is TRUE.
+  `TRUE` if you want to show axes and legend (in case of a `group.fill`)
+  labels. `FALSE` if you don't want to show any labels on axes and
+  legend. Default is `TRUE`.
 
 - total_name:
 
-  Name of the total displayed on the graphic. Default is "Total" in
-  French and in English and "Totaal" in Dutch.
+  Name of the total displayed on the graphic. Default is `"Total"` in
+  French and in English and `"Totaal"` in Dutch.
 
 - digits:
 
   Number of decimal places displayed on the values labels on the
-  graphic. Default is 0.
+  graphic. Default is `0`.
 
 - unit:
 
-  Unit displayed on the graphic. Default is none.
+  Unit displayed on the graphic. Default is none (`""`).
 
 - dec:
 
-  Decimal mark displayed on the graphic. Default depends on lang: ","
-  for fr and nl ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: `","`
+  for fr and nl ; `"."` for en.
 
 - col:
 
-  Color of the bars if there is no group.fill. col must be a R color or
-  an hexadecimal color code. Default color used depends on type :
-  "deeppink3" for mean and "mediumorchid3" for median. The colors of
-  total and NA group (in case of na.rm.group == FALSE) are always
-  "grey40" and "grey". If there is a group.fill, col has no effect and
-  pal argument should be used instead.
+  Color of the bars if there is no `group.fill`. `col` must be a R color
+  or an hexadecimal color code. Default color used depends on type :
+  `"deeppink3"` for mean and `"mediumorchid3"` for median. The colors of
+  total and `NA` group (in case of `na.rm.group = FALSE`) are always
+  `"grey40"` and `"grey"`. If there is a `group.fill`, `col` has no
+  effect and `pal` argument should be used instead.
 
 - pal:
 
-  Colors of the bars if there is a group.fill. pal must be vector of R
-  colors or hexadecimal colors or a palette from packages MetBrewer or
-  PrettyCols or a palette from fonctionr. The color of NA group.fill (in
-  case of na.rm.group == FALSE) andt of the total are always "grey" and
-  "grey40". If there is no group.fill, pal has no effect and col
-  argument should be used instead.
+  Colors of the bars if there is a `group.fill`. `pal` must be vector of
+  R colors or hexadecimal colors or a palette from packages MetBrewer or
+  PrettyCols or a palette from fonctionr. The color of missing values
+  for `group.fill` (in case of `na.rm.group = FALSE`) and for the total
+  are always `"grey"` and `"grey40"`. If there is no `group.fill`, `pal`
+  has no effect and `col` argument should be used instead.
 
 - direction:
 
-  Direction of the palette color. Default is 1. The opposite direction
-  is -1. If there is no group.fill, this argument has no effect.
+  Direction of the palette color. Default is `1`. The opposite direction
+  is `-1`. If there is no `group.fill`, this argument has no effect.
 
 - desaturate:
 
-  Numeric specifying the amount of desaturation where 1 corresponds to
-  complete desaturation (no colors, grey layers only), 0 to no
+  Numeric specifying the amount of desaturation where `1` corresponds to
+  complete desaturation (no colors, grey layers only), `0` to no
   desaturation, and values in between to partial desaturation. Default
-  is 0. It affects only the palette (pal, if there is a second group)
-  and not the monocolor (col, if there is no second group). See
-  desaturate function from colorspace package for details. If desaturate
-  and lighten/darken arguments are used, lighten/darken is applied in a
+  is `0`. It affects only the palette (`pal`, if there is a second
+  group) and not the monocolor (`col`, if there is no second group). See
+  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  function from colorspace package for details. If desaturate and
+  lighten/darken arguments are used, lighten/darken is applied in a
   second time (i.e. on the color transformed by desaturate).
 
 - lighten:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  darkening. Value shoud be ranged between -1 (black) and 1 (white).
-  Default is 0. It doesn't affect the color of NAs (in case of
-  na.rm.group = FALSE). It affects only the palette (pal, if there is a
-  second group) and not the monocolor (col, if there is no second
-  group). See colorspace::lighten for details. If both argument ligthen
-  and darken are used (not advised), darken is applied in a second time
-  (i.e. on the color transformed by lighten).
+  darkening. Value shoud be ranged between `-1` (black) and `1` (white).
+  Default is `0`. It doesn't affect the color of `NA` (in case of
+  `na.rm.group = FALSE`). It affects only the palette (`pal`, if there
+  is a second group) and not the monocolor (`col`, if there is no second
+  group). See
+  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  for details. If both argument ligthen and darken are used (not
+  advised), darken is applied in a second time (i.e. on the color
+  transformed by lighten).
 
 - darken:
 
   Numeric specifying the amount of lightening. Negative numbers cause
-  lightening. Value shoud be ranged between -1 (white) and 1 (black).
-  Default is 0. It doesn't affect the color of NAs (in case of
-  na.rm.group = FALSE). It affects only the palette (pal, if there is a
-  second group) and not the monocolor (col, if there is no second
-  group). See colorspace::darken for details. If both argument ligthen
-  and darken are used (not advised), darken is applied in a second time
-  (i.e. on the color transformed by lighten).#'
+  lightening. Value shoud be ranged between `-1` (white) and `1`
+  (black). Default is `0`. It doesn't affect the color of `NA` (in case
+  of `na.rm.group = FALSE`). It affects only the palette (`pal`, if
+  there is a second group) and not the monocolor (`col`, if there is no
+  second group). See
+  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  for details. If both argument ligthen and darken are used (not
+  advised), darken is applied in a second time (i.e. on the color
+  transformed by lighten).
 
 - dodge:
 
-  Width of the bars. Default is 0.9 to let a small space between bars. A
-  value of 1 leads to no space betweens bars. Values higher than 1 are
-  not advised because they cause an overlaping of the bars. dodge
-  doesn't affect the spaces between second groups (group.fill). There is
-  always no space between second groups.
+  Width of the bars. Default is `0.9` to let a small space between bars.
+  A value of `1` leads to no space betweens bars. Values higher than `1`
+  are not advised because they cause an overlaping of the bars. `dodge`
+  doesn't affect the spaces between second groups (`group.fill`). There
+  is always no space between second groups.
 
 - font:
 
-  Font used in the graphic. See load_and_active_fonts() for available
-  fonts. Default is "Roboto".
+  Font used in the graphic. See
+  [`load_and_active_fonts()`](https://jgires.github.io/fonctionr/reference/load_and_active_fonts.md)
+  for available fonts. Default is `"Roboto"`.
 
 - wrap_width_y:
 
   Number of characters before going to the line for the labels of the
-  groups. Default is 25.
+  groups. Default is `25`.
 
 - wrap_width_leg:
 
   Number of characters before going to the line for the labels of the
-  group.fill. Default is 25.
+  `group.fill`. Default is `25`.
 
 - legend_ncol:
 
-  Number of columns in the legend. Default is 4.
+  Number of columns in the legend. Default is `4`.
 
 - title:
 
@@ -265,27 +280,34 @@ mean_group(..., type = "mean")
 
 - xlab:
 
-  X label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data. Default (xlab = NULL) displays, for
-  type = "mean", "Moyenne :" (if lang == "fr"), "Mean:" (if lang == "en"
-  ) or "Gemiddelde:" (if lang == "nl"), or, for type = "median",
-  "Médiane :" (if lang == "fr"), "Median:" (if lang == "en" ) or
-  "Mediaan:" (if lang == "nl"), followed by the quanti_exp argument. To
-  show no X label, use xlab = "".
+  X label on the graphic. As
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+  is used in the graphic, `xlab` refers to the x label on the graphic,
+  after the
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html),
+  and not to the x variable in the data. Default (`xlab = NULL`)
+  displays, for `type = "mean"`, "Moyenne :" (if `lang = "fr"`), "Mean:"
+  (if `lang = "en"`) or "Gemiddelde:" (if `lang = "nl"`), or, for
+  `type = "median"`, "Médiane :" (if `lang = "fr"`), "Median:" (if
+  `lang = "en"`) or "Mediaan:" (if `lang = "nl"`), followed by the
+  `quanti_exp` argument. To show no X label, use `xlab = ""`.
 
 - ylab:
 
-  Y label on the graphic. As coord_flip() is used in the graphic, ylab
-  refers to the y label on the graphic, after the coord_flip(), and not
-  to the y variable in the data. Default (ylab = NULL) displays the name
-  of the group variable. To show no Y label, use ylab = "".
+  Y label on the graphic. As
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+  is used in the graphic, `ylab` refers to the y label on the graphic,
+  after the
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html),
+  and not to the y variable in the data. Default (`ylab = NULL`)
+  displays the name of the `group` variable. To show no Y label, use
+  `ylab = ""`.
 
 - legend_lab:
 
-  Legend (fill) label on the graphic. If legend_lab = NULL, legend label
-  on the graphic will be group.fill. To show no legend label, use
-  legend_lab = "".
+  Legend (fill) label on the graphic. If `legend_lab = NULL`, legend
+  label on the graphic will be `group.fill`. To show no legend label,
+  use `legend_lab = ""`.
 
 - caption:
 
@@ -295,25 +317,25 @@ mean_group(..., type = "mean")
 
 - lang:
 
-  Language of the indications on the graphic. Possibilities are "fr"
-  (french), "nl" (dutch) and "en" (english). Default is "fr".
+  Language of the indications on the graphic. Possibilities are `"fr"`
+  (french), `"nl"` (dutch) and `"en"` (english). Default is `"fr"`.
 
 - theme:
 
-  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
-  lines and ticks. NULL uses the default grey ggplot2 theme.
+  Theme of the graphic. Default is `"fonctionr"`. `"IWEPS"` adds y axis
+  lines and ticks. `NULL` uses the default grey ggplot2 theme.
 
 - coef_font:
 
   A multiplier factor for font size of all fonts on the graphic. Default
-  is 1. Usefull when exporting the graphic for a publication (e.g. in a
-  Quarto document).
+  is `1`. Usefull when exporting the graphic for a publication (e.g. in
+  a Quarto document).
 
 - export_path:
 
   Path to export the results in an xlsx file. The file includes three
-  (without group.fill) or two sheets (with a group.fill): the table, the
-  graphic and the statistical test result.
+  (without `group.fill`) or two sheets (with a `group.fill`): the table,
+  the graphic and the statistical test result.
 
 ## Value
 
@@ -341,7 +363,7 @@ eusilc_mean <- mean_group(
   weight = rb050,
   title = "Mean of equivalised income in household by age of individuals",
   subtitle = "Example with austrian SILC data from 'laeken' package"
-  )
+)
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050
 #> Variable(s) detected in quanti_exp: eqIncome

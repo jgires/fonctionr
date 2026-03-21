@@ -48,45 +48,45 @@ distrib_c(...)
 \arguments{
 \item{data}{A dataframe or an object from the survey package or an object from the srvyr package.}
 
-\item{quanti_exp}{An expression defining the quantitatie variable the variable to be described. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and of the indicators.}
+\item{quanti_exp}{An expression defining the quantitatie variable the variable to be described. Notice that any observations with \code{NA} in at least one of the variable in \code{quanti_exp} are excluded for the computation of the density and of the indicators.}
 
-\item{type}{Type of central value : "mean" to compute mean as the central value ; "median" to compute median as the central value.}
+\item{type}{Type of central value : \code{"mean"} to compute mean as the central value ; \code{"median"} to compute median as the central value.}
 
 \item{facet}{Not yet implemented.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that \code{filter_exp} works as \code{\link[srvyr:dplyr_single]{srvyr::filter()}}: it excludes observations for which \code{filter_exp} results into \code{NA.} It is often the case when \code{NA} is present on one of the filter variables.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{...}{All options possible in \code{\link[srvyr:as_survey_design]{srvyr::as_survey_design()}}.}
 
 \item{na.rm.facet}{Not yet implemented.}
 
 \item{quantiles}{Quantiles computed. Default are deciles.}
 
-\item{bw}{The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.}
+\item{bw}{The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is \code{1}.}
 
-\item{resolution}{Resolution of the density curve. Default is 1024.}
+\item{resolution}{Resolution of the density curve. Default is \code{1024}.}
 
-\item{limits}{Limits of the X axe of the graphic. Does not apply to the computation of indicators (median/mean and quantiles). Default is NULL to show the entire distribution on the graphic.}
+\item{limits}{Limits of the X axe of the graphic. Does not apply to the computation of indicators (median/mean and quantiles). Default is \code{NULL} to show the entire distribution on the graphic.}
 
-\item{show_mid_line}{TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.}
+\item{show_mid_line}{\code{TRUE} if you want to show the mean or median (depending on type) as a line on the graphic. \code{FALSE} if you do not want to show it. Default is \code{TRUE}.}
 
-\item{show_ci_lines}{TRUE if you want to show confidence interval of the mean or median (depending on type) as dotted lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.}
+\item{show_ci_lines}{\code{TRUE} if you want to show confidence interval of the mean or median (depending on type) as dotted lines on the graphic. \code{FALSE} if you do not want to show it as lines. Default is \code{TRUE}.}
 
-\item{show_ci_area}{TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.}
+\item{show_ci_area}{\code{TRUE} if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. \code{FALSE} if you do not want to show it as an area. Default is \code{FALSE}.}
 
-\item{show_quant_lines}{TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.}
+\item{show_quant_lines}{\code{TRUE} if you want to show quantiles as lines on the graphic. \code{FALSE} if you do not want to show them as lines. Default is \code{FALSE}.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of individuals in the sample in each quantile. FALSE if you do not want to show the numbers. Default is FALSE.}
+\item{show_n}{\code{TRUE} if you want to show on the graphic the number of individuals in the sample in each quantile. \code{FALSE} if you do not want to show the numbers. Default is \code{FALSE}.}
 
-\item{show_value}{TRUE if you want to show the value of the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.}
+\item{show_value}{\code{TRUE} if you want to show the value of the mean/median (depending on type) on the graphic. \code{FALSE} if you do not want to show the mean/median. Default is \code{TRUE}.}
 
-\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
+\item{show_labs}{\code{TRUE} if you want to show axes labels. \code{FALSE} if you do not want to show any labels on axes. Default is \code{TRUE}.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{Unit displayed on the graphic. Default is none.}
+\item{unit}{Unit displayed on the graphic. Default is none (\code{""}).}
 
-\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: \code{","} for fr and nl ; \code{"."} for en.}
 
 \item{pal}{For compatibility with older versions.}
 
@@ -94,33 +94,37 @@ distrib_c(...)
 
 \item{color}{Not currently used except for compatibility with old versions.}
 
-\item{col_border}{Color of the density line. Color should be one R color or one hexadecimal color code. Default (NULL) does not draw the density line.}
+\item{col_border}{Color of the density line. Color should be one R color or one hexadecimal color code. Default (\code{NULL}) does not draw the density line.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be quanti_exp.}
+\item{xlab}{X label on the graphic. If \code{xlab = NULL}, X label on the graphic will be \code{quanti_exp.}}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be "Densité" (if lang = "fr), "Density" (if lang = "en") or "Densiteit (if lang = "nl").}
+\item{ylab}{Y label on the graphic. If \code{ylab = NULL}, Y label on the graphic will be \code{"Densité"} (if \code{lang = "fr"}), \code{"Density"} (if \code{lang = "en"}) or \code{"Densiteit"} (if \code{lang = "nl"}).}
 
 \item{caption}{Caption of the graphic.}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 
-\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
+\item{theme}{Theme of the graphic. Default is \code{"fonctionr"}. \code{"IWEPS"} adds y axis lines and ticks. \code{NULL} uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes four sheets: the central value table, the quantile table, the density table and the graphic.}
 }
 \value{
-A list that contains a density table (dens), a central value table (tab), a quantile table (quant) and a ggplot graphic (graph).
+A list that contains a density table (\code{dens}), a central value table (\code{tab}), a quantile table (\code{quant}) and a ggplot graphic (\code{graph}).
 }
 \description{
-Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (\code{dens}), a central value table (\code{tab}), a quantile table (\code{quant}) and a ready-to-be published ggplot graphic (\code{graph}).
+
+The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. The confidence intervals are taking into account the complex survey design.
+
+Exporting those results to an Excell file is possible.
 }
 \examples{
 # Loading of data
@@ -143,5 +147,4 @@ eusilc_dist_c$graph
 
 # Results in table format
 eusilc_dist_c$tab
-
 }

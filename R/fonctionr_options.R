@@ -1,71 +1,72 @@
 #' fonctionr_options
 #'
-#' Function to set global options for fonctionr
+#' Function to set global options for fonctionr. The arguments defined in the options are only active if the user has not manually specified a value for those arguments within the various functions. Arguments may be shared by multiple functions (if they have the same name) or specific to certain functions.
 #'
-#' @param na.rm.group na.rm.group
-#' @param na.rm.facet na.rm.facet
-#' @param na.prop na.prop
-#' @param na.vars na.vars
-#' @param na.rm.var na.rm.var
-#' @param probs probs
-#' @param total total
-#' @param prop_method prop_method
-#' @param quantiles quantiles
-#' @param moustache_probs moustache_probs
-#' @param bw bw
-#' @param resolution resolution
-#' @param height height
-#' @param limits limits
-#' @param reorder reorder
-#' @param position position
-#' @param show_ci show_ci
-#' @param show_mid_point show_mid_point
-#' @param show_mid_line show_mid_line
-#' @param show_ci_errorbar show_ci_errorbar
-#' @param show_ci_lines show_ci_lines
-#' @param show_ci_area show_ci_area
-#' @param show_quant_lines show_quant_lines
-#' @param show_moustache show_moustache
-#' @param show_n show_n
-#' @param show_value show_value
-#' @param show_labs show_labs
-#' @param total_name total_name
-#' @param scale scale
-#' @param digits digits
-#' @param unit unit
-#' @param dec dec
-#' @param col col
-#' @param pal pal
-#' @param direction direction
-#' @param desaturate desaturate
-#' @param lighten lighten
-#' @param darken darken
-#' @param col_density col_density
-#' @param col_moustache col_moustache
-#' @param col_border col_border
-#' @param alpha alpha
-#' @param dodge dodge
-#' @param font font
-#' @param wrap_width_y wrap_width_y
-#' @param wrap_width_leg wrap_width_leg
-#' @param legend_ncol legend_ncol
-#' @param title title
-#' @param subtitle subtitle
-#' @param xlab xlab
-#' @param ylab ylab
-#' @param legend_lab legend_lab
-#' @param caption caption
-#' @param lang lang
-#' @param theme theme
-#' @param coef_font coef_font
-#' @param erase_all TRUE erases all the options. Default is FALSE.
+#' @param na.rm.group `na.rm.group` argument.
+#' @param na.rm.facet `na.rm.facet` argument.
+#' @param na.prop `na.prop` argument.
+#' @param na.vars `na.vars` argument.
+#' @param na.rm.var `na.rm.var` argument.
+#' @param probs `probs` argument.
+#' @param total `total` argument.
+#' @param prop_method `prop_method` argument.
+#' @param quantiles `quantiles` argument.
+#' @param moustache_probs `moustache_probs` argument.
+#' @param bw `bw` argument.
+#' @param resolution `resolution` argument.
+#' @param height `height` argument.
+#' @param limits `limits` argument.
+#' @param reorder `reorder` argument.
+#' @param position `position` argument.
+#' @param show_ci `show_ci` argument.
+#' @param show_mid_point `show_mid_point` argument.
+#' @param show_mid_line `show_mid_line` argument.
+#' @param show_ci_errorbar `show_ci_errorbar` argument.
+#' @param show_ci_lines `show_ci_lines` argument.
+#' @param show_ci_area `show_ci_area` argument.
+#' @param show_quant_lines `show_quant_lines` argument.
+#' @param show_moustache `show_moustache` argument.
+#' @param show_n `show_n` argument.
+#' @param show_value `show_value` argument.
+#' @param show_labs `show_labs` argument.
+#' @param total_name `total_name` argument.
+#' @param scale `scale` argument.
+#' @param digits `digits` argument.
+#' @param unit `unit` argument.
+#' @param dec `dec` argument.
+#' @param col `col` argument.
+#' @param pal `pal` argument.
+#' @param direction `direction` argument.
+#' @param desaturate `desaturate` argument.
+#' @param lighten `lighten` argument.
+#' @param darken `darken` argument.
+#' @param col_density `col_density` argument.
+#' @param col_moustache `col_moustache` argument.
+#' @param col_border `col_border` argument.
+#' @param alpha `alpha` argument.
+#' @param dodge `dodge` argument.
+#' @param font `font` argument.
+#' @param wrap_width_y `wrap_width_y` argument.
+#' @param wrap_width_leg `wrap_width_leg` argument.
+#' @param legend_ncol `legend_ncol` argument.
+#' @param title `title` argument.
+#' @param subtitle `subtitle` argument.
+#' @param xlab `xlab` argument.
+#' @param ylab `ylab` argument.
+#' @param legend_lab `legend_lab` argument.
+#' @param caption `caption` argument.
+#' @param lang `lang` argument.
+#' @param theme `theme` argument.
+#' @param coef_font `coef_font` argument.
+#' @param parallel `parallel` argument.
+#' @param erase_all `TRUE` erases all the options. Default is `FALSE`.
 #'
-#' @return No return value, called for side effects
+#' @return No return value, called for side effects.
 #' @export
 #'
 #' @examples
-#' # We set settings for font type and font size
-#' fonctionr_options(font = "Montserrat", coef_font = 1.5)
+#' # We set global settings
+#' fonctionr_options(coef_font = 1.5, col = "magenta", caption = "Beautiful caption")
 #'
 #' # Loading of data
 #' data(eusilc, package = "laeken")
@@ -82,17 +83,20 @@
 #'
 #' # Computation, taking sample design into account
 #' eusilc_prop <- prop_group(
-#' eusilc,
-#' group = pl030_rec,
-#' prop_exp = py090n > 0,
-#' weight = rb050,
-#' title = "% of ind. receiving unemployment benefits in their hh",
-#' subtitle = "Example with austrian SILC data from 'laeken' package"
+#'   eusilc,
+#'   group = pl030_rec,
+#'   prop_exp = py090n > 0,
+#'   weight = rb050,
+#'   title = "% of ind. receiving unemployment benefits in their hh",
+#'   subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
 #'
 #' # Results in graph form
 #' eusilc_prop$graph
 #'
+#' # We set back settings to default
+#' fonctionr_options(erase_all = TRUE)
+
 fonctionr_options <- function(na.rm.group = NULL,
                               na.rm.facet = NULL,
                               na.prop = NULL,

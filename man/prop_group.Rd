@@ -55,93 +55,97 @@ prop_group(
 
 \item{group}{A variable defining the groups to be compared.}
 
-\item{prop_exp}{An expression defining the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. 'in') will not work as designed in this argument, unless na.prop is set to "include".}
+\item{prop_exp}{An expression defining the proportion to be computed. Notice that if \code{na.prop = "rm"}, \code{is.na()} is not allowed in this argument. The removal of \code{NA} is done before the computation of the proportion. Thus any function that takes into account \code{NA} (e.g. \code{\%in\%}) will not work as designed in this argument, unless \code{na.prop = "include"}.}
 
 \item{group.fill}{A variable defining a second variable of groups to be compared.}
 
 \item{facet}{A variable defining the faceting groups.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that \code{filter_exp} works as \code{\link[srvyr:dplyr_single]{srvyr::filter()}}: it excludes observations for which \code{filter_exp} results into \code{NA}. It is often the case when \code{NA} is present on one of the filter variables.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{...}{All options possible in \code{\link[srvyr:as_survey_design]{srvyr::as_survey_design()}}.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable. Default is TRUE.}
+\item{na.rm.group}{\code{TRUE} if you want to remove observations with \code{NA} on the \code{group} and the \code{group.fill} variables. \code{FALSE} if you want to create a group with the \code{NA} values for the \code{group} variable and a \code{group.fill} with the \code{NA} values for the \code{group.fill} variable. Default is \code{TRUE}.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
+\item{na.rm.facet}{\code{TRUE} if you want to remove observations with \code{NA} on the \code{facet} variable. \code{FALSE} if you want to create a facet with the \code{NA} values for the \code{facet} variable. Default is \code{TRUE}.}
 
-\item{na.prop}{"rm" to remove observations with NA on one of the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". If na.prop is set to "rm" the function 'is.na()' is not allowed in prop_exp.}
+\item{na.prop}{\code{"rm"} to remove observations with \code{NA} on one of the variables used in \code{prop_exp} before computing the proportions, \code{"include"} to compute the proportions with the \code{NA} in the denominators. Default is \code{"rm"}. If \code{na.prop = "rm"} the function \code{is.na()} is not allowed in \code{prop_exp}.}
 
-\item{total}{TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.}
+\item{total}{\code{TRUE} if you want to compute a total, \code{FALSE} if you don't. The default is \code{TRUE}.}
 
-\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See \code{\link[survey:svyciprop]{survey::svyciprop()}} for details. Default is beta method.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is FALSE.}
+\item{reorder}{\code{TRUE} if you want to reorder the groups according to the proportion. \code{NA} value, if \code{na.rm.group = FALSE}, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is \code{FALSE}.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
+\item{show_ci}{\code{TRUE} if you want to show the error bars on the graphic. \code{FALSE} if you don't want to show the error bars. Default is \code{TRUE}.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.}
+\item{show_n}{\code{TRUE} if you want to show on the graphic the number of observations in the sample in each group. \code{FALSE} if you don't want to show this number. Default is \code{FALSE}.}
 
-\item{show_value}{TRUE if you want to show the proportions in each group on the graphic. FALSE if you don't want to show the proportion. Default is TRUE.}
+\item{show_value}{\code{TRUE} if you want to show the proportions in each group on the graphic. \code{FALSE} if you don't want to show the proportion. Default is \code{TRUE}.}
 
-\item{show_labs}{TRUE if you want to show axes and legend (in case of a group.fill) labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.}
+\item{show_labs}{\code{TRUE} if you want to show axes and legend (in case of a \code{group.fill}) labels. \code{FALSE} if you don't want to show any labels on axes and legend. Default is \code{TRUE}.}
 
-\item{total_name}{Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.}
+\item{total_name}{Name of the total displayed on the graphic. Default is \code{"Total"} in French and in English and \code{"Totaal"} in Dutch.}
 
-\item{scale}{Denominator of the proportions. Default is 100 to interpret numbers as percentages.}
+\item{scale}{Denominator of the proportions. Default is \code{100} to interpret numbers as percentages.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{Unit displayed on the graphic. Default is percent.}
+\item{unit}{Unit displayed on the graphic. Default is \code{"\%"}.}
 
-\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: \code{","} for fr and nl ; \code{"."} for en.}
 
-\item{col}{Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default is "deepskyblue3". The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.}
+\item{col}{Color of the bars if there is no \code{group.fill}. \code{col} must be a R color or an hexadecimal color code. Default is \code{"deepskyblue3"}. The colors of total and \code{NA} group (in case of \code{na.rm.group = FALSE}) are always \code{"grey40"} and \code{"grey"}. If there is a \code{group.fill}, \code{col} has no effect and \code{pal} argument should be used instead.}
 
-\item{pal}{Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of NA group.fill (in case of na.rm.group == FALSE) and of the total are always "grey" and "grey40". If there is no group.fill, pal has no effect and col argument should be used instead.}
+\item{pal}{Colors of the bars if there is a \code{group.fill}. \code{pal} must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of missing values in \code{group.fill} (in case of \code{na.rm.group = FALSE}) and of the total are always \code{"grey"} and \code{"grey40"}. If there is no \code{group.fill}, \code{pal} has no effect and \code{col} argument should be used instead.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1. If there is no group.fill, this argument has no effect.}
+\item{direction}{Direction of the palette color. Default is \code{1}. The opposite direction is \code{-1}. If there is no \code{group.fill}, this argument has no effect.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
+\item{desaturate}{Numeric specifying the amount of desaturation where \code{1} corresponds to complete desaturation (no colors, grey layers only), \code{0} to no desaturation, and values in between to partial desaturation. Default is \code{0}. It affects only the palette (\code{pal}, if there is a second group) and not the monocolor (\code{col}, if there is no second group). See \code{\link[colorspace:desaturate]{colorspace::desaturate()}} for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between \code{-1} (black) and \code{1} (white). Default is \code{0}. It doesn't affect the color of \code{NA} (in case of \code{na.rm.group = FALSE}). It affects only the palette (\code{pal}, if there is a second group) and not the monocolor (\code{col}, if there is no second group). See \code{\link[colorspace:lighten]{colorspace::lighten()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between \code{-1} (white) and \code{1} (black). Default is \code{0}. It doesn't affect the color of \code{NA} (in case of \code{na.rm.group = FALSE}). It affects only the palette (\code{pal}, if there is a second group) and not the monocolor (\code{col}, if there is no second group). See \code{\link[colorspace:lighten]{colorspace::darken()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between second groups (group.fill). There is always no space between second groups.}
+\item{dodge}{Width of the bars. Default is \code{0.9} to let a small space between bars. A value of \code{1} leads to no space betweens bars. Values higher than \code{1} are not advised because they cause an overlaping of the bars. \code{dodge} doesn't affect the spaces between second groups (\code{group.fill}). There is always no space between second groups.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
-\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is \code{25}.}
 
-\item{wrap_width_leg}{Number of characters before going to the line for the labels of the group.fill. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of the \code{group.fill}. Default is \code{25}.}
 
-\item{legend_ncol}{Number of columns in the legend. Default is 4.}
+\item{legend_ncol}{Number of columns in the legend. Default is \code{4}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Proportion :" (if lang == "fr"), "Proportion:" (if lang == "en" ) or "Aandeel:" (if lang == "nl"), followed by the prop_exp argument. To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{xlab} refers to the x label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the x variable in the data. Default (\code{xlab = NULL}) displays "Proportion :" (if \code{lang = "fr"}), "Proportion:" (if \code{lang = "en"}) or "Aandeel:" (if \code{lang = "nl"}), followed by the \code{prop_exp} argument. To show no X label, use \code{xlab = ""}.}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the group variable. To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{ylab} refers to the y label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the y variable in the data. Default (\code{ylab = NULL}) displays the name of the \code{group} variable. To show no Y label, use \code{ylab = ""}.}
 
-\item{legend_lab}{Legend (fill) label on the graphic. Default (legend_lab = NULL) displays the name of the group.fill variable. To show no legend label, use legend_lab = "".}
+\item{legend_lab}{Legend (fill) label on the graphic. Default (\code{legend_lab = NULL}) displays the name of the \code{group.fill} variable. To show no legend label, use \code{legend_lab = ""}.}
 
 \item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the chi-square test as a caption.}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 
-\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
+\item{theme}{Theme of the graphic. Default is \code{"fonctionr"}. \code{"IWEPS"} adds y axis lines and ticks. \code{NULL} uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the Chi-Square statistical test result.}
+\item{export_path}{Path to export the results in an xlsx file. The file includes three (without \code{group.fill}) or two sheets (with a \code{group.fill}): the table, the graphic and the Chi-Square statistical test result.}
 }
 \value{
 A list that contains a table, a ggplot graphic and, in most cases, a Chi-square statistical test.
 }
 \description{
-Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using survey::svychisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (group.fill), no Chi-square test is computed.
+Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using \code{\link[survey:svychisq]{survey::svychisq()}}).
+
+The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (\code{group.fill}), no Chi-square test is computed.
+
+Exporting those results to an Excell file is possible.
 }
 \examples{
 # Loading of data
@@ -159,14 +163,14 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_prop <- prop_group(
-eusilc,
-group = pl030_rec,
-prop_exp = py090n > 0,
-strata = db040,
-ids = db030,
-weight = rb050,
-title = "\% of ind. receiving unemployment benefits in their hh",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  group = pl030_rec,
+  prop_exp = py090n > 0,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "\% of ind. receiving unemployment benefits in their hh",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 
 # Results in graph form
@@ -174,5 +178,4 @@ eusilc_prop$graph
 
 # Results in table format
 eusilc_prop$tab
-
 }

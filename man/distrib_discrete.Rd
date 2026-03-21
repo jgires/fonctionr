@@ -49,69 +49,73 @@ distrib_d(...)
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that \code{filter_exp} works as \code{\link[srvyr:dplyr_single]{srvyr::filter()}}: it excludes observations for which \code{filter_exp} results into \code{NA.} It is often the case when \code{NA} is present on one of the filter variables.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{...}{All options possible in \code{\link[srvyr:as_survey_design]{srvyr::as_survey_design()}}.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
+\item{na.rm.facet}{\code{TRUE} if you want to remove observations with \code{NA} on the facet variable. \code{FALSE} if you want to create a facet with the \code{NA} values for the facet variable. Default is \code{TRUE}.}
 
-\item{na.rm.var}{TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with NA values for the discrete variable. Default is TRUE.}
+\item{na.rm.var}{\code{TRUE} if you want to remove observations with \code{NA} on the discrete variable. \code{FALSE} if you want to create a modality with \code{NA} values for the discrete variable. Default is \code{TRUE}.}
 
-\item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If probs = NULL, no statistical test is performed. Default is NULL.}
+\item{probs}{Vector of probabilities for H0 of the statistical test, in the correct order (will be rescaled to sum to 1). If \code{probs = NULL}, no statistical test is performed. Default is \code{NULL}.}
 
-\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See \code{\link[survey:svyciprop]{survey::svyciprop()}} for details. Default is beta method.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.var = FALSE, is not included in the reorder. In case of facets, the categories are reordered based on each median category Default is FALSE.}
+\item{reorder}{\code{TRUE} if you want to reorder the groups according to the proportion. \code{NA} value, if \code{na.rm.var = FALSE}, is not included in the reorder. In case of facets, the categories are reordered based on each median category Default is \code{FALSE}.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.}
+\item{show_ci}{\code{TRUE} if you want to show the error bars on the graphic. \code{FALSE} if you don't want to show the error bars. Default is \code{TRUE}.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample in each category. FALSE if you don't want to show this number. Default is FALSE.}
+\item{show_n}{\code{TRUE} if you want to show on the graphic the number of observations in the sample in each category. \code{FALSE} if you don't want to show this number. Default is \code{FALSE}.}
 
-\item{show_value}{TRUE if you want to show the proportions in each category on the graphic. FALSE if you don't want to show the proportion. Default is TRUE.}
+\item{show_value}{\code{TRUE} if you want to show the proportions in each category on the graphic. \code{FALSE} if you don't want to show the proportion. Default is \code{TRUE}.}
 
-\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any label on axes. Default is TRUE.}
+\item{show_labs}{\code{TRUE} if you want to show axes labels. \code{FALSE} if you do not want to show any label on axes. Default is \code{TRUE}.}
 
-\item{scale}{Denominator of the proportion. Default is 100 to interprets numbers as percentages.}
+\item{scale}{Denominator of the proportion. Default is \code{100} to interprets numbers as percentages.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{Unit displayed on the graphic. Default is percent.}
+\item{unit}{Unit displayed on the graphic. Default is \code{"\%"}.}
 
-\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: \code{","} for fr and nl ; \code{"."} for en.}
 
-\item{col}{Color of the bars. col must be a R color or an hexadecimal color code. Default is "sienna2". The color of NA category (in case of na.rm.var == FALSE) is always "grey".}
+\item{col}{Color of the bars. col must be a R color or an hexadecimal color code. Default is \code{"sienna2"}. The color of \code{NA} category (in case of \code{na.rm.var = FALSE}) is always \code{"grey"}.}
 
 \item{pal}{Argument kept for compatibility with old versions.}
 
-\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.}
+\item{dodge}{Width of the bars. Default is \code{0.9} to let a small space between bars. A value of \code{1} leads to no space betweens bars. Values higher than \code{1} are not advised because they cause an overlaping of the bars.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
-\item{wrap_width_y}{Number of characters before going to the line for the labels of the categories. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the categories. Default is \code{25}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Distribution (total : 100 pourcent)" (if lang == "fr"), "Distribution (total: 100 percent)" (if lang == "en" ) or "Distributie (totaal : 100 procent)" (if lang == "nl"). To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{xlab} refers to the x label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the x variable in the data. Default (\code{xlab = NULL}) displays "Distribution (total : 100 pourcent)" (if \code{lang = "fr"}), "Distribution (total: 100 percent)" (if \code{lang = "en"}) or "Distributie (totaal : 100 procent)" (if \code{lang = "nl"}). To show no X label, use \code{xlab = ""}.}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the Y variable in the data. Default (ylab = NULL) displays the name of the discrete variable (quali_var). To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{ylab} refers to the Y label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the Y variable in the data. Default (\code{ylab = NULL}) displays the name of the discrete variable (\code{quali_var}). To show no Y label, use \code{ylab = ""}.}
 
 \item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the statistical test (if any).}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 
-\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
+\item{theme}{Theme of the graphic. Default is \code{"fonctionr"}. \code{"IWEPS"} adds y axis lines and ticks. \code{NULL} uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
-\item{export_path}{Path to export the results in an xlsx file. The file includes two or three sheets : the table, the graphic and the statistical test (if probs is not NULL).}
+\item{export_path}{Path to export the results in an xlsx file. The file includes two or three sheets : the table, the graphic and the statistical test (if \code{probs} is not \code{NULL}).}
 }
 \value{
 A list that contains a table, a ggplot graphic and, if probs is not NULL, a statistical test.
 }
 \description{
-Function to describe the distribution of a discrete variable from complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and, if proportions for H0 are specified, a Chi-Square statistical test (using survey::svygofchisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
+Function to describe the distribution of a discrete variable from complex survey data.
+
+It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and, if proportions for H0 are specified, a Chi-Square statistical test (using \code{\link[survey:svygofchisq]{survey::svygofchisq()}}). The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
+
+Exporting those results to an Excell file is possible.
 }
 \examples{
 # Loading of data
@@ -129,13 +133,13 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_dist_group_d <- distrib_d(
-eusilc,
-pl030_rec,
-strata = db040,
-ids = db030,
-weight = rb050,
-title = "Distribution of socio-economic status",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  pl030_rec,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "Distribution of socio-economic status",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 
 # Results in graph form
@@ -143,5 +147,4 @@ eusilc_dist_group_d$graph
 
 # Results in table format
 eusilc_dist_group_d$tab
-
 }

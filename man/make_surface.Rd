@@ -42,73 +42,73 @@ make_surface(
 \arguments{
 \item{tab}{dataframe with the variables to be ploted.}
 
-\item{var}{The variable in tab with the labels of the indicator to be ploted.}
+\item{var}{The variable in \code{tab} with the labels of the indicator to be ploted.}
 
-\item{value}{The variable in tab with the values of the indicator to be ploted.}
+\item{value}{The variable in \code{tab} with the values of the indicator to be ploted.}
 
-\item{error_low}{The variable in tab that is the lower bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.}
+\item{error_low}{The variable in \code{tab} that is the lower bound of the confidence interval. If either \code{error_low} or \code{error_upp} is \code{NULL} error rectangles are not shown on the graphic.}
 
-\item{error_upp}{The variable in tab that is the upper bound of the confidence interval. If either error_low or error_upp is NULL error rectangles are not shown on the graphic.}
+\item{error_upp}{The variable in \code{tab} that is the upper bound of the confidence interval. If either \code{error_low} or \code{error_upp} is \code{NULL} error rectangles are not shown on the graphic.}
 
-\item{facet}{A variable in tab defining the faceting group, if applicable. Default is NULL.}
+\item{facet}{A variable in \code{tab} defining the faceting group, if applicable. Default is \code{NULL}.}
 
 \item{pvalue}{The p-value to show in the caption. It can be a numeric value or the pvalue object from a statistical test.}
 
-\item{reorder}{TRUE if you want to reorder the values. NA label in var is not included in the reorder.}
+\item{reorder}{\code{TRUE} if you want to reorder the values. \code{NA} label in \code{var} is not included in the reorder.}
 
-\item{compare}{TRUE to display a rectangle representing the smallest value. When facets are enabled, this is the smallest value per facet category.}
+\item{compare}{\code{TRUE} to display a rectangle representing the smallest value. When facets are enabled, this is the smallest value per facet category.}
 
 \item{space}{The space between the rectangles. The unit is that of the indicator.}
 
-\item{position}{The position of the rectangles: "mid" for center alignment, "bottom" for bottom alignment.}
+\item{position}{The position of the rectangles: \code{"mid"} for center alignment, \code{"bottom"} for bottom alignment.}
 
-\item{show_ci}{TRUE if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted rectangles around the result. FALSE if you do not want to show them. Default is TRUE.}
+\item{show_ci}{\code{TRUE} if you want to show the CI on the graphic. The bounds of the confidence intervals are displayed as dotted rectangles around the result. \code{FALSE} if you do not want to show them. Default is \code{TRUE}.}
 
-\item{name_total}{Name of the var label that may contain the total. When indicated, it is not displayed on the graph.}
+\item{name_total}{Name of the \code{var} label that may contain the total. When indicated, it is not displayed on the graph.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{The unit showd on the plot. Default is none.}
+\item{unit}{The unit showd on the plot. Default is none (\code{""}).}
 
-\item{col}{Color of the rectangles if the user wants a monocolor graph. col must be a R color or an hexadecimal color code. As pal has a priority over col, if the user wants to use col, he must not use simultaneously the pal argument (even pal = NULL).}
+\item{col}{Color of the rectangles if the user wants a monocolor graph. \code{col} must be a R color or an hexadecimal color code. As \code{pal} has a priority over \code{col}, if the user wants to use \code{col}, he must not use simultaneously the \code{pal} argument (even \code{pal = NULL}).}
 
-\item{pal}{Colors of the rectangles if the user wants the rectangles to have different colors. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. Default is "Kandinsky" from MetBrewer. pal has a priority over col.}
+\item{pal}{Colors of the rectangles if the user wants the rectangles to have different colors. \code{pal} must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. \code{pal} has a priority over \code{col}.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+\item{direction}{Direction of the palette color. Default is \code{1}. The opposite direction is \code{-1}.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
+\item{desaturate}{Numeric specifying the amount of desaturation where \code{1} corresponds to complete desaturation (no colors, grey layers only), \code{0} to no desaturation, and values in between to partial desaturation. Default is \code{0}. It affects only the palette (\code{pal}) and not the monocolor (\code{col}). See \code{\link[colorspace:desaturate]{colorspace::desaturate()}} for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between \code{-1} (black) and \code{1} (white). Default is \code{0}. It affects only the palette (\code{pal}) and not the monocolor (\code{col}). See \code{\link[colorspace:lighten]{colorspace::lighten()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It affects only the palette (pal) and not the monocolor (col). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between \code{-1} (white) and \code{1} (black). Default is \code{0}. It affects only the palette (\code{pal}) and not the monocolor (\code{col}). See \code{\link[colorspace:lighten]{colorspace::darken()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{size_text}{Text size displayed in rectangles . Default is 3.88 (as in ggplot2).}
+\item{size_text}{Text size displayed in rectangles . Default is \code{3.88} (as in ggplot2).}
 
-\item{bg}{Color of the background. bg must be a R color or an hexadecimal color code.}
+\item{bg}{Color of the background. \code{bg} must be a R color or an hexadecimal color code.}
 
-\item{linewidth_ci}{Line width of the dotted confidence intervals lines. It affects also the lenghts of the dots and spaces bteween dots. Default is 0.5 to have confidence lines two times thiner than the lines of the indicators.}
+\item{linewidth_ci}{Line width of the dotted confidence intervals lines. It affects also the lenghts of the dots and spaces bteween dots. Default is \code{0.5} to have confidence lines two times thiner than the lines of the indicators.}
 
-\item{ratio}{Ratio between the length and the width of the rectangles. 1 produces squares ; greater than 1 produces vertical rectangles and smaller than 1 produces horizontal rectangles. Default is 3/2.}
+\item{ratio}{Ratio between the length and the width of the rectangles. \code{1} produces squares ; greater than \code{1} produces vertical rectangles and smaller than \code{1} produces horizontal rectangles. Default is \code{3/2}.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
-\item{wrap_width_lab}{Number of characters before going to the line for the labels of the categories of var. Default is 20.}
+\item{wrap_width_lab}{Number of characters before going to the line for the labels of the categories of \code{var}. Default is \code{20}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{hjust.title}{Horizontal alignment of title & subtitle. It should take a numeric value. Default (0) leads to left alignment, 1 leads to right alignment and 0.5 leads to centered alignement.}
+\item{hjust.title}{Horizontal alignment of title & subtitle. It should take a numeric value. Default (\code{0}) leads to left alignment, \code{1} leads to right alignment and \code{0.5} leads to centered alignement.}
 
 \item{caption}{Caption of the graphic.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 }
 \value{
 A ggplot graphic.
 }
 \description{
-make_surface
+Function that represents the values of a group variable as areas proportional to those values.
 }
 \examples{
 # Loading of data
@@ -146,5 +146,4 @@ eusilc_mean$tab |>
     title = "Equivalised income in household by socio-economic status",
     subtitle = "Example with austrian SILC data from 'laeken' package"
 )
-
 }

@@ -1,50 +1,55 @@
 #' prop_group
 #'
-#' Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using survey::svychisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (group.fill), no Chi-square test is computed.
+#' @description
+#' Function to compare a proportion among different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using [survey::svychisq()]).
+#'
+#' The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, the Chi-square test is computed on the total proportion between facets (and not within facets). In case of second group (`group.fill`), no Chi-square test is computed.
+#'
+#' Exporting those results to an Excell file is possible.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
 #' @param group A variable defining the groups to be compared.
-#' @param prop_exp An expression defining the proportion to be computed. Notice that if na.prop is "rm" any is.na() is not allowed in this argument. The removal of NA's is done before the computation of the proportion. Thus any function that takes into account NA's (e.g. 'in') will not work as designed in this argument, unless na.prop is set to "include".
+#' @param prop_exp An expression defining the proportion to be computed. Notice that if `na.prop = "rm"`, `is.na()` is not allowed in this argument. The removal of `NA` is done before the computation of the proportion. Thus any function that takes into account `NA` (e.g. `%in%`) will not work as designed in this argument, unless `na.prop = "include"`.
 #' @param group.fill A variable defining a second variable of groups to be compared.
 #' @param facet A variable defining the faceting groups.
-#' @param filter_exp An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.
-#' @param ... All options possible in as_survey_design in srvyr package.
-#' @param na.rm.group TRUE if you want to remove observations with NA on the group and the group.fill variables. FALSE if you want to create a group with the NA values for the group variable and a group.fill with the NA values for the group.fill variable. Default is TRUE.
-#' @param na.rm.facet TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.
-#' @param na.prop "rm" to remove observations with NA on one of the variables used in prop_exp before computing the proportions, "include" to compute the proportions with the NA's in the denominators. Default is "rm". If na.prop is set to "rm" the function 'is.na()' is not allowed in prop_exp.
-#' @param total TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.
-#' @param prop_method Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.
-#' @param reorder TRUE if you want to reorder the groups according to the proportion. NA value, in case if na.rm.group = FALSE, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is FALSE.
-#' @param show_ci TRUE if you want to show the error bars on the graphic. FALSE if you don't want to show the error bars. Default is TRUE.
-#' @param show_n TRUE if you want to show on the graphic the number of observations in the sample in each group. FALSE if you don't want to show this number. Default is FALSE.
-#' @param show_value TRUE if you want to show the proportions in each group on the graphic. FALSE if you don't want to show the proportion. Default is TRUE.
-#' @param show_labs TRUE if you want to show axes and legend (in case of a group.fill) labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.
-#' @param total_name Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.
-#' @param scale Denominator of the proportions. Default is 100 to interpret numbers as percentages.
-#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
-#' @param unit Unit displayed on the graphic. Default is percent.
-#' @param dec Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.
-#' @param col Color of the bars if there is no group.fill. col must be a R color or an hexadecimal color code. Default is "deepskyblue3". The colors of total and NA group (in case of na.rm.group == FALSE) are always "grey40" and "grey". If there is a group.fill, col has no effect and pal argument should be used instead.
-#' @param pal Colors of the bars if there is a group.fill. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of NA group.fill (in case of na.rm.group == FALSE) and of the total are always "grey" and "grey40". If there is no group.fill, pal has no effect and col argument should be used instead.
-#' @param direction Direction of the palette color. Default is 1. The opposite direction is -1. If there is no group.fill, this argument has no effect.
-#' @param desaturate Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
-#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
-#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). It affects only the palette (pal, if there is a second group) and not the monocolor (col, if there is no second group). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
-#' @param dodge Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between second groups (group.fill). There is always no space between second groups.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
-#' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is 25.
-#' @param wrap_width_leg Number of characters before going to the line for the labels of the group.fill. Default is 25.
-#' @param legend_ncol Number of columns in the legend. Default is 4.
+#' @param filter_exp An expression filtering the data, preserving the design. Notice that `filter_exp` works as [srvyr::filter()]: it excludes observations for which `filter_exp` results into `NA`. It is often the case when `NA` is present on one of the filter variables.
+#' @param ... All options possible in [srvyr::as_survey_design()].
+#' @param na.rm.group `TRUE` if you want to remove observations with `NA` on the `group` and the `group.fill` variables. `FALSE` if you want to create a group with the `NA` values for the `group` variable and a `group.fill` with the `NA` values for the `group.fill` variable. Default is `TRUE`.
+#' @param na.rm.facet `TRUE` if you want to remove observations with `NA` on the `facet` variable. `FALSE` if you want to create a facet with the `NA` values for the `facet` variable. Default is `TRUE`.
+#' @param na.prop `"rm"` to remove observations with `NA` on one of the variables used in `prop_exp` before computing the proportions, `"include"` to compute the proportions with the `NA` in the denominators. Default is `"rm"`. If `na.prop = "rm"` the function `is.na()` is not allowed in `prop_exp`.
+#' @param total `TRUE` if you want to compute a total, `FALSE` if you don't. The default is `TRUE`.
+#' @param prop_method Type of proportion method used to compute confidence intervals. See [survey::svyciprop()] for details. Default is beta method.
+#' @param reorder `TRUE` if you want to reorder the groups according to the proportion. `NA` value, if `na.rm.group = FALSE`, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is `FALSE`.
+#' @param show_ci `TRUE` if you want to show the error bars on the graphic. `FALSE` if you don't want to show the error bars. Default is `TRUE`.
+#' @param show_n `TRUE` if you want to show on the graphic the number of observations in the sample in each group. `FALSE` if you don't want to show this number. Default is `FALSE`.
+#' @param show_value `TRUE` if you want to show the proportions in each group on the graphic. `FALSE` if you don't want to show the proportion. Default is `TRUE`.
+#' @param show_labs `TRUE` if you want to show axes and legend (in case of a `group.fill`) labels. `FALSE` if you don't want to show any labels on axes and legend. Default is `TRUE`.
+#' @param total_name Name of the total displayed on the graphic. Default is `"Total"` in French and in English and `"Totaal"` in Dutch.
+#' @param scale Denominator of the proportions. Default is `100` to interpret numbers as percentages.
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is `0`.
+#' @param unit Unit displayed on the graphic. Default is `"%"`.
+#' @param dec Decimal mark displayed on the graphic. Default depends on lang: `","` for fr and nl ; `"."` for en.
+#' @param col Color of the bars if there is no `group.fill`. `col` must be a R color or an hexadecimal color code. Default is `"deepskyblue3"`. The colors of total and `NA` group (in case of `na.rm.group = FALSE`) are always `"grey40"` and `"grey"`. If there is a `group.fill`, `col` has no effect and `pal` argument should be used instead.
+#' @param pal Colors of the bars if there is a `group.fill`. `pal` must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of missing values in `group.fill` (in case of `na.rm.group = FALSE`) and of the total are always `"grey"` and `"grey40"`. If there is no `group.fill`, `pal` has no effect and `col` argument should be used instead.
+#' @param direction Direction of the palette color. Default is `1`. The opposite direction is `-1`. If there is no `group.fill`, this argument has no effect.
+#' @param desaturate Numeric specifying the amount of desaturation where `1` corresponds to complete desaturation (no colors, grey layers only), `0` to no desaturation, and values in between to partial desaturation. Default is `0`. It affects only the palette (`pal`, if there is a second group) and not the monocolor (`col`, if there is no second group). See [colorspace::desaturate()] for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).
+#' @param lighten Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between `-1` (black) and `1` (white). Default is `0`. It doesn't affect the color of `NA` (in case of `na.rm.group = FALSE`). It affects only the palette (`pal`, if there is a second group) and not the monocolor (`col`, if there is no second group). See [colorspace::lighten()] for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param darken Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between `-1` (white) and `1` (black). Default is `0`. It doesn't affect the color of `NA` (in case of `na.rm.group = FALSE`). It affects only the palette (`pal`, if there is a second group) and not the monocolor (`col`, if there is no second group). See [colorspace::darken()] for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).
+#' @param dodge Width of the bars. Default is `0.9` to let a small space between bars. A value of `1` leads to no space betweens bars. Values higher than `1` are not advised because they cause an overlaping of the bars. `dodge` doesn't affect the spaces between second groups (`group.fill`). There is always no space between second groups.
+#' @param font Font used in the graphic. See `load_and_active_fonts()` for available fonts. Default is `"Roboto"`.
+#' @param wrap_width_y Number of characters before going to the line for the labels of the groups. Default is `25`.
+#' @param wrap_width_leg Number of characters before going to the line for the labels of the `group.fill`. Default is `25`.
+#' @param legend_ncol Number of columns in the legend. Default is `4`.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Proportion :" (if lang == "fr"), "Proportion:" (if lang == "en" ) or "Aandeel:" (if lang == "nl"), followed by the prop_exp argument. To show no X label, use xlab = "".
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the group variable. To show no Y label, use ylab = "".
-#' @param legend_lab Legend (fill) label on the graphic. Default (legend_lab = NULL) displays the name of the group.fill variable. To show no legend label, use legend_lab = "".
+#' @param xlab X label on the graphic. As [ggplot2::coord_flip()] is used in the graphic, `xlab` refers to the x label on the graphic, after the [ggplot2::coord_flip()], and not to the x variable in the data. Default (`xlab = NULL`) displays "Proportion :" (if `lang = "fr"`), "Proportion:" (if `lang = "en"`) or "Aandeel:" (if `lang = "nl"`), followed by the `prop_exp` argument. To show no X label, use `xlab = ""`.
+#' @param ylab Y label on the graphic. As [ggplot2::coord_flip()] is used in the graphic, `ylab` refers to the y label on the graphic, after the [ggplot2::coord_flip()], and not to the y variable in the data. Default (`ylab = NULL`) displays the name of the `group` variable. To show no Y label, use `ylab = ""`.
+#' @param legend_lab Legend (fill) label on the graphic. Default (`legend_lab = NULL`) displays the name of the `group.fill` variable. To show no legend label, use `legend_lab = ""`.
 #' @param caption Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the chi-square test as a caption.
-#' @param lang Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".
-#' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
-#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
-#' @param export_path Path to export the results in an xlsx file. The file includes three (without group.fill) or two sheets (with a group.fill): the table, the graphic and the Chi-Square statistical test result.
+#' @param lang Language of the indications on the graphic. Possibilities are `"fr"` (french), `"nl"` (dutch) and `"en"` (english). Default is `"fr"`.
+#' @param theme Theme of the graphic. Default is `"fonctionr"`. `"IWEPS"` adds y axis lines and ticks. `NULL` uses the default grey ggplot2 theme.
+#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is `1`. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
+#' @param export_path Path to export the results in an xlsx file. The file includes three (without `group.fill`) or two sheets (with a `group.fill`): the table, the graphic and the Chi-Square statistical test result.
 #'
 #' @return A list that contains a table, a ggplot graphic and, in most cases, a Chi-square statistical test.
 #' @import rlang
@@ -70,14 +75,14 @@
 #'
 #' # Computation, taking sample design into account
 #' eusilc_prop <- prop_group(
-#' eusilc,
-#' group = pl030_rec,
-#' prop_exp = py090n > 0,
-#' strata = db040,
-#' ids = db030,
-#' weight = rb050,
-#' title = "% of ind. receiving unemployment benefits in their hh",
-#' subtitle = "Example with austrian SILC data from 'laeken' package"
+#'   eusilc,
+#'   group = pl030_rec,
+#'   prop_exp = py090n > 0,
+#'   strata = db040,
+#'   ids = db030,
+#'   weight = rb050,
+#'   title = "% of ind. receiving unemployment benefits in their hh",
+#'   subtitle = "Example with austrian SILC data from 'laeken' package"
 #' )
 #'
 #' # Results in graph form
@@ -85,7 +90,7 @@
 #'
 #' # Results in table format
 #' eusilc_prop$tab
-#'
+
 prop_group <- function(data,
                        group,
                        prop_exp,

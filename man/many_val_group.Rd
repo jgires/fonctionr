@@ -67,93 +67,95 @@ many_mean_group(..., type = "mean")
 
 \item{list_vars}{A vector containing the names of the dummy/quantitative variables on which to compute the proportions/means/medians.}
 
-\item{type}{"prop" to compute proportions by group ; "mean" to compute means by group ; "median" to compute medians by group.}
+\item{type}{\code{"prop"} to compute proportions by group ; \code{"mean"} to compute means by group ; \code{"median"} to compute medians by group.}
 
-\item{list_vars_lab}{A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in list_vars.}
+\item{list_vars_lab}{A vector containing the labels of the dummy/quantitative variables to be displayed on the graphic and in the table of result. Default uses the variable names in \code{list_vars}.}
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as \code{\link[srvyr:dplyr_single]{srvyr::filter()}}: it excludes observations for which \code{filter_exp} results into \code{NA}. It is often the case when \code{NA} is present on one of the filter variables.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{...}{All options possible in \code{\link[srvyr:as_survey_design]{srvyr::as_survey_design()}}.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group variable. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.}
+\item{na.rm.group}{\code{TRUE} if you want to remove observations with \code{NA} on the group variable. \code{FALSE} if you want to create a group with the \code{NA} values for the group variable. Default is \code{TRUE}.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
+\item{na.rm.facet}{\code{TRUE} if you want to remove observations with \code{NA} on the facet variable. \code{FALSE} if you want to create a facet with the \code{NA} values for the facet variable. Default is \code{TRUE}.}
 
-\item{na.vars}{TThe treatment of NA values in variables (list_vars). "rm" removes NA seperately in each individual variable, "rm.all" removes every individual that has at least one NA in one variable. Default is "rm".}
+\item{na.vars}{The treatment of \code{NA} values in variables (\code{list_vars}). \code{"rm"} removes \code{NA} seperately in each individual variable, \code{"rm.all"} removes every individual that has at least one \code{NA} in one variable. Default is \code{"rm"}.}
 
-\item{total}{TRUE if you want to compute a total, FALSE if you don't. Default is TRUE. Total is not displayed nor computed if position = 'flip'.}
+\item{total}{\code{TRUE} if you want to compute a total, \code{FALSE} if you don't. Default is \code{TRUE}. Total is not displayed nor computed if \code{position = 'flip'}.}
 
-\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See \code{\link[survey:svyciprop]{survey::svyciprop()}} for details. Default is beta method.}
 
-\item{position}{Position adjustment for the ggplot. Default is "dodge". Other possible values are "flip" and "stack". "dodge" means that groups are on the y axe and variables are in differents colors, "flip" means that variables are on the y axe and groups are in differents colors, and "stack" means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum variable (e.g. different sources of income). If position = 'flip', total is not displayed nor computed. If position = "stack", confidence intervals are never shown on the graphic.}
+\item{position}{Position adjustment for the ggplot. Default is \code{"dodge"}. Other possible values are \code{"flip"} and \code{"stack"}. \code{"dodge"} means that groups are on the y axe and variables are in differents colors, \code{"flip"} means that variables are on the y axe and groups are in differents colors, and \code{"stack"} means that groups are on the y axe and variables are stacking with differents colors. The latter is usefull when the variables are component of a broader sum variable (e.g. different sources of income). If \code{position = 'flip'}, total is not displayed nor computed. If \code{position = "stack"}, confidence intervals are never shown on the graphic.}
 
-\item{show_ci}{TRUE if you want to show the error bars on the graphic. FALSE if you do not want to show the error bars. Default is TRUE. If position = "stack", confidence intervals are never shown on the graphic.}
+\item{show_ci}{\code{TRUE} if you want to show the error bars on the graphic. \code{FALSE} if you do not want to show the error bars. Default is \code{TRUE}. If \code{position = "stack"}, confidence intervals are never shown on the graphic.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample for each group and variable. The number can varie between variables if na.vars = "rm". FALSE if you do not want to show this number. Default is FALSE.}
+\item{show_n}{\code{TRUE} if you want to show on the graphic the number of observations in the sample for each group and variable. The number can varie between variables if \code{na.vars = "rm"}. \code{FALSE} if you do not want to show this number. Default is \code{FALSE}.}
 
-\item{show_value}{TRUE if you want to show the proportions/means/median for each group and variable on the graphic. FALSE if you do not want to show the proportions/means/medians. Default is TRUE.}
+\item{show_value}{\code{TRUE} if you want to show the proportions/means/median for each group and variable on the graphic. \code{FALSE} if you do not want to show the proportions/means/medians. Default is \code{TRUE}.}
 
-\item{show_labs}{TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.}
+\item{show_labs}{\code{TRUE} if you want to show axes labels. \code{FALSE} if you do not want to show any labels on axes. Default is \code{TRUE}.}
 
-\item{total_name}{Name of the total bars on the graphic. Default is Total. Notice that total is not displayed nor computed if position = 'flip'.}
+\item{total_name}{Name of the total bars on the graphic. Default is Total. Notice that total is not displayed nor computed if \code{position = 'flip'}.}
 
-\item{scale}{Denominator of the proportions. Default is 100 to interpret numbers as percentages. This argument is only used in case of type = "prop".}
+\item{scale}{Denominator of the proportions. Default is \code{100} to interpret numbers as percentages. This argument is only used in case of \code{type = "prop"}.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{Unit displayed on the graphic. Default is percent for type = "prop" and no unit for type = "mean" or "median".}
+\item{unit}{Unit displayed on the graphic. Default is percent for \code{type = "prop"} and no unit for \code{type = "mean"} or \code{"median"}.}
 
-\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark displayed on the graphic. Default depends on lang: \code{","} for fr and nl ; \code{"."} for en.}
 
-\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr.}
+\item{pal}{Colors of the bars. \code{pal} must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+\item{direction}{Direction of the palette color. Default is \code{1}. The opposite direction is \code{-1}.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
+\item{desaturate}{Numeric specifying the amount of desaturation where \code{1} corresponds to complete desaturation (no colors, grey layers only), \code{0} to no desaturation, and values in between to partial desaturation. Default is \code{0}. See \code{\link[colorspace:desaturate]{colorspace::desaturate()}} for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between \code{-1} (black) and \code{1} (white). Default is \code{0}. See \code{\link[colorspace:lighten]{colorspace::lighten()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between \code{-1} (white) and \code{1} (black). Default is \code{0}. See \code{\link[colorspace:lighten]{colorspace::darken()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars. dodge doesn't affect the spaces between sub-groups (group in case of position = 'dodge' or variables in case of position = 'flip'). There is always no space between sub-groups.}
+\item{dodge}{Width of the bars. Default is \code{0.9} to let a small space between bars. A value of \code{1} leads to no space betweens bars. Values higher than \code{1} are not advised because they cause an overlaping of the bars. \code{dodge} doesn't affect the spaces between sub-groups (group in case of \code{position = 'dodge'} or variables in case of \code{position = 'flip'}). There is always no space between sub-groups.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
-\item{wrap_width_y}{Number of characters before going to the line for the labels on de Y axe (groups if position = 'dodge' or 'stack', variables if position = 'flip'). Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels on de Y axe (groups if \code{position = 'dodge'} or \code{'stack'}, variables if \code{position = 'flip'}). Default is \code{25}.}
 
-\item{wrap_width_leg}{Number of characters before going to the line for the labels the legend (variables if position = 'dodge' or 'stack', groups if position = 'flip'). Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels the legend (variables if \code{position = 'dodge'} or \code{'stack'}, groups if \code{position = 'flip'}). Default is \code{25}.}
 
-\item{legend_ncol}{Number maximum of columns in the legend. Default is 4.}
+\item{legend_ncol}{Number maximum of columns in the legend. Default is \code{4}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Proportion :" (if lang = "fr"), "Proportion:" (if lang = "en") or "Aandeel:" folowed by the names of the variables (list_vars). To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{xlab} refers to the x label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the x variable in the data. Default (\code{xlab = NULL}) displays "Proportion :" (if \code{lang = "fr"}), "Proportion:" (if \code{lang = "en"}) or "Aandeel:" (if \code{lang = "nl"}) folowed by the names of the variables (\code{list_vars}). To show no X label, use \code{xlab = ""}.}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the groups variable (if position = 'dodge' or 'stack') or no Y axe label (if position = 'flip'). To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{ylab} refers to the y label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the y variable in the data. Default (\code{ylab = NULL}) displays the name of the groups variable (if \code{position = 'dodge'} or \code{'stack'}) or no Y axe label (if \code{position = 'flip'}). To show no Y label, use \code{ylab = ""}.}
 
-\item{legend_lab}{Legend (fill) label on the graphic. Default (legend_lab = NULL) displays no legend label (if position = 'dodge' or 'stack') or the name of the groups variable (if position = 'flip'). To show no legend label, use legend_lab = "".}
+\item{legend_lab}{Legend (fill) label on the graphic. Default (\code{legend_lab = NULL}) displays no legend label (if \code{position = 'dodge'} or \code{'stack'}) or the name of the groups variable (if \code{position = 'flip'}). To show no legend label, use \code{legend_lab = ""}.}
 
 \item{caption}{Caption of the graphic.}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 
-\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
+\item{theme}{Theme of the graphic. Default is \code{"fonctionr"}. \code{"IWEPS"} adds y axis lines and ticks. \code{NULL} uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes two sheets: the table and the graphic.}
 
-\item{parallel}{TRUE to enable parallel computing. Default is TRUE if replicated weights are used, otherwise default is FALSE.}
+\item{parallel}{\code{TRUE} to enable parallel computing. Default is \code{TRUE} if replicated weights are used, otherwise default is \code{FALSE}.}
 }
 \value{
-A list that contains a table and a graphic
+A list that contains a table and a graphic.
 }
 \description{
-Function to compare de proportions/means/medians of a set of several binary/quantitatives variables between different groups, based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. Exporting the results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+Function to compare de proportions/means/medians of a set of several binary/quantitatives variables between different groups, based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators and a ready-to-be published ggplot graphic. The confidence intervals are taking into account the complex survey design.
+
+Exporting the results to an Excell file is possible.
 }
 \examples{
 # Loading of data
@@ -161,22 +163,22 @@ data(eusilc, package = "laeken")
 
 # Recoding variables
 eusilc$worker <- 0
-eusilc$worker[eusilc$pl030 == "1"]<-1
-eusilc$worker[eusilc$pl030 == "2"]<-1
-eusilc$austrian<-0
-eusilc$austrian[eusilc$pb220a == "AT"]<-1
+eusilc$worker[eusilc$pl030 == "1"] <- 1
+eusilc$worker[eusilc$pl030 == "2"] <- 1
+eusilc$austrian <- 0
+eusilc$austrian[eusilc$pb220a == "AT"] <- 1
 
 # Computation, taking sample design into account
 eusilc_many_mean_group <- many_mean_group(
-eusilc,
-group = rb090,
-list_vars = c(py010n,py050n,py090n,py100n),
-list_vars_lab = c("Wage","Self-employement income","unemployement benefit","pension"),
-strata = db040,
-ids = db030,
-weight = rb050,
-title = "Average incomes according to gender",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  group = rb090,
+  list_vars = c(py010n,py050n,py090n,py100n),
+  list_vars_lab = c("Wage","Self-employement income","unemployement benefit","pension"),
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "Average incomes according to gender",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 
 # Results in graph form
@@ -184,5 +186,4 @@ eusilc_many_mean_group$graph
 
 # Results in table format
 eusilc_many_mean_group$tab
-
 }

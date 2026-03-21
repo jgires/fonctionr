@@ -21,25 +21,25 @@ official_pal(
 
 \item{n}{Number of colors.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+\item{direction}{Direction of the palette color. Default is \code{1}. The opposite direction is \code{-1}.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation, 0 to no desaturation, and values in between to partial desaturation.}
+\item{desaturate}{Numeric specifying the amount of desaturation where \code{1} corresponds to complete desaturation, \code{0} to no desaturation, and values in between to partial desaturation.}
 
 \item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening.}
 
 \item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening.}
 
-\item{show_pal}{TRUE to display a graph representing the specified color palette.}
+\item{show_pal}{\code{TRUE} to display a graph representing the specified color palette.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts.}
 
-\item{list_pal_names}{TRUE to generate a vector with palette names.}
+\item{list_pal_names}{\code{TRUE} to generate a vector with palette names.}
 }
 \value{
-A vector containing hexadecimals color codes
+A vector containing hexadecimals color codes.
 }
 \description{
-Function to produce color palettes from different institutions
+A function that allows you to create the palettes of fonctionr.
 }
 \examples{
 official_pal("OBSS", 8, show_pal = TRUE)
@@ -48,5 +48,4 @@ official_pal("OBSS_div_mid4", 7, show_pal = TRUE)
 official_pal("OBSS_div_bi3", 8, show_pal = TRUE)
 official_pal("IBSA", 4, show_pal = TRUE)
 official_pal("ULB", 6, show_pal = TRUE)
-
 }

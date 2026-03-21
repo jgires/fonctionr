@@ -1,6 +1,10 @@
 # fonctionr_options
 
-Function to set global options for fonctionr
+Function to set global options for fonctionr. The arguments defined in
+the options are only active if the user has not manually specified a
+value for those arguments within the various functions. Arguments may be
+shared by multiple functions (if they have the same name) or specific to
+certain functions.
 
 ## Usage
 
@@ -70,240 +74,251 @@ fonctionr_options(
 
 - na.rm.group:
 
-  na.rm.group
+  `na.rm.group` argument.
 
 - na.rm.facet:
 
-  na.rm.facet
+  `na.rm.facet` argument.
 
 - na.prop:
 
-  na.prop
+  `na.prop` argument.
 
 - na.vars:
 
-  na.vars
+  `na.vars` argument.
 
 - na.rm.var:
 
-  na.rm.var
+  `na.rm.var` argument.
 
 - probs:
 
-  probs
+  `probs` argument.
 
 - total:
 
-  total
+  `total` argument.
 
 - prop_method:
 
-  prop_method
+  `prop_method` argument.
 
 - quantiles:
 
-  quantiles
+  `quantiles` argument.
 
 - moustache_probs:
 
-  moustache_probs
+  `moustache_probs` argument.
 
 - bw:
 
-  bw
+  `bw` argument.
 
 - resolution:
 
-  resolution
+  `resolution` argument.
 
 - height:
 
-  height
+  `height` argument.
 
 - limits:
 
-  limits
+  `limits` argument.
 
 - reorder:
 
-  reorder
+  `reorder` argument.
 
 - position:
 
-  position
+  `position` argument.
 
 - show_ci:
 
-  show_ci
+  `show_ci` argument.
 
 - show_mid_point:
 
-  show_mid_point
+  `show_mid_point` argument.
 
 - show_mid_line:
 
-  show_mid_line
+  `show_mid_line` argument.
 
 - show_ci_errorbar:
 
-  show_ci_errorbar
+  `show_ci_errorbar` argument.
 
 - show_ci_lines:
 
-  show_ci_lines
+  `show_ci_lines` argument.
 
 - show_ci_area:
 
-  show_ci_area
+  `show_ci_area` argument.
 
 - show_quant_lines:
 
-  show_quant_lines
+  `show_quant_lines` argument.
 
 - show_moustache:
 
-  show_moustache
+  `show_moustache` argument.
 
 - show_n:
 
-  show_n
+  `show_n` argument.
 
 - show_value:
 
-  show_value
+  `show_value` argument.
 
 - show_labs:
 
-  show_labs
+  `show_labs` argument.
 
 - total_name:
 
-  total_name
+  `total_name` argument.
 
 - scale:
 
-  scale
+  `scale` argument.
 
 - digits:
 
-  digits
+  `digits` argument.
 
 - unit:
 
-  unit
+  `unit` argument.
 
 - dec:
 
-  dec
+  `dec` argument.
 
 - col:
 
-  col
+  `col` argument.
 
 - pal:
 
-  pal
+  `pal` argument.
 
 - direction:
 
-  direction
+  `direction` argument.
 
 - desaturate:
 
-  desaturate
+  `desaturate` argument.
 
 - lighten:
 
-  lighten
+  `lighten` argument.
 
 - darken:
 
-  darken
+  `darken` argument.
 
 - col_density:
 
-  col_density
+  `col_density` argument.
 
 - col_moustache:
 
-  col_moustache
+  `col_moustache` argument.
 
 - col_border:
 
-  col_border
+  `col_border` argument.
 
 - alpha:
 
-  alpha
+  `alpha` argument.
 
 - dodge:
 
-  dodge
+  `dodge` argument.
 
 - font:
 
-  font
+  `font` argument.
 
 - wrap_width_y:
 
-  wrap_width_y
+  `wrap_width_y` argument.
 
 - wrap_width_leg:
 
-  wrap_width_leg
+  `wrap_width_leg` argument.
 
 - legend_ncol:
 
-  legend_ncol
+  `legend_ncol` argument.
 
 - title:
 
-  title
+  `title` argument.
 
 - subtitle:
 
-  subtitle
+  `subtitle` argument.
 
 - xlab:
 
-  xlab
+  `xlab` argument.
 
 - ylab:
 
-  ylab
+  `ylab` argument.
 
 - legend_lab:
 
-  legend_lab
+  `legend_lab` argument.
 
 - caption:
 
-  caption
+  `caption` argument.
 
 - lang:
 
-  lang
+  `lang` argument.
 
 - theme:
 
-  theme
+  `theme` argument.
 
 - coef_font:
 
-  coef_font
+  `coef_font` argument.
 
 - erase_all:
 
-  TRUE erases all the options. Default is FALSE.
+  `TRUE` erases all the options. Default is `FALSE`.
+
+- parallel:
+
+  `parallel` argument.
+
+## Value
+
+No return value, called for side effects.
 
 ## Examples
 
 ``` r
-# We set settings for font type and font size
-fonctionr_options(font = "Montserrat", coef_font = 1.5)
+# We set global settings
+fonctionr_options(coef_font = 1.5, col = "magenta", caption = "Beautiful caption")
 #> $fonctionr.options
-#> $fonctionr.options$font
-#> [1] "Montserrat"
+#> $fonctionr.options$col
+#> [1] "magenta"
+#> 
+#> $fonctionr.options$caption
+#> [1] "Beautiful caption"
 #> 
 #> $fonctionr.options$coef_font
 #> [1] 1.5
@@ -325,15 +340,16 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_prop <- prop_group(
-eusilc,
-group = pl030_rec,
-prop_exp = py090n > 0,
-weight = rb050,
-title = "% of ind. receiving unemployment benefits in their hh",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  group = pl030_rec,
+  prop_exp = py090n > 0,
+  weight = rb050,
+  title = "% of ind. receiving unemployment benefits in their hh",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Warning: NAs introduced by coercion
-#> Warning: Active parameters in function r_options(): font, coef_font
+#> Warning: NAs introduced by coercion
+#> Warning: Active parameters in function r_options(): col, caption, coef_font
 #> Input: data.frame
 #> Sampling design -> ids:  `1`, weights:  rb050
 #> Variable(s) detected in prop_exp: py090n
@@ -348,4 +364,8 @@ eusilc_prop$graph
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_text()`).
 
+
+# We set back settings to default
+fonctionr_options(erase_all = TRUE)
+#> No fonctionr option active
 ```

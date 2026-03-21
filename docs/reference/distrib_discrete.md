@@ -1,13 +1,18 @@
 # distrib_discrete
 
 Function to describe the distribution of a discrete variable from
-complex survey data. It produces a list containing a table, including
-the confidence intervals of the indicators, a ready-to-be published
-ggplot graphic and, if proportions for H0 are specified, a Chi-Square
-statistical test (using survey::svygofchisq). Exporting those results to
-an Excell file is possible. The confidence intervals and the statistical
-test are taking into account the complex survey design. In case of
-facets, no statistical test is (yet) computed.
+complex survey data.
+
+It produces a list containing a table, including the confidence
+intervals of the indicators, a ready-to-be published ggplot graphic and,
+if proportions for H0 are specified, a Chi-Square statistical test
+(using
+[`survey::svygofchisq()`](https://rdrr.io/pkg/survey/man/svygofchisq.html)).
+The confidence intervals and the statistical test are taking into
+account the complex survey design. In case of facets, no statistical
+test is (yet) computed.
+
+Exporting those results to an Excell file is possible.
 
 ## Usage
 
@@ -68,90 +73,93 @@ distrib_d(...)
 - filter_exp:
 
   An expression filtering the data, preserving the design. Notice that
-  filter_exp works as srvyr::filter() : it excludes observations for
-  which filter_exp results into NA. It is often the case when NA is
-  present on one of the filter variables.
+  `filter_exp` works as
+  [`srvyr::filter()`](http://gdfe.co/srvyr/reference/dplyr_single.md):
+  it excludes observations for which `filter_exp` results into `NA.` It
+  is often the case when `NA` is present on one of the filter variables.
 
 - ...:
 
-  All options possible in as_survey_design in srvyr package.
+  All options possible in
+  [`srvyr::as_survey_design()`](http://gdfe.co/srvyr/reference/as_survey_design.md).
 
 - na.rm.facet:
 
-  TRUE if you want to remove observations with NA on the facet variable.
-  FALSE if you want to create a facet with the NA values for the facet
-  variable. Default is TRUE.
+  `TRUE` if you want to remove observations with `NA` on the facet
+  variable. `FALSE` if you want to create a facet with the `NA` values
+  for the facet variable. Default is `TRUE`.
 
 - na.rm.var:
 
-  TRUE if you want to remove observations with NA on the discrete
-  variable. FALSE if you want to create a modality with NA values for
-  the discrete variable. Default is TRUE.
+  `TRUE` if you want to remove observations with `NA` on the discrete
+  variable. `FALSE` if you want to create a modality with `NA` values
+  for the discrete variable. Default is `TRUE`.
 
 - probs:
 
   Vector of probabilities for H0 of the statistical test, in the correct
-  order (will be rescaled to sum to 1). If probs = NULL, no statistical
-  test is performed. Default is NULL.
+  order (will be rescaled to sum to 1). If `probs = NULL`, no
+  statistical test is performed. Default is `NULL`.
 
 - prop_method:
 
   Type of proportion method used to compute confidence intervals. See
-  survey::svyciprop() for details. Default is beta method.
+  [`survey::svyciprop()`](https://rdrr.io/pkg/survey/man/svyciprop.html)
+  for details. Default is beta method.
 
 - reorder:
 
-  TRUE if you want to reorder the groups according to the proportion. NA
-  value, in case if na.rm.var = FALSE, is not included in the reorder.
-  In case of facets, the categories are reordered based on each median
-  category Default is FALSE.
+  `TRUE` if you want to reorder the groups according to the proportion.
+  `NA` value, if `na.rm.var = FALSE`, is not included in the reorder. In
+  case of facets, the categories are reordered based on each median
+  category Default is `FALSE`.
 
 - show_ci:
 
-  TRUE if you want to show the error bars on the graphic. FALSE if you
-  don't want to show the error bars. Default is TRUE.
+  `TRUE` if you want to show the error bars on the graphic. `FALSE` if
+  you don't want to show the error bars. Default is `TRUE`.
 
 - show_n:
 
-  TRUE if you want to show on the graphic the number of observations in
-  the sample in each category. FALSE if you don't want to show this
-  number. Default is FALSE.
+  `TRUE` if you want to show on the graphic the number of observations
+  in the sample in each category. `FALSE` if you don't want to show this
+  number. Default is `FALSE`.
 
 - show_value:
 
-  TRUE if you want to show the proportions in each category on the
-  graphic. FALSE if you don't want to show the proportion. Default is
-  TRUE.
+  `TRUE` if you want to show the proportions in each category on the
+  graphic. `FALSE` if you don't want to show the proportion. Default is
+  `TRUE`.
 
 - show_labs:
 
-  TRUE if you want to show axes labels. FALSE if you do not want to show
-  any label on axes. Default is TRUE.
+  `TRUE` if you want to show axes labels. `FALSE` if you do not want to
+  show any label on axes. Default is `TRUE`.
 
 - scale:
 
-  Denominator of the proportion. Default is 100 to interprets numbers as
-  percentages.
+  Denominator of the proportion. Default is `100` to interprets numbers
+  as percentages.
 
 - digits:
 
   Number of decimal places displayed on the values labels on the
-  graphic. Default is 0.
+  graphic. Default is `0`.
 
 - unit:
 
-  Unit displayed on the graphic. Default is percent.
+  Unit displayed on the graphic. Default is `"%"`.
 
 - dec:
 
-  Decimal mark displayed on the graphic. Default depends on lang: ","
-  for fr and nl ; "." for en.
+  Decimal mark displayed on the graphic. Default depends on lang: `","`
+  for fr and nl ; `"."` for en.
 
 - col:
 
   Color of the bars. col must be a R color or an hexadecimal color code.
-  Default is "sienna2". The color of NA category (in case of na.rm.var
-  == FALSE) is always "grey".
+  Default is `"sienna2"`. The color of `NA` category (in case of
+  `na.rm.var = FALSE`) is always `"grey"`.
 
 - pal:
 
@@ -159,19 +167,20 @@ distrib_d(...)
 
 - dodge:
 
-  Width of the bars. Default is 0.9 to let a small space between bars. A
-  value of 1 leads to no space betweens bars. Values higher than 1 are
-  not advised because they cause an overlaping of the bars.
+  Width of the bars. Default is `0.9` to let a small space between bars.
+  A value of `1` leads to no space betweens bars. Values higher than `1`
+  are not advised because they cause an overlaping of the bars.
 
 - font:
 
-  Font used in the graphic. See load_and_active_fonts() for available
-  fonts. Default is "Roboto".
+  Font used in the graphic. See
+  [`load_and_active_fonts()`](https://jgires.github.io/fonctionr/reference/load_and_active_fonts.md)
+  for available fonts. Default is `"Roboto"`.
 
 - wrap_width_y:
 
   Number of characters before going to the line for the labels of the
-  categories. Default is 25.
+  categories. Default is `25`.
 
 - title:
 
@@ -183,20 +192,27 @@ distrib_d(...)
 
 - xlab:
 
-  X label on the graphic. As coord_flip() is used in the graphic, xlab
-  refers to the x label on the graphic, after the coord_flip(), and not
-  to the x variable in the data. Default (xlab = NULL) displays
-  "Distribution (total : 100 pourcent)" (if lang == "fr"), "Distribution
-  (total: 100 percent)" (if lang == "en" ) or "Distributie (totaal : 100
-  procent)" (if lang == "nl"). To show no X label, use xlab = "".
+  X label on the graphic. As
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+  is used in the graphic, `xlab` refers to the x label on the graphic,
+  after the
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html),
+  and not to the x variable in the data. Default (`xlab = NULL`)
+  displays "Distribution (total : 100 pourcent)" (if `lang = "fr"`),
+  "Distribution (total: 100 percent)" (if `lang = "en"`) or "Distributie
+  (totaal : 100 procent)" (if `lang = "nl"`). To show no X label, use
+  `xlab = ""`.
 
 - ylab:
 
-  Y label on the graphic. As coord_flip() is used in the graphic, ylab
-  refers to the Y label on the graphic, after the coord_flip(), and not
-  to the Y variable in the data. Default (ylab = NULL) displays the name
-  of the discrete variable (quali_var). To show no Y label, use ylab =
-  "".
+  Y label on the graphic. As
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html)
+  is used in the graphic, `ylab` refers to the Y label on the graphic,
+  after the
+  [`ggplot2::coord_flip()`](https://ggplot2.tidyverse.org/reference/coord_flip.html),
+  and not to the Y variable in the data. Default (`ylab = NULL`)
+  displays the name of the discrete variable (`quali_var`). To show no Y
+  label, use `ylab = ""`.
 
 - caption:
 
@@ -205,25 +221,25 @@ distrib_d(...)
 
 - lang:
 
-  Language of the indications on the graphic. Possibilities are "fr"
-  (french), "nl" (dutch) and "en" (english). Default is "fr".
+  Language of the indications on the graphic. Possibilities are `"fr"`
+  (french), `"nl"` (dutch) and `"en"` (english). Default is `"fr"`.
 
 - theme:
 
-  Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis
-  lines and ticks. NULL uses the default grey ggplot2 theme.
+  Theme of the graphic. Default is `"fonctionr"`. `"IWEPS"` adds y axis
+  lines and ticks. `NULL` uses the default grey ggplot2 theme.
 
 - coef_font:
 
   A multiplier factor for font size of all fonts on the graphic. Default
-  is 1. Usefull when exporting the graphic for a publication (e.g. in a
-  Quarto document).
+  is `1`. Usefull when exporting the graphic for a publication (e.g. in
+  a Quarto document).
 
 - export_path:
 
   Path to export the results in an xlsx file. The file includes two or
   three sheets : the table, the graphic and the statistical test (if
-  probs is not NULL).
+  `probs` is not `NULL`).
 
 ## Value
 
@@ -248,13 +264,13 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_dist_group_d <- distrib_d(
-eusilc,
-pl030_rec,
-strata = db040,
-ids = db030,
-weight = rb050,
-title = "Distribution of socio-economic status",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  pl030_rec,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "Distribution of socio-economic status",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 #> Input: data.frame
 #> Sampling design -> ids:  db030, strata:  db040, weights:  rb050

@@ -50,11 +50,16 @@ reference:
   - theme_fonctionr
   - official_pal
 
+- subtitle: Package Options
+  desc: >
+    A function for setting global options.
+  contents:
+  - fonctionr_options
+
 - subtitle: Utils
   desc: >
     Some useful functions.
   contents:
-  - fonctionr_options
   - pivot_longer_survey
   - relab_cut
 

@@ -304,7 +304,7 @@ distrib_income_2 <- distrib_group_c(
   show_value = F,
   show_ci_errorbar = F,
   show_moustache = F,
-  pal = official_pal(inst = "OBSS_Purples", n = 2, direction = -1),
+  col_density = official_pal(inst = "OBSS_Purples", n = 2, direction = -1),
   alpha = .8,
   font = "Gotham Narrow",
   title = "Income from wage, part time workers by region"

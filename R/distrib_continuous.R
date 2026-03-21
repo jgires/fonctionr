@@ -1,46 +1,49 @@
 #' distrib_continuous
 #'
-#' Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (dens), a central value table (tab), a quantile table (quant) and a ready-to-be published ggplot graphic (graph). The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. Exporting those results to an Excell file is possible. The confidence intervals are taking into account the complex survey design.
+#' @description
+#' Function to describe the distribution of a continuous variable from complex survey data. It produces a list containing a density table (`dens`), a central value table (`tab`), a quantile table (`quant`) and a ready-to-be published ggplot graphic (`graph`).
 #'
-#' @name distrib_continuous
+#' The density table contains x-y coordinates to draw a density curve. The central value table contains the median or the mean of the continuous variable, with its confidence interval, the sample size and the estimation of the total, with  its confidence interval. The quantile table contains quantiles and their confidence intervals. The quantiles and the limits are used as thicks on the X axe of the graphic. The confidence intervals are taking into account the complex survey design.
+#'
+#' Exporting those results to an Excell file is possible.
 #'
 #' @param data A dataframe or an object from the survey package or an object from the srvyr package.
-#' @param quanti_exp An expression defining the quantitatie variable the variable to be described. Notice that any observations with NA in at least one of the variable in quanti_exp are excluded for the computation of the density and of the indicators.
-#' @param type Type of central value : "mean" to compute mean as the central value ; "median" to compute median as the central value.
+#' @param quanti_exp An expression defining the quantitatie variable the variable to be described. Notice that any observations with `NA` in at least one of the variable in `quanti_exp` are excluded for the computation of the density and of the indicators.
+#' @param type Type of central value : `"mean"` to compute mean as the central value ; `"median"` to compute median as the central value.
 #' @param facet Not yet implemented.
-#' @param filter_exp An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.
-#' @param ... All options possible in as_survey_design in srvyr package.
+#' @param filter_exp An expression filtering the data, preserving the design. Notice that `filter_exp` works as [srvyr::filter()]: it excludes observations for which `filter_exp` results into `NA.` It is often the case when `NA` is present on one of the filter variables.
+#' @param ... All options possible in [srvyr::as_survey_design()].
 #' @param na.rm.facet Not yet implemented.
 #' @param quantiles Quantiles computed. Default are deciles.
-#' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is 1.
-#' @param resolution Resolution of the density curve. Default is 1024.
-#' @param limits Limits of the X axe of the graphic. Does not apply to the computation of indicators (median/mean and quantiles). Default is NULL to show the entire distribution on the graphic.
-#' @param show_mid_line TRUE if you want to show the mean or median (depending on type) as a line on the graphic. FALSE if you do not want to show it. Default is TRUE.
-#' @param show_ci_lines TRUE if you want to show confidence interval of the mean or median (depending on type) as dotted lines on the graphic. FALSE if you do not want to show it as lines. Default is TRUE.
-#' @param show_ci_area TRUE if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. FALSE if you do not want to show it as an area. Default is FALSE.
-#' @param show_quant_lines TRUE if you want to show quantiles as lines on the graphic. FALSE if you do not want to show them as lines. Default is FALSE.
-#' @param show_n TRUE if you want to show on the graphic the number of individuals in the sample in each quantile. FALSE if you do not want to show the numbers. Default is FALSE.
-#' @param show_value TRUE if you want to show the value of the mean/median (depending on type) on the graphic. FALSE if you do not want to show the mean/median. Default is TRUE.
-#' @param show_labs TRUE if you want to show axes labels. FALSE if you do not want to show any labels on axes. Default is TRUE.
-#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is 0.
-#' @param unit Unit displayed on the graphic. Default is none.
-#' @param dec Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.
+#' @param bw The smoothing bandwidth to be used. The kernels are scaled such that this is the standard deviation of the smoothing kernel. Default is `1`.
+#' @param resolution Resolution of the density curve. Default is `1024`.
+#' @param limits Limits of the X axe of the graphic. Does not apply to the computation of indicators (median/mean and quantiles). Default is `NULL` to show the entire distribution on the graphic.
+#' @param show_mid_line `TRUE` if you want to show the mean or median (depending on type) as a line on the graphic. `FALSE` if you do not want to show it. Default is `TRUE`.
+#' @param show_ci_lines `TRUE` if you want to show confidence interval of the mean or median (depending on type) as dotted lines on the graphic. `FALSE` if you do not want to show it as lines. Default is `TRUE`.
+#' @param show_ci_area `TRUE` if you want to show confidence interval of the mean or median (depending on type) as a coloured area on the graphic. `FALSE` if you do not want to show it as an area. Default is `FALSE`.
+#' @param show_quant_lines `TRUE` if you want to show quantiles as lines on the graphic. `FALSE` if you do not want to show them as lines. Default is `FALSE`.
+#' @param show_n `TRUE` if you want to show on the graphic the number of individuals in the sample in each quantile. `FALSE` if you do not want to show the numbers. Default is `FALSE`.
+#' @param show_value `TRUE` if you want to show the value of the mean/median (depending on type) on the graphic. `FALSE` if you do not want to show the mean/median. Default is `TRUE`.
+#' @param show_labs `TRUE` if you want to show axes labels. `FALSE` if you do not want to show any labels on axes. Default is `TRUE`.
+#' @param digits Number of decimal places displayed on the values labels on the graphic. Default is `0`.
+#' @param unit Unit displayed on the graphic. Default is none (`""`).
+#' @param dec Decimal mark shown on the graphic. Depends on lang: `","` for fr and nl ; `"."` for en.
 #' @param pal For compatibility with older versions.
 #' @param col_density Color of the density area. It may be one color or a vector with several colors. Colors should be R color or an hexadecimal color code. In case of one color, the density is monocolor. In case of a vector, the quantile areas are painted in continuous colors going from the last color in the vector (center quantile) to the first color (first and last quantiles). In case of an even quantile area numbers (e.g. deciles, quartiles) the last color of the vector is only applied to the highcenter quantile area to avoid two continuous quantile areas having the same color.
 #' @param color Not currently used except for compatibility with old versions.
-#' @param col_border Color of the density line. Color should be one R color or one hexadecimal color code. Default (NULL) does not draw the density line.
-#' @param font Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".
+#' @param col_border Color of the density line. Color should be one R color or one hexadecimal color code. Default (`NULL`) does not draw the density line.
+#' @param font Font used in the graphic. See `load_and_active_fonts()` for available fonts. Default is `"Roboto"`.
 #' @param title Title of the graphic.
 #' @param subtitle Subtitle of the graphic.
-#' @param xlab X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the X label on the graphic, after the coord_flip(), and not to the x variable in the data. If xlab = NULL, X label on the graphic will be quanti_exp.
-#' @param ylab Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the Y label on the graphic, after the coord_flip(), and not to the y variable in the data. If ylab = NULL, Y label on the graphic will be "Densité" (if lang = "fr), "Density" (if lang = "en") or "Densiteit (if lang = "nl").
+#' @param xlab X label on the graphic. If `xlab = NULL`, X label on the graphic will be `quanti_exp.`
+#' @param ylab Y label on the graphic. If `ylab = NULL`, Y label on the graphic will be `"Densité"` (if `lang = "fr"`), `"Density"` (if `lang = "en"`) or `"Densiteit"` (if `lang = "nl"`).
 #' @param caption Caption of the graphic.
-#' @param lang Language of the indications on the graphic. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".
-#' @param theme Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.
-#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
+#' @param lang Language of the indications on the graphic. Possibilities are `"fr"` (french), `"nl"` (dutch) and `"en"` (english). Default is `"fr"`.
+#' @param theme Theme of the graphic. Default is `"fonctionr"`. `"IWEPS"` adds y axis lines and ticks. `NULL` uses the default grey ggplot2 theme.
+#' @param coef_font A multiplier factor for font size of all fonts on the graphic. Default is `1`. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).
 #' @param export_path Path to export the results in an xlsx file. The file includes four sheets: the central value table, the quantile table, the density table and the graphic.
 #'
-#' @return A list that contains a density table (dens), a central value table (tab), a quantile table (quant) and a ggplot graphic (graph).
+#' @return A list that contains a density table (`dens`), a central value table (`tab`), a quantile table (`quant`) and a ggplot graphic (`graph`).
 #' @import rlang
 #' @import survey
 #' @import srvyr
@@ -69,7 +72,7 @@
 #'
 #' # Results in table format
 #' eusilc_dist_c$tab
-#'
+
 distrib_continuous <- function(data,
                           quanti_exp,
                           type = "median",

@@ -59,75 +59,75 @@ distrib_group_d(...)
 
 \item{facet}{A variable defining the faceting group.}
 
-\item{filter_exp}{An expression filtering the data, preserving the design. Notice that filter_exp works as srvyr::filter() : it excludes observations for which filter_exp results into NA. It is often the case when NA is present on one of the filter variables.}
+\item{filter_exp}{An expression filtering the data, preserving the design. Notice that \code{filter_exp} works as \code{\link[srvyr:dplyr_single]{srvyr::filter()}}: it excludes observations for which \code{filter_exp} results into \code{NA}. It is often the case when \code{NA} is present on one of the filter variables.}
 
-\item{...}{All options possible in as_survey_design in srvyr package.}
+\item{...}{All options possible in \code{\link[srvyr:as_survey_design]{srvyr::as_survey_design()}}.}
 
-\item{na.rm.group}{TRUE if you want to remove observations with NA on the group. FALSE if you want to create a group with the NA values for the group variable. Default is TRUE.}
+\item{na.rm.group}{\code{TRUE} if you want to remove observations with \code{NA} on the group. \code{FALSE} if you want to create a group with the \code{NA} values for the group variable. Default is \code{TRUE}.}
 
-\item{na.rm.facet}{TRUE if you want to remove observations with NA on the facet variable. FALSE if you want to create a facet with the NA values for the facet variable. Default is TRUE.}
+\item{na.rm.facet}{\code{TRUE} if you want to remove observations with \code{NA} on the facet variable. \code{FALSE} if you want to create a facet with the \code{NA} values for the facet variable. Default is \code{TRUE}.}
 
-\item{na.rm.var}{TRUE if you want to remove observations with NA on the discrete variable. FALSE if you want to create a modality with NA values for the discrete variable. Default is TRUE.}
+\item{na.rm.var}{\code{TRUE} if you want to remove observations with \code{NA} on the discrete variable. \code{FALSE} if you want to create a modality with \code{NA} values for the discrete variable. Default is \code{TRUE}.}
 
-\item{total}{TRUE if you want to compute a total, FALSE if you don't. The default is TRUE.}
+\item{total}{\code{TRUE} if you want to compute a total, \code{FALSE} if you don't. The default is \code{TRUE}.}
 
-\item{prop_method}{Type of proportion method used to compute confidence intervals. See survey::svyciprop() for details. Default is beta method.}
+\item{prop_method}{Type of proportion method used to compute confidence intervals. See \code{\link[survey:svyciprop]{survey::svyciprop()}} for details. Default is beta method.}
 
-\item{reorder}{TRUE if you want to reorder the groups according to the proportion of the first level of quali_var.  NA group, in case if na.rm.group = FALSE, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is FALSE.}
+\item{reorder}{\code{TRUE} if you want to reorder the groups according to the proportion of the first level of \code{quali_var}. \code{NA} group, if \code{na.rm.group = FALSE}, is not included in the reorder. In case of facets, the groups are reordered based on each median group. Default is \code{FALSE}.}
 
-\item{show_n}{TRUE if you want to show on the graphic the number of observations in the sample in each category (of quali_var) of each group. FALSE if you don't want to show this number. Default is FALSE.}
+\item{show_n}{\code{TRUE} if you want to show on the graphic the number of observations in the sample in each category (of \code{quali_var}) of each group. \code{FALSE} if you don't want to show this number. Default is \code{FALSE}.}
 
-\item{show_value}{TRUE if you want to show the proportion in each category of each group on the graphic. FALSE if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is TRUE.}
+\item{show_value}{\code{TRUE} if you want to show the proportion in each category of each group on the graphic. \code{FALSE} if you do not want to show the proportions. Proportions of 2 percent or less are never showed on the graphic. Default is \code{TRUE}.}
 
-\item{show_labs}{TRUE if you want to show axes and legend labels. FALSE if you don't want to show any labels on axes and legend. Default is TRUE.}
+\item{show_labs}{\code{TRUE} if you want to show axes and legend labels. \code{FALSE} if you don't want to show any labels on axes and legend. Default is \code{TRUE}.}
 
-\item{total_name}{Name of the total displayed on the graphic. Default is "Total" in French and in English and "Totaal" in Dutch.}
+\item{total_name}{Name of the total displayed on the graphic. Default is \code{"Total"} in French and in English and \code{"Totaal"} in Dutch.}
 
-\item{scale}{Denominator of the proportions. Default is 100 to interpret numbers as percentages.}
+\item{scale}{Denominator of the proportions. Default is \code{100} to interpret numbers as percentages.}
 
-\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is 0.}
+\item{digits}{Number of decimal places displayed on the values labels on the graphic. Default is \code{0}.}
 
-\item{unit}{Unit showed in the graphic. Default (unit = "") shows not unit on values and percent on the X axe.}
+\item{unit}{Unit showed in the graphic. Default (\code{unit = ""}) shows not unit on values and percent on the X axe.}
 
-\item{dec}{Decimal mark shown on the graphic. Depends on lang: "," for fr and nl ; "." for en.}
+\item{dec}{Decimal mark shown on the graphic. Depends on lang: \code{","} for fr and nl ; \code{"."} for en.}
 
-\item{pal}{Colors of the bars. pal must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of NA category (in case of na.rm.var == FALSE) is always "grey".}
+\item{pal}{Colors of the bars. \code{pal} must be vector of R colors or hexadecimal colors or a palette from packages MetBrewer or PrettyCols or a palette from fonctionr. The color of \code{NA} category (in case of \code{na.rm.var = FALSE}) is always \code{"grey"}.}
 
-\item{direction}{Direction of the palette color. Default is 1. The opposite direction is -1.}
+\item{direction}{Direction of the palette color. Default is \code{1}. The opposite direction is \code{-1}.}
 
-\item{desaturate}{Numeric specifying the amount of desaturation where 1 corresponds to complete desaturation (no colors, grey layers only), 0 to no desaturation, and values in between to partial desaturation. Default is 0. See colorspace::desaturate for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
+\item{desaturate}{Numeric specifying the amount of desaturation where \code{1} corresponds to complete desaturation (no colors, grey layers only), \code{0} to no desaturation, and values in between to partial desaturation. Default is \code{0}. See \code{\link[colorspace:desaturate]{colorspace::desaturate()}} for details. If desaturate and lighten/darken arguments are used, lighten/darken is applied in a second time (i.e. on the color transformed by desaturate).}
 
-\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between -1 (black) and 1 (white). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). See colorspace::lighten for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
+\item{lighten}{Numeric specifying the amount of lightening. Negative numbers cause darkening. Value shoud be ranged between \code{-1} (black) and \code{1} (white). Default is \code{0}. It doesn't affect the color of \code{NA} (in case of \code{na.rm.group = FALSE}). See \code{\link[colorspace:lighten]{colorspace::lighten()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between -1 (white) and 1 (black). Default is 0. It doesn't affect the color of NAs (in case of na.rm.group = FALSE). See colorspace::darken for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).#'}
+\item{darken}{Numeric specifying the amount of lightening. Negative numbers cause lightening. Value shoud be ranged between \code{-1} (white) and \code{1} (black). Default is \code{0}. It doesn't affect the color of \code{NA} (in case of \code{na.rm.group = FALSE}). See \code{\link[colorspace:lighten]{colorspace::darken()}} for details. If both argument ligthen and darken are used (not advised), darken is applied in a second time (i.e. on the color transformed by lighten).}
 
-\item{dodge}{Width of the bars. Default is 0.9 to let a small space between bars. A value of 1 leads to no space betweens bars. Values higher than 1 are not advised because they cause an overlaping of the bars.}
+\item{dodge}{Width of the bars. Default is \code{0.9} to let a small space between bars. A value of \code{1} leads to no space betweens bars. Values higher than \code{1} are not advised because they cause an overlaping of the bars.}
 
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts. Default is "Roboto".}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts. Default is \code{"Roboto"}.}
 
-\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is 25.}
+\item{wrap_width_y}{Number of characters before going to the line for the labels of the groups. Default is \code{25}.}
 
-\item{wrap_width_leg}{Number of characters before going to the line for the labels of quali_var. Default is 25.}
+\item{wrap_width_leg}{Number of characters before going to the line for the labels of \code{quali_var}. Default is \code{25}.}
 
-\item{legend_ncol}{Number of columns in the legend. Default is 4.}
+\item{legend_ncol}{Number of columns in the legend. Default is \code{4}.}
 
 \item{title}{Title of the graphic.}
 
 \item{subtitle}{Subtitle of the graphic.}
 
-\item{xlab}{X label on the graphic. As coord_flip() is used in the graphic, xlab refers to the x label on the graphic, after the coord_flip(), and not to the x variable in the data. Default (xlab = NULL) displays "Distribution : " (if lang == "fr"), "Distribution: " (if lang == "en" ) or "Distributie: " (if lang == "nl"), followed by the name of the discrete variable (quali_var). To show no X label, use xlab = "".}
+\item{xlab}{X label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{xlab} refers to the x label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the x variable in the data. Default (\code{xlab = NULL}) displays "Distribution : " (if \code{lang = "fr"}), "Distribution: " (if \code{lang = "en"}) or "Distributie: " (if \code{lang = "nl"}), followed by the name of the discrete variable (\code{quali_var}). To show no X label, use \code{xlab = ""}.}
 
-\item{ylab}{Y label on the graphic. As coord_flip() is used in the graphic, ylab refers to the y label on the graphic, after the coord_flip(), and not to the y variable in the data. Default (ylab = NULL) displays the name of the group variable. To show no Y label, use ylab = "".}
+\item{ylab}{Y label on the graphic. As \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}} is used in the graphic, \code{ylab} refers to the y label on the graphic, after the \code{\link[ggplot2:coord_flip]{ggplot2::coord_flip()}}, and not to the y variable in the data. Default (\code{ylab = NULL}) displays the name of the group variable. To show no Y label, use \code{ylab = ""}.}
 
-\item{legend_lab}{Legend (fill) label on the graphic. Default (legend_lab = NULL) displays the name of the discrete variable (quali_var). To show no legend label, use legend_lab = "".}
+\item{legend_lab}{Legend (fill) label on the graphic. Default (\code{legend_lab = NULL}) displays the name of the discrete variable (\code{quali_var}). To show no legend label, use \code{legend_lab = ""}.}
 
 \item{caption}{Caption of the graphic. This caption goes under de default caption showing the result of the Chi-Square test. There is no way of not showing the result of the chi-square test as a caption.}
 
-\item{lang}{Language of the indications on the graphic. Possibilities are  "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of the indications on the graphic. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 
-\item{theme}{Theme of the graphic. Default is "fonctionr". "IWEPS" adds y axis lines and ticks. NULL uses the default grey ggplot2 theme.}
+\item{theme}{Theme of the graphic. Default is \code{"fonctionr"}. \code{"IWEPS"} adds y axis lines and ticks. \code{NULL} uses the default grey ggplot2 theme.}
 
-\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is 1. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
+\item{coef_font}{A multiplier factor for font size of all fonts on the graphic. Default is \code{1}. Usefull when exporting the graphic for a publication (e.g. in a Quarto document).}
 
 \item{export_path}{Path to export the results in an xlsx file. The file includes three (without facets) or two sheets (with facets): the table, the graphic and the Chi-Square statistical test result.}
 }
@@ -135,7 +135,11 @@ distrib_group_d(...)
 A list that contains a table, a ggplot graphic and, in most cases, a Chi-square statistical test.
 }
 \description{
-Function to compare the distribution of a discrete variable between different groups based on complex survey data. It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using survey::svychisq). Exporting those results to an Excell file is possible. The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
+Function to compare the distribution of a discrete variable between different groups based on complex survey data.
+
+It produces a list containing a table, including the confidence intervals of the indicators, a ready-to-be published ggplot graphic and a Chi-Square statistical test (using \code{\link[survey:svychisq]{survey::svychisq()}}). The confidence intervals and the statistical test are taking into account the complex survey design. In case of facets, no statistical test is (yet) computed.
+
+Exporting those results to an Excell file is possible.
 }
 \examples{
 # Loading of data
@@ -153,14 +157,14 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_dist_d <- distrib_group_d(
-eusilc,
-group = pb220a,
-quali_var = pl030_rec,
-strata = db040,
-ids = db030,
-weight = rb050,
-title = "Distribution of socio-economic status according to nationality",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  group = pb220a,
+  quali_var = pl030_rec,
+  strata = db040,
+  ids = db030,
+  weight = rb050,
+  title = "Distribution of socio-economic status according to nationality",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 
 # Results in graph form
@@ -168,5 +172,4 @@ eusilc_dist_d$graph
 
 # Results in table format
 eusilc_dist_d$tab
-
 }

@@ -7,26 +7,25 @@
 relab_cut(vec, suffix = NULL, right = TRUE, lang = "fr")
 }
 \arguments{
-\item{vec}{The vector to be recoded. It should be produced by cut(). Notice that the labels may not include scientific notation. Thus, in cut(), dig.lab argument should be high enough in order to produce labels without scientific notation.}
+\item{vec}{The vector to be recoded. It should be produced by \code{cut()}. Notice that the labels may not include scientific notation. Thus, in \code{cut()}, \code{dig.lab} argument should be high enough in order to produce labels without scientific notation.}
 
-\item{suffix}{The suffix to be indicated after the values. Usualy, the unit of the variable will be used (e.g. euros, percents). Default is NULL, for no suffix.}
+\item{suffix}{The suffix to be indicated after the values. Usualy, the unit of the variable will be used (e.g. euros, percents). Default is \code{NULL}, for no suffix.}
 
-\item{right}{TRUE if categories have been created with parameter right = TRUE in cut(). FALSE if categories have been created with parameter right = FALSE in cut(). Default is TRUE.}
+\item{right}{\code{TRUE} if categories have been created with parameter \code{right = TRUE} in \code{cut()}. \code{FALSE} if categories have been created with parameter \code{right = FALSE} in \code{cut()}. Default is \code{TRUE}.}
 
-\item{lang}{Language of new labels. Possibilities are "fr" (french), "nl" (dutch) and "en" (english). Default is "fr".}
+\item{lang}{Language of new labels. Possibilities are \code{"fr"} (french), \code{"nl"} (dutch) and \code{"en"} (english). Default is \code{"fr"}.}
 }
 \value{
-A vector with new labels
+A vector with new labels.
 }
 \description{
-Function to recode the default labels of a factor created by cut() from base R into more intuitive labels
+Function to recode the default labels of a factor created by \code{cut()} from base R into more intuitive labels.
 }
 \examples{
-cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE) |>
+cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE, dig.lab = 4) |>
 table()
 
 cut(1:1000, breaks = 5, include.lowest = TRUE, right = FALSE, dig.lab = 4) |>
 relab_cut(suffix = "€", right = FALSE) |>
 table()
-
 }

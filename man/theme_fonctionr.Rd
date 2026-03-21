@@ -13,19 +13,19 @@ theme_fonctionr(
 )
 }
 \arguments{
-\item{font}{Font used in the graphic. See load_and_active_fonts() for available fonts.}
+\item{font}{Font used in the graphic. See \code{load_and_active_fonts()} for available fonts.}
 
-\item{theme}{The optionnal theme you want for the graphic. Available theme: “IWEPS”. Default is NULL}
+\item{theme}{The optionnal theme you want for the graphic. Available themes: \code{"fonctionr"} and \verb{“IWEPS”}. Default is \code{NULL}.}
 
-\item{display}{The way theme_fonctionr() works on the axis texts: like ggplot2 or ggtext.}
+\item{display}{The way \code{theme_fonctionr()} works on the axis texts: like ggplot2 or ggtext.}
 
-\item{grid.lines}{Specify major grid lines : "x", "y" or "both". Default is "x".}
+\item{grid.lines}{Specify major grid lines : \code{"x"}, \code{"y"} or \code{"both"}. Default is \code{"x"}.}
 
 \item{coef_font}{A multiplier factor for font size.}
 }
 \value{
-No return value, called for side effects
+No return value, called for side effects.
 }
 \description{
-theme_fonctionr
+A ggplot theme that is ready to use. It is used by most other functions, but can also be applied to an external ggplot object.
 }

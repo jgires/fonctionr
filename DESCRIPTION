@@ -2,7 +2,7 @@ Type: Package
 Package: fonctionr
 Title: Easy Estimation and Vizualisation of Indicators from Data with
     Complex Design
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
     person("Joel", "Gires", , "joel.gires@vivalis.brussels", role = c("aut", "cre", "cph")),
     person("Francois", "Ghesquiere", , "f.ghesquiere@iweps.be", role = "aut")
@@ -15,6 +15,7 @@ Description: Many functions to easily vizualise and estimate indicators
 License: GPL-3
 URL: https://jgires.github.io/fonctionr/,
     https://github.com/jgires/fonctionr/
+BugReports: https://github.com/jgires/fonctionr/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -50,4 +51,5 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

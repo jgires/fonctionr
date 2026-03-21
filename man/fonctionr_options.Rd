@@ -65,129 +65,131 @@ fonctionr_options(
 )
 }
 \arguments{
-\item{na.rm.group}{na.rm.group}
+\item{na.rm.group}{\code{na.rm.group} argument.}
 
-\item{na.rm.facet}{na.rm.facet}
+\item{na.rm.facet}{\code{na.rm.facet} argument.}
 
-\item{na.prop}{na.prop}
+\item{na.prop}{\code{na.prop} argument.}
 
-\item{na.vars}{na.vars}
+\item{na.vars}{\code{na.vars} argument.}
 
-\item{na.rm.var}{na.rm.var}
+\item{na.rm.var}{\code{na.rm.var} argument.}
 
-\item{probs}{probs}
+\item{probs}{\code{probs} argument.}
 
-\item{total}{total}
+\item{total}{\code{total} argument.}
 
-\item{prop_method}{prop_method}
+\item{prop_method}{\code{prop_method} argument.}
 
-\item{quantiles}{quantiles}
+\item{quantiles}{\code{quantiles} argument.}
 
-\item{moustache_probs}{moustache_probs}
+\item{moustache_probs}{\code{moustache_probs} argument.}
 
-\item{bw}{bw}
+\item{bw}{\code{bw} argument.}
 
-\item{resolution}{resolution}
+\item{resolution}{\code{resolution} argument.}
 
-\item{height}{height}
+\item{height}{\code{height} argument.}
 
-\item{limits}{limits}
+\item{limits}{\code{limits} argument.}
 
-\item{reorder}{reorder}
+\item{reorder}{\code{reorder} argument.}
 
-\item{position}{position}
+\item{position}{\code{position} argument.}
 
-\item{show_ci}{show_ci}
+\item{show_ci}{\code{show_ci} argument.}
 
-\item{show_mid_point}{show_mid_point}
+\item{show_mid_point}{\code{show_mid_point} argument.}
 
-\item{show_mid_line}{show_mid_line}
+\item{show_mid_line}{\code{show_mid_line} argument.}
 
-\item{show_ci_errorbar}{show_ci_errorbar}
+\item{show_ci_errorbar}{\code{show_ci_errorbar} argument.}
 
-\item{show_ci_lines}{show_ci_lines}
+\item{show_ci_lines}{\code{show_ci_lines} argument.}
 
-\item{show_ci_area}{show_ci_area}
+\item{show_ci_area}{\code{show_ci_area} argument.}
 
-\item{show_quant_lines}{show_quant_lines}
+\item{show_quant_lines}{\code{show_quant_lines} argument.}
 
-\item{show_moustache}{show_moustache}
+\item{show_moustache}{\code{show_moustache} argument.}
 
-\item{show_n}{show_n}
+\item{show_n}{\code{show_n} argument.}
 
-\item{show_value}{show_value}
+\item{show_value}{\code{show_value} argument.}
 
-\item{show_labs}{show_labs}
+\item{show_labs}{\code{show_labs} argument.}
 
-\item{total_name}{total_name}
+\item{total_name}{\code{total_name} argument.}
 
-\item{scale}{scale}
+\item{scale}{\code{scale} argument.}
 
-\item{digits}{digits}
+\item{digits}{\code{digits} argument.}
 
-\item{unit}{unit}
+\item{unit}{\code{unit} argument.}
 
-\item{dec}{dec}
+\item{dec}{\code{dec} argument.}
 
-\item{col}{col}
+\item{col}{\code{col} argument.}
 
-\item{pal}{pal}
+\item{pal}{\code{pal} argument.}
 
-\item{direction}{direction}
+\item{direction}{\code{direction} argument.}
 
-\item{desaturate}{desaturate}
+\item{desaturate}{\code{desaturate} argument.}
 
-\item{lighten}{lighten}
+\item{lighten}{\code{lighten} argument.}
 
-\item{darken}{darken}
+\item{darken}{\code{darken} argument.}
 
-\item{col_density}{col_density}
+\item{col_density}{\code{col_density} argument.}
 
-\item{col_moustache}{col_moustache}
+\item{col_moustache}{\code{col_moustache} argument.}
 
-\item{col_border}{col_border}
+\item{col_border}{\code{col_border} argument.}
 
-\item{alpha}{alpha}
+\item{alpha}{\code{alpha} argument.}
 
-\item{dodge}{dodge}
+\item{dodge}{\code{dodge} argument.}
 
-\item{font}{font}
+\item{font}{\code{font} argument.}
 
-\item{wrap_width_y}{wrap_width_y}
+\item{wrap_width_y}{\code{wrap_width_y} argument.}
 
-\item{wrap_width_leg}{wrap_width_leg}
+\item{wrap_width_leg}{\code{wrap_width_leg} argument.}
 
-\item{legend_ncol}{legend_ncol}
+\item{legend_ncol}{\code{legend_ncol} argument.}
 
-\item{title}{title}
+\item{title}{\code{title} argument.}
 
-\item{subtitle}{subtitle}
+\item{subtitle}{\code{subtitle} argument.}
 
-\item{xlab}{xlab}
+\item{xlab}{\code{xlab} argument.}
 
-\item{ylab}{ylab}
+\item{ylab}{\code{ylab} argument.}
 
-\item{legend_lab}{legend_lab}
+\item{legend_lab}{\code{legend_lab} argument.}
 
-\item{caption}{caption}
+\item{caption}{\code{caption} argument.}
 
-\item{lang}{lang}
+\item{lang}{\code{lang} argument.}
 
-\item{theme}{theme}
+\item{theme}{\code{theme} argument.}
 
-\item{coef_font}{coef_font}
+\item{coef_font}{\code{coef_font} argument.}
 
-\item{erase_all}{TRUE erases all the options. Default is FALSE.}
+\item{erase_all}{\code{TRUE} erases all the options. Default is \code{FALSE}.}
+
+\item{parallel}{\code{parallel} argument.}
 }
 \value{
-No return value, called for side effects
+No return value, called for side effects.
 }
 \description{
-Function to set global options for fonctionr
+Function to set global options for fonctionr. The arguments defined in the options are only active if the user has not manually specified a value for those arguments within the various functions. Arguments may be shared by multiple functions (if they have the same name) or specific to certain functions.
 }
 \examples{
-# We set settings for font type and font size
-fonctionr_options(font = "Montserrat", coef_font = 1.5)
+# We set global settings
+fonctionr_options(coef_font = 1.5, col = "magenta", caption = "Beautiful caption")
 
 # Loading of data
 data(eusilc, package = "laeken")
@@ -204,15 +206,17 @@ eusilc$pl030_rec[eusilc$pl030 == "7"] <- "Fulfilling domestic tasks"
 
 # Computation, taking sample design into account
 eusilc_prop <- prop_group(
-eusilc,
-group = pl030_rec,
-prop_exp = py090n > 0,
-weight = rb050,
-title = "\% of ind. receiving unemployment benefits in their hh",
-subtitle = "Example with austrian SILC data from 'laeken' package"
+  eusilc,
+  group = pl030_rec,
+  prop_exp = py090n > 0,
+  weight = rb050,
+  title = "\% of ind. receiving unemployment benefits in their hh",
+  subtitle = "Example with austrian SILC data from 'laeken' package"
 )
 
 # Results in graph form
 eusilc_prop$graph
 
+# We set back settings to default
+fonctionr_options(erase_all = TRUE)
 }
