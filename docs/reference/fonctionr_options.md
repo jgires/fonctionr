@@ -66,6 +66,7 @@ fonctionr_options(
   lang = NULL,
   theme = NULL,
   coef_font = NULL,
+  parallel = NULL,
   erase_all = FALSE
 )
 ```
@@ -296,13 +297,13 @@ fonctionr_options(
 
   `coef_font` argument.
 
-- erase_all:
-
-  `TRUE` erases all the options. Default is `FALSE`.
-
 - parallel:
 
   `parallel` argument.
+
+- erase_all:
+
+  `TRUE` erases all the options. Default is `FALSE`.
 
 ## Value
 

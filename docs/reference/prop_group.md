@@ -221,7 +221,7 @@ prop_group(
   desaturation, and values in between to partial desaturation. Default
   is `0`. It affects only the palette (`pal`, if there is a second
   group) and not the monocolor (`col`, if there is no second group). See
-  [`colorspace::desaturate()`](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  [`colorspace::desaturate()`](https://colorspace.R-Forge.R-project.org/reference/desaturate.html)
   for details. If desaturate and lighten/darken arguments are used,
   lighten/darken is applied in a second time (i.e. on the color
   transformed by desaturate).
@@ -234,7 +234,7 @@ prop_group(
   `na.rm.group = FALSE`). It affects only the palette (`pal`, if there
   is a second group) and not the monocolor (`col`, if there is no second
   group). See
-  [`colorspace::lighten()`](https://rdrr.io/pkg/colorspace/man/lighten.html)
+  [`colorspace::lighten()`](https://colorspace.R-Forge.R-project.org/reference/lighten.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).
@@ -247,7 +247,7 @@ prop_group(
   of `na.rm.group = FALSE`). It affects only the palette (`pal`, if
   there is a second group) and not the monocolor (`col`, if there is no
   second group). See
-  [`colorspace::darken()`](https://rdrr.io/pkg/colorspace/man/lighten.html)
+  [`colorspace::darken()`](https://colorspace.R-Forge.R-project.org/reference/lighten.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).

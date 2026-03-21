@@ -192,7 +192,7 @@ distrib_group_d(...)
   complete desaturation (no colors, grey layers only), `0` to no
   desaturation, and values in between to partial desaturation. Default
   is `0`. See
-  [`colorspace::desaturate()`](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  [`colorspace::desaturate()`](https://colorspace.R-Forge.R-project.org/reference/desaturate.html)
   for details. If desaturate and lighten/darken arguments are used,
   lighten/darken is applied in a second time (i.e. on the color
   transformed by desaturate).
@@ -203,7 +203,7 @@ distrib_group_d(...)
   darkening. Value shoud be ranged between `-1` (black) and `1` (white).
   Default is `0`. It doesn't affect the color of `NA` (in case of
   `na.rm.group = FALSE`). See
-  [`colorspace::lighten()`](https://rdrr.io/pkg/colorspace/man/lighten.html)
+  [`colorspace::lighten()`](https://colorspace.R-Forge.R-project.org/reference/lighten.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).
@@ -214,7 +214,7 @@ distrib_group_d(...)
   lightening. Value shoud be ranged between `-1` (white) and `1`
   (black). Default is `0`. It doesn't affect the color of `NA` (in case
   of `na.rm.group = FALSE`). See
-  [`colorspace::darken()`](https://rdrr.io/pkg/colorspace/man/lighten.html)
+  [`colorspace::darken()`](https://colorspace.R-Forge.R-project.org/reference/lighten.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).

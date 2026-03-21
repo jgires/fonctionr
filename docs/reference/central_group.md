@@ -211,7 +211,7 @@ mean_group(..., type = "mean")
   desaturation, and values in between to partial desaturation. Default
   is `0`. It affects only the palette (`pal`, if there is a second
   group) and not the monocolor (`col`, if there is no second group). See
-  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  [colorspace::desaturate](https://colorspace.R-Forge.R-project.org/reference/desaturate.html)
   function from colorspace package for details. If desaturate and
   lighten/darken arguments are used, lighten/darken is applied in a
   second time (i.e. on the color transformed by desaturate).
@@ -224,7 +224,7 @@ mean_group(..., type = "mean")
   `na.rm.group = FALSE`). It affects only the palette (`pal`, if there
   is a second group) and not the monocolor (`col`, if there is no second
   group). See
-  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  [colorspace::desaturate](https://colorspace.R-Forge.R-project.org/reference/desaturate.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).
@@ -237,7 +237,7 @@ mean_group(..., type = "mean")
   of `na.rm.group = FALSE`). It affects only the palette (`pal`, if
   there is a second group) and not the monocolor (`col`, if there is no
   second group). See
-  [colorspace::desaturate](https://rdrr.io/pkg/colorspace/man/desaturate.html)
+  [colorspace::desaturate](https://colorspace.R-Forge.R-project.org/reference/desaturate.html)
   for details. If both argument ligthen and darken are used (not
   advised), darken is applied in a second time (i.e. on the color
   transformed by lighten).

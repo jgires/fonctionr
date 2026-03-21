@@ -61,6 +61,7 @@ fonctionr_options(
   lang = NULL,
   theme = NULL,
   coef_font = NULL,
+  parallel = NULL,
   erase_all = FALSE
 )
 }
@@ -177,9 +178,9 @@ fonctionr_options(
 
 \item{coef_font}{\code{coef_font} argument.}
 
-\item{erase_all}{\code{TRUE} erases all the options. Default is \code{FALSE}.}
-
 \item{parallel}{\code{parallel} argument.}
+
+\item{erase_all}{\code{TRUE} erases all the options. Default is \code{FALSE}.}
 }
 \value{
 No return value, called for side effects.

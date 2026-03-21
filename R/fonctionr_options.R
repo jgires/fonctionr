@@ -153,6 +153,7 @@ fonctionr_options <- function(na.rm.group = NULL,
                               lang = NULL,
                               theme = NULL,
                               coef_font = NULL,
+                              parallel = NULL,
                               erase_all = FALSE) {
 
   # On enregistre le call
